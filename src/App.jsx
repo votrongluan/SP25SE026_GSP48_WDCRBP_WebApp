@@ -22,7 +22,7 @@ import MaterialPage from "./pages/customer/MaterialPage.jsx";
 import ForumPage from "./pages/customer/ForumPage.jsx";
 import PostPage from "./pages/customer/PostPage.jsx";
 import PersonalizedPage from "./pages/customer/PersonalizedPage.jsx";
-import PrintOrderPage from "./pages/customer/PrintOrderPage.jsx";
+import PersonalizationRequestPage from "./pages/customer/PersonalizationRequest/PersonalizationRequestPage.jsx";
 import ProductsPage from "./pages/customer/ProductsPage.jsx";
 import CartPage from "./pages/customer/CartPage.jsx";
 import ProductPage from "./pages/customer/ProductPage.jsx";
@@ -55,6 +55,7 @@ function App() {
     colors: {
       app_brown: {
         0: "#F8E1B7",
+        1: "#754E1A",
       },
       app_white: {
         0: "#ffffff",
@@ -63,7 +64,7 @@ function App() {
         0: "#00060F",
       },
       app_grey: {
-        0: "#F7F7F7",
+        0: "#f9fafb",
         1: "#EAEAEA",
       },
     },
@@ -122,7 +123,7 @@ function App() {
               />
             }
           />
-          <Route path="print" element={<PrintOrderPage />} />
+          <Route path="print" element={<PersonalizationRequestPage />} />
           <Route path="products">
             <Route index element={<ProductsPage />} />
             <Route path=":id" element={<ProductPage />} />

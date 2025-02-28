@@ -4,7 +4,7 @@ export default function SubmitButton({
   text,
   bgColor = "app_brown.0",
   textColor = "app_black.0",
-  hoverBgColor = "app_black.0",
+  hoverBgColor = "app_brown.1",
   hoverTextColor = "app_white.0",
 }) {
   return (

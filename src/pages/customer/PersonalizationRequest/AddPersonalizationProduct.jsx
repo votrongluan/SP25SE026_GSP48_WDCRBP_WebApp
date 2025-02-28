@@ -40,21 +40,18 @@ export default function AddPersonalizationProduct({
         <FormLabel>Kích thước mong muốn (cm)</FormLabel>
         <Flex gap={2}>
           <Input
-            borderColor="app_black.0"
             placeholder="Dài"
             name="length"
             value={productData.length}
             onChange={handleProductInputChange}
           />
           <Input
-            borderColor="app_black.0"
             placeholder="Rộng"
             name="width"
             value={productData.width}
             onChange={handleProductInputChange}
           />
           <Input
-            borderColor="app_black.0"
             placeholder="Cao"
             name="height"
             value={productData.height}
@@ -66,7 +63,6 @@ export default function AddPersonalizationProduct({
       <FormControl mt={4}>
         <FormLabel>Loại gỗ mong muốn</FormLabel>
         <Input
-          borderColor="app_black.0"
           placeholder="Nhập loại gỗ"
           name="woodType"
           value={productData.woodType}
@@ -77,7 +73,6 @@ export default function AddPersonalizationProduct({
       <FormControl mt={4}>
         <FormLabel>Hoàn thiện bề mặt</FormLabel>
         <Input
-          borderColor="app_black.0"
           placeholder="Nhập hoàn thiện bề mặt"
           name="finishType"
           value={productData.finishType}
@@ -88,7 +83,6 @@ export default function AddPersonalizationProduct({
       <FormControl mt={4}>
         <FormLabel>Màu sắc mong muốn</FormLabel>
         <Input
-          borderColor="app_black.0"
           placeholder="Nhập màu sắc"
           name="color"
           value={productData.color}
@@ -158,7 +152,6 @@ export default function AddPersonalizationProduct({
       <FormControl mt={4} isRequired>
         <FormLabel>Số lượng đặt hàng</FormLabel>
         <Input
-          borderColor="app_black.0"
           type="number"
           placeholder="Số lượng"
           name="quantity"
@@ -169,7 +162,11 @@ export default function AddPersonalizationProduct({
 
       <Flex>
         <Spacer />
-        <ActionButton text={"+ Thêm"} onClickExeFn={handleAddProduct} />
+        <ActionButton
+          bgColor="blue.100"
+          text={"+ Thêm"}
+          onClickExeFn={handleAddProduct}
+        />
       </Flex>
     </Box>
   );
