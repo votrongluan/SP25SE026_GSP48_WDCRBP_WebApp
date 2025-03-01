@@ -20,6 +20,7 @@ import {
 import { useState } from "react";
 import AutoResizeTextarea from "../../../components/Inputs/AutoResizeTextarea.jsx";
 import ActionButton from "../../../components/Buttons/ActionButton.jsx";
+import { appColorTheme } from "../../../data/globalData.js";
 
 export default function AddPersonalizationProduct({
   productData,
@@ -33,7 +34,7 @@ export default function AddPersonalizationProduct({
 
   return (
     <Box mt={"40px"} p="20px" border="1px solid black" borderRadius="10px">
-      <Heading fontSize="20px" mb={4}>
+      <Heading fontWeight={500} fontSize="20px" mb={4}>
         Thêm sản phẩm
       </Heading>
 
@@ -153,11 +154,7 @@ export default function AddPersonalizationProduct({
 
       <Flex>
         <Spacer />
-        <ActionButton
-          bgColor="blue.100"
-          text={"+ Thêm"}
-          onClickExeFn={handleAddProduct}
-        />
+        <ActionButton text={"+ Thêm"} onClickExeFn={handleAddProduct} />
       </Flex>
     </Box>
   );

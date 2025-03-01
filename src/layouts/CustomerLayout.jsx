@@ -4,7 +4,7 @@ import CustomerSidebar from "../components/Sidebars/CustomerSidebar.jsx";
 
 function CustomerLayout(props) {
   return (
-    <Box bg="gray.50">
+    <Box>
       {/* sidebar */}
       <Box
         position="fixed"

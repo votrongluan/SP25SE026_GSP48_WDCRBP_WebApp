@@ -22,17 +22,20 @@ import {
   FiBookOpen,
   FiStar,
 } from "react-icons/fi";
-import GeneralInformation from "./GeneralInformation";
-import ProductTab from "./ProductTab";
-import ProcessTab from "./ProcessTab";
-import DeliveryTab from "./DeliveryTab";
-import AppointmentTab from "./AppointmentTab";
-import TransactionTab from "./TransactionTab";
-import LogTab from "./LogTab";
+import GeneralInformation from "./Tab/GeneralInformation.jsx";
+import ProductTab from "./Tab/ProductTab.jsx";
+import ProcessTab from "./Tab/ProcessTab.jsx";
+import DeliveryTab from "./Tab/DeliveryTab.jsx";
+import AppointmentTab from "./Tab/AppointmentTab.jsx";
+import TransactionTab from "./Tab/TransactionTab.jsx";
+import LogTab from "./Tab/LogTab.jsx";
+import ReviewTab from "./Tab/ReviewTab.jsx";
+import ActionBar from "./ActionBar";
 
-export default function OrderDetailPage() {
+export default function CustomerOrderDetailPage() {
   return (
     <Container px="40px" maxW="1400px" pb="100px">
+      <ActionBar />
       <Box height="80px">
         <Heading
           fontWeight="normal"
@@ -107,7 +110,7 @@ export default function OrderDetailPage() {
               <LogTab />
             </TabPanel>
             <TabPanel>
-              <AppointmentTab />
+              <ReviewTab />
             </TabPanel>
           </TabPanels>
         </Tabs>

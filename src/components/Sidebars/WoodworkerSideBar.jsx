@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth.js";
 import BrandLogo from "../BrandLogo.jsx";
 
-export default function SupplierSideBar() {
+export default function WoodworkerSideBar() {
   const { auth, setAuth } = useAuth();
   const navigate = useNavigate();
   const navLinkStyle = ({ isActive }) => {

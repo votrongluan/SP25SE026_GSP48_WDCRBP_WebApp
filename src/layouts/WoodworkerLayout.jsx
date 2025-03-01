@@ -1,10 +1,10 @@
 import React from "react";
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
-import SupplierSideBar from "../components/Sidebars/SupplierSideBar.jsx";
+import WoodworkerSideBar from "../components/Sidebars/WoodworkerSideBar.jsx";
 import RequireAuth from "../components/Utilities/RequireAuth.jsx";
 
-function SupplierLayout(props) {
+function WoodworkerLayout(props) {
   return (
     <RequireAuth allowedRoles={2}>
       <Box bg="gray.50">
@@ -18,7 +18,7 @@ function SupplierLayout(props) {
           minWidth="280px"
           p={{ base: "20px", lg: "30px" }}
         >
-          <SupplierSideBar />
+          <WoodworkerSideBar />
         </Box>
 
         {/* main content & navbar */}
@@ -37,4 +37,4 @@ function SupplierLayout(props) {
   );
 }
 
-export default SupplierLayout;
+export default WoodworkerLayout;

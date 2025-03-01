@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { appColorTheme } from "../../../data/globalData";
+import { appColorTheme } from "../../../../data/globalData.js";
 
 // Static product history data
 const productHistory = [
@@ -84,16 +84,19 @@ export default function ProductTab() {
 
   return (
     <Box>
-      <HStack justify="center" my={4}>
+      <HStack justify="center" mb={4}>
         <IconButton
           icon={<ChevronLeftIcon />}
           onClick={handlePrev}
           isDisabled={currentVersion === 1}
           aria-label="Previous Version"
         />
-        <Text fontSize="lg" fontWeight="bold">
-          Bản thứ {currentVersion}
-        </Text>
+        {productHistory.length != currentVersion ? (
+          <Text fontWeight="300">Bản nháp {currentVersion}</Text>
+        ) : (
+          <Text fontWeight="300">Bản chính</Text>
+        )}
+
         <IconButton
           icon={<ChevronRightIcon />}
           onClick={handleNext}
@@ -102,7 +105,7 @@ export default function ProductTab() {
         />
       </HStack>
 
-      <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={4}>
+      <SimpleGrid columns={{ base: 1, xl: 1 }} spacing={4}>
         {currentProducts.map((product) => (
           <Box
             key={product.id}

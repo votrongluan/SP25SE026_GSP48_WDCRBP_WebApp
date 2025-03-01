@@ -19,8 +19,8 @@ import {
   convertTimeStampToDateTimeString,
   formatPrice,
   getDateNow,
-} from "../../../utils/utils";
-import { appColorTheme } from "../../../data/globalData";
+} from "../../../../utils/utils.js";
+import { appColorTheme } from "../../../../data/globalData.js";
 
 // Static process updates (Simulating woodworker uploads)
 const processUpdates = [

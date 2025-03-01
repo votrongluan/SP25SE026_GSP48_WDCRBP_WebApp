@@ -34,14 +34,14 @@ import PrintManagePage from "./pages/admin/PrintManagePage.jsx";
 import DashboardPage from "./pages/admin/DashboardPage.jsx";
 import SplineModal from "./pages/customer/SplineModal.jsx";
 import MarketingDashboard from "./pages/admin/MarketingDashboard.jsx";
-import SupplierLayout from "./layouts/SupplierLayout.jsx";
+import WoodworkerLayout from "./layouts/WoodworkerLayout.jsx";
 import CustomerLayout from "./layouts/CustomerLayout.jsx";
 import AllOrderPage from "./pages/woodworker/AllOrderPage.jsx";
 import OwnOrderPage from "./pages/woodworker/OwnOrderPage.jsx";
 import VerifyPage from "./pages/customer/VerifyPage.jsx";
 import TestPage from "./pages/TestPage.jsx";
 import ScrollToTopAndBottom from "./components/Utilities/ScrollToTopAndBottom.jsx";
-import OrderDetailPage from "./pages/customer/OrderDetail/OrderDetailPage.jsx";
+import CustomerOrderDetailPage from "./pages/customer/OrderDetail/CustomerOrderDetailPage.jsx";
 import PrintOrderDetailPage from "./pages/customer/PrintOrderDetailPage.jsx";
 import SupplierDashboard from "./pages/woodworker/SupplierDashboard.jsx";
 import { appColorTheme } from "./data/globalData.js";
@@ -58,6 +58,7 @@ function App() {
       app_brown: {
         0: appColorTheme.brown_0,
         1: appColorTheme.brown_1,
+        2: appColorTheme.brown_2,
       },
       app_white: {
         0: appColorTheme.white_0,
@@ -85,7 +86,7 @@ function App() {
         </Route>
 
         {/* Supplier page route */}
-        <Route path="supplier" element={<SupplierLayout />}>
+        <Route path="supplier" element={<WoodworkerLayout />}>
           <Route index element={<SupplierDashboard />} />
           <Route path="dashboard" element={<SupplierDashboard />} />
           <Route path="task" element={<AllOrderPage />} />
@@ -94,7 +95,7 @@ function App() {
 
         {/* Customer page route */}
         <Route path="customer" element={<CustomerLayout />}>
-          <Route path="order-detail" element={<OrderDetailPage />} />
+          <Route path="order-detail" element={<CustomerOrderDetailPage />} />
           <Route index element={<SupplierDashboard />} />
           <Route path="dashboard" element={<SupplierDashboard />} />
           <Route path="task" element={<AllOrderPage />} />
@@ -112,7 +113,7 @@ function App() {
           <Route path="about" element={<AboutPage />} />
           <Route path="account" element={<AccountPage />} />
           <Route path="order">
-            <Route path=":id" element={<OrderDetailPage />} />
+            <Route path=":id" element={<CustomerOrderDetailPage />} />
           </Route>
           <Route path="printorder">
             <Route path=":id" element={<PrintOrderDetailPage />} />
