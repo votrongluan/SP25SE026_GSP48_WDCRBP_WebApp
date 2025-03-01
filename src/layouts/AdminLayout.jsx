@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
-import AdminSideBar from "../components/AdminSideBar.jsx";
-import RequireAuth from "../components/RequireAuth.jsx";
+import AdminSideBar from "../components/Sidebars/AdminSideBar.jsx";
+import RequireAuth from "../components/Utilities/RequireAuth.jsx";
 
 function AdminLayout(props) {
   return (

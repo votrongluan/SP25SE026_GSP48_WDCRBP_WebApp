@@ -13,7 +13,7 @@ import { CartProvider } from "./context/CartContext.jsx";
 import AuthPage from "./pages/customer/AuthPage.jsx";
 import { AuthProvider } from "./context/AuthProvider.jsx";
 import AccountPage from "./pages/customer/AccountPage.jsx";
-import RequireAuth from "./components/RequireAuth.jsx";
+import RequireAuth from "./components/Utilities/RequireAuth.jsx";
 import UnauthorizedPage from "./pages/customer/UnauthorizedPage.jsx";
 import { useEffect, useState } from "react";
 import AboutPage from "./pages/customer/AboutPage.jsx";
@@ -35,14 +35,16 @@ import DashboardPage from "./pages/admin/DashboardPage.jsx";
 import SplineModal from "./pages/customer/SplineModal.jsx";
 import MarketingDashboard from "./pages/admin/MarketingDashboard.jsx";
 import SupplierLayout from "./layouts/SupplierLayout.jsx";
-import AllOrderPage from "./pages/supplier/AllOrderPage.jsx";
-import OwnOrderPage from "./pages/supplier/OwnOrderPage.jsx";
+import CustomerLayout from "./layouts/CustomerLayout.jsx";
+import AllOrderPage from "./pages/woodworker/AllOrderPage.jsx";
+import OwnOrderPage from "./pages/woodworker/OwnOrderPage.jsx";
 import VerifyPage from "./pages/customer/VerifyPage.jsx";
 import TestPage from "./pages/TestPage.jsx";
-import ScrollToTopAndBottom from "./components/ScrollToTopAndBottom.jsx";
-import OrderDetailPage from "./pages/customer/OrderDetailPage.jsx";
+import ScrollToTopAndBottom from "./components/Utilities/ScrollToTopAndBottom.jsx";
+import OrderDetailPage from "./pages/customer/OrderDetail/OrderDetailPage.jsx";
 import PrintOrderDetailPage from "./pages/customer/PrintOrderDetailPage.jsx";
-import SupplierDashboard from "./pages/supplier/SupplierDashboard.jsx";
+import SupplierDashboard from "./pages/woodworker/SupplierDashboard.jsx";
+import { appColorTheme } from "./data/globalData.js";
 
 function App() {
   useEffect(() => {
@@ -54,18 +56,18 @@ function App() {
   const theme = extendTheme({
     colors: {
       app_brown: {
-        0: "#F8E1B7",
-        1: "#754E1A",
+        0: appColorTheme.brown_0,
+        1: appColorTheme.brown_1,
       },
       app_white: {
-        0: "#ffffff",
+        0: appColorTheme.white_0,
       },
       app_black: {
-        0: "#00060F",
+        0: appColorTheme.black_0,
       },
       app_grey: {
-        0: "#f9fafb",
-        1: "#EAEAEA",
+        0: appColorTheme.grey_0,
+        1: appColorTheme.grey_1,
       },
     },
   });
@@ -84,6 +86,15 @@ function App() {
 
         {/* Supplier page route */}
         <Route path="supplier" element={<SupplierLayout />}>
+          <Route index element={<SupplierDashboard />} />
+          <Route path="dashboard" element={<SupplierDashboard />} />
+          <Route path="task" element={<AllOrderPage />} />
+          <Route path="own" element={<OwnOrderPage />} />
+        </Route>
+
+        {/* Customer page route */}
+        <Route path="customer" element={<CustomerLayout />}>
+          <Route path="order-detail" element={<OrderDetailPage />} />
           <Route index element={<SupplierDashboard />} />
           <Route path="dashboard" element={<SupplierDashboard />} />
           <Route path="task" element={<AllOrderPage />} />
@@ -123,7 +134,10 @@ function App() {
               />
             }
           />
+          {/* ------------------------------------------------------- */}
+
           <Route path="print" element={<PersonalizationRequestPage />} />
+
           <Route path="products">
             <Route index element={<ProductsPage />} />
             <Route path=":id" element={<ProductPage />} />

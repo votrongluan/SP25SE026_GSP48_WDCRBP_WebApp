@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
-import SupplierSideBar from "../components/SupplierSideBar";
-import RequireAuth from "../components/RequireAuth";
+import SupplierSideBar from "../components/Sidebars/SupplierSideBar.jsx";
+import RequireAuth from "../components/Utilities/RequireAuth.jsx";
 
 function SupplierLayout(props) {
   return (

@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import intro from "/src/assets/images/intro.webp";
 import { Link as RouterLink } from "react-router-dom";
-import SlideWrapper from "./SlideWrapper";
+import SlideWrapper from "./Utilities/SlideWrapper.jsx";
 
 export default function HomeIntro() {
   return (

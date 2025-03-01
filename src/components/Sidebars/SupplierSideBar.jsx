@@ -1,7 +1,7 @@
 import { Box, List, ListItem } from "@chakra-ui/react";
 import { NavLink, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth.js";
-import BrandLogo from "./BrandLogo.jsx";
+import useAuth from "../../hooks/useAuth.js";
+import BrandLogo from "../BrandLogo.jsx";
 
 export default function SupplierSideBar() {
   const { auth, setAuth } = useAuth();

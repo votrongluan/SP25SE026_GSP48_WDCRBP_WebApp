@@ -12,7 +12,7 @@ import { ReactSVG } from "react-svg";
 import pla from "../assets/images/pla.webp";
 import resin from "../assets/images/resin.webp";
 import { Link as RouterLink } from "react-router-dom";
-import SlideWrapper from "./SlideWrapper";
+import SlideWrapper from "./Utilities/SlideWrapper.jsx";
 
 export default function HomeMaterial() {
   return (

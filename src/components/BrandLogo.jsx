@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Image } from "@chakra-ui/react";
 import { Link, NavLink as RouterNavLink } from "react-router-dom";
-import logo from "/src/assets/images/logo.jpg";
+import logo from "/src/assets/images/logo.png";
 
 export default function BrandLogo() {
   return (
@@ -20,10 +20,10 @@ export default function BrandLogo() {
               fontFamily="Jockey One"
               as="h1"
             >
-              Creatify
+              WDCRBP
             </Heading>
             <Heading fontSize="14px" fontFamily="Montserrat" as="h2">
-              3D Printing House
+              Woodworking platform
             </Heading>
           </Box>
         </Flex>

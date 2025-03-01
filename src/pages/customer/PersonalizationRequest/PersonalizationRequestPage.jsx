@@ -26,7 +26,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import axios, { appURL } from "../../../api/axios.js";
-import RequireAuth from "../../../components/RequireAuth.jsx";
+import RequireAuth from "../../../components/Utilities/RequireAuth.jsx";
 import useAuth from "../../../hooks/useAuth.js";
 import { useNavigate } from "react-router-dom";
 import SubmitButton from "../../../components/Buttons/SubmitButton.jsx";
@@ -160,7 +160,7 @@ export default function PersonalizationRequestPage() {
             }}
           >
             <Box p="40px">
-              <Box>
+              <Box border="1px solid black" p="20px" borderRadius="10px">
                 <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
                   Thông tin khách hàng
                 </Heading>
@@ -244,7 +244,12 @@ export default function PersonalizationRequestPage() {
                 </FormControl>
               </Box>
 
-              <Box mt={10}>
+              <Box
+                border="1px solid black"
+                p="20px"
+                borderRadius="10px"
+                mt={10}
+              >
                 <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
                   Thông tin xưởng mộc
                 </Heading>
@@ -253,7 +258,7 @@ export default function PersonalizationRequestPage() {
                   <HStack>
                     <Text>Tên xưởng</Text>
                     <Spacer />
-                    <Text fontWeight={500}>
+                    <Text>
                       <Link color="blue">An Highland</Link>
                     </Text>
                   </HStack>
@@ -261,26 +266,29 @@ export default function PersonalizationRequestPage() {
                   <HStack>
                     <Text>Tên thợ mộc</Text>
                     <Spacer />
-                    <Text fontWeight={500}>ABc</Text>
+                    <Text>ABc</Text>
                   </HStack>
 
                   <HStack>
                     <Text>Địa chỉ xưởng</Text>
                     <Spacer />
-                    <Text fontWeight={500}>
-                      1775 Lê Văn Luong, ap 3 nhon duc nha be
-                    </Text>
+                    <Text>1775 Lê Văn Luong, ap 3 nhon duc nha be</Text>
                   </HStack>
 
                   <HStack>
                     <Text>Số điện thoại</Text>
                     <Spacer />
-                    <Text fontWeight={500}>0987382382</Text>
+                    <Text>0987382382</Text>
                   </HStack>
                 </Stack>
               </Box>
 
-              <Box mt={10}>
+              <Box
+                mt={10}
+                border="1px solid black"
+                p="20px"
+                borderRadius="10px"
+              >
                 <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
                   Danh sách sản phẩm đã thêm
                 </Heading>

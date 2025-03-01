@@ -6,7 +6,7 @@ import congnghe from "/src/assets/images/cong-nghe-tien-tien.svg";
 import vatlieu from "/src/assets/images/vat-lieu-chat-luong.svg";
 import dichvu from "/src/assets/images/dich-vu-in-an-theo-yeu-cau.svg";
 import huongdan from "/src/assets/images/huong-dan-cua-chuyen-gia.svg";
-import SlideWrapper from "./SlideWrapper";
+import SlideWrapper from "./Utilities/SlideWrapper.jsx";
 import FadeWrapper from "./FadeWrapper";
 
 export default function HomeWhy() {

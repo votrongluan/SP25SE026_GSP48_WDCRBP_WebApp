@@ -971,3 +971,14 @@ export const printOrderStatusColorMap = {
   [3]: "green",
   [4]: "red",
 };
+
+export const appColorTheme = {
+  brown_0: "#F8E1B7",
+  brown_1: "#754E1A",
+  brown_2: "#D17B49",
+  grey_0: "#f9fafb",
+  grey_1: "#EAEAEA",
+  black_0: "#00060F",
+  white_0: "#ffffff",
+  green_0: "#6B8E23 ",
+};

@@ -15,6 +15,7 @@ import {
   useToast,
   Checkbox,
   Spacer,
+  Select,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import AutoResizeTextarea from "../../../components/Inputs/AutoResizeTextarea.jsx";
@@ -31,12 +32,26 @@ export default function AddPersonalizationProduct({
   const toast = useToast();
 
   return (
-    <Box p="40px">
+    <Box mt={"40px"} p="20px" border="1px solid black" borderRadius="10px">
       <Heading fontSize="20px" mb={4}>
         Thêm sản phẩm
       </Heading>
 
-      <FormControl isRequired>
+      <FormControl mt={4} isRequired>
+        <FormLabel>Loại sản phẩm</FormLabel>
+        <Select>
+          <option>Giường</option>
+        </Select>
+      </FormControl>
+
+      <FormControl mt={4} isRequired>
+        <FormLabel>Loại sản phẩm</FormLabel>
+        <Select>
+          <option>Giường 2 tầng</option>
+        </Select>
+      </FormControl>
+
+      <FormControl mt={4} isRequired>
         <FormLabel>Kích thước mong muốn (cm)</FormLabel>
         <Flex gap={2}>
           <Input
@@ -91,53 +106,29 @@ export default function AddPersonalizationProduct({
       </FormControl>
 
       <FormControl mt={4}>
-        <Checkbox
-          name="carving"
-          isChecked={productData.carving}
-          onChange={(e) =>
-            setProductData({ ...productData, carving: e.target.checked })
-          }
-        >
-          Yêu cầu điêu khắc/trạm trổ?
-        </Checkbox>
-        {productData.carving && (
-          <AutoResizeTextarea
-            placeholder="Mô tả chi tiết"
-            name="carvingDetails"
-            value={productData.carvingDetails}
-            onChange={handleProductInputChange}
-            mt={2}
-          />
-        )}
+        <FormLabel>Yêu cầu chạm trổ / điêu khắc</FormLabel>
+        <AutoResizeTextarea
+          placeholder="Mô tả chi tiết"
+          name="carvingDetails"
+          value={productData.carvingDetails}
+          onChange={handleProductInputChange}
+          mt={2}
+        />
       </FormControl>
 
       <FormControl mt={4}>
-        <Checkbox
-          name="referenceImage"
-          isChecked={productData.referenceImage}
+        <FormLabel>Hình ảnh mô tả</FormLabel>
+        <Input
+          type="file"
+          accept="image/*"
+          name="referenceImageFile"
           onChange={(e) =>
-            setProductData({ ...productData, referenceImage: e.target.checked })
+            setProductData({
+              ...productData,
+              referenceImageFile: e.target.files[0],
+            })
           }
-        >
-          Có hình ảnh mẫu không?
-        </Checkbox>
-        {productData.referenceImage && (
-          <Input
-            type="file"
-            accept="image/*"
-            name="referenceImageFile"
-            onChange={(e) =>
-              setProductData({
-                ...productData,
-                referenceImageFile: e.target.files[0],
-              })
-            }
-            mt={2}
-            p={2}
-            borderRadius="md"
-            bg="white"
-          />
-        )}
+        />
       </FormControl>
 
       <FormControl mt={4}>

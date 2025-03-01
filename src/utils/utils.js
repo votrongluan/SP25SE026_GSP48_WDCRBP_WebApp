@@ -20,6 +20,12 @@ export const convertTimeStampToDateString = (timestamp) => {
   return dateString;
 };
 
+export const convertTimeStampToDateTimeString = (timestamp) => {
+  const dateTime = dayjs(timestamp).tz("Asia/Ho_Chi_Minh");
+
+  return dateTime.format("DD-MM-YYYY hh:mm A"); // e.g., "01-03-2025 08:30 PM"
+};
+
 export const getDateNow = () => {
   const currentDate = new Date();
   const vietnamTime = new Date(

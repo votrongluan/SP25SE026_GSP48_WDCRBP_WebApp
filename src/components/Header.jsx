@@ -37,13 +37,12 @@ function Header() {
   const { auth, setAuth } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const links = [
-    { path: "/products", label: "Sản phẩm" },
-    { path: "/print", label: "Đặt in" },
-    { path: "/personalized", label: "Cá nhân hóa" },
-    // { path: "/forum", label: "Diễn đàn" },
-    { path: "/material", label: "Vật liệu" },
-    { path: "/contact", label: "Liên hệ" },
-    { path: "/about", label: "Về chúng tôi" },
+    { path: "/products", label: "Lorem" },
+    { path: "/print", label: "Lorem" },
+    { path: "/personalized", label: "Lorem" },
+    { path: "/material", label: "Lorem" },
+    { path: "/contact", label: "Lorem" },
+    { path: "/about", label: "Lorem" },
   ];
   const navLinkStyle = ({ isActive }) => {
     return {

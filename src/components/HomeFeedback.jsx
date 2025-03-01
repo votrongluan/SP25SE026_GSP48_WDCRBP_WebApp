@@ -6,7 +6,7 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
-import SlideWrapper from "./SlideWrapper";
+import SlideWrapper from "./Utilities/SlideWrapper.jsx";
 
 export default function HomeFeedback() {
   return (
