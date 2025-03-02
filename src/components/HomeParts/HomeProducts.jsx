@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Button, Container, Flex, Image, Text } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-import FadeWrapper from "./FadeWrapper";
-import { mockProducts } from "../data/globalData";
+import FadeWrapper from "../FadeWrapper.jsx";
+import { mockProducts } from "../../data/globalData.js";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

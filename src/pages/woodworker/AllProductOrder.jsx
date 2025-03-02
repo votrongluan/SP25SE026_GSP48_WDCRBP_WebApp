@@ -19,8 +19,8 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import SearchFilter from "../../components/SearchFilter.jsx";
-import Pagination from "../../components/Pagination.jsx";
+import SearchFilter from "../../components/Utilities/SearchFilter.jsx";
+import Pagination from "../../components/Utilities/Pagination.jsx";
 import ProductUpdateButton from "../../components/ProductUpdateButton.jsx";
 import ProductAddButton from "../../components/ProductAddButton.jsx";
 import OrderDetailButton from "../../components/OrderDetailButton.jsx";

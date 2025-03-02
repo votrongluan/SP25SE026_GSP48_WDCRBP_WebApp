@@ -11,9 +11,9 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
-import useAuth from "../hooks/useAuth.js";
+import useAuth from "../../hooks/useAuth.js";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import Cart from "./Cart.jsx";
+import Cart from "../PageParts/Cart.jsx";
 import { AccountCircleRounded } from "@mui/icons-material";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 

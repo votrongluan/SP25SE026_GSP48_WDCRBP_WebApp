@@ -84,6 +84,10 @@ export default function ProductTab() {
 
   return (
     <Box>
+      <Heading fontWeight={500} fontSize="20px" mb={5} textAlign="center">
+        Thông tin sản phẩm
+      </Heading>
+
       <HStack justify="center" mb={4}>
         <IconButton
           icon={<ChevronLeftIcon />}
@@ -141,7 +145,7 @@ export default function ProductTab() {
               </HStack>
 
               {product.designFiles && (
-                <Accordion allowToggle mt={4}>
+                <Accordion allowToggle>
                   <AccordionItem border="1px solid #ddd" borderRadius="5px">
                     <AccordionButton _expanded={{ bg: "gray.100" }} p={3}>
                       <Box flex="1" textAlign="left">

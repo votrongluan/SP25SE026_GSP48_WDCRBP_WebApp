@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { Form } from "react-router-dom";
 import { useState } from "react";
-import axios from "../api/axios";
+import axios from "../../api/axios.js";
 
 export default function ForgetPassword({ changeTab }) {
   const toast = useToast();

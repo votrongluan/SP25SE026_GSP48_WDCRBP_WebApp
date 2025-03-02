@@ -13,8 +13,8 @@ import {
 } from "@chakra-ui/react";
 import { ShoppingCart } from "@mui/icons-material";
 import { NavLink as RouterNavLink } from "react-router-dom";
-import CartItem from "./CartItem";
-import useCart from "../hooks/useCart";
+import CartItem from "./CartItem.jsx";
+import useCart from "../../hooks/useCart.js";
 
 export default function Cart() {
   const { isOpen, onOpen, onClose } = useDisclosure();

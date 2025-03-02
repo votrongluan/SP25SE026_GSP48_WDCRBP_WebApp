@@ -9,7 +9,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { Form, Link } from "react-router-dom";
-import axios from "../api/axios";
+import axios from "../../api/axios.js";
 import { useState } from "react";
 
 export default function Register({ changeTab }) {

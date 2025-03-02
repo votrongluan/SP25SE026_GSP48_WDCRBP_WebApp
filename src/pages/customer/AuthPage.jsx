@@ -1,9 +1,9 @@
 import { Box, Container, Text, useToast } from "@chakra-ui/react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth.js";
-import Login from "../../components/Login.jsx";
-import Register from "../../components/Register.jsx";
-import ForgetPassword from "../../components/ForgetPassword.jsx";
+import Login from "../../components/Auths/Login.jsx";
+import Register from "../../components/Auths/Register.jsx";
+import ForgetPassword from "../../components/Auths/ForgetPassword.jsx";
 import { useState } from "react";
 import VerifyPage from "./VerifyPage.jsx";
 

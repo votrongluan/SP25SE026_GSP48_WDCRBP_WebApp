@@ -16,6 +16,10 @@ import { Link } from "react-router-dom";
 export default function GeneralInformation() {
   return (
     <>
+      <Heading fontWeight={500} fontSize="20px" mb={5} textAlign="center">
+        Thông tin chung
+      </Heading>
+
       <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
         <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
           Thông tin đơn hàng

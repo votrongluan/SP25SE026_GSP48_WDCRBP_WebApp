@@ -43,6 +43,10 @@ const processUpdates = [
 export default function ProcessTab() {
   return (
     <Box>
+      <Heading fontWeight={500} fontSize="20px" mb={5} textAlign="center">
+        Quá trình thi công sản phẩm
+      </Heading>
+
       <VStack spacing={4} align="stretch">
         <Accordion allowMultiple>
           {processUpdates.map((update) => (

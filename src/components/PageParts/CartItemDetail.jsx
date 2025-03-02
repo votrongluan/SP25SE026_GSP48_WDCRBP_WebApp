@@ -8,7 +8,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { Add, Delete, Remove } from "@mui/icons-material";
-import useCart from "../hooks/useCart"; // Using custom hook for cart
+import useCart from "../../hooks/useCart.js"; // Using custom hook for cart
 
 export default function CartItemDetail({ product }) {
   const { changeQuantity, removeCartItem } = useCart(); // Get cart functions from context

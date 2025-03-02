@@ -1,7 +1,7 @@
 import { Box, Button, Container, Text } from "@chakra-ui/react";
 import about from "/src/assets/videos/ve_chung_toi.mp4";
 import { Link as RouterLink } from "react-router-dom";
-import SlideWrapper from "./Utilities/SlideWrapper.jsx";
+import SlideWrapper from "../Utilities/SlideWrapper.jsx";
 
 export default function HomeAbout() {
   return (

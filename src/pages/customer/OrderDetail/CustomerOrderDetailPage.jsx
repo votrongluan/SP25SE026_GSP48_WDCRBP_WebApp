@@ -85,31 +85,31 @@ export default function CustomerOrderDetailPage() {
 
           {/* Content Panels (Optional) */}
           <TabPanels>
-            <TabPanel>
+            <TabPanel p={5}>
               <GeneralInformation />
             </TabPanel>
-            <TabPanel>
+            <TabPanel p={5}>
               <ProductTab />
             </TabPanel>
-            <TabPanel>
+            <TabPanel p={5}>
               <ProcessTab />
             </TabPanel>
-            <TabPanel>
+            <TabPanel p={5}>
               <DeliveryTab />
             </TabPanel>
-            <TabPanel>
+            <TabPanel p={5}>
               <AppointmentTab />
             </TabPanel>
-            <TabPanel>
+            <TabPanel p={5}>
               <AppointmentTab />
             </TabPanel>
-            <TabPanel>
+            <TabPanel p={5}>
               <TransactionTab />
             </TabPanel>
-            <TabPanel>
+            <TabPanel p={5}>
               <LogTab />
             </TabPanel>
-            <TabPanel>
+            <TabPanel p={5}>
               <ReviewTab />
             </TabPanel>
           </TabPanels>

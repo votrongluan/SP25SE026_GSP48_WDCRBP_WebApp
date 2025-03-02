@@ -8,8 +8,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { Form, useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
-import axios from "../api/axios";
+import useAuth from "../../hooks/useAuth.js";
+import axios from "../../api/axios.js";
 import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
 

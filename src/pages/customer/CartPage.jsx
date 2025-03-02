@@ -11,7 +11,7 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import CartItemDetail from "../../components/CartItemDetail";
+import CartItemDetail from "../../components/PageParts/CartItemDetail.jsx";
 import useCart from "../../hooks/useCart"; // Using custom hook for cart
 import axios, { appURL } from "../../api/axios";
 import useAuth from "../../hooks/useAuth";

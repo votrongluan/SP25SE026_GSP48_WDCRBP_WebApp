@@ -21,11 +21,11 @@ import {
   Tr,
   useToast,
 } from "@chakra-ui/react";
-import SearchFilter from "../../components/SearchFilter.jsx";
+import SearchFilter from "../../components/Utilities/SearchFilter.jsx";
 import axios from "../../api/axios.js";
 import ConfirmationDialog from "../../components/ConfirmationDialog.jsx";
 import { AddIcon, HamburgerIcon } from "@chakra-ui/icons";
-import Pagination from "../../components/Pagination.jsx";
+import Pagination from "../../components/Utilities/Pagination.jsx";
 import ProductUpdateButton from "../../components/ProductUpdateButton.jsx";
 import ProductAddButton from "../../components/ProductAddButton.jsx";
 

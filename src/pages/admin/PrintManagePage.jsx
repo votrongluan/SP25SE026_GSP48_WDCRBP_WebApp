@@ -20,8 +20,8 @@ import {
   Link as ChakraLink,
   Tr,
 } from "@chakra-ui/react";
-import SearchFilter from "../../components/SearchFilter.jsx";
-import Pagination from "../../components/Pagination.jsx";
+import SearchFilter from "../../components/Utilities/SearchFilter.jsx";
+import Pagination from "../../components/Utilities/Pagination.jsx";
 import axios from "../../api/axios.js";
 import PrintOrderDetailButton from "../../components/PrintOrderDetailButton.jsx";
 import PrintOrderUpdateButton from "../../components/PrintOrderUpdateButton.jsx";

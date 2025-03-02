@@ -26,27 +26,27 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { Link, NavLink as RouterNavLink } from "react-router-dom";
-import useAuth from "../hooks/useAuth.js";
+import useAuth from "../../hooks/useAuth.js";
 import logo from "/src/assets/images/logo.jpg";
 import { AccountCircleRounded, ShoppingCart } from "@mui/icons-material";
-import Cart from "./Cart.jsx";
+import Cart from "../PageParts/Cart.jsx";
 import BrandLogo from "./BrandLogo.jsx";
 import AccountMenu from "./AccountMenu.jsx";
+import { appColorTheme } from "../../data/globalData.js";
 
 function Header() {
   const { auth, setAuth } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const links = [
-    { path: "/products", label: "Lorem" },
-    { path: "/print", label: "Lorem" },
-    { path: "/personalized", label: "Lorem" },
-    { path: "/material", label: "Lorem" },
-    { path: "/contact", label: "Lorem" },
-    { path: "/about", label: "Lorem" },
+    { path: "/products", label: "Sản phẩm" },
+    { path: "/designs", label: "Thiết kế" },
+    { path: "/wws", label: "Thợ mộc" },
+    { path: "/contact", label: "Liên hệ" },
+    { path: "/about", label: "Về chúng tôi" },
   ];
   const navLinkStyle = ({ isActive }) => {
     return {
-      color: isActive ? "#3A6AFD" : null,
+      color: isActive ? `${appColorTheme.brown_2}` : null,
     };
   };
 
@@ -79,7 +79,7 @@ function Header() {
                   key={index}
                   as={RouterNavLink}
                   to={link.path}
-                  _hover={{ color: "app_brown.0" }}
+                  _hover={{ color: "app_brown.2" }}
                   transition="color 0.3s ease"
                   style={navLinkStyle}
                 >

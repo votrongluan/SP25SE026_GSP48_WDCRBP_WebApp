@@ -1,7 +1,7 @@
 import { Box, Flex, Icon, List, ListItem } from "@chakra-ui/react";
 import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth.js";
-import BrandLogo from "../BrandLogo.jsx";
+import BrandLogo from "../Header/BrandLogo.jsx";
 import {
   FiCreditCard,
   FiGrid,
