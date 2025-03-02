@@ -6,34 +6,33 @@ import RequireAuth from "../components/Utilities/RequireAuth.jsx";
 
 function WoodworkerLayout(props) {
   return (
-    <RequireAuth allowedRoles={2}>
-      <Box bg="gray.50">
-        {/* sidebar */}
-        <Box
-          position="fixed"
-          as="aside"
-          bg="app_white.0"
-          color="app_black.0"
-          minHeight={{ lg: "100vh" }}
-          minWidth="280px"
-          p={{ base: "20px", lg: "30px" }}
-        >
-          <WoodworkerSideBar />
-        </Box>
-
-        {/* main content & navbar */}
-        <Box
-          color="app_black.0"
-          minH="100svh"
-          bgColor="app_grey.0"
-          as="main"
-          p="40px"
-          ml="280px"
-        >
-          <Outlet />
-        </Box>
+    <Box bg="gray.50">
+      {/* sidebar */}
+      <Box
+        position="fixed"
+        as="aside"
+        bg="white"
+        color="black"
+        minHeight={{ lg: "100vh" }}
+        minWidth="280px"
+        p={{ base: "20px", lg: "30px" }}
+      >
+        <WoodworkerSideBar />
       </Box>
-    </RequireAuth>
+
+      {/* main content & navbar */}
+      <Box
+        color="black"
+        minH="100svh"
+        bgColor="app_grey.0"
+        as="main"
+        p="40px"
+        ml="280px"
+        boxShadow="md"
+      >
+        <Outlet />
+      </Box>
+    </Box>
   );
 }
 

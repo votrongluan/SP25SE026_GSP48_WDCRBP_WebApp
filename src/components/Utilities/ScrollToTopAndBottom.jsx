@@ -51,7 +51,7 @@ const ScrollToTopAndBottom = () => {
         <IconButton
           icon={<FaFacebookMessenger />}
           onClick={redirectToMessenger}
-          bg="white"
+          bg="black"
           color="blue.500"
           _hover={{ opacity: "0.5" }}
           size="lg"
@@ -62,8 +62,8 @@ const ScrollToTopAndBottom = () => {
             <IconButton
               icon={<ArrowUpIcon />}
               onClick={scrollToTop}
-              bg="white"
-              color="app_white.0"
+              bg="black"
+              color="white"
               _hover={{ opacity: 0.5 }}
               size="lg"
               borderRadius="full"
@@ -72,8 +72,8 @@ const ScrollToTopAndBottom = () => {
             <IconButton
               icon={<ArrowDownIcon />}
               onClick={scrollToBottom}
-              bg="white"
-              color="app_white.0"
+              bg="black"
+              color="white"
               _hover={{ opacity: "0.5" }}
               size="lg"
               borderRadius="full"

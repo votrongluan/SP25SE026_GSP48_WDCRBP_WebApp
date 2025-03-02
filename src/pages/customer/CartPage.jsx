@@ -146,7 +146,7 @@ export default function CartPage() {
               <Textarea
                 h="150px"
                 fontSize="16px"
-                color="app_black.0"
+                color="black"
                 placeholder="Hướng dẫn? Yêu cầu đặc biệt? Hãy thêm chúng tại đây"
                 value={note[employeeId] || ""}
                 onChange={(e) => handleNoteChange(employeeId, e.target.value)} // Handle note input per employeeId
@@ -159,7 +159,7 @@ export default function CartPage() {
               </Text>
               <Input
                 fontSize="16px"
-                color="app_black.0"
+                color="black"
                 placeholder="Nhập địa chỉ giao hàng"
                 value={shipAddress[employeeId] || auth?.Address}
                 onChange={(e) =>
@@ -213,7 +213,7 @@ export default function CartPage() {
                 _hover={{ opacity: ".8" }}
                 w="100%"
                 bgColor="app_brown.0"
-                color="app_black.0"
+                color="black"
                 borderRadius="0"
                 mt="40px"
                 onClick={() => handleOrder(employeeId)} // Handle order for specific employeeId

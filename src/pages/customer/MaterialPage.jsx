@@ -29,7 +29,7 @@ function MaterialPage() {
         </Box>
 
         <SimpleGrid
-          bgColor="app_grey.0"
+          bgColor="app_grey.1"
           columns={{
             base: 1,
             xl: 2,
@@ -46,7 +46,7 @@ function MaterialPage() {
               fontFamily="Montserrat"
               width="250px"
               bgColor="white"
-              color="app_white.0"
+              color="white"
             >
               Nhựa PLA
             </Text>
@@ -100,7 +100,7 @@ function MaterialPage() {
             px="100px"
             pb="40px"
             borderLeft="1px solid"
-            borderLeftColor="app_white.0"
+            borderLeftColor="white"
           >
             <Text
               pl="16px"
@@ -112,7 +112,7 @@ function MaterialPage() {
               fontFamily="Montserrat"
               width="250px"
               bgColor="white"
-              color="app_white.0"
+              color="white"
             >
               Nhựa Resin
             </Text>

@@ -34,11 +34,11 @@ export default function ProductAddButton() {
         <Button
           leftIcon={<AddIcon />}
           _hover={{
-            color: "app_black.0",
-            bgColor: "app_white.0",
+            color: "black",
+            bgColor: "white",
           }}
-          color="app_white.0"
-          bgColor="app_black.0"
+          color="white"
+          bgColor="black"
           onClick={onOpen}
         >
           Thêm

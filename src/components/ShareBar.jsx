@@ -46,9 +46,9 @@ export default function ShareBar() {
     <>
       <Box
         borderTop="1px solid"
-        borderTopColor="app_black.0"
+        borderTopColor="black"
         borderBottom="1px solid"
-        borderBottomColor="app_black.0"
+        borderBottomColor="black"
         opacity=".5"
         mt="40px"
         display="flex"
@@ -57,7 +57,7 @@ export default function ShareBar() {
         <IconButton
           px={7}
           py={7}
-          color="app_black.0"
+          color="black"
           aria-label="Share on Facebook"
           icon={
             <FacebookSharp
@@ -73,7 +73,7 @@ export default function ShareBar() {
         <IconButton
           px={7}
           py={7}
-          color="app_black.0"
+          color="black"
           aria-label="Share on Twitter"
           icon={
             <X
@@ -89,7 +89,7 @@ export default function ShareBar() {
         <IconButton
           px={7}
           py={7}
-          color="app_black.0"
+          color="black"
           aria-label="Share on LinkedIn"
           icon={
             <LinkedIn
@@ -105,7 +105,7 @@ export default function ShareBar() {
         <IconButton
           px={7}
           py={7}
-          color="app_black.0"
+          color="black"
           aria-label="Copy URL"
           icon={
             <Attachment

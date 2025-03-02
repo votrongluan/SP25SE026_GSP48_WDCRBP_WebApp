@@ -4,9 +4,9 @@ export default function ActionButton({
   text,
   onClickExeFn,
   bgColor = "app_brown.0",
-  textColor = "app_black.0",
+  textColor = "black",
   hoverBgColor = "app_brown.1",
-  hoverTextColor = "app_white.0",
+  hoverTextColor = "white",
 }) {
   return (
     <Button

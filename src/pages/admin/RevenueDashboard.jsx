@@ -17,20 +17,15 @@ function renderStat(stat, period) {
   return (
     <>
       <Box mb="8px" alignItems="center" justifyContent="space-between">
-        <Heading fontWeight="normal" fontSize="18px" color="app_white.0">
+        <Heading fontWeight="normal" fontSize="18px" color="white">
           {stat.label}
         </Heading>
-        <Heading
-          mt="8px"
-          fontWeight="normal"
-          fontSize="18px"
-          color="app_white.0"
-        >
+        <Heading mt="8px" fontWeight="normal" fontSize="18px" color="white">
           {period ? `${period}` : ""}
         </Heading>
       </Box>
 
-      <Stat color="app_white.0" my="16px">
+      <Stat color="white" my="16px">
         <StatNumber>{(+stat.value).toLocaleString()}</StatNumber>
         <StatHelpText>
           <Text color={stat.direction === "down" ? "red.500" : "green.500"}>
@@ -94,15 +89,15 @@ export default function RevenueDashboard() {
   return (
     <>
       <SimpleGrid mt="20px" columns={3} gap="20px">
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.allCustomer)}
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.allSupplier)}
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.allTransaction)}
         </GridItem>
       </SimpleGrid>
@@ -110,55 +105,55 @@ export default function RevenueDashboard() {
       <Box height="50px"></Box>
 
       <SimpleGrid mt="20px" columns={4} gap="20px">
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.todayOrders)}
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.todayPrintOrders)}
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.totalRevenueToday)}
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.totalProfitToday)}
         </GridItem>
       </SimpleGrid>
 
       <SimpleGrid mt="20px" columns={4} gap="20px">
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.last30DaysOrders, statsData.monthPeriod)}
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.last30DaysPrintOrders, statsData.monthPeriod)}
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.totalRevenueLast30Days, statsData.monthPeriod)}
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.totalProfitLast30Days, statsData.monthPeriod)}
         </GridItem>
       </SimpleGrid>
 
       <SimpleGrid mt="20px" columns={4} gap="20px">
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.allOrders)}
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.allPrintOrders)}
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.totalRevenueAllTime)}
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.totalProfitAllTime)}
         </GridItem>
       </SimpleGrid>
@@ -166,7 +161,7 @@ export default function RevenueDashboard() {
       <Box height="50px"></Box>
 
       <SimpleGrid mt="20px" columns={2} gap="20px">
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat({
             label: "Tổng doanh thu (25/10 - 31/10)",
             value: "15000000",
@@ -177,7 +172,7 @@ export default function RevenueDashboard() {
           <Line data={revenueData} />
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat({
             label: "Tổng hoa hồng (25/10 -31/10)",
             value: "4500000",

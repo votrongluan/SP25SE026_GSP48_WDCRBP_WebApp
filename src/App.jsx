@@ -45,6 +45,7 @@ import CustomerOrderDetailPage from "./pages/customer/OrderDetail/CustomerOrderD
 import PrintOrderDetailPage from "./pages/customer/PrintOrderDetailPage.jsx";
 import SupplierDashboard from "./pages/woodworker/SupplierDashboard.jsx";
 import { appColorTheme } from "./data/globalData.js";
+import WoodworkerOrderDetailPage from "./pages/woodworker/OrderDetail/WoodworkerOrderDetailPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -69,6 +70,7 @@ function App() {
       app_grey: {
         0: appColorTheme.grey_0,
         1: appColorTheme.grey_1,
+        2: appColorTheme.grey_2,
       },
     },
   });
@@ -77,7 +79,7 @@ function App() {
     createRoutesFromElements(
       <Route>
         {/* Admin page route */}
-        <Route path="admin" element={<AdminLayout />}>
+        <Route path="ad" element={<AdminLayout />}>
           <Route index element={<DashboardPage />} />
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="product" element={<ProductManagePage />} />
@@ -85,18 +87,19 @@ function App() {
           <Route path="print" element={<PrintManagePage />} />
         </Route>
 
-        {/* Supplier page route */}
-        <Route path="supplier" element={<WoodworkerLayout />}>
+        {/* Woodworker page route */}
+        <Route path="ww" element={<WoodworkerLayout />}>
           <Route index element={<SupplierDashboard />} />
+          <Route path="order-detail" element={<WoodworkerOrderDetailPage />} />
           <Route path="dashboard" element={<SupplierDashboard />} />
           <Route path="task" element={<AllOrderPage />} />
           <Route path="own" element={<OwnOrderPage />} />
         </Route>
 
         {/* Customer page route */}
-        <Route path="customer" element={<CustomerLayout />}>
-          <Route path="order-detail" element={<CustomerOrderDetailPage />} />
+        <Route path="cus" element={<CustomerLayout />}>
           <Route index element={<SupplierDashboard />} />
+          <Route path="order-detail" element={<CustomerOrderDetailPage />} />
           <Route path="dashboard" element={<SupplierDashboard />} />
           <Route path="task" element={<AllOrderPage />} />
           <Route path="own" element={<OwnOrderPage />} />

@@ -82,12 +82,12 @@ function renderStat(stat) {
   return (
     <>
       <Flex mb="8px" alignItems="center" justifyContent="space-between">
-        <Heading fontWeight="normal" fontSize="18px" color="app_white.0">
+        <Heading fontWeight="normal" fontSize="18px" color="white">
           {stat.label}
         </Heading>
         <Select
-          bgColor="app_black.0"
-          color="app_white.0"
+          bgColor="black"
+          color="white"
           cursor="pointer"
           width="fit-content"
           fontSize="12px"
@@ -99,7 +99,7 @@ function renderStat(stat) {
         </Select>
       </Flex>
 
-      <Stat color="app_white.0" my="16px">
+      <Stat color="white" my="16px">
         <StatNumber>{stat.value}</StatNumber>
         <StatHelpText>
           <Text color={stat.direction === "down" ? "red.500" : "green.500"}>
@@ -121,27 +121,27 @@ export default function MarketingDashboard() {
   return (
     <>
       <SimpleGrid columns={2} gap="8px">
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.visits)}
           <Line data={sessionsData} />
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.newContacts)}
           <Line data={contactsData} />
         </GridItem>
       </SimpleGrid>
 
       <SimpleGrid mt="8px" columns={3} gap="8px">
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.customerAttractionGoal)}
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.newUsers)}
         </GridItem>
 
-        <GridItem bgColor="app_black.0" border="1px solid black" p="12px">
+        <GridItem bgColor="black" border="1px solid black" p="12px">
           {renderStat(statsData.emailsOpened)}
         </GridItem>
       </SimpleGrid>

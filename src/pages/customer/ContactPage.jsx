@@ -66,8 +66,8 @@ function ContactPage() {
           </Heading>
         </Box>
         <Box
-          bgColor="app_black.0"
-          color="app_white.0"
+          bgColor="black"
+          color="white"
           padding="40px"
           borderRadius="10px"
           width={{ base: "100%", xl: "80%" }}
@@ -160,11 +160,11 @@ function ContactPage() {
               />
             </FormControl>
             <Button
-              _hover={{ backgroundColor: "app_brown.0", color: "app_black.0" }}
+              _hover={{ backgroundColor: "app_brown.0", color: "black" }}
               px="40px"
               py="25px"
-              bgColor="app_white.0"
-              color="app_black.0"
+              bgColor="white"
+              color="black"
               borderRadius="40px"
               mt="40px"
               zIndex="1"

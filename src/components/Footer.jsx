@@ -15,7 +15,7 @@ function Footer() {
   };
 
   return (
-    <Box as="footer" py="50px" px="50px" bg="app_grey.0" color="white">
+    <Box as="footer" py="50px" px="50px" bg="app_grey.0" color="black">
       <Flex
         direction={{ base: "column", xl: "row" }} // Responsive direction
         alignItems={{ base: "center", xl: "flex-start" }} // Center align items on small screens
@@ -25,25 +25,25 @@ function Footer() {
           <Text
             fontFamily="Montserrat"
             fontSize="16px"
-            color="app_black.0"
+            color="black"
             fontWeight="bold"
           >
             Địa chỉ
           </Text>
-          <Text mt="20px" fontSize="16px" color="app_grey.1">
+          <Text mt="20px" fontSize="16px" color="black">
             Đại học FPT
           </Text>
-          <Text mt="10px" fontSize="16px" color="app_grey.1">
+          <Text mt="10px" fontSize="16px" color="black">
             3d.creatifyteam6@gmail.com
           </Text>
           <Button
             _hover={{
-              color: "app_white.0",
-              backgroundColor: "app_black.0",
+              color: "white",
+              backgroundColor: "black",
             }}
             px="40px"
             bgColor="app_brown.0"
-            color="app_black.0"
+            color="black"
             borderRadius="40px"
             mt="40px"
             as={RouterLink}
@@ -58,13 +58,13 @@ function Footer() {
             <Text
               fontFamily="Montserrat"
               fontSize="16px"
-              color="app_black.0"
+              color="black"
               fontWeight="bold"
             >
               Nhận thông tin mới từ chúng tôi
             </Text>
 
-            <Text mt="20px" fontSize="16px" color="app_grey.1">
+            <Text mt="20px" fontSize="16px" color="black">
               Đăng ký bằng cách gửi email để nhận được những thông tin mới nhất
               từ chúng tôi
             </Text>
@@ -75,7 +75,7 @@ function Footer() {
                 xl: "20px",
               }}
               fontSize="16px"
-              color="app_grey.1"
+              color="black"
             >
               Email*
               <Box mt="20px">
@@ -83,20 +83,20 @@ function Footer() {
                   <Input
                     borderRadius="100px"
                     width="330px"
-                    color="app_grey.1"
+                    color="black"
                     py="25px"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
                   <Button
                     _hover={{
-                      backgroundColor: "app_white.0",
-                      color: "app_black.0",
+                      backgroundColor: "white",
+                      color: "black",
                     }}
                     px="40px"
                     py="25px"
-                    bgColor="app_black.0"
-                    color="app_white.0"
+                    bgColor="black"
+                    color="white"
                     borderRadius="40px"
                     ml="-40px"
                     zIndex="1"
@@ -137,12 +137,12 @@ function Footer() {
           <Text
             fontFamily="Montserrat"
             fontSize="16px"
-            color="app_black.0"
+            color="black"
             fontWeight="bold"
           >
             Theo dõi chúng tôi
           </Text>
-          <Text mt="20px" fontSize="16px" color="app_grey.1">
+          <Text mt="20px" fontSize="16px" color="black">
             <a
               rel="noreferrer"
               target="_blank"
@@ -151,7 +151,7 @@ function Footer() {
               Facebook
             </a>
           </Text>
-          <Text mt="10px" fontSize="16px" color="app_grey.1">
+          <Text mt="10px" fontSize="16px" color="black">
             <a
               rel="noreferrer"
               target="_blank"

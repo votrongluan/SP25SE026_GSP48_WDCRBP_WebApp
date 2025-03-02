@@ -13,7 +13,7 @@ import { appURL } from "../api/axios";
 export default function CustomizeHelpGuide() {
   return (
     <>
-      <Flex columnGap="100px" px={5} pb={5} color="app_black.0">
+      <Flex columnGap="100px" px={5} pb={5} color="black">
         <Box flex="2">
           <Heading
             fontSize="24px"

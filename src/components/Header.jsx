@@ -56,13 +56,7 @@ function Header() {
   });
 
   return (
-    <Box
-      bgColor="app_grey.0"
-      color="app_black.0"
-      zIndex="1"
-      w="100%"
-      padding="10px 20px"
-    >
+    <Box bgColor="white" color="black" zIndex="1" w="100%" padding="10px 20px">
       <Flex as="nav" height="70px" alignItems="center">
         <BrandLogo />
 
@@ -76,7 +70,7 @@ function Header() {
               fontWeight="medium"
               spacing={6}
               borderRadius="30px"
-              bgColor="app_white.0"
+              bgColor="app_grey.2"
               px="16px"
             >
               {links.map((link, index) => (
@@ -102,15 +96,15 @@ function Header() {
           </>
         ) : (
           <IconButton
-            bgColor="app_white.0"
+            bgColor="white"
             color="white"
             aria-label="Open menu"
             icon={<HamburgerIcon />}
             variant="outline"
             onClick={onOpen}
             _hover={{
-              color: "app_white.0",
-              bgColor: "app_black.0",
+              color: "white",
+              bgColor: "black",
             }}
           />
         )}
@@ -118,17 +112,9 @@ function Header() {
 
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay>
-          <DrawerContent bgColor="app_grey.0" color="app_black.0">
-            <DrawerCloseButton
-              p={4}
-              bgColor="app_white.0"
-              color="app_black.0"
-            />
-            <DrawerHeader
-              fontFamily="Montserrat"
-              color="app_white.0"
-              bgColor="app_black.0"
-            >
+          <DrawerContent bgColor="app_grey.1" color="black">
+            <DrawerCloseButton p={4} bgColor="white" color="black" />
+            <DrawerHeader fontFamily="Montserrat" color="white" bgColor="black">
               Menu
             </DrawerHeader>
             <DrawerBody>

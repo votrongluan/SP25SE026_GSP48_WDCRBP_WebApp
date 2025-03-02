@@ -10,7 +10,7 @@ export default function ErrorPage() {
     <>
       <Box fontFamily="Nunito Sans">
         <Header />
-        <Box pt="100px" minH="100vh" bgColor="app_white.0" color="app_black.0">
+        <Box pt="100px" minH="100vh" bgColor="white" color="black">
           <Container maxW="1200px" as="main" py={10}>
             <Box textAlign="center" minH="70vh">
               <Heading fontFamily="Montserrat" fontSize="26px">

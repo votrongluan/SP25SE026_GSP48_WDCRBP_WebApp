@@ -27,7 +27,7 @@ function AboutPage() {
 
         <Flex
           columnGap="20px"
-          bgColor="app_grey.0"
+          bgColor="app_grey.1"
           alignItems="center"
           padding="100px"
           direction={{
@@ -120,7 +120,7 @@ function AboutPage() {
             fontFamily="Montserrat"
             width="340px"
             bgColor="white"
-            color="app_white.0"
+            color="white"
           >
             Nhiệm vụ của chúng tôi
           </Text>
@@ -151,7 +151,7 @@ function AboutPage() {
             fontFamily="Montserrat"
             width="340px"
             bgColor="white"
-            color="app_white.0"
+            color="white"
           >
             Giá trị cốt lỗi
           </Text>
@@ -159,8 +159,8 @@ function AboutPage() {
             <Box
               height="370px"
               border="1px solid"
-              borderColor="app_grey.0"
-              bgColor="app_white.0"
+              borderColor="app_grey.1"
+              bgColor="white"
               padding="50px"
             >
               <Box position="relative">
@@ -185,8 +185,8 @@ function AboutPage() {
             <Box
               height="370px"
               border="1px solid"
-              borderColor="app_grey.0"
-              bgColor="app_white.0"
+              borderColor="app_grey.1"
+              bgColor="white"
               padding="50px"
             >
               <Box position="relative">
@@ -210,8 +210,8 @@ function AboutPage() {
             <Box
               height="370px"
               border="1px solid"
-              borderColor="app_grey.0"
-              bgColor="app_white.0"
+              borderColor="app_grey.1"
+              bgColor="white"
               padding="50px"
             >
               <Box position="relative">

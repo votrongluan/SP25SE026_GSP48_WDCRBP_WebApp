@@ -22,7 +22,7 @@ function ForumPage() {
           </Heading>
         </Box>
 
-        <Box bgColor="app_grey.0" p="100px">
+        <Box bgColor="app_grey.1" p="100px">
           <SimpleGrid
             spacing={8}
             columns={{

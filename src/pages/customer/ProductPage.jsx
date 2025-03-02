@@ -122,46 +122,31 @@ export default function ProductPage() {
               textAlign="justify"
               fontSize="16px"
               mt="40px"
-              color="app_grey.1"
+              color="app_grey.2"
             >
               Mã sản phẩm: {product.productId}
             </Text>
 
-            <Text
-              textAlign="justify"
-              fontSize="16px"
-              mt="16px"
-              color="app_grey.1"
-            >
+            <Text textAlign="justify" fontSize="16px" mt={4} color="app_grey.2">
               Loại sản phẩm: {categoryMap[product.category]}
             </Text>
 
-            <Text
-              textAlign="justify"
-              fontSize="16px"
-              mt="16px"
-              color="app_grey.1"
-            >
+            <Text textAlign="justify" fontSize="16px" mt={4} color="app_grey.2">
               Mô tả: {product.description}
             </Text>
 
-            <Text
-              textAlign="justify"
-              fontSize="16px"
-              mt="16px"
-              color="app_grey.1"
-            >
+            <Text textAlign="justify" fontSize="16px" mt={4} color="app_grey.2">
               Nhà cung cấp: {product.employee.name}
             </Text>
 
             {/* <Box mt="20px">
-              <Text color="app_black.0" fontSize="14px">
+              <Text color="black" fontSize="14px">
                 Số lượng
               </Text>
               <NumberInput
                 w="80px"
-                bgColor="app_black.0"
-                color="app_white.0"
+                bgColor="black"
+                color="white"
                 defaultValue={1}
                 min={1}
                 max={2}
@@ -181,7 +166,7 @@ export default function ProductPage() {
               }}
               w="100%"
               bgColor="app_brown.0"
-              color="app_black.0"
+              color="black"
               borderRadius="0"
               mt="30px"
               onClick={() => {
@@ -233,8 +218,8 @@ export default function ProductPage() {
               }}
               px="40px"
               py="8px"
-              bgColor="app_black.0"
-              color="app_white.0"
+              bgColor="black"
+              color="white"
               borderRadius="20px"
             >
               Nhận file
@@ -284,8 +269,8 @@ export default function ProductPage() {
               position="absolute"
               bottom={0}
               width="100%"
-              color={"app_black.0"}
-              bg="app_grey.0"
+              color={"black"}
+              bg="app_grey.1"
               boxShadow="0 -4px 10px rgba(0, 0, 0, 0.1)"
               height={isExpanded ? "40%" : "70px"}
               transition="height 0.3s ease"

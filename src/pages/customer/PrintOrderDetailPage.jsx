@@ -159,7 +159,7 @@ export default function PrintOrderDetailPage() {
             </Heading>
           </Box>
 
-          <Box borderRadius="10px" bg="white" color="app_white.0">
+          <Box borderRadius="10px" bg="white" color="white">
             <Flex wrap="wrap" spacing={8}>
               <Box flex="1" boxShadow="sm" p={8}>
                 <Heading as="h2" size="sm" textAlign="center">
@@ -268,13 +268,13 @@ export default function PrintOrderDetailPage() {
                   {[0, 1].includes(order?.status) && (
                     <Button
                       _hover={{
-                        backgroundColor: "app_white.0",
-                        color: "app_black.0",
+                        backgroundColor: "white",
+                        color: "black",
                       }}
                       px="40px"
                       py="25px"
                       bgColor="red"
-                      color="app_black.0"
+                      color="black"
                       borderRadius="40px"
                       mt="40px"
                       zIndex="1"
@@ -311,13 +311,13 @@ export default function PrintOrderDetailPage() {
                   {order?.status == 1 && (
                     <Button
                       _hover={{
-                        backgroundColor: "app_white.0",
-                        color: "app_black.0",
+                        backgroundColor: "white",
+                        color: "black",
                       }}
                       px="40px"
                       py="25px"
                       bgColor="app_brown.0"
-                      color="app_black.0"
+                      color="black"
                       borderRadius="40px"
                       mt="40px"
                       zIndex="1"

@@ -149,7 +149,7 @@ export default function OrderDetailPage() {
             </Heading>
           </Box>
 
-          <Box borderRadius="10px" bg="white" color="app_white.0">
+          <Box borderRadius="10px" bg="white" color="white">
             <Flex wrap="wrap" spacing={8}>
               <Box flex="2">
                 <Box boxShadow="sm" p={8}>

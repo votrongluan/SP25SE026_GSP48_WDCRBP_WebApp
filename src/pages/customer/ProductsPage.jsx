@@ -191,8 +191,8 @@ export default function ProductsPage() {
               max={maxPrice}
               onChangeEnd={(val) => setPriceRange(val)}
             >
-              <RangeSliderTrack bgColor="app_grey.0">
-                <RangeSliderFilledTrack bgColor="app_black.0" />
+              <RangeSliderTrack bgColor="app_grey.1">
+                <RangeSliderFilledTrack bgColor="black" />
               </RangeSliderTrack>
               <RangeSliderThumb index={0} />
               <RangeSliderThumb index={1} />
@@ -225,8 +225,8 @@ export default function ProductsPage() {
               <Box flex="1"></Box>
               <Text>Sắp xếp theo: </Text>
               <Select
-                bg="app_white.0"
-                color="app_black.0"
+                bg="white"
+                color="black"
                 cursor="pointer"
                 width="fit-content"
                 outline="none"
@@ -262,11 +262,7 @@ export default function ProductsPage() {
 
             {visibleProductsCount < filteredProducts.length && (
               <Flex mt="40px" justifyContent="center">
-                <Button
-                  onClick={handleShowMore}
-                  bg="app_white.0"
-                  color="app_black.0"
-                >
+                <Button onClick={handleShowMore} bg="white" color="black">
                   Hiển thị thêm
                 </Button>
               </Flex>

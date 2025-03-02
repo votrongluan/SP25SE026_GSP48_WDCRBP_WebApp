@@ -52,8 +52,8 @@ export default function HomeAbout() {
                   fontSize="18px"
                   fontFamily="Montserrat"
                   width="340px"
-                  bgColor="white"
-                  color="app_white.0"
+                  bgColor="black"
+                  color="white"
                 >
                   Về chúng tôi
                 </Text>
@@ -82,11 +82,11 @@ export default function HomeAbout() {
               <SlideWrapper speed="1.5s">
                 <Button
                   _hover={{
-                    bgColor: "app_black.0",
-                    color: "app_white.0",
+                    bgColor: "black",
+                    color: "white",
                   }}
                   bgColor="app_brown.0"
-                  color="app_black.0"
+                  color="black"
                   borderRadius="40px"
                   mt="40px"
                   px="40px"

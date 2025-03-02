@@ -23,7 +23,7 @@ export default function HomeMaterial() {
         h="fit-content"
         bgSize="cover"
         bgPosition="center"
-        bgColor="app_white.0"
+        bgColor="white"
         bgRepeat="no-repeat"
         display="flex"
         alignItems="center"
@@ -42,7 +42,7 @@ export default function HomeMaterial() {
                 fontFamily="Montserrat"
                 width="340px"
                 bgColor="white"
-                color="app_white.0"
+                color="white"
               >
                 Khám phá vật liệu của chúng tôi
               </Text>
@@ -89,11 +89,11 @@ export default function HomeMaterial() {
               <Flex justifyContent="center">
                 <Button
                   _hover={{
-                    bgColor: "app_black.0",
-                    color: "app_white.0",
+                    bgColor: "black",
+                    color: "white",
                   }}
                   bgColor="app_brown.0"
-                  color="app_black.0"
+                  color="black"
                   borderRadius="40px"
                   mt="80px"
                   px="40px"

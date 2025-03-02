@@ -104,7 +104,7 @@ const Pagination = ({ data, DisplayData }) => {
             <Text>Số lượng hàng mỗi trang</Text>
             <NumberInput defaultValue={itemsPerPage} step={1} min={1}>
               <NumberInputField
-                bgColor="app_white.0"
+                bgColor="white"
                 value={itemsPerPage}
                 onChange={handleItemsPerPageChange}
                 w="100px"
@@ -139,7 +139,7 @@ const Pagination = ({ data, DisplayData }) => {
 
         <Stack direction="row" spacing={2} justify="center">
           <Input
-            bgColor="app_white.0"
+            bgColor="white"
             value={customPage}
             onChange={handleCustomPageChange}
             placeholder="Nhập số trang"

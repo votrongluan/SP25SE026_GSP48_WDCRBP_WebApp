@@ -16,12 +16,12 @@ export default function PersonalizedPage({ onOpen }) {
         <Flex ml="80px">
           <Button
             bgColor="app_brown.0"
-            color="app_black.0"
+            color="black"
             onClick={onOpen}
             colorScheme="blue"
             _hover={{
-              color: "app_white.0",
-              bgColor: "app_black.0",
+              color: "white",
+              bgColor: "black",
             }}
           >
             Mở ứng dụng Spline

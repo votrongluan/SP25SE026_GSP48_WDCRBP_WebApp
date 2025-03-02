@@ -99,7 +99,7 @@ export default function AllProductOrder() {
             itemsPerPage={2}
             data={filteredData}
             DisplayData={({ currentData }) => (
-              <TableContainer bgColor="app_white.0" borderRadius="4px">
+              <TableContainer bgColor="white" borderRadius="4px">
                 <Table variant="simple">
                   <Thead>
                     <Tr>
@@ -168,11 +168,11 @@ export default function AllProductOrder() {
                                 aria-label="Options"
                                 icon={<HamburgerIcon />}
                                 variant="outline"
-                                color="app_black.0"
+                                color="black"
                               />
                               <MenuList
                                 fontFamily="Nunito Sans"
-                                color="app_white.0"
+                                color="white"
                                 fontSize="16px"
                               >
                                 <MenuItem p="0">

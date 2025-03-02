@@ -130,7 +130,7 @@ export default function Register({ changeTab }) {
         </FormControl>
 
         <Button
-          color="app_black.0"
+          color="black"
           bgColor="app_brown.0"
           width="100%"
           type="submit"

@@ -25,8 +25,8 @@ function AuthPage() {
     <Container maxW="1200px" as="main">
       <Box
         borderRadius="10px"
-        bgColor="app_black.0"
-        color="app_white.0"
+        bgColor="black"
+        color="white"
         margin="0 auto"
         p="40px"
         width={{

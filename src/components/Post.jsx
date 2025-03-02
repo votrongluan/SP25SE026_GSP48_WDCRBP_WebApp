@@ -13,7 +13,7 @@ export default function Post() {
             opacity: "0.7",
           }}
           transition="opacity 0.3s ease"
-          bgColor="app_white.0"
+          bgColor="white"
         >
           <Image
             h="220px"
@@ -42,7 +42,7 @@ export default function Post() {
             </Text>
             <Flex
               borderTop="1px solid "
-              borderTopColor="app_grey.0"
+              borderTopColor="app_grey.1"
               mt="20px"
               justifyContent="space-between"
               pt="20px"

@@ -38,7 +38,7 @@ export default function HomeProduct() {
 
   return (
     <>
-      <Box w="100%" bgColor="app_white.0" pt="80px" pb="80px">
+      <Box w="100%" bgColor="white" pt="80px" pb="80px">
         <Container w="90%" maxW="1400px">
           <Text textAlign="center" fontFamily="Montserrat" fontSize="40px">
             Khám phá các sản phẩm của chúng tôi
@@ -63,11 +63,11 @@ export default function HomeProduct() {
             <Flex justifyContent="center">
               <Button
                 _hover={{
-                  bgColor: "app_black.0",
-                  color: "app_white.0",
+                  bgColor: "black",
+                  color: "white",
                 }}
                 bgColor="app_brown.0"
-                color="app_black.0"
+                color="black"
                 borderRadius="40px"
                 mt="80px"
                 px="40px"

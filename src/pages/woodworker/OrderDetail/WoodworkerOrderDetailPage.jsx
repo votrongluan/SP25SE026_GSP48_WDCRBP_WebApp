@@ -32,7 +32,7 @@ import LogTab from "./Tab/LogTab.jsx";
 import ReviewTab from "./Tab/ReviewTab.jsx";
 import ActionBar from "./ActionBar";
 
-export default function CustomerOrderDetailPage() {
+export default function WoodworkerOrderDetailPage() {
   return (
     <Container px="40px" maxW="1400px" pb="100px">
       <ActionBar />

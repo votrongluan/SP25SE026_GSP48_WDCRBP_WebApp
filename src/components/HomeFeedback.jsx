@@ -11,8 +11,8 @@ import SlideWrapper from "./Utilities/SlideWrapper.jsx";
 export default function HomeFeedback() {
   return (
     <>
-      <Box w="100%" bgColor="app_grey.0" pb="160px">
-        <Container w="90%" maxW="1400px" bgColor="app_grey.0" pb="80px">
+      <Box w="100%" bgColor="app_grey.1" pb="160px">
+        <Container w="90%" maxW="1400px" bgColor="app_grey.1" pb="80px">
           <SlideWrapper direction="top" speed=".6s">
             <Text
               pl="16px"
@@ -24,7 +24,7 @@ export default function HomeFeedback() {
               fontFamily="Montserrat"
               width="340px"
               bgColor="white"
-              color="app_white.0"
+              color="white"
             >
               Đánh giá từ khách hàng
             </Text>
@@ -37,7 +37,7 @@ export default function HomeFeedback() {
                 xl: 3,
               }}
             >
-              <Box height="160px" bgColor="app_grey.0" padding="50px">
+              <Box height="160px" bgColor="app_grey.1" padding="50px">
                 <Box position="relative">
                   <SlideWrapper direction="top" speed="1.5s">
                     <Box
@@ -67,7 +67,7 @@ export default function HomeFeedback() {
                     rowGap="20px"
                   >
                     <Avatar
-                      bgColor="app_white.0"
+                      bgColor="white"
                       borderRadius="10px"
                       height="60px"
                       width="60px"
@@ -86,7 +86,7 @@ export default function HomeFeedback() {
                   xl: "0",
                 }}
                 height="160px"
-                bgColor="app_grey.0"
+                bgColor="app_grey.1"
                 padding="50px"
               >
                 <Box position="relative">
@@ -117,7 +117,7 @@ export default function HomeFeedback() {
                     rowGap="20px"
                   >
                     <Avatar
-                      bgColor="app_white.0"
+                      bgColor="white"
                       borderRadius="10px"
                       height="60px"
                       width="60px"
@@ -135,7 +135,7 @@ export default function HomeFeedback() {
                   xl: "0",
                 }}
                 height="160px"
-                bgColor="app_grey.0"
+                bgColor="app_grey.1"
                 padding="50px"
               >
                 <Box position="relative">
@@ -167,7 +167,7 @@ export default function HomeFeedback() {
                     rowGap="20px"
                   >
                     <Avatar
-                      bgColor="app_white.0"
+                      bgColor="white"
                       borderRadius="10px"
                       height="60px"
                       width="60px"

@@ -32,7 +32,7 @@ export default function HomeWhy() {
         w="100%"
         bgImage={`url(${why})`}
         bgColor={{
-          base: "app_grey.1",
+          base: "app_grey.2",
           xl: "none",
         }}
         pb="80px"
@@ -72,7 +72,7 @@ export default function HomeWhy() {
                 fontFamily="Montserrat"
                 width="340px"
                 bgColor="white"
-                color="app_white.0"
+                color="white"
               >
                 Vì sao nên chọn chúng tôi
               </Text>

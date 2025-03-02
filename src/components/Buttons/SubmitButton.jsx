@@ -3,9 +3,9 @@ import { Button } from "@chakra-ui/react";
 export default function SubmitButton({
   text,
   bgColor = "app_brown.2",
-  textColor = "app_white.0",
+  textColor = "white",
   hoverBgColor = "app_brown.1",
-  hoverTextColor = "app_white.0",
+  hoverTextColor = "white",
 }) {
   return (
     <Button

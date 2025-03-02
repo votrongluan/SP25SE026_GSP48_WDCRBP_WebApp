@@ -115,9 +115,9 @@ function SearchFilter({
         <InputLeftElement pointerEvents="none" />
         <Input
           _placeholder={{
-            color: "app_black.0",
+            color: "black",
           }}
-          color="app_black.0"
+          color="black"
           type="text"
           placeholder={searchPlaceholder ? searchPlaceholder : "Tìm kiếm"}
           value={search}
@@ -133,8 +133,8 @@ function SearchFilter({
             Sắp xếp theo
           </Text>
           <Select
-            bgColor="app_white.0"
-            color="app_black.0"
+            bgColor="white"
+            color="black"
             value={sortMethod}
             onChange={(e) => {
               setSortMethod(e.target.value);
@@ -157,8 +157,8 @@ function SearchFilter({
             Thứ tự
           </Text>
           <Select
-            bgColor="app_white.0"
-            color="app_black.0"
+            bgColor="white"
+            color="black"
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
           >

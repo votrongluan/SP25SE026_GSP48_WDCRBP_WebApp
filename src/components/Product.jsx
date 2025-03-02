@@ -19,8 +19,8 @@ export default function Product({ product }) {
         <Text noOfLines={1} mt="20px" mb="10px">
           {product.name}
         </Text>
-        <Box width="20px" height="1px" bgColor="app_black.0"></Box>
-        <Text color="app_grey.1" mt="10px">
+        <Box width="20px" height="1px" bgColor="black"></Box>
+        <Text color="app_grey.2" mt="10px">
           {product.price.toLocaleString()}
         </Text>
       </RouterLink>
@@ -29,8 +29,8 @@ export default function Product({ product }) {
           opacity: ".7",
         }}
         w="100%"
-        bgColor="app_black.0"
-        color="app_white.0"
+        bgColor="black"
+        color="white"
         borderRadius="0"
         mt="20px"
         onClick={() => {

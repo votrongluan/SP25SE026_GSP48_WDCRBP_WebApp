@@ -103,8 +103,8 @@ export default function AccountPage() {
       </Box>
 
       <Box
-        bgColor="app_black.0"
-        color="app_white.0"
+        bgColor="black"
+        color="white"
         borderRadius="md"
         p={4}
         maxWidth="1000px"

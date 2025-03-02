@@ -10,7 +10,7 @@ import {
 
 export const STL3DEditorGuide = () => {
   return (
-    <Box p={5} bg="app_white.0" color="app_black.0">
+    <Box p={5} bg="white" color="black">
       <Heading
         fontSize="26px"
         fontFamily="Montserrat"

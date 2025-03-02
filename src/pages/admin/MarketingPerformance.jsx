@@ -72,20 +72,15 @@ export default function MarketingPerformance() {
   return (
     <>
       {/* Marketing Performance */}
-      <GridItem
-        color="app_white.0"
-        bgColor="app_black.0"
-        border="1px solid black"
-        p="12px"
-      >
+      <GridItem color="white" bgColor="black" border="1px solid black" p="12px">
         <Box w="100%">
           <Flex alignItems="center" justifyContent="space-between">
-            <Heading fontWeight="normal" fontSize="18px" color="app_white.0">
+            <Heading fontWeight="normal" fontSize="18px" color="white">
               Hiệu suất tiếp thị
             </Heading>
             <Select
-              bgColor="app_black.0"
-              color="app_white.0"
+              bgColor="black"
+              color="white"
               cursor="pointer"
               width="fit-content"
               fontSize="12px"
@@ -97,7 +92,7 @@ export default function MarketingPerformance() {
             </Select>
           </Flex>
 
-          <Table mt="20px" variant="simple" color="app_white.0">
+          <Table mt="20px" variant="simple" color="white">
             <Thead>
               <Tr>
                 <Th color="gray.400">Chỉ số</Th>

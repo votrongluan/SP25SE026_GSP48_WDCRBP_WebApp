@@ -54,20 +54,15 @@ export default function NewContact() {
   return (
     <>
       {/* New Contacts by Source */}
-      <GridItem
-        color="app_white.0"
-        bgColor="app_black.0"
-        border="1px solid black"
-        p="12px"
-      >
+      <GridItem color="white" bgColor="black" border="1px solid black" p="12px">
         <Box w="100%">
           <Flex alignItems="center" justifyContent="space-between">
-            <Heading fontWeight="normal" fontSize="18px" color="app_white.0">
+            <Heading fontWeight="normal" fontSize="18px" color="white">
               Liên hệ mới theo nguồn
             </Heading>
             <Select
-              bgColor="app_black.0"
-              color="app_white.0"
+              bgColor="black"
+              color="white"
               cursor="pointer"
               width="fit-content"
               fontSize="12px"

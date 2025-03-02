@@ -32,7 +32,7 @@ export default function AccountMenu() {
       {auth?.token ? (
         <Flex zIndex={999} alignItems="center" columnGap="20px">
           <Cart />
-          <Box bgColor="app_white.0" color="app_black.0">
+          <Box bgColor="white" color="black">
             <Menu>
               <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                 <HStack>
@@ -40,21 +40,17 @@ export default function AccountMenu() {
                   <Text>{auth.EmployeeName}</Text>
                 </HStack>
               </MenuButton>
-              <MenuList bg="app_white.0" color="app_black.0">
+              <MenuList bg="white" color="black">
                 <MenuItem
-                  bg="app_white.0"
-                  color="app_black.0"
+                  bg="white"
+                  color="black"
                   as={RouterLink}
                   to="/account"
                 >
                   Tài khoản
                 </MenuItem>
                 <MenuDivider />
-                <MenuItem
-                  bg="app_white.0"
-                  color="app_black.0"
-                  onClick={handleLogout}
-                >
+                <MenuItem bg="white" color="black" onClick={handleLogout}>
                   Đăng xuất
                 </MenuItem>
               </MenuList>

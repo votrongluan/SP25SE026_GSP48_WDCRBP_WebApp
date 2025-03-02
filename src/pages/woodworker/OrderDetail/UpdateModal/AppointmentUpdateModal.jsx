@@ -5,6 +5,7 @@ import {
   FormLabel,
   Heading,
   HStack,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -14,16 +15,18 @@ import {
   Select,
   SimpleGrid,
   Spacer,
+  Textarea,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiRefreshCw } from "react-icons/fi";
+import AppointmentTab from "../Tab/AppointmentTab";
 import AutoResizeTextarea from "../../../../components/Inputs/AutoResizeTextarea";
 import ProductTab from "../Tab/ProductTab";
 
-export default function ContractUpdateModal({ order, reFetch }) {
+export default function AppointmentUpdateModal({ order, reFetch }) {
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -46,7 +49,7 @@ export default function ContractUpdateModal({ order, reFetch }) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader bgColor="app_grey.2">
-            Xác nhận, điều chỉnh thiết kế sản phẩm
+            Xác nhận, điều chỉnh lịch hẹn
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
@@ -67,31 +70,38 @@ export default function ContractUpdateModal({ order, reFetch }) {
                 spacing={10}
               >
                 <Box>
-                  <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
-                    Phản hồi
-                  </Heading>
-
-                  <Box boxShadow="md" borderRadius="10px" p={5} bgColor="white">
-                    <FormControl isRequired>
-                      <FormLabel>Phản hồi</FormLabel>
-                      <AutoResizeTextarea />
-                    </FormControl>
-
-                    <FormControl mt={4} isRequired>
-                      <FormLabel>Trạng thái</FormLabel>
-                      <Select name="orderStatus" type="text" ref={initialRef}>
-                        <option value={0}>Xác nhận đồng ý</option>
-                        <option value={1}>Yêu cầu điểu chỉnh</option>
-                      </Select>
-                    </FormControl>
-                  </Box>
+                  <AppointmentTab />
                 </Box>
-
                 <Box>
-                  <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
-                    Thông tin cần xem xét lại
-                  </Heading>
-                  <ProductTab />
+                  <FormControl isRequired>
+                    <FormLabel>Hình thức</FormLabel>
+                    <Select name="orderStatus" type="text" ref={initialRef}>
+                      <option value={0}>Trực tuyến</option>
+                      <option value={1}>Trực tiếp</option>
+                    </Select>
+                  </FormControl>
+
+                  <FormControl mt={4} isRequired>
+                    <FormLabel>Địa điểm</FormLabel>
+                    <Input
+                      name="location"
+                      type="text"
+                      placeholder="Nhập địa điểm hoặc đường link họp"
+                    />
+                  </FormControl>
+
+                  <FormControl mt={4} isRequired>
+                    <FormLabel>Ngày hẹn</FormLabel>
+                    <Input name="meetingDate" type="datetime-local" />
+                  </FormControl>
+
+                  <FormControl mt={4} isRequired>
+                    <FormLabel>Mô tả</FormLabel>
+                    <AutoResizeTextarea
+                      name="description"
+                      placeholder="Nhập mô tả nội dung cuộc họp..."
+                    />
+                  </FormControl>
                 </Box>
               </SimpleGrid>
 

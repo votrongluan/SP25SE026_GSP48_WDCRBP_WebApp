@@ -28,7 +28,7 @@ export default function PostPage() {
           </Heading>
         </Box>
 
-        <Box py="100px" bgColor="app_grey.0">
+        <Box py="100px" bgColor="app_grey.1">
           <Box px="20%">
             <Text fontSize="12px">12 tháng 7</Text>
 

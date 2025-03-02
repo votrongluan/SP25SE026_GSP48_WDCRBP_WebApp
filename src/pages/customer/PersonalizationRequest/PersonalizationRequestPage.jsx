@@ -140,7 +140,7 @@ export default function PersonalizationRequestPage() {
 
   return (
     <Container w="90%" maxW="1400px" pb="100px">
-      <Box height="80px">
+      <Box height="70px">
         <Heading
           fontWeight="normal"
           as="h2"
@@ -152,15 +152,15 @@ export default function PersonalizationRequestPage() {
       </Box>
 
       <form onSubmit={handleSubmit}>
-        <Box bgColor="app_grey.0" color="app_black.0">
+        <Box>
           <SimpleGrid
             columns={{
               base: 1,
               xl: 2,
             }}
           >
-            <Box p="40px">
-              <Box border="1px solid black" p="20px" borderRadius="10px">
+            <Box>
+              <Box boxShadow="md" bgColor="white" p={5} borderRadius="10px">
                 <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
                   Thông tin khách hàng
                 </Heading>
@@ -195,7 +195,7 @@ export default function PersonalizationRequestPage() {
                   </GridItem>
                 </SimpleGrid>
 
-                <FormControl isRequired mt="16px">
+                <FormControl isRequired mt={4}>
                   <FormLabel>Email</FormLabel>
                   <Input
                     name="email"
@@ -205,7 +205,7 @@ export default function PersonalizationRequestPage() {
                   />
                 </FormControl>
 
-                <FormControl isRequired mt="16px">
+                <FormControl isRequired mt={4}>
                   <FormLabel>Địa chỉ giao hàng</FormLabel>
                   <Input
                     name="shipAddress"
@@ -214,7 +214,7 @@ export default function PersonalizationRequestPage() {
                   />
                 </FormControl>
 
-                <FormControl isRequired mt="16px">
+                <FormControl isRequired mt={4}>
                   <FormLabel>Mức phí tối đa có thể trả</FormLabel>
                   <Input
                     name="fileLink"
@@ -224,7 +224,7 @@ export default function PersonalizationRequestPage() {
                   />
                 </FormControl>
 
-                <FormControl isRequired mt="16px">
+                <FormControl isRequired mt={4}>
                   <FormLabel>Thời gian hoàn thành mong muốn</FormLabel>
                   <Input
                     name="fileLink"
@@ -234,7 +234,7 @@ export default function PersonalizationRequestPage() {
                   />
                 </FormControl>
 
-                <FormControl isRequired mt="16px">
+                <FormControl isRequired mt={4}>
                   <FormLabel>Ghi chú</FormLabel>
                   <AutoResizeTextarea
                     name="note"
@@ -244,17 +244,12 @@ export default function PersonalizationRequestPage() {
                 </FormControl>
               </Box>
 
-              <Box
-                border="1px solid black"
-                p="20px"
-                borderRadius="10px"
-                mt={10}
-              >
+              <Box bgColor="white" p={5} borderRadius="10px" mt={5}>
                 <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
                   Thông tin xưởng mộc
                 </Heading>
 
-                <Stack spacing="16px">
+                <Stack spacing={4}>
                   <HStack>
                     <Text>Tên xưởng</Text>
                     <Spacer />
@@ -283,12 +278,7 @@ export default function PersonalizationRequestPage() {
                 </Stack>
               </Box>
 
-              <Box
-                mt={10}
-                border="1px solid black"
-                p="20px"
-                borderRadius="10px"
-              >
+              <Box bgColor="white" mt={5} p={5} borderRadius="10px">
                 <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
                   Danh sách sản phẩm đã thêm
                 </Heading>
@@ -301,7 +291,7 @@ export default function PersonalizationRequestPage() {
                         key={index}
                         borderWidth="1px"
                         borderRadius="lg"
-                        mb={2}
+                        mb={4}
                       >
                         <h2>
                           <AccordionButton _expanded={{ bg: "blue.100" }}>

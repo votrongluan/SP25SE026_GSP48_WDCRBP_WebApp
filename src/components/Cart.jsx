@@ -31,8 +31,8 @@ export default function Cart() {
       >
         <ShoppingCart sx={{ fontSize: "30px" }} />
         <Text
-          bgColor="app_white.0"
-          color="app_black.0"
+          bgColor="white"
+          color="black"
           padding="3px"
           borderRadius="10px"
           fontWeight="bold"
@@ -50,15 +50,11 @@ export default function Cart() {
         <DrawerContent
           fontFamily="Nunito Sans"
           position="relative"
-          bgColor="app_grey.0"
-          color="app_black.0"
+          bgColor="app_grey.1"
+          color="black"
         >
-          <DrawerCloseButton p={4} bgColor="app_white.0" color="app_black.0" />
-          <DrawerHeader
-            fontFamily="Montserrat"
-            color="app_white.0"
-            bgColor="app_black.0"
-          >
+          <DrawerCloseButton p={4} bgColor="white" color="black" />
+          <DrawerHeader fontFamily="Montserrat" color="white" bgColor="black">
             Giỏ hàng
           </DrawerHeader>
 
@@ -83,13 +79,13 @@ export default function Cart() {
 
             <Button
               _hover={{
-                backgroundColor: "app_white.0",
-                color: "app_black.0",
+                backgroundColor: "white",
+                color: "black",
               }}
               px="40px"
               py="25px"
               bgColor="app_brown.0"
-              color="app_black.0"
+              color="black"
               mt="40px"
               zIndex="1"
               position="absolute"

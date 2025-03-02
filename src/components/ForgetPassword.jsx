@@ -110,7 +110,7 @@ export default function ForgetPassword({ changeTab }) {
             <Spacer />
             <Button
               mt={2}
-              color="app_black.0"
+              color="black"
               bgColor="app_brown.0"
               width="50%"
               onClick={handleSendOTP}
@@ -155,7 +155,7 @@ export default function ForgetPassword({ changeTab }) {
         </FormControl>
 
         <Button
-          color="app_black.0"
+          color="black"
           bgColor="app_brown.0"
           width="100%"
           type="submit"

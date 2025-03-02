@@ -75,7 +75,7 @@ export default function CartItemDetail({ product }) {
         <Flex alignItems="center" height="fit-content" border="solid 1px white">
           <IconButton
             p={5}
-            color="app_black.0"
+            color="black"
             icon={<Remove sx={{ fontSize: "16px" }} />}
             bg="transparent"
             _hover={{ color: "app_brown.0" }}
@@ -84,7 +84,7 @@ export default function CartItemDetail({ product }) {
           <Text px="10px">{product.quantity}</Text>
           <IconButton
             p={5}
-            color="app_black.0"
+            color="black"
             icon={<Add sx={{ fontSize: "16px" }} />}
             bg="transparent"
             _hover={{ color: "app_brown.0" }}
@@ -98,7 +98,7 @@ export default function CartItemDetail({ product }) {
 
         <IconButton
           p={5}
-          color="app_black.0"
+          color="black"
           icon={<Delete sx={{ fontSize: "16px" }} />}
           bg="transparent"
           _hover={{ color: "app_brown.0" }}
