@@ -34,7 +34,7 @@ import ActionBar from "./ActionBar";
 
 export default function CustomerOrderDetailPage() {
   return (
-    <Container px="40px" maxW="1400px" pb="100px">
+    <Container px="40px" maxW="1400px" pb="50px">
       <ActionBar />
       <Box height="80px">
         <Heading

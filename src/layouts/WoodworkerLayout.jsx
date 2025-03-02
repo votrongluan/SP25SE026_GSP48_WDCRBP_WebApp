@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
-import WoodworkerSideBar from "../components/Sidebars/WoodworkerSideBar.jsx";
-import RequireAuth from "../components/Utilities/RequireAuth.jsx";
+import WoodworkerSideBar from "../components/Sidebar/WoodworkerSideBar.jsx";
+import RequireAuth from "../components/Utility/RequireAuth.jsx";
 
 function WoodworkerLayout(props) {
   return (

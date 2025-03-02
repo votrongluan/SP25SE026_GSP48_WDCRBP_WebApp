@@ -1,4 +1,4 @@
-import HomeIntro from "../../../components/HomeParts/HomeIntro.jsx";
+import HomeIntro from "../../../components/Home/HomeIntro.jsx";
 
 export default function HomePage() {
   return (

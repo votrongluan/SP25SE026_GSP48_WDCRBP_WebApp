@@ -1,7 +1,7 @@
 import { Outlet, ScrollRestoration, useNavigate } from "react-router-dom";
 import Header from "../components/Header/Header.jsx";
 import { Box } from "@chakra-ui/react";
-import Footer from "../components/PageParts/Footer.jsx";
+import Footer from "../components/Footer/Footer.jsx";
 import useAuth from "../hooks/useAuth.js";
 
 export default function RootLayout() {

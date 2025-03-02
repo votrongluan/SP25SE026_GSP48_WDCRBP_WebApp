@@ -26,13 +26,13 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import axios, { appURL } from "../../../api/axios.js";
-import RequireAuth from "../../../components/Utilities/RequireAuth.jsx";
+import RequireAuth from "../../../components/Utility/RequireAuth.jsx";
 import useAuth from "../../../hooks/useAuth.js";
 import { useNavigate } from "react-router-dom";
-import SubmitButton from "../../../components/Buttons/SubmitButton.jsx";
-import AutoResizeTextarea from "../../../components/Inputs/AutoResizeTextarea.jsx";
+import SubmitButton from "../../../components/Button/SubmitButton.jsx";
+import AutoResizeTextarea from "../../../components/Input/AutoResizeTextarea.jsx";
 import AddPersonalizationProduct from "./AddPersonalizationProduct.jsx";
-import ActionButton from "../../../components/Buttons/ActionButton.jsx";
+import ActionButton from "../../../components/Button/ActionButton.jsx";
 
 export default function PersonalizationRequestPage() {
   const { auth } = useAuth();
@@ -139,7 +139,7 @@ export default function PersonalizationRequestPage() {
   };
 
   return (
-    <Container w="90%" maxW="1400px" pb="100px">
+    <Container w="90%" maxW="1400px" pb="50px">
       <Box height="70px">
         <Heading
           fontWeight="normal"

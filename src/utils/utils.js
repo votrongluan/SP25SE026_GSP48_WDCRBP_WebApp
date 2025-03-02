@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import unorm from "unorm";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -52,3 +53,10 @@ export const formatPrice = (price) => {
     currency: "VND",
   }).format(price);
 };
+
+export function normalizeVietnamese(text) {
+  return unorm
+    .nfd(text)
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}

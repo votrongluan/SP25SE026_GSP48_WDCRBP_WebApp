@@ -20,7 +20,7 @@ import {
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiRefreshCw } from "react-icons/fi";
-import AutoResizeTextarea from "../../../../components/Inputs/AutoResizeTextarea";
+import AutoResizeTextarea from "../../../../components/Input/AutoResizeTextarea";
 import ProductTab from "../Tab/ProductTab";
 
 export default function ContractUpdateModal({ order, reFetch }) {

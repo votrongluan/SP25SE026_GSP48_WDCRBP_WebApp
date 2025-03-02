@@ -6,33 +6,32 @@ import {
 } from "react-router-dom";
 import RootLayout from "./layouts/RootLayout.jsx";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-import NotFoundPage from "./pages/customer/NotFoundPage.jsx";
-import ErrorPage from "./pages/customer/ErrorPage.jsx";
+import NotFoundPage from "./pages/customer/Unauth/NotFoundPage.jsx";
+import ErrorPage from "./pages/customer/Unauth/ErrorPage.jsx";
 import { GlobalProvider } from "./context/GlobalContext.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
-import AuthPage from "./pages/customer/AuthPage.jsx";
+import AuthPage from "./pages/customer/Auth/AuthPage.jsx";
 import { AuthProvider } from "./context/AuthProvider.jsx";
-import UnauthorizedPage from "./pages/customer/UnauthorizedPage.jsx";
+import UnauthorizedPage from "./pages/customer/Unauth/UnauthorizedPage.jsx";
 import { useEffect } from "react";
-import AboutPage from "./pages/customer/AboutPage.jsx";
-import ContactPage from "./pages/customer/ContactPage.jsx";
-import ProductsPage from "./pages/customer/ProductsPage.jsx";
-import CartPage from "./pages/customer/CartPage.jsx";
-import ProductPage from "./pages/customer/ProductPage.jsx";
+import AboutPage from "./pages/customer/About/AboutPage.jsx";
+import ContactPage from "./pages/customer/Contact/ContactPage.jsx";
+import ProductsPage from "./pages/customer/Product/ProductsPage.jsx";
+import CartPage from "./pages/customer/Cart/CartPage.jsx";
 import HomePage from "./pages/customer/Home/HomePage.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
 import WoodworkerLayout from "./layouts/WoodworkerLayout.jsx";
 import CustomerLayout from "./layouts/CustomerLayout.jsx";
-import ScrollToTopAndBottom from "./components/Utilities/ScrollToTopAndBottom.jsx";
+import ScrollToTopAndBottom from "./components/Utility/ScrollToTopAndBottom.jsx";
 import CustomerOrderDetailPage from "./pages/customer/OrderDetail/CustomerOrderDetailPage.jsx";
 import { appColorTheme } from "./data/globalData.js";
 import WoodworkerOrderDetailPage from "./pages/woodworker/OrderDetail/WoodworkerOrderDetailPage.jsx";
+import ProductDetailPage from "./pages/customer/Product/ProductDetailPage.jsx";
 
 function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
 
   const theme = extendTheme({
     colors: {
@@ -59,16 +58,13 @@ function App() {
     createRoutesFromElements(
       <Route>
         {/* Admin page route */}
-        <Route path="ad" element={<AdminLayout />}>
-
-        </Route>
+        <Route path="ad" element={<AdminLayout />}></Route>
 
         {/* Woodworker page route */}
         <Route path="ww" element={<WoodworkerLayout />}>
           <Route index element={<NotFoundPage />} />
           <Route path="dashboard" element={<NotFoundPage />} />
           <Route path="order-detail" element={<WoodworkerOrderDetailPage />} />
-
         </Route>
 
         {/* Customer page route */}
@@ -76,7 +72,6 @@ function App() {
           <Route index element={<NotFoundPage />} />
           <Route path="dashboard" element={<NotFoundPage />} />
           <Route path="order-detail" element={<CustomerOrderDetailPage />} />
-
         </Route>
 
         {/* Guest page route */}
@@ -91,7 +86,7 @@ function App() {
 
           <Route path="products">
             <Route index element={<ProductsPage />} />
-            <Route path=":id" element={<ProductPage />} />
+            <Route path=":id" element={<ProductDetailPage />} />
           </Route>
 
           <Route path="cart" element={<CartPage />} />

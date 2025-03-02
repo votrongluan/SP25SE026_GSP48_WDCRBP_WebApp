@@ -18,8 +18,8 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import AutoResizeTextarea from "../../../components/Inputs/AutoResizeTextarea.jsx";
-import ActionButton from "../../../components/Buttons/ActionButton.jsx";
+import AutoResizeTextarea from "../../../components/Input/AutoResizeTextarea.jsx";
+import ActionButton from "../../../components/Button/ActionButton.jsx";
 import { appColorTheme } from "../../../data/globalData.js";
 
 export default function AddPersonalizationProduct({

@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
-import CustomerSidebar from "../components/Sidebars/CustomerSidebar.jsx";
+import CustomerSidebar from "../components/Sidebar/CustomerSidebar.jsx";
 
 function CustomerLayout(props) {
   return (

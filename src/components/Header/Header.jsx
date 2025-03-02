@@ -29,7 +29,7 @@ import { Link, NavLink as RouterNavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth.js";
 import logo from "/src/assets/images/logo.jpg";
 import { AccountCircleRounded, ShoppingCart } from "@mui/icons-material";
-import Cart from "../PageParts/Cart.jsx";
+import Cart from "../Cart/Cart.jsx";
 import BrandLogo from "./BrandLogo.jsx";
 import AccountMenu from "./AccountMenu.jsx";
 import { appColorTheme } from "../../data/globalData.js";
