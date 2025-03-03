@@ -14,7 +14,7 @@ import {
   Badge,
   Link,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../data/globalData";
+import { appColorTheme } from "../../../../config/appconfig.js";
 
 // Example array of two deliveries
 const deliveries = [

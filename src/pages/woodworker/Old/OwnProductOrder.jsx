@@ -30,7 +30,7 @@ import ConfirmationDialog from "../../../components/Utility/ConfirmationDialog.j
 import axios from "../../../api/axios.js";
 import useAuth from "../../../hooks/useAuth.js";
 import { useEffect, useState } from "react";
-import { orderStatusColorMap, orderStatusMap } from "../../../data/globalData.js";
+import { orderStatusColorMap, orderStatusMap } from "../../../config/appconfig.js";
 
 export default function OwnProductOrder() {
   const { auth } = useAuth();

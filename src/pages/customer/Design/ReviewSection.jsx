@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Box, Flex, Heading, Text, Image } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
-import { appColorTheme } from "../../../data/globalData";
+import { appColorTheme } from "../../../config/appconfig.js";
 
 function StarRating({ rating }) {
   return (

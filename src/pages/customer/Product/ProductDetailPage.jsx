@@ -13,7 +13,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../data/globalData";
+import { appColorTheme } from "../../../config/appconfig.js";
 import ReviewSection from "./ReviewSection";
 
 export default function ProductDetailPage() {

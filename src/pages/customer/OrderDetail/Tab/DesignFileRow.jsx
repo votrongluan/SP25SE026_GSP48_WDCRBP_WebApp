@@ -16,7 +16,7 @@ import {
   ModalFooter,
 } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { appColorTheme } from "../../../../data/globalData";
+import { appColorTheme } from "../../../../config/appconfig.js";
 
 export default function DesignFileRow({ designFiles }) {
   const { isOpen, onOpen, onClose } = useDisclosure();

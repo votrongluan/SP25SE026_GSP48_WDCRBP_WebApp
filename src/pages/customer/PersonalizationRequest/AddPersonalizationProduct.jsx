@@ -20,7 +20,7 @@ import {
 import { useState } from "react";
 import AutoResizeTextarea from "../../../components/Input/AutoResizeTextarea.jsx";
 import ActionButton from "../../../components/Button/ActionButton.jsx";
-import { appColorTheme } from "../../../data/globalData.js";
+import { appColorTheme } from "../../../config/appconfig.js";
 
 export default function AddPersonalizationProduct({
   productData,

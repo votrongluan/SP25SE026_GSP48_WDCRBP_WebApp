@@ -32,7 +32,7 @@ import PrintOrderUpdateButton from "../../../components/Old/PrintOrderUpdateButt
 import {
   printOrderStatusColorMap,
   printOrderStatusMap,
-} from "../../../data/globalData.js";
+} from "../../../config/appconfig.js";
 
 export default function AllPrintOrder() {
   const [printOrder, setPrintOrder] = useState(null);

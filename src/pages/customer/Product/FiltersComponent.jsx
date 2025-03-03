@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { formatPrice } from "../../../utils/utils";
-import { appColorTheme } from "../../../data/globalData";
+import { appColorTheme } from "../../../config/appconfig.js";
 
 export function FiltersComponent() {
   const [priceRange, setPriceRange] = useState([0, 20000000]);

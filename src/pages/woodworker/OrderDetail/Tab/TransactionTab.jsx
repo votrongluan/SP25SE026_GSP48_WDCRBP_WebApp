@@ -20,7 +20,7 @@ import {
   formatPrice,
   getDateNow,
 } from "../../../../utils/utils.js";
-import { appColorTheme } from "../../../../data/globalData.js";
+import { appColorTheme } from "../../../../config/appconfig.js";
 
 // Static process updates (Simulating woodworker uploads)
 const processUpdates = [

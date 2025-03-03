@@ -28,7 +28,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
-import { orderStatusMap } from "../../data/globalData.js";
+import { orderStatusMap } from "../../config/appconfig.js";
 import axios, { appURL } from "../../api/axios.js";
 
 export default function OrderDetailButton({ order }) {

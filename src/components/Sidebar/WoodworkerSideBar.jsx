@@ -14,7 +14,7 @@ import {
   FiUser,
   FiLogOut,
 } from "react-icons/fi";
-import { appColorTheme } from "../../data/globalData.js";
+import { appColorTheme } from "../../config/appconfig.js";
 
 export default function WoodworkerSideBar() {
   const { auth, setAuth } = useAuth();

@@ -25,7 +25,7 @@ import { useRef, useState } from "react";
 import {
   printOrderStatusColorMap,
   printOrderStatusMap,
-} from "../../data/globalData.js";
+} from "../../config/appconfig.js";
 import axios from "../../api/axios.js";
 
 export default function PrintOrderDetailButton({ order }) {

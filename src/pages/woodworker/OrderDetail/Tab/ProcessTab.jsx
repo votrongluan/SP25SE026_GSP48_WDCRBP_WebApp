@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Heading, Text, VStack, HStack, Circle } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../data/globalData";
+import { appColorTheme } from "../../../../config/appconfig.js";
 
 const processUpdates = [
   {

@@ -24,7 +24,7 @@ import WoodworkerLayout from "./layouts/WoodworkerLayout.jsx";
 import CustomerLayout from "./layouts/CustomerLayout.jsx";
 import ScrollToTopAndBottom from "./components/Utility/ScrollToTopAndBottom.jsx";
 import CustomerOrderDetailPage from "./pages/customer/OrderDetail/CustomerOrderDetailPage.jsx";
-import { appColorTheme } from "./data/globalData.js";
+import { appColorTheme } from "./config/appconfig.js";
 import WoodworkerOrderDetailPage from "./pages/woodworker/OrderDetail/WoodworkerOrderDetailPage.jsx";
 import ProductDetailPage from "./pages/customer/Product/ProductDetailPage.jsx";
 import WoodworkersPage from "./pages/customer/Woodworker/WoodworkersPage.jsx";

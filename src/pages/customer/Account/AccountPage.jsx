@@ -27,7 +27,7 @@ import {
   orderStatusMap,
   printOrderStatusColorMap,
   printOrderStatusMap,
-} from "../../../data/globalData.js";
+} from "../../../config/appconfig.js";
 import { Link as RouterLink } from "react-router-dom";
 
 export default function AccountPage() {

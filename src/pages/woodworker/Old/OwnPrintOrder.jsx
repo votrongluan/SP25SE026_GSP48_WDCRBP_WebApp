@@ -31,7 +31,7 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   printOrderStatusColorMap,
   printOrderStatusMap,
-} from "../../../data/globalData.js";
+} from "../../../config/appconfig.js";
 import OwnPrintOrderUpdateButton from "../../../components/Old/OwnPrintOrderUpdateButton.jsx";
 
 export default function OwnPrintOrder() {

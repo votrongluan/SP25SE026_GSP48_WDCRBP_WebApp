@@ -32,7 +32,7 @@ import { AccountCircleRounded, ShoppingCart } from "@mui/icons-material";
 import Cart from "../Cart/Cart.jsx";
 import BrandLogo from "./BrandLogo.jsx";
 import AccountMenu from "./AccountMenu.jsx";
-import { appColorTheme } from "../../data/globalData.js";
+import { appColorTheme } from "../../config/appconfig.js";
 
 function Header() {
   const { auth, setAuth } = useAuth();
