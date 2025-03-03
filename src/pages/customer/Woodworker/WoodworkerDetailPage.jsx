@@ -6,17 +6,14 @@ import {
   Flex,
   Grid,
   Heading,
-  HStack,
   Image,
-  Spacer,
   Stack,
   Text,
-  VStack,
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../data/globalData";
 import ReviewSection from "./ReviewSection";
 
-export default function ProductDetailPage() {
+export default function WoodworkerDetailPage() {
   const product = {
     product_id: "111",
     product_name: "Sản phẩm mặc định",

@@ -51,11 +51,11 @@ function AboutPage() {
                 xl: "70%",
               }}
             >
-              Tại 3D Creatify, chúng tôi tin rằng công nghệ 3D không chỉ là một
-              công cụ, mà còn là một ngôn ngữ mới để kết nối ý tưởng, sáng tạo
-              và thực tế. Chúng tôi mơ ước một thế giới nơi mọi giới hạn sáng
-              tạo đều có thể được vượt qua, nơi bất kì ai cũng có thể biến ý
-              tưởng của mình thành hiện thực một cách dễ dàng và chính xác.
+              Tại WDCRBP, chúng tôi tin rằng công nghệ 3D không chỉ là một công
+              cụ, mà còn là một ngôn ngữ mới để kết nối ý tưởng, sáng tạo và
+              thực tế. Chúng tôi mơ ước một thế giới nơi mọi giới hạn sáng tạo
+              đều có thể được vượt qua, nơi bất kì ai cũng có thể biến ý tưởng
+              của mình thành hiện thực một cách dễ dàng và chính xác.
             </Text>
           </Box>
           <Box

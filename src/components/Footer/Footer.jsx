@@ -34,7 +34,7 @@ function Footer() {
             Đại học FPT
           </Text>
           <Text mt="10px" fontSize="16px" color="black">
-            3d.creatifyteam6@gmail.com
+            ww@com.vn
           </Text>
           <Button
             _hover={{
