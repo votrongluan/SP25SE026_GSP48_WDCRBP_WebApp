@@ -127,31 +127,24 @@ export default function TransactionTab() {
                   <AccordionPanel pb={4}>
                     <Stack spacing={4}>
                       <HStack>
-                        <Text fontWeight="500">Mã truy vấn</Text>:
+                        <Text fontWeight="500">Mã truy vấn:</Text>:
                         <Text>202509382</Text>
                       </HStack>
 
                       <HStack>
-                        <Text fontWeight="500">Ngày thanh toán</Text>:
+                        <Text fontWeight="500">Ngày thanh toán:</Text>:
                         <Text>
                           {convertTimeStampToDateTimeString(new Date())}
                         </Text>
                       </HStack>
 
                       <HStack>
-                        <Text fontWeight="500">Ngày hết hạn</Text>:
-                        <Text>
-                          {convertTimeStampToDateTimeString(new Date())}
-                        </Text>
-                      </HStack>
-
-                      <HStack>
-                        <Text fontWeight="500">Số tiền phải thanh toán</Text>:
+                        <Text fontWeight="500">Số tiền phải thanh toán:</Text>:
                         <Text>{formatPrice(1000000)}</Text>
                       </HStack>
 
                       <HStack>
-                        <Text fontWeight="500">Trạng thái</Text>:
+                        <Text fontWeight="500">Trạng thái:</Text>:
                         <Text>Chưa hoàn tất</Text>
                       </HStack>
                     </Stack>

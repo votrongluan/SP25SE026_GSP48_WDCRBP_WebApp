@@ -5,7 +5,6 @@ import {
   FormLabel,
   Heading,
   HStack,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -25,6 +24,8 @@ import { FiRefreshCw } from "react-icons/fi";
 import AppointmentTab from "../Tab/AppointmentTab";
 import AutoResizeTextarea from "../../../../components/Input/AutoResizeTextarea";
 import ProductTab from "../Tab/ProductTab";
+import LogTab from "../Tab/LogTab";
+import AppointmentEditSection from "./AppointmentEditSection";
 
 export default function AppointmentUpdateModal({ order, reFetch }) {
   const toast = useToast();
@@ -49,7 +50,7 @@ export default function AppointmentUpdateModal({ order, reFetch }) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader bgColor="app_grey.2">
-            Xác nhận, điều chỉnh lịch hẹn
+            Tạo, điều chỉnh lịch hẹn
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
@@ -70,41 +71,13 @@ export default function AppointmentUpdateModal({ order, reFetch }) {
                 spacing={10}
               >
                 <Box>
-                  <AppointmentTab />
+                  <LogTab />
                 </Box>
+
                 <Box>
-                  <FormControl isRequired>
-                    <FormLabel>Hình thức</FormLabel>
-                    <Select name="orderStatus" type="text" ref={initialRef}>
-                      <option value={0}>Trực tuyến</option>
-                      <option value={1}>Trực tiếp</option>
-                    </Select>
-                  </FormControl>
-
-                  <FormControl mt={4} isRequired>
-                    <FormLabel>Địa điểm</FormLabel>
-                    <Input
-                      name="location"
-                      type="text"
-                      placeholder="Nhập địa điểm hoặc đường link họp"
-                    />
-                  </FormControl>
-
-                  <FormControl mt={4} isRequired>
-                    <FormLabel>Ngày hẹn</FormLabel>
-                    <Input name="meetingDate" type="datetime-local" />
-                  </FormControl>
-
-                  <FormControl mt={4} isRequired>
-                    <FormLabel>Mô tả</FormLabel>
-                    <AutoResizeTextarea
-                      name="description"
-                      placeholder="Nhập mô tả nội dung cuộc họp..."
-                    />
-                  </FormControl>
+                  <AppointmentEditSection />
                 </Box>
               </SimpleGrid>
-
               <HStack mt={10}>
                 <Spacer />
                 <Button colorScheme="blue" mr={3} type="submit">

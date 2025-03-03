@@ -85,16 +85,16 @@ export default function AppointmentUpdateModal({ order, reFetch }) {
 
                   <Box boxShadow="md" borderRadius="10px" p={5} bgColor="white">
                     <FormControl isRequired>
-                      <FormLabel>Phản hồi</FormLabel>
-                      <AutoResizeTextarea />
-                    </FormControl>
-
-                    <FormControl mt={4} isRequired>
                       <FormLabel>Trạng thái</FormLabel>
                       <Select name="orderStatus" type="text" ref={initialRef}>
                         <option value={0}>Xác nhận đồng ý</option>
                         <option value={1}>Yêu cầu điểu chỉnh</option>
                       </Select>
+                    </FormControl>
+
+                    <FormControl mt={4} isRequired>
+                      <FormLabel>Phản hồi</FormLabel>
+                      <AutoResizeTextarea />
                     </FormControl>
                   </Box>
                 </Box>

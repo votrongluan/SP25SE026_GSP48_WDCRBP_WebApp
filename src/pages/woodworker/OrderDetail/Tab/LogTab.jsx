@@ -41,7 +41,7 @@ const processUpdates = [
 
 export default function LogTab() {
   return (
-    <>
+    <Box bg="white" borderRadius="10px" p={5} boxShadow="md">
       <Heading fontWeight={500} fontSize="20px" mb={5} textAlign="center">
         Nhật ký quá trình cập nhật đơn hàng
       </Heading>
@@ -111,6 +111,6 @@ export default function LogTab() {
           </Accordion>
         </VStack>
       </Box>
-    </>
+    </Box>
   );
 }

@@ -21,7 +21,7 @@ export default function ActionBar() {
 
         {isOpen && (
           <>
-            <ContractUpdateModal />
+            <DesignUpdateModal />
             <Button leftIcon={<FiXCircle />} colorScheme="red">
               Hủy
             </Button>

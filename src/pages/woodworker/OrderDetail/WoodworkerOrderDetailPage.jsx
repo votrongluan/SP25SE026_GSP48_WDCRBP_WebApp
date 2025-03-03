@@ -31,6 +31,8 @@ import TransactionTab from "./Tab/TransactionTab.jsx";
 import LogTab from "./Tab/LogTab.jsx";
 import ReviewTab from "./Tab/ReviewTab.jsx";
 import ActionBar from "./ActionBar";
+import ProcessLogTab from "./Tab/ProcessLogTab.jsx";
+import ContractTab from "./Tab/ContractTab.jsx";
 
 export default function WoodworkerOrderDetailPage() {
   return (
@@ -58,12 +60,11 @@ export default function WoodworkerOrderDetailPage() {
             {[
               { label: "Chung", icon: FiFileText },
               { label: "Sản phẩm", icon: FiPackage },
+              { label: "Lịch hẹn", icon: FiCalendar },
               { label: "Quá trình", icon: FiActivity },
               { label: "Giao hàng", icon: FiTruck },
-              { label: "Lịch hẹn", icon: FiCalendar },
               { label: "Hợp đồng", icon: FiFile },
               { label: "Giao dịch", icon: FiCreditCard },
-              { label: "Nhật ký", icon: FiBookOpen },
               { label: "Đánh giá", icon: FiStar },
             ].map((tab, index) => (
               <Tab
@@ -92,22 +93,19 @@ export default function WoodworkerOrderDetailPage() {
               <ProductTab />
             </TabPanel>
             <TabPanel p={5}>
-              <ProcessTab />
+              <AppointmentTab />
+            </TabPanel>
+            <TabPanel p={5}>
+              <ProcessLogTab />
             </TabPanel>
             <TabPanel p={5}>
               <DeliveryTab />
             </TabPanel>
             <TabPanel p={5}>
-              <AppointmentTab />
-            </TabPanel>
-            <TabPanel p={5}>
-              <AppointmentTab />
+              <ContractTab />
             </TabPanel>
             <TabPanel p={5}>
               <TransactionTab />
-            </TabPanel>
-            <TabPanel p={5}>
-              <LogTab />
             </TabPanel>
             <TabPanel p={5}>
               <ReviewTab />

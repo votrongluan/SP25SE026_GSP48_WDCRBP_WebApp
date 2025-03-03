@@ -37,18 +37,23 @@ export default function GeneralInformation() {
               <HStack>
                 <Text fontWeight="500">Mã đơn hàng:</Text>
                 <Text>
-                  <Link color="blue">An Highland</Link>
+                  <Link color="blue">12333</Link>
                 </Text>
               </HStack>
 
               <HStack>
-                <Text fontWeight="500">Trạng thái:</Text>
-                <Text>ABc</Text>
+                <Text fontWeight="500">Loại dịch vụ:</Text>
+                <Text>Cá nhân hóa</Text>
               </HStack>
 
               <HStack>
-                <Text>Địa chỉ xưởng:</Text>
-                <Text>1775 Lê Văn Luong, ap 3 nhon duc nha be</Text>
+                <Text fontWeight="500">Trạng thái:</Text>
+                <Text>Chờ duyệt thiết kế</Text>
+              </HStack>
+
+              <HStack>
+                <Text fontWeight="500">Giá trị đơn hàng:</Text>
+                <Text>Chưa cập nhật</Text>
               </HStack>
             </Stack>
           </Box>
@@ -58,17 +63,37 @@ export default function GeneralInformation() {
               <HStack>
                 <Text fontWeight="500">Ngày đặt:</Text>
                 <Text>
-                  <Link color="blue">An Highland</Link>
+                  <Link color="blue">12-03-2025 05:00 AM</Link>
                 </Text>
               </HStack>
 
               <HStack>
-                <Text>Tên thợ mộc:</Text>
-                <Text>ABc</Text>
+                <Text fontWeight="500">Ngày hoàn thành mong muốn:</Text>
+                <Text>12-04-2025</Text>
+              </HStack>
+
+              <HStack>
+                <Text fontWeight="500">Số tiền có thể chi trả:</Text>
+                <Text>12.000.000 đ</Text>
+              </HStack>
+
+              <HStack>
+                <Text fontWeight="500">Số lượng sản phẩm:</Text>
+                <Text>2</Text>
               </HStack>
             </Stack>
           </Box>
         </SimpleGrid>
+
+        <Box mt={4}>
+          <Text fontWeight="500">Ghi chú:</Text>
+          <Text mt={4}>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reiciendis
+            harum, voluptates quas, laudantium inventore debitis aspernatur
+            aperiam voluptate distinctio perspiciatis doloremque cupiditate cum
+            facere iste reprehenderit totam tempora impedit non.
+          </Text>
+        </Box>
       </Box>
 
       <Box>
@@ -87,25 +112,31 @@ export default function GeneralInformation() {
 
             <Stack spacing={4}>
               <HStack>
-                <Text>Tên xưởng:</Text>
+                <Text fontWeight={500}>Tên:</Text>
                 <Text>
-                  <Link color="blue">An Highland</Link>
+                  <Link color="blue">Lorem</Link>
                 </Text>
               </HStack>
 
               <HStack>
-                <Text>Tên thợ mộc:</Text>
-                <Text>ABc</Text>
+                <Text fontWeight={500}>Email:</Text>
+                <Text>
+                  <Link color="blue">Lorem</Link>
+                </Text>
               </HStack>
 
               <HStack>
-                <Text>Địa chỉ xưởng:</Text>
-                <Text>1775 Lê Văn Luong, ap 3 nhon duc nha be</Text>
+                <Text fontWeight={500}>Số điện thoại:</Text>
+                <Text>
+                  <Link color="blue">Lorem</Link>
+                </Text>
               </HStack>
 
               <HStack>
-                <Text>Số điện thoại</Text>
-                <Text>0987382382</Text>
+                <Text fontWeight={500}>Địa chỉ giao hàng:</Text>
+                <Text>
+                  <Link color="blue">Lorem</Link>
+                </Text>
               </HStack>
             </Stack>
           </Box>
@@ -117,29 +148,24 @@ export default function GeneralInformation() {
 
             <Stack spacing={4}>
               <HStack>
-                <Text>Tên xưởng</Text>
-                <Spacer />
+                <Text fontWeight={500}>Tên xưởng:</Text>
                 <Text>
-                  <Link color="blue">An Highland</Link>
+                  <Link color="blue">Lorem</Link>
                 </Text>
               </HStack>
 
               <HStack>
-                <Text>Tên thợ mộc</Text>
-                <Spacer />
-                <Text>ABc</Text>
+                <Text fontWeight={500}>Địa chỉ xưởng:</Text>
+                <Text>
+                  <Link color="blue">Lorem</Link>
+                </Text>
               </HStack>
 
               <HStack>
-                <Text>Địa chỉ xưởng</Text>
-                <Spacer />
-                <Text>1775 Lê Văn Luong, ap 3 nhon duc nha be</Text>
-              </HStack>
-
-              <HStack>
-                <Text>Số điện thoại</Text>
-                <Spacer />
-                <Text>0987382382</Text>
+                <Text fontWeight={500}>Số điện thoại:</Text>
+                <Text>
+                  <Link color="blue">Lorem</Link>
+                </Text>
               </HStack>
             </Stack>
           </Box>

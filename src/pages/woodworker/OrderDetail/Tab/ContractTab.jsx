@@ -15,6 +15,7 @@ export default function ContractTab() {
     a_information: "Bên A: Công ty A, Địa chỉ A, MST A...",
     b_information: "Bên B: Công ty B, Địa chỉ B, MST B...",
     created_at: new Date("2025-03-01T09:00:00"),
+    platform_commission: 500000,
     order_id: "ORD-ABC-123",
     // Trường mới: đường dẫn file Word
     contract_word_file: "https://example.com/contract_template.docx",

@@ -254,14 +254,8 @@ export default function PersonalizationRequestPage() {
                     <Text>Tên xưởng</Text>
                     <Spacer />
                     <Text>
-                      <Link color="blue">An Highland</Link>
+                      <Link color="blue">Highland</Link>
                     </Text>
-                  </HStack>
-
-                  <HStack>
-                    <Text>Tên thợ mộc</Text>
-                    <Spacer />
-                    <Text>ABc</Text>
                   </HStack>
 
                   <HStack>

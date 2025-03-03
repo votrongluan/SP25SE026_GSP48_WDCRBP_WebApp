@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FiXCircle, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import ContractUpdateModal from "./UpdateModal/ContractUpdateModal";
 import AppointmentUpdateModal from "./UpdateModal/AppointmentUpdateModal.jsx";
+import DesignUpdateModal from "./UpdateModal/DesignUpdateModal.jsx";
 
 export default function ActionBar() {
   const [isOpen, setIsOpen] = useState(true);
@@ -20,7 +21,7 @@ export default function ActionBar() {
 
         {isOpen && (
           <>
-            <AppointmentUpdateModal />
+            <DesignUpdateModal />
             <Button leftIcon={<FiXCircle />} colorScheme="red">
               Hủy
             </Button>

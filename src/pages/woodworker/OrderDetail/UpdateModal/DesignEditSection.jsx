@@ -12,14 +12,11 @@ import {
   AccordionButton,
   AccordionIcon,
   AccordionPanel,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
+  Input,
+  Button,
 } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import DesignFileRow from "./DesignFileRow"; // Adjust the path as needed
+import DesignFileRow from "../Tab/DesignFileRow"; // Điều chỉnh đường dẫn nếu cần
 
 // Static product history data
 const productHistory = [
@@ -68,23 +65,43 @@ const productHistory = [
   },
 ];
 
-export default function ProductTab() {
-  const [currentVersion, setCurrentVersion] = useState(productHistory.length); // Start at latest version
+export default function DesignEditSection() {
+  // Lấy phiên bản cuối cùng (latest)
+  const latestVersion = productHistory[productHistory.length - 1];
+  const [currentProducts] = useState(latestVersion.products);
 
-  const handleNext = () => {
-    if (currentVersion < productHistory.length) {
-      setCurrentVersion(currentVersion + 1);
-    }
+  // State quản lý file mới được chọn cho upload (giả lập upload)
+  const [newFiles, setNewFiles] = useState({}); // key: product.id, value: array of File
+
+  const handleFileChange = (e, productId) => {
+    const files = Array.from(e.target.files);
+    setNewFiles((prev) => ({
+      ...prev,
+      [productId]: files,
+    }));
   };
 
-  const handlePrev = () => {
-    if (currentVersion > 1) {
-      setCurrentVersion(currentVersion - 1);
-    }
+  // Hàm upload file (mô phỏng upload: chuyển file thành URL tạm thời và thêm vào designFiles)
+  const handleUpload = (productId) => {
+    if (!newFiles[productId] || newFiles[productId].length === 0) return;
+    // Tạo mảng file upload (mỗi file tạo URL và giả lập version tiếp theo)
+    const product = currentProducts.find((p) => p.id === productId);
+    const nextVersion =
+      (product.designFiles && product.designFiles.length) + 1 || 1;
+    const uploadedFiles = newFiles[productId].map((file, index) => ({
+      version: nextVersion + index,
+      mediaUrls: URL.createObjectURL(file), // Lưu ý: định dạng thực tế có thể là chuỗi các URL nối với dấu ";"
+      uploadDate: new Date().toLocaleString(),
+    }));
+    // Ở đây, bạn có thể gọi API để cập nhật backend, sau đó refresh state.
+    // Ví dụ: cập nhật trực tiếp vào product.designFiles (chỉ mô phỏng)
+    product.designFiles = [...(product.designFiles || []), ...uploadedFiles];
+    // Reset file mới cho sản phẩm này
+    setNewFiles((prev) => ({
+      ...prev,
+      [productId]: [],
+    }));
   };
-
-  const currentProducts =
-    productHistory.find((v) => v.version === currentVersion)?.products || [];
 
   return (
     <Box>
@@ -92,32 +109,12 @@ export default function ProductTab() {
         Thông tin sản phẩm
       </Heading>
 
-      <HStack justify="center" mb={4}>
-        <IconButton
-          icon={<ChevronLeftIcon />}
-          onClick={handlePrev}
-          isDisabled={currentVersion === 1}
-          aria-label="Previous Version"
-        />
-        {productHistory.length !== currentVersion ? (
-          <Text fontWeight="300">Bản nháp {currentVersion}</Text>
-        ) : (
-          <Text fontWeight="300">Bản chính</Text>
-        )}
-        <IconButton
-          icon={<ChevronRightIcon />}
-          onClick={handleNext}
-          isDisabled={currentVersion === productHistory.length}
-          aria-label="Next Version"
-        />
-      </HStack>
-
       <Accordion allowMultiple>
         {currentProducts.map((product) => (
           <AccordionItem
             key={product.id}
             border="1px solid #ddd"
-            bg={"white"}
+            bg="white"
             borderRadius="10px"
             mb={4}
           >
@@ -135,7 +132,6 @@ export default function ProductTab() {
                 <AccordionIcon />
               </AccordionButton>
             </h2>
-
             <AccordionPanel pb={4}>
               <Stack spacing={4}>
                 <HStack>
@@ -159,7 +155,20 @@ export default function ProductTab() {
                   <Text>1</Text>
                 </HStack>
 
+                {/* Hiển thị file thiết kế hiện có */}
                 <DesignFileRow designFiles={product.designFiles} />
+
+                {/* Phần tải lên file thiết kế mới */}
+                <Box mt={4}>
+                  <Text fontWeight="500" mb={2}>
+                    Tải thiết kế lên:
+                  </Text>
+                  <Input
+                    type="file"
+                    multiple
+                    onChange={(e) => handleFileChange(e, product.id)}
+                  />
+                </Box>
               </Stack>
             </AccordionPanel>
           </AccordionItem>
