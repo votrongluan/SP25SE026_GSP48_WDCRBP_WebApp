@@ -24,6 +24,7 @@ import { FiRefreshCw } from "react-icons/fi";
 import AppointmentTab from "../Tab/AppointmentTab";
 import AutoResizeTextarea from "../../../../components/Input/AutoResizeTextarea";
 import ProductTab from "../Tab/ProductTab";
+import ContractTab from "../Tab/ContractTab";
 
 export default function ContractUpdateModal({ order, reFetch }) {
   const toast = useToast();
@@ -48,7 +49,7 @@ export default function ContractUpdateModal({ order, reFetch }) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader bgColor="app_grey.2">
-            Xác nhận, điều chỉnh hợp đồng sản phẩm
+            Xác nhận, điều chỉnh họp đồng, sản phẩm
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
@@ -69,7 +70,19 @@ export default function ContractUpdateModal({ order, reFetch }) {
                 spacing={10}
               >
                 <Box>
-                  <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
+                  <ProductTab />
+                  <Box height={5} />
+                  <ContractTab />
+                </Box>
+
+                <Box>
+                  <Heading
+                    textAlign="center"
+                    fontWeight={500}
+                    as="h3"
+                    fontSize="20px"
+                    mb={4}
+                  >
                     Phản hồi
                   </Heading>
 
@@ -87,13 +100,6 @@ export default function ContractUpdateModal({ order, reFetch }) {
                       </Select>
                     </FormControl>
                   </Box>
-                </Box>
-
-                <Box>
-                  <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
-                    Thông tin cần xem xét lại
-                  </Heading>
-                  <ProductTab />
                 </Box>
               </SimpleGrid>
 

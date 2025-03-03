@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth.js";
 import BrandLogo from "../Header/BrandLogo.jsx";
 import {
+  FiAlertTriangle,
   FiCreditCard,
   FiGrid,
   FiLogOut,
@@ -32,6 +33,7 @@ export default function CustomerSidebar() {
     { label: "Tổng quan", path: "dashboard", icon: FiGrid },
     { label: "Đơn hàng", path: "order-detail", icon: FiShoppingCart },
     { label: "Ví", path: "print", icon: FiCreditCard },
+    { label: "Khiếu nại", path: "complaint", icon: FiAlertTriangle },
     { label: "Tài khoản", path: "account", icon: FiUser },
   ];
 

@@ -1,22 +1,25 @@
+import React, { useState } from "react";
 import {
   Box,
   Heading,
   HStack,
+  IconButton,
   SimpleGrid,
   Stack,
   Text,
-  Button,
-  Image,
-  IconButton,
   Accordion,
   AccordionItem,
   AccordionButton,
   AccordionIcon,
   AccordionPanel,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { appColorTheme } from "../../../../data/globalData.js";
+import DesignFileRow from "./DesignFileRow"; // Adjust the path as needed
 
 // Static product history data
 const productHistory = [
@@ -30,22 +33,19 @@ const productHistory = [
         woodType: "Gỗ sồi",
         finish: "Sơn PU bóng",
         color: "Nâu đậm",
-      },
-    ],
-  },
-  {
-    version: 2,
-    products: [
-      {
-        id: 1,
-        name: "Giường 2 tầng",
-        dimensions: "200cm x 160cm x 180cm",
-        woodType: "Gỗ sồi",
-        finish: "Sơn PU bóng",
-        color: "Nâu đậm",
         designFiles: [
-          "https://flexfit.vn/wp-content/uploads/2020/12/uu-diem-giuong-tang.jpg",
-          "https://flexfit.vn/wp-content/uploads/2020/12/uu-diem-giuong-tang.jpg",
+          {
+            version: 1,
+            mediaUrls:
+              "https://flexfit.vn/wp-content/uploads/2020/12/uu-diem-giuong-tang.jpg;https://flexfit.vn/wp-content/uploads/2020/12/uu-diem-giuong-tang.jpg",
+            uploadDate: "12-03-2025 05:34 AM",
+          },
+          {
+            version: 2,
+            mediaUrls:
+              "https://flexfit.vn/wp-content/uploads/2020/12/uu-diem-giuong-tang.jpg;https://flexfit.vn/wp-content/uploads/2020/12/uu-diem-giuong-tang.jpg",
+            uploadDate: "12-03-2025 05:34 AM",
+          },
         ],
       },
       {
@@ -56,8 +56,12 @@ const productHistory = [
         finish: "Dầu lau",
         color: "Nâu đỏ",
         designFiles: [
-          "https://flexfit.vn/wp-content/uploads/2020/12/uu-diem-giuong-tang.jpg",
-          "https://flexfit.vn/wp-content/uploads/2020/12/uu-diem-giuong-tang.jpg",
+          {
+            version: 1,
+            mediaUrls:
+              "https://flexfit.vn/wp-content/uploads/2020/12/uu-diem-giuong-tang.jpg;https://flexfit.vn/wp-content/uploads/2020/12/uu-diem-giuong-tang.jpg",
+            uploadDate: "15-03-2025 10:00 AM",
+          },
         ],
       },
     ],
@@ -95,12 +99,11 @@ export default function ProductTab() {
           isDisabled={currentVersion === 1}
           aria-label="Previous Version"
         />
-        {productHistory.length != currentVersion ? (
+        {productHistory.length !== currentVersion ? (
           <Text fontWeight="300">Bản nháp {currentVersion}</Text>
         ) : (
           <Text fontWeight="300">Bản chính</Text>
         )}
-
         <IconButton
           icon={<ChevronRightIcon />}
           onClick={handleNext}
@@ -109,75 +112,59 @@ export default function ProductTab() {
         />
       </HStack>
 
-      <SimpleGrid columns={{ base: 1, xl: 1 }} spacing={4}>
+      <Accordion allowMultiple>
         {currentProducts.map((product) => (
-          <Box
+          <AccordionItem
             key={product.id}
-            bgColor="white"
-            boxShadow="md"
-            p={5}
+            border="1px solid #ddd"
+            bg={"white"}
             borderRadius="10px"
+            mb={4}
           >
-            <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
-              Thông tin sản phẩm
-            </Heading>
+            <h2>
+              <AccordionButton
+                _expanded={{ bg: "gray.100" }}
+                p={5}
+                borderRadius="10px"
+              >
+                <Box flex="1" textAlign="left">
+                  <Text fontWeight="500">
+                    {product.name} (Gia công theo yêu cầu)
+                  </Text>
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
 
-            <Stack spacing={4}>
-              <HStack>
-                <Text fontWeight="500">Loại sản phẩm:</Text>
-                <Text>{product.name}</Text>
-              </HStack>
-              <HStack>
-                <Text fontWeight="500">Kích thước:</Text>
-                <Text>{product.dimensions} (dài x rộng x cao)</Text>
-              </HStack>
-              <HStack>
-                <Text fontWeight="500">Loại gỗ:</Text>
-                <Text>{product.woodType}</Text>
-              </HStack>
-              <HStack>
-                <Text fontWeight="500">Hoàn thiện:</Text>
-                <Text>{product.finish}</Text>
-              </HStack>
-              <HStack>
-                <Text fontWeight="500">Màu sắc:</Text>
-                <Text>{product.color}</Text>
-              </HStack>
+            <AccordionPanel pb={4}>
+              <Stack spacing={4}>
+                <HStack>
+                  <Text fontWeight="500">Kích thước:</Text>
+                  <Text>{product.dimensions} (dài x rộng x cao)</Text>
+                </HStack>
+                <HStack>
+                  <Text fontWeight="500">Loại gỗ:</Text>
+                  <Text>{product.woodType}</Text>
+                </HStack>
+                <HStack>
+                  <Text fontWeight="500">Hoàn thiện:</Text>
+                  <Text>{product.finish}</Text>
+                </HStack>
+                <HStack>
+                  <Text fontWeight="500">Màu sắc:</Text>
+                  <Text>{product.color}</Text>
+                </HStack>
+                <HStack>
+                  <Text fontWeight="500">Số lượng:</Text>
+                  <Text>1</Text>
+                </HStack>
 
-              {product.designFiles && (
-                <Accordion allowToggle>
-                  <AccordionItem border="1px solid #ddd" borderRadius="5px">
-                    <AccordionButton _expanded={{ bg: "gray.100" }} p={3}>
-                      <Box flex="1" textAlign="left">
-                        <Heading fontWeight="500" fontSize="18px">
-                          Thiết kế sản phẩm
-                        </Heading>
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-
-                    <AccordionPanel pb={4}>
-                      <Stack spacing={4}>
-                        {product.designFiles.map((file, idx) => (
-                          <HStack key={idx} p={4}>
-                            <Image
-                              src={file}
-                              alt="Design File"
-                              objectFit="cover"
-                              width="100%"
-                              borderRadius="5px"
-                            />
-                          </HStack>
-                        ))}
-                      </Stack>
-                    </AccordionPanel>
-                  </AccordionItem>
-                </Accordion>
-              )}
-            </Stack>
-          </Box>
+                <DesignFileRow designFiles={product.designFiles} />
+              </Stack>
+            </AccordionPanel>
+          </AccordionItem>
         ))}
-      </SimpleGrid>
+      </Accordion>
     </Box>
   );
 }

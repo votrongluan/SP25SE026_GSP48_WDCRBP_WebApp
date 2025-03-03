@@ -7,6 +7,7 @@ import {
   Grid,
   Heading,
   Image,
+  Spacer,
   Stack,
   Text,
 } from "@chakra-ui/react";

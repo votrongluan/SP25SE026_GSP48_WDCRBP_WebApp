@@ -3,11 +3,16 @@ import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth.js";
 import BrandLogo from "../Header/BrandLogo.jsx";
 import {
-  FiCreditCard,
   FiGrid,
-  FiLogOut,
   FiShoppingCart,
+  FiTool,
+  FiPenTool,
+  FiBox,
+  FiAlertTriangle,
+  FiStar,
+  FiCreditCard,
   FiUser,
+  FiLogOut,
 } from "react-icons/fi";
 import { appColorTheme } from "../../data/globalData.js";
 
@@ -31,7 +36,12 @@ export default function WoodworkerSideBar() {
   const navItems = [
     { label: "Tổng quan", path: "dashboard", icon: FiGrid },
     { label: "Đơn hàng", path: "order-detail", icon: FiShoppingCart },
-    { label: "Ví", path: "print", icon: FiCreditCard },
+    { label: "Dịch vụ", path: "service", icon: FiTool },
+    { label: "Thiết kế", path: "design", icon: FiPenTool },
+    { label: "Sản phẩm", path: "product", icon: FiBox },
+    { label: "Khiếu nại", path: "complaint", icon: FiAlertTriangle },
+    { label: "Đánh giá", path: "review", icon: FiStar },
+    { label: "Ví", path: "wallet", icon: FiCreditCard },
     { label: "Tài khoản", path: "account", icon: FiUser },
   ];
 

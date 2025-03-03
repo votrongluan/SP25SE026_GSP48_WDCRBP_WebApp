@@ -69,7 +69,17 @@ export default function AppointmentUpdateModal({ order, reFetch }) {
                 spacing={10}
               >
                 <Box>
-                  <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
+                  <AppointmentTab />
+                </Box>
+
+                <Box>
+                  <Heading
+                    textAlign="center"
+                    fontWeight={500}
+                    as="h3"
+                    fontSize="20px"
+                    mb={4}
+                  >
                     Phản hồi
                   </Heading>
 
@@ -87,13 +97,6 @@ export default function AppointmentUpdateModal({ order, reFetch }) {
                       </Select>
                     </FormControl>
                   </Box>
-                </Box>
-
-                <Box>
-                  <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
-                    Thông tin cần xem xét lại
-                  </Heading>
-                  <AppointmentTab />
                 </Box>
               </SimpleGrid>
 

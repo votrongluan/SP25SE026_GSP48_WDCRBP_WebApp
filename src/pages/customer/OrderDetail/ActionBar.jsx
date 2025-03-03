@@ -2,6 +2,8 @@ import { Box, Button, HStack, IconButton } from "@chakra-ui/react";
 import { useState } from "react";
 import { FiXCircle, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import ContractUpdateModal from "./UpdateModal/ContractUpdateModal";
+import DesignUpdateModal from "./UpdateModal/DesignUpdateModal";
+import AppointmentUpdateModal from "./UpdateModal/AppointmentUpdateModal";
 
 export default function ActionBar() {
   const [isOpen, setIsOpen] = useState(true);

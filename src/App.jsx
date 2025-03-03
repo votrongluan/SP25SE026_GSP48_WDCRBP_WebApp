@@ -27,6 +27,11 @@ import CustomerOrderDetailPage from "./pages/customer/OrderDetail/CustomerOrderD
 import { appColorTheme } from "./data/globalData.js";
 import WoodworkerOrderDetailPage from "./pages/woodworker/OrderDetail/WoodworkerOrderDetailPage.jsx";
 import ProductDetailPage from "./pages/customer/Product/ProductDetailPage.jsx";
+import WoodworkersPage from "./pages/customer/Woodworker/WoodworkersPage.jsx";
+import WoodworkerDetailPage from "./pages/customer/Woodworker/WoodworkerDetailPage.jsx";
+import DesignsPage from "./pages/customer/Design/DesignsPage.jsx";
+import DesignDetailPage from "./pages/customer/Design/DesignDetailPage.jsx";
+import PersonalizationRequestPage from "./pages/customer/PersonalizationRequest/PersonalizationRequestPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -77,6 +82,7 @@ function App() {
         {/* Guest page route */}
         <Route path="/" element={<RootLayout />} errorElement={<ErrorPage />}>
           {/* Index page route */}
+          <Route path="personalize" element={<PersonalizationRequestPage />} />
           <Route index element={<HomePage />} />
 
           {/* Auth route */}
@@ -87,6 +93,16 @@ function App() {
           <Route path="products">
             <Route index element={<ProductsPage />} />
             <Route path=":id" element={<ProductDetailPage />} />
+          </Route>
+
+          <Route path="wws">
+            <Route index element={<WoodworkersPage />} />
+            <Route path=":id" element={<WoodworkerDetailPage />} />
+          </Route>
+
+          <Route path="designs">
+            <Route index element={<DesignsPage />} />
+            <Route path=":id" element={<DesignDetailPage />} />
           </Route>
 
           <Route path="cart" element={<CartPage />} />

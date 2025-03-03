@@ -1,4 +1,4 @@
-import { Box, Heading, Stack, HStack, Text } from "@chakra-ui/react";
+import { Box, Heading, Stack, HStack, Text, Image } from "@chakra-ui/react";
 import { convertTimeStampToDateTimeString } from "../../../../utils/utils.js";
 
 export default function ReviewTab() {
@@ -27,6 +27,16 @@ export default function ReviewTab() {
           <HStack>
             <Text fontWeight="500">Trạng thái:</Text>
             <Text>Đã phê duyệt</Text>
+          </HStack>
+
+          <HStack>
+            <Text fontWeight="500">Ảnh đính kèm:</Text>
+            <Image
+              src="https://www.noithatkaya.com/wp-content/uploads/2020/10/Cong-trinh-BIUBIU-STAR-14.webp"
+              alt="Ảnh đánh giá"
+              maxW="200px"
+              borderRadius="md"
+            />
           </HStack>
         </Stack>
       </Box>

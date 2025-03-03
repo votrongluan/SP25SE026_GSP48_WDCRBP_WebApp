@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { IconButton, Tooltip, Flex } from "@chakra-ui/react";
 import { ArrowUpIcon, ArrowDownIcon } from "@chakra-ui/icons";
-import { FaFacebookMessenger } from "react-icons/fa"; // Import Facebook Messenger icon
+import { FiMessageSquare } from "react-icons/fi"; // Import Facebook Messenger icon
 
 const ScrollToTopAndBottom = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -49,7 +49,7 @@ const ScrollToTopAndBottom = () => {
         gap="2"
       >
         <IconButton
-          icon={<FaFacebookMessenger />}
+          icon={<FiMessageSquare />}
           onClick={redirectToMessenger}
           bg="black"
           color="blue.500"

@@ -44,7 +44,7 @@ export default function ProcessTab() {
   return (
     <Box>
       <Heading fontWeight={500} fontSize="20px" mb={5} textAlign="center">
-        Quá trình thi công sản phẩm
+        Quá trình thực hiện dịch vụ
       </Heading>
 
       <VStack spacing={4} align="stretch">
