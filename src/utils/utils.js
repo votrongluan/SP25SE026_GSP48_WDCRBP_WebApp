@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import unorm from "unorm";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -18,6 +19,12 @@ export const convertTimeStampToDateString = (timestamp) => {
   const dateString = date.format("DD-MM-YYYY");
 
   return dateString;
+};
+
+export const convertTimeStampToDateTimeString = (timestamp) => {
+  const dateTime = dayjs(timestamp).tz("Asia/Ho_Chi_Minh");
+
+  return dateTime.format("DD-MM-YYYY hh:mm A"); // e.g., "01-03-2025 08:30 PM"
 };
 
 export const getDateNow = () => {
@@ -46,3 +53,10 @@ export const formatPrice = (price) => {
     currency: "VND",
   }).format(price);
 };
+
+export function normalizeVietnamese(text) {
+  return unorm
+    .nfd(text)
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}

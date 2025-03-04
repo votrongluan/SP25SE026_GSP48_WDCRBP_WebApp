@@ -1,7 +1,7 @@
 import { Outlet, ScrollRestoration, useNavigate } from "react-router-dom";
-import Header from "../components/Header.jsx";
+import Header from "../components/Header/Header.jsx";
 import { Box } from "@chakra-ui/react";
-import Footer from "../components/Footer.jsx";
+import Footer from "../components/Footer/Footer.jsx";
 import useAuth from "../hooks/useAuth.js";
 
 export default function RootLayout() {
@@ -19,7 +19,7 @@ export default function RootLayout() {
   return (
     <Box fontFamily="Nunito Sans">
       <Header />
-      <Box minH="50vh" pt="100px" bgColor="app_white.0" color="app_black.0">
+      <Box minH="50vh" pt="50px" bgColor="app_grey.1" color="black">
         <Outlet />
       </Box>
       <Footer />

@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
-import AdminSideBar from "../components/AdminSideBar.jsx";
-import RequireAuth from "../components/RequireAuth.jsx";
+import AdminSideBar from "../components/Sidebar/AdminSideBar.jsx";
+import RequireAuth from "../components/Utility/RequireAuth.jsx";
 
 function AdminLayout(props) {
   return (
@@ -12,8 +12,8 @@ function AdminLayout(props) {
         <Box
           position="fixed"
           as="aside"
-          bg="app_white.0"
-          color="app_black.0"
+          bg="white"
+          color="black"
           minHeight={{ lg: "100vh" }}
           minWidth="280px"
           p={{ base: "20px", lg: "30px" }}
@@ -23,9 +23,9 @@ function AdminLayout(props) {
 
         {/* main content & navbar */}
         <Box
-          color="app_black.0"
+          color="black"
           minH="100svh"
-          bgColor="app_grey.0"
+          bgColor="app_grey.1"
           as="main"
           p="40px"
           ml="280px"

@@ -5,66 +5,56 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import RootLayout from "./layouts/RootLayout.jsx";
-import { ChakraProvider, extendTheme, useDisclosure } from "@chakra-ui/react";
-import NotFoundPage from "./pages/customer/NotFoundPage.jsx";
-import ErrorPage from "./pages/customer/ErrorPage.jsx";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import NotFoundPage from "./pages/customer/Unauth/NotFoundPage.jsx";
+import ErrorPage from "./pages/customer/Unauth/ErrorPage.jsx";
 import { GlobalProvider } from "./context/GlobalContext.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
-import AuthPage from "./pages/customer/AuthPage.jsx";
+import AuthPage from "./pages/customer/Auth/AuthPage.jsx";
 import { AuthProvider } from "./context/AuthProvider.jsx";
-import AccountPage from "./pages/customer/AccountPage.jsx";
-import RequireAuth from "./components/RequireAuth.jsx";
-import UnauthorizedPage from "./pages/customer/UnauthorizedPage.jsx";
-import { useEffect, useState } from "react";
-import AboutPage from "./pages/customer/AboutPage.jsx";
-import ContactPage from "./pages/customer/ContactPage.jsx";
-import MaterialPage from "./pages/customer/MaterialPage.jsx";
-import ForumPage from "./pages/customer/ForumPage.jsx";
-import PostPage from "./pages/customer/PostPage.jsx";
-import PersonalizedPage from "./pages/customer/PersonalizedPage.jsx";
-import PrintOrderPage from "./pages/customer/PrintOrderPage.jsx";
-import ProductsPage from "./pages/customer/ProductsPage.jsx";
-import CartPage from "./pages/customer/CartPage.jsx";
-import ProductPage from "./pages/customer/ProductPage.jsx";
-import HomePage from "./pages/customer/HomePage.jsx";
+import UnauthorizedPage from "./pages/customer/Unauth/UnauthorizedPage.jsx";
+import { useEffect } from "react";
+import AboutPage from "./pages/customer/About/AboutPage.jsx";
+import ContactPage from "./pages/customer/Contact/ContactPage.jsx";
+import ProductsPage from "./pages/customer/Product/ProductsPage.jsx";
+import CartPage from "./pages/customer/Cart/CartPage.jsx";
+import HomePage from "./pages/customer/Home/HomePage.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
-import ProductManagePage from "./pages/admin/ProductManagePage.jsx";
-import OrderManagePage from "./pages/admin/OrderManagePage.jsx";
-import PrintManagePage from "./pages/admin/PrintManagePage.jsx";
-import DashboardPage from "./pages/admin/DashboardPage.jsx";
-import SplineModal from "./pages/customer/SplineModal.jsx";
-import MarketingDashboard from "./pages/admin/MarketingDashboard.jsx";
-import SupplierLayout from "./layouts/SupplierLayout.jsx";
-import AllOrderPage from "./pages/supplier/AllOrderPage.jsx";
-import OwnOrderPage from "./pages/supplier/OwnOrderPage.jsx";
-import VerifyPage from "./pages/customer/VerifyPage.jsx";
-import TestPage from "./pages/TestPage.jsx";
-import ScrollToTopAndBottom from "./components/ScrollToTopAndBottom.jsx";
-import OrderDetailPage from "./pages/customer/OrderDetailPage.jsx";
-import PrintOrderDetailPage from "./pages/customer/PrintOrderDetailPage.jsx";
-import SupplierDashboard from "./pages/supplier/SupplierDashboard.jsx";
+import WoodworkerLayout from "./layouts/WoodworkerLayout.jsx";
+import CustomerLayout from "./layouts/CustomerLayout.jsx";
+import ScrollToTopAndBottom from "./components/Utility/ScrollToTopAndBottom.jsx";
+import CustomerOrderDetailPage from "./pages/customer/OrderDetail/CustomerOrderDetailPage.jsx";
+import { appColorTheme } from "./config/appconfig.js";
+import WoodworkerOrderDetailPage from "./pages/woodworker/OrderDetail/WoodworkerOrderDetailPage.jsx";
+import ProductDetailPage from "./pages/customer/Product/ProductDetailPage.jsx";
+import WoodworkersPage from "./pages/customer/Woodworker/WoodworkersPage.jsx";
+import WoodworkerDetailPage from "./pages/customer/Woodworker/WoodworkerDetailPage.jsx";
+import DesignsPage from "./pages/customer/Design/DesignsPage.jsx";
+import DesignDetailPage from "./pages/customer/Design/DesignDetailPage.jsx";
+import PersonalizationRequestPage from "./pages/customer/PersonalizationRequest/PersonalizationRequestPage.jsx";
 
 function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const [splineIsOpen, setSplineIsOpen] = useState(false);
-
   const theme = extendTheme({
     colors: {
       app_brown: {
-        0: "#F8E1B7",
+        0: appColorTheme.brown_0,
+        1: appColorTheme.brown_1,
+        2: appColorTheme.brown_2,
       },
       app_white: {
-        0: "#ffffff",
+        0: appColorTheme.white_0,
       },
       app_black: {
-        0: "#00060F",
+        0: appColorTheme.black_0,
       },
       app_grey: {
-        0: "#F7F7F7",
-        1: "#EAEAEA",
+        0: appColorTheme.grey_0,
+        1: appColorTheme.grey_1,
+        2: appColorTheme.grey_2,
       },
     },
   });
@@ -73,67 +63,49 @@ function App() {
     createRoutesFromElements(
       <Route>
         {/* Admin page route */}
-        <Route path="admin" element={<AdminLayout />}>
-          <Route index element={<DashboardPage />} />
-          <Route path="dashboard" element={<DashboardPage />} />
-          <Route path="product" element={<ProductManagePage />} />
-          <Route path="order" element={<OrderManagePage />} />
-          <Route path="print" element={<PrintManagePage />} />
+        <Route path="ad" element={<AdminLayout />}></Route>
+
+        {/* Woodworker page route */}
+        <Route path="ww" element={<WoodworkerLayout />}>
+          <Route index element={<NotFoundPage />} />
+          <Route path="dashboard" element={<NotFoundPage />} />
+          <Route path="order-detail" element={<WoodworkerOrderDetailPage />} />
         </Route>
 
-        {/* Supplier page route */}
-        <Route path="supplier" element={<SupplierLayout />}>
-          <Route index element={<SupplierDashboard />} />
-          <Route path="dashboard" element={<SupplierDashboard />} />
-          <Route path="task" element={<AllOrderPage />} />
-          <Route path="own" element={<OwnOrderPage />} />
+        {/* Customer page route */}
+        <Route path="cus" element={<CustomerLayout />}>
+          <Route index element={<NotFoundPage />} />
+          <Route path="dashboard" element={<NotFoundPage />} />
+          <Route path="order-detail" element={<CustomerOrderDetailPage />} />
         </Route>
 
+        {/* Guest page route */}
         <Route path="/" element={<RootLayout />} errorElement={<ErrorPage />}>
           {/* Index page route */}
+          <Route path="personalize" element={<PersonalizationRequestPage />} />
           <Route index element={<HomePage />} />
-          <Route path="test" element={<TestPage />} />
 
           {/* Auth route */}
           <Route path="auth" element={<AuthPage />} />
-
           <Route path="about" element={<AboutPage />} />
-          <Route path="account" element={<AccountPage />} />
-          <Route path="order">
-            <Route path=":id" element={<OrderDetailPage />} />
-          </Route>
-          <Route path="printorder">
-            <Route path=":id" element={<PrintOrderDetailPage />} />
-          </Route>
           <Route path="contact" element={<ContactPage />} />
-          <Route path="material" element={<MaterialPage />} />
-          <Route path="forum">
-            <Route index element={<ForumPage />} />
-            <Route path=":id" element={<PostPage />} />
-          </Route>
-          <Route
-            path="personalized"
-            element={
-              <PersonalizedPage
-                onOpen={() => {
-                  setSplineIsOpen(true);
-                  console.log("ol");
-                }}
-              />
-            }
-          />
-          <Route path="print" element={<PrintOrderPage />} />
+
           <Route path="products">
             <Route index element={<ProductsPage />} />
-            <Route path=":id" element={<ProductPage />} />
+            <Route path=":id" element={<ProductDetailPage />} />
           </Route>
-          <Route path="cart" element={<CartPage />} />
 
-          {/* User information route */}
-          <Route path="users">
-            <Route index element={<NotFoundPage />} />
-            <Route path=":id" element={<AccountPage />} />
+          <Route path="wws">
+            <Route index element={<WoodworkersPage />} />
+            <Route path=":id" element={<WoodworkerDetailPage />} />
           </Route>
+
+          <Route path="designs">
+            <Route index element={<DesignsPage />} />
+            <Route path=":id" element={<DesignDetailPage />} />
+          </Route>
+
+          <Route path="cart" element={<CartPage />} />
         </Route>
 
         {/* Unauthorized route */}
