@@ -1,47 +1,7 @@
 import { useState } from "react";
 import { Box, Flex, Heading, Text, Image } from "@chakra-ui/react";
-import { StarIcon } from "@chakra-ui/icons";
-import { appColorTheme } from "../../../config/appconfig.js";
-
-function StarRating({ rating }) {
-  return (
-    <Box display="inline-block" color="yellow.400">
-      {Array(5)
-        .fill("")
-        .map((_, i) => (
-          <StarIcon
-            key={i}
-            boxSize={4}
-            mr={0.5}
-            color={i < rating ? "yellow.400" : "gray.300"}
-          />
-        ))}
-    </Box>
-  );
-}
-
-/**
- * FilterPill: Thẻ lọc (VD: "Tất cả", "5 Sao", "4 Sao", ...)
- * - Thay đổi màu nền khi isActive=true
- */
-function FilterPill({ label, isActive, onClick }) {
-  return (
-    <Box
-      px={3}
-      py={1}
-      borderRadius="full"
-      cursor="pointer"
-      fontSize="sm"
-      bgColor={
-        isActive ? `${appColorTheme.brown_2}` : `${appColorTheme.grey_1}`
-      }
-      color={isActive ? "white" : "black"}
-      onClick={onClick}
-    >
-      {label}
-    </Box>
-  );
-}
+import StarRating from "../../../components/Utility/StarRating.jsx";
+import FilterPill from "../../../components/Utility/FilterPill.jsx";
 
 export default function ReviewSection() {
   const [filterStar, setFilterStar] = useState(null);
