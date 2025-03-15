@@ -16,21 +16,21 @@ import UnauthorizedPage from "./pages/customer/Unauth/UnauthorizedPage.jsx";
 import { useEffect } from "react";
 import AboutPage from "./pages/customer/About/AboutPage.jsx";
 import ContactPage from "./pages/customer/Contact/ContactPage.jsx";
-import ProductsPage from "./pages/customer/Product/ProductsPage.jsx";
+import ProductsPage from "./pages/customer/Product/ProductList/ProductsPage.jsx";
 import CartPage from "./pages/customer/Cart/CartPage.jsx";
 import HomePage from "./pages/customer/Home/HomePage.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
 import WoodworkerLayout from "./layouts/WoodworkerLayout.jsx";
 import CustomerLayout from "./layouts/CustomerLayout.jsx";
 import ScrollToTopAndBottom from "./components/Utility/ScrollToTopAndBottom.jsx";
-import CustomerOrderDetailPage from "./pages/customer/OrderDetail/CustomerOrderDetailPage.jsx";
+import CustomerOrderDetailPage from "./pages/customer/Order/OrderDetail/CustomerOrderDetailPage.jsx";
 import { appColorTheme } from "./config/appconfig.js";
 import WoodworkerOrderDetailPage from "./pages/woodworker/OrderDetail/WoodworkerOrderDetailPage.jsx";
-import ProductDetailPage from "./pages/customer/Product/ProductDetailPage.jsx";
-import WoodworkersPage from "./pages/customer/Woodworker/WoodworkersPage.jsx";
-import WoodworkerDetailPage from "./pages/customer/Woodworker/WoodworkerDetailPage.jsx";
-import DesignsPage from "./pages/customer/Design/DesignsPage.jsx";
-import DesignDetailPage from "./pages/customer/Design/DesignDetailPage.jsx";
+import ProductDetailPage from "./pages/customer/Product/ProductDetail/ProductDetailPage.jsx";
+import WoodworkersPage from "./pages/customer/Woodworker/WoodworkerList/WoodworkersPage.jsx";
+import WoodworkerDetailPage from "./pages/customer/Woodworker/WoodworkerDetail/WoodworkerDetailPage.jsx";
+import DesignsPage from "./pages/customer/Design/DesignList/DesignsPage.jsx";
+import DesignDetailPage from "./pages/customer/Design/DesignDetail/DesignDetailPage.jsx";
 import PersonalizationRequestPage from "./pages/customer/PersonalizationRequest/PersonalizationRequestPage.jsx";
 
 function App() {

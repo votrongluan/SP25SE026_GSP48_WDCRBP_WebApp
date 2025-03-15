@@ -16,15 +16,14 @@ export const convertDateStringToDate = (dateString) => {
 export const convertTimeStampToDateString = (timestamp) => {
   const date = dayjs(timestamp).tz("Asia/Ho_Chi_Minh");
 
-  const dateString = date.format("DD-MM-YYYY");
+  const dateString = date.format("DD/MM/YYYY");
 
   return dateString;
 };
 
 export const convertTimeStampToDateTimeString = (timestamp) => {
   const dateTime = dayjs(timestamp).tz("Asia/Ho_Chi_Minh");
-
-  return dateTime.format("DD-MM-YYYY hh:mm A"); // e.g., "01-03-2025 08:30 PM"
+  return dateTime.format("DD/MM/YYYY HH:mm");
 };
 
 export const getDateNow = () => {
@@ -39,6 +38,7 @@ export const generateBarcode = (type) => {
   const randomNum = Math.floor(100000 + Math.random() * 900000);
   return type.typeName.toUpperCase() + randomNum;
 };
+
 export const convertDateToDateString = (dateString) => {
   const date = new Date(dateString);
   const day = date.getUTCDate().toString().padStart(2, "0");
