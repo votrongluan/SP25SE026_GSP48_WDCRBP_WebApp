@@ -32,6 +32,8 @@ import WoodworkerDetailPage from "./pages/customer/Woodworker/WoodworkerDetail/W
 import DesignsPage from "./pages/customer/Design/DesignList/DesignsPage.jsx";
 import DesignDetailPage from "./pages/customer/Design/DesignDetail/DesignDetailPage.jsx";
 import PersonalizationRequestPage from "./pages/customer/PersonalizationRequest/PersonalizationRequestPage.jsx";
+import { Provider } from "react-redux";
+import { store } from "./store/store.js";
 
 function App() {
   useEffect(() => {
@@ -90,17 +92,17 @@ function App() {
           <Route path="about" element={<AboutPage />} />
           <Route path="contact" element={<ContactPage />} />
 
-          <Route path="products">
+          <Route path="product">
             <Route index element={<ProductsPage />} />
             <Route path=":id" element={<ProductDetailPage />} />
           </Route>
 
-          <Route path="wws">
+          <Route path="woodworker">
             <Route index element={<WoodworkersPage />} />
             <Route path=":id" element={<WoodworkerDetailPage />} />
           </Route>
 
-          <Route path="designs">
+          <Route path="design">
             <Route index element={<DesignsPage />} />
             <Route path=":id" element={<DesignDetailPage />} />
           </Route>
@@ -118,16 +120,18 @@ function App() {
   );
 
   return (
-    <AuthProvider>
-      <GlobalProvider>
-        <CartProvider>
-          <ChakraProvider theme={theme}>
-            <ScrollToTopAndBottom />
-            <RouterProvider router={router} />
-          </ChakraProvider>
-        </CartProvider>
-      </GlobalProvider>
-    </AuthProvider>
+    <Provider store={store}>
+      <AuthProvider>
+        <GlobalProvider>
+          <CartProvider>
+            <ChakraProvider theme={theme}>
+              <ScrollToTopAndBottom />
+              <RouterProvider router={router} />
+            </ChakraProvider>
+          </CartProvider>
+        </GlobalProvider>
+      </AuthProvider>
+    </Provider>
   );
 }
 

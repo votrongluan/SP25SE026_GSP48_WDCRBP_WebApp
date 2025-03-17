@@ -1,36 +1,46 @@
+import React, { useState } from "react";
 import { Box } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 import CustomerSidebar from "../components/Sidebar/CustomerSidebar.jsx";
+import Header from "../components/Header/Header.jsx";
 
-function CustomerLayout(props) {
+export default function CustomerLayout() {
+  // State to track sidebar collapse
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   return (
     <Box>
-      {/* sidebar */}
-      <Box
-        position="fixed"
-        as="aside"
-        bg="white"
-        color="black"
-        minHeight={{ lg: "100vh" }}
-        minWidth="280px"
-        p={{ base: "20px", lg: "30px" }}
-      >
-        <CustomerSidebar />
-      </Box>
+      <Header />
+      <Box>
+        <Box
+          as="aside"
+          position="fixed"
+          bg="white"
+          color="black"
+          minHeight="100vh"
+          pt={5}
+          px={5}
+          width={isCollapsed ? "80px" : "300px"}
+          transition="width 0.3s"
+        >
+          <CustomerSidebar
+            isCollapsed={isCollapsed}
+            setIsCollapsed={setIsCollapsed}
+          />
+        </Box>
 
-      {/* main content & navbar */}
-      <Box
-        color="black"
-        minH="100svh"
-        bgColor="app_grey.0"
-        as="main"
-        p="40px"
-        ml="280px"
-      >
-        <Outlet />
+        <Box
+          as="main"
+          bgColor="app_grey.1"
+          color="black"
+          minH="100svh"
+          p={10}
+          ml={isCollapsed ? "80px" : "300px"}
+          transition="margin-left 0.3s"
+        >
+          <Outlet />
+        </Box>
       </Box>
     </Box>
   );
 }
-
-export default CustomerLayout;

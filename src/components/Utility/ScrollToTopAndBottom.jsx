@@ -6,9 +6,8 @@ import { FiMessageSquare } from "react-icons/fi"; // Import Facebook Messenger i
 const ScrollToTopAndBottom = () => {
   const [isVisible, setIsVisible] = useState(true);
 
-  // Show buttons when page is scrolled down 300px
   const toggleVisibility = () => {
-    if (window.pageYOffset >= 0) {
+    if (window.pageYOffset >= 300) {
       setIsVisible(true);
     } else {
       setIsVisible(false);
@@ -29,10 +28,6 @@ const ScrollToTopAndBottom = () => {
     });
   };
 
-  const redirectToMessenger = () => {
-    window.open("https://m.me/61566307373631", "_blank");
-  };
-
   useEffect(() => {
     window.addEventListener("scroll", toggleVisibility);
     return () => window.removeEventListener("scroll", toggleVisibility);
@@ -48,15 +43,6 @@ const ScrollToTopAndBottom = () => {
         zIndex="1000"
         gap="2"
       >
-        <IconButton
-          icon={<FiMessageSquare />}
-          onClick={redirectToMessenger}
-          bg="black"
-          color="blue.500"
-          _hover={{ opacity: "0.5" }}
-          size="lg"
-          borderRadius="full"
-        />
         {isVisible && (
           <>
             <IconButton

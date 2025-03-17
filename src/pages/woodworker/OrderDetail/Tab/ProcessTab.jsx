@@ -4,6 +4,11 @@ import { appColorTheme } from "../../../../config/appconfig.js";
 
 const processUpdates = [
   {
+    id: 0,
+    timestamp: "03/03/2025 - 04:00 PM",
+    status: "Đã nhận",
+  },
+  {
     id: 1,
     timestamp: "03/03/2025 - 04:00 PM",
     status: "Đã nhận",

@@ -12,6 +12,7 @@ import useAuth from "../../hooks/useAuth.js";
 import axios from "../../api/axios.js";
 import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
+import { appColorTheme } from "../../config/appconfig.js";
 
 export default function Login({ changeTab }) {
   const toast = useToast();
@@ -102,8 +103,8 @@ export default function Login({ changeTab }) {
         </FormControl>
 
         <Button
-          color="black"
-          bgColor="app_brown.0"
+          color="white"
+          bgColor={appColorTheme.brown_2}
           width="100%"
           type="submit"
           mt="30px"
@@ -117,14 +118,14 @@ export default function Login({ changeTab }) {
         <Box
           onClick={() => changeTab("forgetPassword")}
           cursor="pointer"
-          color="app_brown.0"
+          color={appColorTheme.brown_2}
         >
           Quên mật khẩu
         </Box>
         <Box
           onClick={() => changeTab("register")}
           cursor="pointer"
-          color="app_brown.0"
+          color={appColorTheme.brown_2}
         >
           Đăng ký
         </Box>

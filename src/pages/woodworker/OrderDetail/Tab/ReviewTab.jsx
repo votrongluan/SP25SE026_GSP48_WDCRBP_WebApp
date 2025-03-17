@@ -4,10 +4,10 @@ import { convertTimeStampToDateTimeString } from "../../../../utils/utils.js";
 export default function ReviewTab() {
   return (
     <>
-      <Heading fontWeight={500} fontSize="20px" mb={5} textAlign="center">
-        Đánh giá đơn hàng
-      </Heading>
       <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
+        <Heading fontWeight={500} fontSize="20px" mb={5}>
+          Đánh giá đơn hàng
+        </Heading>
         <Stack spacing={4}>
           <HStack>
             <Text fontWeight="500">Số sao:</Text>

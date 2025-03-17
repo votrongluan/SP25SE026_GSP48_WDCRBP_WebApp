@@ -17,6 +17,7 @@ import { appColorTheme } from "../../../../config/appconfig.js";
 import ReviewSection from "./ReviewSection.jsx";
 import StarRating from "../../../../components/Utility/StarRating.jsx";
 import { FiShoppingBag, FiShoppingCart } from "react-icons/fi";
+import ImageListSelector from "../../../../components/Utility/ImageListSelector.jsx";
 
 export default function ProductDetailPage() {
   const product = {
@@ -42,18 +43,6 @@ export default function ProductDetailPage() {
     scent: "Gỗ tự nhiên",
   };
 
-  // Tách chuỗi media_urls thành mảng các URL
-  const imageList = product.media_urls ? product.media_urls.split(";") : [];
-
-  // Ảnh chính ban đầu lấy từ imageUrl, nếu không có thì lấy phần tử đầu của imageList
-  const [mainImage, setMainImage] = useState(
-    product.imageUrl || imageList[0] || ""
-  );
-
-  const handleThumbnailClick = (img) => {
-    setMainImage(img);
-  };
-
   return (
     <Container w="90%" maxW="1400px" pb="50px">
       <Box height="70px">
@@ -69,55 +58,8 @@ export default function ProductDetailPage() {
 
       <Box>
         <Grid templateColumns={{ base: "1fr", xl: "1fr 1fr" }} gap={5}>
-          {/* Cột hình ảnh */}
           <Box borderRadius="10px" p={5} bgColor="white" boxShadow="md">
-            {/* Hình ảnh chính */}
-            <Box mb={4}>
-              {mainImage ? (
-                <Image
-                  src={mainImage}
-                  alt={product.product_name}
-                  borderRadius="md"
-                  w="100%"
-                  h="500px"
-                  objectFit="contain"
-                />
-              ) : (
-                <Box
-                  w="100%"
-                  h="300px"
-                  bgColor="gray.200"
-                  borderRadius="md"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Text>Không có ảnh</Text>
-                </Box>
-              )}
-            </Box>
-
-            {/* Danh sách ảnh nhỏ phía dưới hình ảnh chính */}
-            <Flex gap={4} overflowX="auto">
-              {imageList.map((img, index) => (
-                <Image
-                  key={index}
-                  src={img}
-                  alt={`${product.product_name || "Sản phẩm"} - ${index}`}
-                  w="80px"
-                  h="80px"
-                  objectFit="cover"
-                  borderRadius="md"
-                  cursor="pointer"
-                  border={
-                    mainImage === img
-                      ? "2px solid #3182CE"
-                      : "2px solid transparent"
-                  }
-                  onClick={() => handleThumbnailClick(img)}
-                />
-              ))}
-            </Flex>
+            <ImageListSelector imgUrls={product.media_urls} />
           </Box>
 
           {/* Cột thông tin sản phẩm */}

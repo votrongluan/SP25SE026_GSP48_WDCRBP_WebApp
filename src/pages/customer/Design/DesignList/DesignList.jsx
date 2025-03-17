@@ -97,7 +97,7 @@ export function DesignList() {
                 </Text>
 
                 <Flex justifyContent="space-between">
-                  <Text color="gray.500">{product.design_code}</Text>
+                  <Text fontWeight="500">{product.design_code}</Text>
                   <Text>⭐ {product.rating}</Text>
                 </Flex>
               </Box>

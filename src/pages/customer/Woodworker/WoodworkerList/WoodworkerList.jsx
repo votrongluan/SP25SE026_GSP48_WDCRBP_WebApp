@@ -97,7 +97,7 @@ export function WoodworkerList() {
                 </Text>
 
                 <Flex justifyContent="space-between">
-                  <Text color="gray.500">{product.price}</Text>
+                  <Text fontWeight="500">{product.price}</Text>
                   <Text>⭐ {product.rating}</Text>
                 </Flex>
               </Box>

@@ -9,27 +9,17 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Flex,
-  Heading,
   HStack,
   IconButton,
-  Image,
   Link as ChakraLink,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Spacer,
-  Text,
   useDisclosure,
   VStack,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
-import { Link, NavLink as RouterNavLink } from "react-router-dom";
+import { NavLink as RouterNavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth.js";
-import logo from "/src/assets/images/logo.jpg";
-import { AccountCircleRounded, ShoppingCart } from "@mui/icons-material";
-import Cart from "../Cart/Cart.jsx";
 import BrandLogo from "./BrandLogo.jsx";
 import AccountMenu from "./AccountMenu.jsx";
 import { appColorTheme } from "../../config/appconfig.js";
@@ -38,9 +28,9 @@ function Header() {
   const { auth, setAuth } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const links = [
-    { path: "/products", label: "Sản phẩm" },
-    { path: "/designs", label: "Thiết kế" },
-    { path: "/wws", label: "Thợ mộc" },
+    { path: "/product", label: "Sản phẩm" },
+    { path: "/design", label: "Thiết kế" },
+    { path: "/woodworker", label: "Thợ mộc" },
     { path: "/contact", label: "Liên hệ" },
     { path: "/about", label: "Về chúng tôi" },
   ];
