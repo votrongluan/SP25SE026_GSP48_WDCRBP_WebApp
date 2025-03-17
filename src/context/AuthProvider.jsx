@@ -11,10 +11,8 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (auth) {
-      // Set cookie with an expiration of 5 days
       Cookies.set("auth", JSON.stringify(auth), { expires: 5 });
     } else {
-      // Remove the cookie if auth is null
       Cookies.remove("auth");
     }
   }, [auth]);
