@@ -14,7 +14,6 @@ import AuthPage from "./pages/customer/Auth/AuthPage.jsx";
 import { AuthProvider } from "./context/AuthProvider.jsx";
 import UnauthorizedPage from "./pages/customer/Unauth/UnauthorizedPage.jsx";
 import { useEffect } from "react";
-import AboutPage from "./pages/customer/About/AboutPage.jsx";
 import ContactPage from "./pages/customer/Contact/ContactPage.jsx";
 import ProductsPage from "./pages/customer/Product/ProductList/ProductsPage.jsx";
 import CartPage from "./pages/customer/Cart/CartPage.jsx";
@@ -34,6 +33,7 @@ import DesignDetailPage from "./pages/customer/Design/DesignDetail/DesignDetailP
 import PersonalizationRequestPage from "./pages/customer/PersonalizationRequest/PersonalizationRequestPage.jsx";
 import { Provider } from "react-redux";
 import { store } from "./store/store.js";
+import ContractPage from "./pages/customer/Contract/ContractPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -79,6 +79,10 @@ function App() {
           <Route index element={<NotFoundPage />} />
           <Route path="dashboard" element={<NotFoundPage />} />
           <Route path="order-detail" element={<CustomerOrderDetailPage />} />
+          <Route path="contract">
+            <Route index element={<ContractPage />} />
+            <Route path=":id" element={<DesignDetailPage />} />
+          </Route>
         </Route>
 
         {/* Guest page route */}
@@ -89,7 +93,6 @@ function App() {
 
           {/* Auth route */}
           <Route path="auth" element={<AuthPage />} />
-          <Route path="about" element={<AboutPage />} />
           <Route path="contact" element={<ContactPage />} />
 
           <Route path="product">

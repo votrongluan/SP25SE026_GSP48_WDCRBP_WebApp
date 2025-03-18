@@ -30,9 +30,8 @@ function Header() {
   const links = [
     { path: "/product", label: "Sản phẩm" },
     { path: "/design", label: "Thiết kế" },
-    { path: "/woodworker", label: "Thợ mộc" },
+    { path: "/woodworker", label: "Xưởng mộc" },
     { path: "/contact", label: "Liên hệ" },
-    { path: "/about", label: "Về chúng tôi" },
   ];
   const navLinkStyle = ({ isActive }) => {
     return {
