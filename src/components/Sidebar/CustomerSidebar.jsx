@@ -42,10 +42,10 @@ export default function CustomerSidebar({ isCollapsed, setIsCollapsed }) {
   ];
 
   return (
-    <Box position="relative">
+    <Box mt={5} position="relative">
       <IconButton
         position="absolute"
-        bottom="0"
+        top="50%"
         right="-35px"
         size="sm"
         variant="ghost"
@@ -63,21 +63,26 @@ export default function CustomerSidebar({ isCollapsed, setIsCollapsed }) {
             overflowY="auto"
             height="65px"
             fontSize="1.2rem"
-            p={0}
             key={index}
             transition="margin ease 0.3s"
             _hover={{
               color: "app_brown.1",
-              ml: "8px",
+              ml: 2,
             }}
           >
             <NavLink style={navLinkStyle} to={item.path}>
               {isCollapsed ? (
-                <Flex justifyContent="center" align="center" gap={2}>
+                <Flex p={3} justifyContent="center" align="center" gap={2}>
                   <Icon as={item.icon} />
                 </Flex>
               ) : (
-                <Flex align="center" gap={2}>
+                <Flex
+                  bgColor={appColorTheme.grey_0}
+                  p={4}
+                  align="center"
+                  gap={2}
+                  borderRadius="20px"
+                >
                   <Icon as={item.icon} />
                   <Text>{item.label}</Text>
                 </Flex>

@@ -18,7 +18,6 @@ export default function CustomerLayout() {
           bg="white"
           color="black"
           minHeight="100vh"
-          pt={5}
           px={5}
           width={isCollapsed ? "80px" : "300px"}
           transition="width 0.3s"
