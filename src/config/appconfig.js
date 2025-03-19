@@ -60,4 +60,6 @@ export const appColorTheme = {
   black_0: "#00060F",
   white_0: "#ffffff",
   green_0: "#6B8E23 ",
+  blue_0: "#3182ce",
+  red_0: "#BF3131",
 };

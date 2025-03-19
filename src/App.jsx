@@ -35,6 +35,7 @@ import { store } from "./store/store.js";
 import ContractPage from "./pages/customer/Contract/ContractPage.jsx";
 import TestPage from "./pages/TestPage.jsx";
 import ProductsPage from "./pages/customer/Product/ProductList/ProductsPage.jsx";
+import ServiceOrderListPage from "./pages/customer/ServiceOrder/ServiceOrderList/ServiceOrderListPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -59,6 +60,15 @@ function App() {
         1: appColorTheme.grey_1,
         2: appColorTheme.grey_2,
       },
+      app_blue: {
+        0: appColorTheme.blue_0,
+      },
+      app_green: {
+        0: appColorTheme.green_0,
+      },
+      app_red: {
+        0: appColorTheme.red_0,
+      },
     },
   });
 
@@ -79,7 +89,10 @@ function App() {
         <Route path="cus" element={<CustomerLayout />}>
           <Route index element={<NotFoundPage />} />
           <Route path="dashboard" element={<NotFoundPage />} />
-          <Route path="order-detail" element={<CustomerOrderDetailPage />} />
+          <Route path="service-order">
+            <Route index element={<ServiceOrderListPage />} />
+            <Route path=":id" element={<CustomerOrderDetailPage />} />
+          </Route>
           <Route path="contract">
             <Route index element={<ContractPage />} />
             <Route path=":id" element={<DesignDetailPage />} />

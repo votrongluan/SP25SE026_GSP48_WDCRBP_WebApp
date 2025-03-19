@@ -13,11 +13,13 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import ReviewSection from "./Tab/ReviewSection.jsx";
+import ReviewSection from "./Tab/ReviewTab/ReviewSection.jsx";
 import StarRating from "../../../../components/Utility/StarRating.jsx";
 import { FiBox, FiPenTool, FiStar, FiTool, FiUserCheck } from "react-icons/fi";
 import WoodworkerProductTab from "./Tab/ProductTab/WoodworkerProductTab.jsx";
 import WoodworkerDesignsTab from "./Tab/DesignTab/WoodworkerDesignsTab.jsx";
+import AvailableService from "./Tab/ServiceTab/AvailableService.jsx";
+import PostTab from "./Tab/PostTab/PostTab.jsx";
 
 export default function WoodworkerDetailPage() {
   return (
@@ -125,8 +127,12 @@ export default function WoodworkerDetailPage() {
           </TabList>
 
           <TabPanels>
-            <TabPanel p={0}></TabPanel>
-            <TabPanel p={0}></TabPanel>
+            <TabPanel p={0}>
+              <PostTab />
+            </TabPanel>
+            <TabPanel p={0}>
+              <AvailableService />
+            </TabPanel>
             <TabPanel p={0}>
               <WoodworkerDesignsTab />
             </TabPanel>

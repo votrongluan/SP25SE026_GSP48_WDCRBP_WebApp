@@ -21,21 +21,12 @@ import {
   FiHome,
 } from "react-icons/fi";
 import { appColorTheme } from "../../config/appconfig.js";
-import { useEffect } from "react";
 
 export default function CustomerSidebar({ isCollapsed, setIsCollapsed }) {
-  const isLargeScreen = useBreakpointValue({ base: false, xl: true });
-
-  useEffect(() => {
-    if (!isLargeScreen) {
-      setIsCollapsed(true);
-    }
-  }, [isLargeScreen, setIsCollapsed]);
-
   const navLinkStyle = ({ isActive }) => ({
     display: "block",
     color: isActive ? appColorTheme.brown_1 : null,
-    fontWeight: isActive ? "500" : null,
+    fontWeight: isActive ? "bold" : null,
     cursor: "pointer",
   });
 

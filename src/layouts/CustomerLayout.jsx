@@ -36,9 +36,7 @@ export default function CustomerLayout() {
           ml={isCollapsed ? "80px" : "300px"}
           transition="margin-left 0.3s"
         >
-          <Container w="90%" maxW="1400px">
-            <Outlet />
-          </Container>
+          <Outlet />
         </Box>
       </Box>
     </Box>

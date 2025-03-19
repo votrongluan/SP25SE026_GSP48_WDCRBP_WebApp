@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Box, Flex, Heading, Text, Image, HStack } from "@chakra-ui/react";
-import StarRating from "../../../../../components/Utility/StarRating.jsx";
-import FilterPill from "../../../../../components/Utility/FilterPill.jsx";
+import StarRating from "../../../../../../components/Utility/StarRating.jsx";
+import FilterPill from "../../../../../../components/Utility/FilterPill.jsx";
 import { FiBook, FiClock } from "react-icons/fi";
 
 export default function ReviewSection() {

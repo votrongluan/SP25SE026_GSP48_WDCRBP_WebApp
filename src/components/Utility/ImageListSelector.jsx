@@ -3,10 +3,8 @@ import { useState } from "react";
 import { appColorTheme } from "../../config/appconfig";
 
 export default function ImageListSelector({ imgUrls }) {
-  // Tách chuỗi media_urls thành mảng các URL
   const imageList = imgUrls ? imgUrls.split(";") : [];
 
-  // Ảnh chính ban đầu lấy từ imageUrl, nếu không có thì lấy phần tử đầu của imageList
   const [mainImage, setMainImage] = useState(imageList[0] || "");
 
   const handleThumbnailClick = (img) => {
@@ -23,6 +21,8 @@ export default function ImageListSelector({ imgUrls }) {
             w="100%"
             h="500px"
             objectFit="contain"
+            borderTop="1px solid gray"
+            borderBottom="1px solid gray"
           />
         ) : (
           <Box
