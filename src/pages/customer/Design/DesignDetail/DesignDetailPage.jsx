@@ -6,47 +6,36 @@ import {
   Flex,
   Grid,
   Heading,
+  HStack,
   Image,
   Spacer,
   Stack,
   Text,
+  VStack,
+  Link as ChakraLink,
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import ReviewSection from "./ReviewSection.jsx";
 import StarRating from "../../../../components/Utility/StarRating.jsx";
-import { FiShoppingBag } from "react-icons/fi";
+import { FiShoppingBag, FiShoppingCart } from "react-icons/fi";
+import ImageListSelector from "../../../../components/Utility/ImageListSelector.jsx";
+import DesignVariantConfig from "./DesignVariantConfig.jsx";
 
 export default function DesignDetailPage() {
-  // Ví dụ dữ liệu lấy từ bảng CustomizationDesign (giả lập)
-  const design = {
-    customization_design_id: "123",
-    name: "Giường 2 tầng Bubu",
+  const product = {
+    product_id: "111",
+    product_name: "Giường 2 tầng Bubu",
     media_urls:
       "https://noithatthaibinh.com/wp-content/uploads/2023/10/Giuong-2-tang-tre-em-1m2-MS-3014-1.jpg;https://www.noithatkaya.com/wp-content/uploads/2020/10/Cong-trinh-BIUBIU-STAR-14.webp",
-    description: "Giường 2 tầng xinh xắn, thiết kế tùy chỉnh phù hợp phòng nhỏ",
-    category: "Giường 1 tầng",
-    design_code: "BUBU-2TANG",
-    woodworker_profile_id: 456,
-  };
-
-  // Tách chuỗi media_urls thành mảng các URL
-  const imageList = design.media_urls ? design.media_urls.split(";") : [];
-
-  // Ảnh chính ban đầu lấy từ phần tử đầu của imageList (nếu có)
-  const [mainImage, setMainImage] = useState(imageList[0] || "");
-
-  const handleThumbnailClick = (img) => {
-    setMainImage(img);
   };
 
   return (
-    <Container w="90%" maxW="1400px" pb="50px">
-      {/* Tiêu đề */}
-      <Box height="70px">
+    <>
+      <Box mb={5}>
         <Heading
           fontWeight="normal"
           as="h2"
-          fontSize="26px"
+          fontSize="22px"
           fontFamily="Montserrat"
         >
           Chi tiết thiết kế
@@ -55,111 +44,42 @@ export default function DesignDetailPage() {
 
       <Box>
         <Grid templateColumns={{ base: "1fr", xl: "1fr 1fr" }} gap={5}>
-          {/* Cột hình ảnh */}
           <Box borderRadius="10px" p={5} bgColor="white" boxShadow="md">
-            {/* Hình ảnh chính */}
-            <Box mb={4}>
-              {mainImage ? (
-                <Image
-                  src={mainImage}
-                  alt={design.name}
-                  borderRadius="md"
-                  w="100%"
-                  h="400px"
-                  objectFit="contain"
-                />
-              ) : (
-                <Box
-                  w="100%"
-                  h="300px"
-                  bgColor="gray.200"
-                  borderRadius="md"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Text>Không có ảnh</Text>
-                </Box>
-              )}
-            </Box>
-
-            {/* Danh sách ảnh nhỏ phía dưới hình ảnh chính */}
-            <Flex gap={4} overflowX="auto">
-              {imageList.map((img, index) => (
-                <Image
-                  key={index}
-                  src={img}
-                  alt={`${design.name || "Thiết kế"} - ${index}`}
-                  w="80px"
-                  h="80px"
-                  objectFit="cover"
-                  borderRadius="md"
-                  cursor="pointer"
-                  border={
-                    mainImage === img
-                      ? "2px solid #3182CE"
-                      : "2px solid transparent"
-                  }
-                  onClick={() => handleThumbnailClick(img)}
-                />
-              ))}
-            </Flex>
+            <ImageListSelector imgUrls={product.media_urls} />
           </Box>
 
-          {/* Cột thông tin thiết kế */}
           <Stack borderRadius="10px" p={5} bgColor="white" boxShadow="md">
             <Stack spacing={4}>
               <Flex justifyContent="space-between" alignContent="center">
-                <Heading fontWeight="500" fontSize="20px">
-                  {design.name}
+                <Heading fontWeight="bold" fontSize="20px">
+                  {product.product_name || "Tên sản phẩm"}
                 </Heading>
                 <Flex alignContent="center" gap={2}>
-                  <StarRating rating={4.5} />
+                  {" "}
+                  <StarRating rating={3.5} />
                   13 đánh giá
                 </Flex>
               </Flex>
 
-              <Text>
-                <strong>Mã thiết kế:</strong>{" "}
-                {design.design_code || "Đang cập nhật..."}
-              </Text>
+              <HStack>
+                <Text fontWeight="bold">Loại sản phẩm:</Text>
+                <Text>Chưa cập nhật</Text>
+              </HStack>
 
-              <Text>
-                <strong>Loại sản phẩm:</strong>{" "}
-                {design.category ?? "Đang cập nhật..."}
-              </Text>
-
-              <Text>
-                <strong>Mô tả:</strong>{" "}
-                {design.description || "Đang cập nhật..."}
-              </Text>
-
-              <Stack mt={5} gap={4}>
-                <Text>
-                  <strong>Thông tin xưởng mộc thiết kế và gia công</strong>{" "}
-                </Text>
-
-                <Text>
-                  <strong>Tên:</strong> An Nam xưởng
-                </Text>
-
-                <Text>
-                  <strong>Địa chỉ:</strong> 183 đường Lê Thánh Tông, phường số 2
-                  quận 1, Hồ Chí Minh
-                </Text>
-
-                <Text>
-                  <strong>Mô tả dịch vụ:</strong>{" "}
-                  {design.description || "Đang cập nhật..."}
-                </Text>
-              </Stack>
+              <HStack>
+                <Text fontWeight="bold">Mô tả:</Text>
+                <Text>Chưa cập nhật</Text>
+              </HStack>
             </Stack>
 
             <Spacer />
 
             <Box>
-              {/* Nút "Đặt ngay" (đã đổi tên, bỏ nút Thêm vào giỏ) */}
-              <Flex gap={4} alignItems="center">
+              <Box>
+                <DesignVariantConfig />
+              </Box>
+              <Flex mt={4} gap={4} alignItems="center">
+                {/* Mua ngay */}
                 <Button
                   bg={appColorTheme.brown_2}
                   color="white"
@@ -171,14 +91,89 @@ export default function DesignDetailPage() {
                 >
                   ĐẶT NGAY
                 </Button>
+
+                {/* Thêm vào giỏ */}
+                <Button
+                  variant="outline"
+                  borderColor={appColorTheme.brown_2}
+                  color={appColorTheme.brown_2}
+                  borderRadius="30px"
+                  px={4}
+                  py={6}
+                  leftIcon={<FiShoppingCart />}
+                  _hover={{ opacity: ".9" }}
+                >
+                  Thêm vào giỏ
+                </Button>
               </Flex>
             </Box>
           </Stack>
         </Grid>
 
-        {/* Khu vực đánh giá */}
+        <Flex
+          mt={5}
+          flexDirection={{
+            base: "column",
+            xl: "row",
+          }}
+          borderRadius="10px"
+          p={5}
+          bgColor="white"
+          boxShadow="md"
+          gap={5}
+        >
+          <Box>
+            <Image
+              src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
+              width="150px"
+              height="150px"
+              objectFit="cover"
+              objectPosition="center"
+              borderRadius="50%"
+            />
+          </Box>
+
+          <Stack flex={1}>
+            <Stack spacing={4}>
+              <Flex justifyContent="space-between" alignContent="center">
+                <Heading fontWeight="bold" fontSize="20px">
+                  Xưởng mộc Hòa Bình Quận 5
+                </Heading>
+                <Flex alignContent="center" gap={2}>
+                  {" "}
+                  <StarRating rating={3.5} />
+                  13 đánh giá
+                </Flex>
+              </Flex>
+
+              <HStack>
+                <Text fontWeight="bold">Địa chỉ xưởng:</Text>
+                <Text>Chưa cập nhật</Text>
+              </HStack>
+
+              <HStack>
+                <Text fontWeight="bold">Loại hình kinh doanh:</Text>
+                <Text>Chưa cập nhật</Text>
+              </HStack>
+
+              <HStack>
+                <Spacer />
+                <Text>
+                  <ChakraLink
+                    target="_blank"
+                    textDecoration="underline"
+                    color={appColorTheme.brown_2}
+                  >
+                    Xem xưởng
+                  </ChakraLink>
+                </Text>
+              </HStack>
+            </Stack>
+          </Stack>
+        </Flex>
+
         <ReviewSection />
       </Box>
-    </Container>
+    </>
   );
 }

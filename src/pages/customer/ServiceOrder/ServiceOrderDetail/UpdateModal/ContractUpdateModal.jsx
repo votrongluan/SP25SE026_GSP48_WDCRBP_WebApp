@@ -78,7 +78,7 @@ export default function ContractUpdateModal({ order, reFetch }) {
                 <Box>
                   <Heading
                     textAlign="center"
-                    fontWeight={500}
+                    fontWeight="bold"
                     as="h3"
                     fontSize="20px"
                     mb={4}

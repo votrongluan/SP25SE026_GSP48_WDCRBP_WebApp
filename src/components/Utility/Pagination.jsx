@@ -1,113 +1,72 @@
-import React from "react";
-import { Box, Button, Flex, HStack, Text } from "@chakra-ui/react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import { useState } from "react";
+import ReactPaginate from "react-paginate";
+import { appColorTheme } from "../../config/appconfig";
 
-const Pagination = ({
-  data, // current page's data from backend
-  totalPages, // total number of pages provided by backend
-  currentPage, // current page number
-  onPageChange, // callback when page changes
-  DisplayData, // component to render the data
-}) => {
-  const pageRange = 5; // Number of page buttons to show around the current page
-  const startPage = Math.max(1, currentPage - Math.floor(pageRange / 2));
-  const endPage = Math.min(totalPages, startPage + pageRange - 1);
+export default function Pagination({
+  dataList,
+  DisplayComponent,
+  itemsPerPage = 4,
+}) {
+  const [currentPage, setCurrentPage] = useState(0);
 
-  const handlePageChange = (page) => {
-    onPageChange(page);
-    window.scrollTo(0, 0);
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
   };
 
-  const handleFirstPage = () => {
-    onPageChange(1);
-    window.scrollTo(0, 0);
-  };
-
-  const handleLastPage = () => {
-    onPageChange(totalPages);
-    window.scrollTo(0, 0);
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      onPageChange(currentPage - 1);
-      window.scrollTo(0, 0);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      onPageChange(currentPage + 1);
-      window.scrollTo(0, 0);
-    }
-  };
-
-  const renderPageButtons = () => {
-    const buttons = [];
-    for (let page = startPage; page <= endPage; page++) {
-      buttons.push(
-        <Button
-          key={page}
-          variant="solid"
-          colorScheme={currentPage === page ? "blue" : "gray"}
-          onClick={() => handlePageChange(page)}
-        >
-          {page}
-        </Button>
-      );
-    }
-    return buttons;
-  };
+  const paginatedItems = dataList.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
 
   return (
-    <>
-      {/* Render the current page's data */}
-      <DisplayData data={data} />
+    <Box>
+      <Text mb={4}>Tìm thấy {dataList.length} kết quả</Text>
 
-      {/* Pagination Buttons */}
-      <Flex alignItems="center" direction="row" mt={5} justify="center">
-        <HStack spacing={2}>
-          {currentPage > 1 && (
-            <>
-              <Button
-                variant="solid"
-                colorScheme="blue"
-                onClick={handleFirstPage}
-              >
-                Trang đầu
-              </Button>
-              <Button
-                variant="solid"
-                colorScheme="blue"
-                onClick={handlePrevPage}
-              >
-                <FaChevronLeft />
-              </Button>
-            </>
-          )}
-          {renderPageButtons()}
-          {currentPage < totalPages && (
-            <>
-              <Button
-                variant="solid"
-                colorScheme="blue"
-                onClick={handleNextPage}
-              >
-                <FaChevronRight />
-              </Button>
-              <Button
-                variant="solid"
-                colorScheme="blue"
-                onClick={handleLastPage}
-              >
-                Trang cuối
-              </Button>
-            </>
-          )}
-        </HStack>
+      <DisplayComponent data={paginatedItems} />
+
+      <Flex justifyContent="center" mt={10}>
+        <ReactPaginate
+          pageCount={Math.ceil(dataList.length / itemsPerPage)}
+          onPageChange={handlePageChange}
+          previousLabel={"<"}
+          nextLabel={">"}
+          breakLabel={"..."}
+          marginPagesDisplayed={1}
+          pageRangeDisplayed={2}
+          containerClassName={"pagination"}
+          activeClassName={"active"}
+          pageLinkClassName={"page-link"}
+          previousLinkClassName={"page-link"}
+          nextLinkClassName={"page-link"}
+          breakClassName={"page-item"}
+        />
       </Flex>
-    </>
-  );
-};
 
-export default Pagination;
+      <style>
+        {`
+          .pagination {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+          }
+          .page-link {
+            padding: 8px 12px;
+            color: ${appColorTheme.brown_2};
+            border: 1px solid ${appColorTheme.brown_2};
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+          }
+          .page-link:hover {
+            background: ${appColorTheme.brown_0};
+          }
+          .active .page-link {
+            background: ${appColorTheme.brown_2};
+            color: white;
+          }
+        `}
+      </style>
+    </Box>
+  );
+}

@@ -19,8 +19,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { formatPrice } from "../../../../utils/utils.js";
-import { appColorTheme } from "../../../../config/appconfig.js";
+import { formatPrice } from "../../../../../../utils/utils.js";
+import { appColorTheme } from "../../../../../../config/appconfig.js";
 import { FiFilter } from "react-icons/fi";
 
 export default function FiltersComponent() {
@@ -45,27 +45,6 @@ export default function FiltersComponent() {
 
           <AccordionPanel pb={4}>
             <Select placeholder="Chọn loại sản phẩm" bgColor="white">
-              <option value="price-asc">Giá: Thấp đến cao</option>
-              <option value="price-desc">Giá: Cao đến thấp</option>
-              <option value="rating-asc">Số sao: Tăng dần</option>
-              <option value="rating-desc">Số sao: Giảm dần</option>
-              <option value="name-asc">Tên: A-Z</option>
-              <option value="name-desc">Tên: Z-A</option>
-            </Select>
-          </AccordionPanel>
-        </AccordionItem>
-
-        {/* Bộ lọc Tỉnh thành */}
-        <AccordionItem>
-          <AccordionButton>
-            <Box flex="1" textAlign="left">
-              Tỉnh thành
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-
-          <AccordionPanel pb={4}>
-            <Select placeholder="Chọn tỉnh, thành" bgColor="white">
               <option value="price-asc">Giá: Thấp đến cao</option>
               <option value="price-desc">Giá: Cao đến thấp</option>
               <option value="rating-asc">Số sao: Tăng dần</option>

@@ -7,7 +7,6 @@ import {
   Box,
   Button,
   Checkbox,
-  CheckboxGroup,
   Flex,
   Heading,
   Input,
@@ -19,42 +18,19 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { formatPrice } from "../../../../utils/utils.js";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import { FiFilter } from "react-icons/fi";
 
-export function FiltersComponent() {
-  const [priceRange, setPriceRange] = useState([0, 20000000]);
+export default function FiltersComponent() {
   const [ratingRange, setRatingRange] = useState([1, 5]);
 
   return (
     <Box p={5} boxShadow="md" bgColor="white">
-      <Heading fontWeight={500} fontSize="20px" mb={5}>
+      <Heading fontWeight="bold" fontSize="20px" mb={5}>
         Bộ lọc
       </Heading>
 
       <Accordion defaultIndex={[0, 1, 2, 3]} allowMultiple>
-        {/* Bộ lọc Danh mục */}
-        <AccordionItem>
-          <AccordionButton>
-            <Box flex="1" textAlign="left">
-              Danh mục
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-
-          <AccordionPanel pb={4}>
-            <Select placeholder="Chọn loại sản phẩm" bgColor="white">
-              <option value="price-asc">Giá: Thấp đến cao</option>
-              <option value="price-desc">Giá: Cao đến thấp</option>
-              <option value="rating-asc">Số sao: Tăng dần</option>
-              <option value="rating-desc">Số sao: Giảm dần</option>
-              <option value="name-asc">Tên: A-Z</option>
-              <option value="name-desc">Tên: Z-A</option>
-            </Select>
-          </AccordionPanel>
-        </AccordionItem>
-
         {/* Bộ lọc Tỉnh thành */}
         <AccordionItem>
           <AccordionButton>
@@ -73,36 +49,6 @@ export function FiltersComponent() {
               <option value="name-asc">Tên: A-Z</option>
               <option value="name-desc">Tên: Z-A</option>
             </Select>
-          </AccordionPanel>
-        </AccordionItem>
-
-        {/* Bộ lọc Giá với RangeSlider 2 đầu */}
-        <AccordionItem>
-          <AccordionButton>
-            <Box flex="1" textAlign="left">
-              Lọc theo giá
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-
-          <AccordionPanel pb={4}>
-            <RangeSlider
-              aria-label={["Minimum price", "Maximum price"]}
-              defaultValue={[0, 20000000]}
-              min={0}
-              max={20000000}
-              step={1000000}
-              onChange={(val) => setPriceRange(val)}
-            >
-              <RangeSliderTrack>
-                <RangeSliderFilledTrack />
-              </RangeSliderTrack>
-              <RangeSliderThumb index={0} />
-              <RangeSliderThumb index={1} />
-            </RangeSlider>
-            <Text mt={2}>
-              {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
-            </Text>
           </AccordionPanel>
         </AccordionItem>
 
@@ -142,8 +88,7 @@ export function FiltersComponent() {
         {/* "Sắp xếp theo" select */}
         <Box>
           <Select placeholder="Sắp xếp theo" bgColor="white">
-            <option value="price-asc">Giá: Thấp đến cao</option>
-            <option value="price-desc">Giá: Cao đến thấp</option>
+            <option value="rating-asc">Đề xuất</option>
             <option value="rating-asc">Số sao: Tăng dần</option>
             <option value="rating-desc">Số sao: Giảm dần</option>
             <option value="name-asc">Tên: A-Z</option>
@@ -151,7 +96,7 @@ export function FiltersComponent() {
           </Select>
         </Box>
 
-        <Input placeholder="Từ khóa" />
+        <Input placeholder="Tên xưởng" />
 
         <Checkbox defaultChecked value="danang">
           Áp dụng bộ lọc

@@ -44,7 +44,7 @@ const deliveries = [
 export default function DeliveryTab() {
   return (
     <>
-      <Heading fontWeight={500} fontSize="20px" mb={5} textAlign="center">
+      <Heading fontWeight="bold" fontSize="20px" mb={5} textAlign="center">
         Thông tin giao hàng
       </Heading>
 
@@ -52,24 +52,24 @@ export default function DeliveryTab() {
         <Box borderBottom="1px solid black" pb={5} key={index} mb={4}>
           {/* Thông tin giao hàng */}
           <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-            <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
+            <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
               Thông tin giao hàng
             </Heading>
 
             <Box>
               <Stack spacing={4}>
                 <HStack>
-                  <Text fontWeight="500">Mã giao hàng (GHN):</Text>
+                  <Text fontWeight="bold">Mã giao hàng (GHN):</Text>
                   <Text>{delivery.order_code}</Text>
                 </HStack>
 
                 <HStack>
-                  <Text fontWeight="500">Đơn vị vận chuyển:</Text>
+                  <Text fontWeight="bold">Đơn vị vận chuyển:</Text>
                   <Text>{delivery.shipper}</Text>
                 </HStack>
 
                 <HStack>
-                  <Text fontWeight="500">Loại vận chuyển:</Text>
+                  <Text fontWeight="bold">Loại vận chuyển:</Text>
                   <Text>Giao hàng cho khách</Text>
                 </HStack>
               </Stack>
@@ -80,23 +80,23 @@ export default function DeliveryTab() {
           <SimpleGrid mt={5} columns={{ base: 1, xl: 2 }} spacing={5}>
             {/* Sender Information */}
             <Box bgColor="white" boxShadow="md" p={5} borderRadius="10px">
-              <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
+              <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
                 Thông tin người gửi
               </Heading>
 
               <Stack spacing={4}>
                 <HStack>
-                  <Text fontWeight="500">Tên:</Text>
+                  <Text fontWeight="bold">Tên:</Text>
                   <Text>{delivery.from_name}</Text>
                 </HStack>
 
                 <HStack>
-                  <Text fontWeight="500">Số điện thoại:</Text>
+                  <Text fontWeight="bold">Số điện thoại:</Text>
                   <Text>{delivery.from_phone}</Text>
                 </HStack>
 
                 <HStack>
-                  <Text fontWeight="500">Địa chỉ:</Text>
+                  <Text fontWeight="bold">Địa chỉ:</Text>
                   <Text>{delivery.from_address}</Text>
                 </HStack>
               </Stack>
@@ -104,23 +104,23 @@ export default function DeliveryTab() {
 
             {/* Receiver Information */}
             <Box bgColor="white" boxShadow="md" p={5} borderRadius="10px">
-              <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
+              <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
                 Thông tin người nhận
               </Heading>
 
               <Stack spacing={4}>
                 <HStack>
-                  <Text fontWeight="500">Tên:</Text>
+                  <Text fontWeight="bold">Tên:</Text>
                   <Text>{delivery.to_name}</Text>
                 </HStack>
 
                 <HStack>
-                  <Text fontWeight="500">Số điện thoại:</Text>
+                  <Text fontWeight="bold">Số điện thoại:</Text>
                   <Text>{delivery.to_phone}</Text>
                 </HStack>
 
                 <HStack>
-                  <Text fontWeight="500">Địa chỉ:</Text>
+                  <Text fontWeight="bold">Địa chỉ:</Text>
                   <Text>{delivery.to_address}</Text>
                 </HStack>
               </Stack>

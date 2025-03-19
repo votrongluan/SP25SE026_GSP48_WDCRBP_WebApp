@@ -60,7 +60,7 @@ export default function ProductEditSection() {
 
   return (
     <Box>
-      <Heading fontWeight={500} fontSize="20px" mb={5} textAlign="center">
+      <Heading fontWeight="bold" fontSize="20px" mb={5} textAlign="center">
         Thông tin sản phẩm
       </Heading>
 
@@ -80,7 +80,7 @@ export default function ProductEditSection() {
                 borderRadius="10px"
               >
                 <ChakraBox flex="1" textAlign="left">
-                  <Text fontWeight="500">
+                  <Text fontWeight="bold">
                     {product.name} (Gia công theo yêu cầu)
                   </Text>
                 </ChakraBox>
@@ -91,7 +91,7 @@ export default function ProductEditSection() {
               <Stack spacing={4}>
                 <SimpleGrid templateColumns="150px 1fr" gap={4}>
                   <Box>
-                    <Text fontWeight="500">Kích thước:</Text>
+                    <Text fontWeight="bold">Kích thước:</Text>
                   </Box>
                   <Box>
                     <Input
@@ -108,7 +108,7 @@ export default function ProductEditSection() {
                   </Box>
 
                   <Box>
-                    <Text fontWeight="500">Loại gỗ:</Text>
+                    <Text fontWeight="bold">Loại gỗ:</Text>
                   </Box>
                   <Box>
                     <Input
@@ -125,7 +125,7 @@ export default function ProductEditSection() {
                   </Box>
 
                   <Box>
-                    <Text fontWeight="500">Hoàn thiện:</Text>
+                    <Text fontWeight="bold">Hoàn thiện:</Text>
                   </Box>
                   <Box>
                     <Input
@@ -142,7 +142,7 @@ export default function ProductEditSection() {
                   </Box>
 
                   <Box>
-                    <Text fontWeight="500">Màu sắc:</Text>
+                    <Text fontWeight="bold">Màu sắc:</Text>
                   </Box>
                   <Box>
                     <Input
@@ -155,7 +155,7 @@ export default function ProductEditSection() {
                   </Box>
 
                   <Box>
-                    <Text fontWeight="500">Số lượng:</Text>
+                    <Text fontWeight="bold">Số lượng:</Text>
                   </Box>
                   <Box>
                     <Input

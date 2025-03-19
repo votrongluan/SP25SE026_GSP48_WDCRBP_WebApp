@@ -7,7 +7,7 @@ import RequireAuth from "../components/Utility/RequireAuth.jsx";
 function AdminLayout(props) {
   return (
     <RequireAuth allowedRoles={3}>
-      <Box bg="gray.50">
+      <Box fontFamily="Nunito Sans" bg="gray.50">
         {/* sidebar */}
         <Box
           position="fixed"

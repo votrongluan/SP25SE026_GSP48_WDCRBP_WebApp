@@ -105,7 +105,7 @@ export default function DesignEditSection() {
 
   return (
     <Box>
-      <Heading fontWeight={500} fontSize="20px" mb={5} textAlign="center">
+      <Heading fontWeight="bold" fontSize="20px" mb={5} textAlign="center">
         Thông tin sản phẩm
       </Heading>
 
@@ -125,7 +125,7 @@ export default function DesignEditSection() {
                 borderRadius="10px"
               >
                 <Box flex="1" textAlign="left">
-                  <Text fontWeight="500">
+                  <Text fontWeight="bold">
                     {product.name} (Gia công theo yêu cầu)
                   </Text>
                 </Box>
@@ -135,23 +135,23 @@ export default function DesignEditSection() {
             <AccordionPanel pb={4}>
               <Stack spacing={4}>
                 <HStack>
-                  <Text fontWeight="500">Kích thước:</Text>
+                  <Text fontWeight="bold">Kích thước:</Text>
                   <Text>{product.dimensions} (dài x rộng x cao)</Text>
                 </HStack>
                 <HStack>
-                  <Text fontWeight="500">Loại gỗ:</Text>
+                  <Text fontWeight="bold">Loại gỗ:</Text>
                   <Text>{product.woodType}</Text>
                 </HStack>
                 <HStack>
-                  <Text fontWeight="500">Hoàn thiện:</Text>
+                  <Text fontWeight="bold">Hoàn thiện:</Text>
                   <Text>{product.finish}</Text>
                 </HStack>
                 <HStack>
-                  <Text fontWeight="500">Màu sắc:</Text>
+                  <Text fontWeight="bold">Màu sắc:</Text>
                   <Text>{product.color}</Text>
                 </HStack>
                 <HStack>
-                  <Text fontWeight="500">Số lượng:</Text>
+                  <Text fontWeight="bold">Số lượng:</Text>
                   <Text>1</Text>
                 </HStack>
 
@@ -160,7 +160,7 @@ export default function DesignEditSection() {
 
                 {/* Phần tải lên file thiết kế mới */}
                 <Box mt={4}>
-                  <Text fontWeight="500" mb={2}>
+                  <Text fontWeight="bold" mb={2}>
                     Tải thiết kế lên:
                   </Text>
                   <Input

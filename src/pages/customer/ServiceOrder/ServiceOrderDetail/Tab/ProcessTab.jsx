@@ -76,7 +76,7 @@ export default function ProcessTab() {
     <Box bg="white" borderRadius="10px" p={5} boxShadow="md">
       <Stack spacing={6} position="relative">
         {processUpdates.map((update, index) => (
-          <HStack key={index} spacing={4}>
+          <HStack align="start" key={index} spacing={4}>
             <Box position="relative">
               <Circle
                 size="32px"
@@ -100,7 +100,7 @@ export default function ProcessTab() {
             </Box>
 
             <Box flex="1">
-              <Text fontWeight="500">{update.status}</Text>
+              <Text fontWeight="bold">{update.status}</Text>
               <Text>{update.description}</Text>
             </Box>
 

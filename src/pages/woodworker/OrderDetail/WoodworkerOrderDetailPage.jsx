@@ -19,16 +19,13 @@ import {
   FiCalendar,
   FiFile,
   FiCreditCard,
-  FiBookOpen,
   FiStar,
 } from "react-icons/fi";
 import GeneralInformation from "./Tab/GeneralInformation.jsx";
 import ProductTab from "./Tab/ProductTab.jsx";
-import ProcessTab from "./Tab/ProcessTab.jsx";
 import DeliveryTab from "./Tab/DeliveryTab.jsx";
 import AppointmentTab from "./Tab/AppointmentTab.jsx";
 import TransactionTab from "./Tab/TransactionTab.jsx";
-import LogTab from "./Tab/LogTab.jsx";
 import ReviewTab from "./Tab/ReviewTab.jsx";
 import ActionBar from "./ActionBar";
 import ProcessLogTab from "./Tab/ProcessLogTab.jsx";
@@ -36,13 +33,13 @@ import ContractTab from "./Tab/ContractTab.jsx";
 
 export default function WoodworkerOrderDetailPage() {
   return (
-    <Container px="40px" maxW="1400px" pb="50px">
+    <Container px="40px" maxW="1400px">
       <ActionBar />
-      <Box height="80px">
+      <Box mb={5}>
         <Heading
           fontWeight="normal"
           as="h2"
-          fontSize="26px"
+          fontSize="22px"
           fontFamily="Montserrat"
         >
           Thông tin đặt dịch vụ chi tiết

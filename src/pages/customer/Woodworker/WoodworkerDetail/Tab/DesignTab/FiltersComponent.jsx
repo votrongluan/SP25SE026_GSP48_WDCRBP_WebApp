@@ -7,7 +7,6 @@ import {
   Box,
   Button,
   Checkbox,
-  CheckboxGroup,
   Flex,
   Heading,
   Input,
@@ -19,12 +18,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { formatPrice } from "../../../../utils/utils.js";
-import { appColorTheme } from "../../../../config/appconfig.js";
+import { formatPrice } from "../../../../../../utils/utils.js";
+import { appColorTheme } from "../../../../../../config/appconfig.js";
 import { FiFilter } from "react-icons/fi";
 
 export default function FiltersComponent() {
-  const [priceRange, setPriceRange] = useState([0, 20000000]);
   const [ratingRange, setRatingRange] = useState([1, 5]);
 
   return (
@@ -76,36 +74,6 @@ export default function FiltersComponent() {
           </AccordionPanel>
         </AccordionItem>
 
-        {/* Bộ lọc Giá với RangeSlider 2 đầu */}
-        <AccordionItem>
-          <AccordionButton>
-            <Box flex="1" textAlign="left">
-              Lọc theo giá
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-
-          <AccordionPanel pb={4}>
-            <RangeSlider
-              aria-label={["Minimum price", "Maximum price"]}
-              defaultValue={[0, 20000000]}
-              min={0}
-              max={20000000}
-              step={1000000}
-              onChange={(val) => setPriceRange(val)}
-            >
-              <RangeSliderTrack>
-                <RangeSliderFilledTrack />
-              </RangeSliderTrack>
-              <RangeSliderThumb index={0} />
-              <RangeSliderThumb index={1} />
-            </RangeSlider>
-            <Text mt={2}>
-              {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
-            </Text>
-          </AccordionPanel>
-        </AccordionItem>
-
         {/* Bộ lọc Số sao với RangeSlider 2 đầu */}
         <AccordionItem>
           <AccordionButton>
@@ -151,7 +119,7 @@ export default function FiltersComponent() {
           </Select>
         </Box>
 
-        <Input placeholder="Tên sản phẩm" />
+        <Input placeholder="Tên thiết kế" />
 
         <Checkbox defaultChecked value="danang">
           Áp dụng bộ lọc

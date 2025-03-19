@@ -20,29 +20,29 @@ const appointmentData = {
 export default function AppointmentTab() {
   return (
     <>
-      <Heading fontWeight={500} fontSize="20px" mb={5} textAlign="center">
+      <Heading fontWeight="bold" fontSize="20px" mb={5} textAlign="center">
         Thông tin lịch hẹn
       </Heading>
 
       <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
         <Stack spacing={4}>
           <HStack>
-            <Text fontWeight="500">Hình thức:</Text>
+            <Text fontWeight="bold">Hình thức:</Text>
             <Text>{appointmentData.type}</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Địa điểm:</Text>
+            <Text fontWeight="bold">Địa điểm:</Text>
             <Text>{appointmentData.location}</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Ngày hẹn:</Text>
+            <Text fontWeight="bold">Ngày hẹn:</Text>
             <Text>{appointmentData.date}</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Mô tả:</Text>
+            <Text fontWeight="bold">Mô tả:</Text>
             <Text>{appointmentData.description}</Text>
           </HStack>
         </Stack>

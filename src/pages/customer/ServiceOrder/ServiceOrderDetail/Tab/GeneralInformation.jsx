@@ -1,11 +1,7 @@
 import {
   Box,
-  FormControl,
-  FormLabel,
-  GridItem,
   Heading,
   HStack,
-  Input,
   SimpleGrid,
   Spacer,
   Stack,
@@ -45,7 +41,7 @@ export default function GeneralInformation() {
   return (
     <Box>
       <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-        <Heading fontWeight={500} fontSize="20px" mb={5}>
+        <Heading fontWeight="bold" fontSize="20px" mb={5}>
           Thông tin sản phẩm
         </Heading>
 
@@ -63,9 +59,7 @@ export default function GeneralInformation() {
                 borderRadius="10px"
               >
                 <Box flex="1" textAlign="left">
-                  <Text fontWeight="500">
-                    {product.name} (Gia công theo yêu cầu)
-                  </Text>
+                  <Text fontWeight="bold">{product.name}</Text>
                 </Box>
                 <AccordionIcon />
               </AccordionButton>
@@ -73,24 +67,26 @@ export default function GeneralInformation() {
               <AccordionPanel pb={4}>
                 <Stack spacing={4}>
                   <HStack>
-                    <Text fontWeight="500">Kích thước:</Text>
+                    <Text fontWeight="bold">Kích thước:</Text>
                     <Text>{product.dimensions} (dài x rộng x cao)</Text>
                   </HStack>
                   <HStack>
-                    <Text fontWeight="500">Loại gỗ:</Text>
+                    <Text fontWeight="bold">Loại gỗ:</Text>
                     <Text>{product.woodType}</Text>
                   </HStack>
                   <HStack>
-                    <Text fontWeight="500">Hoàn thiện:</Text>
+                    <Text fontWeight="bold">Hoàn thiện:</Text>
                     <Text>{product.finish}</Text>
                   </HStack>
                   <HStack>
-                    <Text fontWeight="500">Màu sắc:</Text>
+                    <Text fontWeight="bold">Màu sắc:</Text>
                     <Text>{product.color}</Text>
                   </HStack>
                   <HStack>
-                    <Text fontWeight="500">Số lượng:</Text>
-                    <Text>1</Text>
+                    <Text fontWeight="bold">Bảng giá chi tiết</Text>
+                  </HStack>
+                  <HStack>
+                    <Text fontWeight="bold">Ảnh liên quan đến sản phẩm</Text>
                   </HStack>
                 </Stack>
               </AccordionPanel>
@@ -127,38 +123,38 @@ export default function GeneralInformation() {
           </Badge>
 
           <Box>
-            <Heading fontWeight={500} as="h3" fontSize="20px" mb={5}>
+            <Heading fontWeight="bold" as="h3" fontSize="20px" mb={5}>
               Thông tin đơn hàng
             </Heading>
 
             <Stack spacing={4}>
               <HStack>
-                <Text fontWeight="500">Mã đơn hàng:</Text>
+                <Text fontWeight="bold">Mã đơn hàng:</Text>
                 <Text>Chưa cập nhật</Text>
               </HStack>
 
               <HStack>
-                <Text fontWeight="500">Loại dịch vụ:</Text>
+                <Text fontWeight="bold">Loại dịch vụ:</Text>
                 <Text>Chưa cập nhật</Text>
               </HStack>
 
               <HStack>
-                <Text fontWeight="500">Ngày đặt:</Text>
+                <Text fontWeight="bold">Ngày đặt:</Text>
                 <Text>Chưa cập nhật</Text>
               </HStack>
 
               <HStack>
-                <Text fontWeight="500">Số lượng sản phẩm:</Text>
+                <Text fontWeight="bold">Số lượng sản phẩm:</Text>
                 <Text>Chưa cập nhật</Text>
               </HStack>
 
               <HStack>
-                <Text fontWeight="500">Lắp đặt sản phẩm:</Text>
+                <Text fontWeight="bold">Lắp đặt sản phẩm:</Text>
                 <Text>Chưa cập nhật</Text>
               </HStack>
 
               <Box>
-                <Text fontWeight="500">Ghi chú:</Text>
+                <Text fontWeight="bold">Ghi chú:</Text>
                 <Text>
                   Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                   Reiciendis harum, voluptates quas, laudantium inventore
@@ -173,18 +169,18 @@ export default function GeneralInformation() {
 
         <Box bgColor="white" boxShadow="md" p={5} borderRadius="10px">
           <Box>
-            <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
+            <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
               Thông tin xưởng mộc
             </Heading>
 
             <Stack spacing={4}>
               <HStack>
-                <Text fontWeight={500}>Tên xưởng:</Text>
+                <Text fontWeight="bold">Tên xưởng:</Text>
                 <Text>Lorem</Text>
               </HStack>
 
               <HStack>
-                <Text fontWeight={500}>Địa chỉ xưởng:</Text>
+                <Text fontWeight="bold">Địa chỉ xưởng:</Text>
                 <Text>Lorem</Text>
               </HStack>
 
@@ -204,28 +200,28 @@ export default function GeneralInformation() {
           </Box>
 
           <Box mt={5}>
-            <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
+            <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
               Thông tin lịch hẹn tư vấn
             </Heading>
 
             <Stack spacing={4}>
               <HStack>
-                <Text fontWeight={500}>Hình thức:</Text>
+                <Text fontWeight="bold">Hình thức:</Text>
                 <Text>Lorem</Text>
               </HStack>
 
               <HStack>
-                <Text fontWeight={500}>Địa điểm:</Text>
+                <Text fontWeight="bold">Địa điểm:</Text>
                 <Text>Lorem</Text>
               </HStack>
 
               <HStack>
-                <Text fontWeight={500}>Ngày giờ hẹn:</Text>
+                <Text fontWeight="bold">Ngày giờ hẹn:</Text>
                 <Text>Lorem</Text>
               </HStack>
 
               <HStack>
-                <Text fontWeight={500}>Mô tả:</Text>
+                <Text fontWeight="bold">Mô tả:</Text>
                 <Text>Lorem</Text>
               </HStack>
             </Stack>
@@ -241,32 +237,32 @@ export default function GeneralInformation() {
         borderRadius="10px"
         position="relative"
       >
-        <Heading fontWeight={500} fontSize="20px" mb={5}>
+        <Heading fontWeight="bold" fontSize="20px" mb={5}>
           Đánh giá đơn hàng
         </Heading>
         <Stack spacing={4}>
           <HStack>
-            <Text fontWeight="500">Số sao:</Text>
+            <Text fontWeight="bold">Số sao:</Text>
             <Text>5</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Bình luận:</Text>
+            <Text fontWeight="bold">Bình luận:</Text>
             <Text>Sản phẩm cũng ok</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Ngày đăng:</Text>
+            <Text fontWeight="bold">Ngày đăng:</Text>
             <Text>{convertTimeStampToDateTimeString(new Date())}</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Trạng thái:</Text>
+            <Text fontWeight="bold">Trạng thái:</Text>
             <Text>Đã phê duyệt</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Ảnh đính kèm:</Text>
+            <Text fontWeight="bold">Ảnh đính kèm:</Text>
             <Image
               src="https://www.noithatkaya.com/wp-content/uploads/2020/10/Cong-trinh-BIUBIU-STAR-14.webp"
               alt="Ảnh đánh giá"

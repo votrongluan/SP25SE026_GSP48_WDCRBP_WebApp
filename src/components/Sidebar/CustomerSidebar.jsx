@@ -6,8 +6,9 @@ import {
   ListItem,
   IconButton,
   Text,
+  useBreakpointValue,
 } from "@chakra-ui/react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   FiAlertTriangle,
   FiCreditCard,
@@ -20,9 +21,16 @@ import {
   FiHome,
 } from "react-icons/fi";
 import { appColorTheme } from "../../config/appconfig.js";
+import { useEffect } from "react";
 
 export default function CustomerSidebar({ isCollapsed, setIsCollapsed }) {
-  const navigate = useNavigate();
+  const isLargeScreen = useBreakpointValue({ base: false, xl: true });
+
+  useEffect(() => {
+    if (!isLargeScreen) {
+      setIsCollapsed(true);
+    }
+  }, [isLargeScreen, setIsCollapsed]);
 
   const navLinkStyle = ({ isActive }) => ({
     display: "block",
@@ -34,7 +42,7 @@ export default function CustomerSidebar({ isCollapsed, setIsCollapsed }) {
   const navItems = [
     { label: "Trang chủ", path: "/", icon: FiHome },
     { label: "Đơn hàng", path: "order-detail", icon: FiShoppingCart },
-    { label: "Bảo hành, sửa chữa", path: "guarantee", icon: FiSettings },
+    { label: "BH & Sữa chữa", path: "guarantee", icon: FiSettings },
     { label: "Giao dịch", path: "transaction", icon: FiCreditCard },
     { label: "Khiếu nại", path: "complaint", icon: FiAlertTriangle },
     { label: "Tài khoản", path: "account", icon: FiUser },

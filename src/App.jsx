@@ -15,14 +15,13 @@ import { AuthProvider } from "./context/AuthProvider.jsx";
 import UnauthorizedPage from "./pages/customer/Unauth/UnauthorizedPage.jsx";
 import { useEffect } from "react";
 import ContactPage from "./pages/customer/Contact/ContactPage.jsx";
-import ProductsPage from "./pages/customer/Product/ProductList/ProductsPage.jsx";
 import CartPage from "./pages/customer/Cart/CartPage.jsx";
 import HomePage from "./pages/customer/Home/HomePage.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
 import WoodworkerLayout from "./layouts/WoodworkerLayout.jsx";
 import CustomerLayout from "./layouts/CustomerLayout.jsx";
 import ScrollToTopAndBottom from "./components/Utility/ScrollToTopAndBottom.jsx";
-import CustomerOrderDetailPage from "./pages/customer/Order/OrderDetail/CustomerOrderDetailPage.jsx";
+import CustomerOrderDetailPage from "./pages/customer/ServiceOrder/ServiceOrderDetail/CustomerOrderDetailPage.jsx";
 import { appColorTheme } from "./config/appconfig.js";
 import WoodworkerOrderDetailPage from "./pages/woodworker/OrderDetail/WoodworkerOrderDetailPage.jsx";
 import ProductDetailPage from "./pages/customer/Product/ProductDetail/ProductDetailPage.jsx";
@@ -34,6 +33,8 @@ import PersonalizationRequestPage from "./pages/customer/PersonalizationRequest/
 import { Provider } from "react-redux";
 import { store } from "./store/store.js";
 import ContractPage from "./pages/customer/Contract/ContractPage.jsx";
+import TestPage from "./pages/TestPage.jsx";
+import ProductsPage from "./pages/customer/Product/ProductList/ProductsPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -88,8 +89,11 @@ function App() {
         {/* Guest page route */}
         <Route path="/" element={<RootLayout />} errorElement={<ErrorPage />}>
           {/* Index page route */}
-          <Route path="personalize" element={<PersonalizationRequestPage />} />
           <Route index element={<HomePage />} />
+
+          <Route path="test" element={<TestPage />} />
+
+          <Route path="personalize" element={<PersonalizationRequestPage />} />
 
           {/* Auth route */}
           <Route path="auth" element={<AuthPage />} />

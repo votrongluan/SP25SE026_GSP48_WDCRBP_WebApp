@@ -18,73 +18,73 @@ export default function ContractAndTransactionTab() {
     <Box>
       <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={5}>
         <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-          <Heading fontWeight={500} as="h3" fontSize="20px" mb={5}>
+          <Heading fontWeight="bold" as="h3" fontSize="20px" mb={5}>
             Thông tin hợp đồng
           </Heading>
 
           <Stack spacing={4}>
             <HStack>
-              <Text fontWeight="500">Họ tên thợ mộc:</Text>
+              <Text fontWeight="bold">Họ tên thợ mộc:</Text>
               <Text>Chưa cập nhật</Text>
             </HStack>
             <HStack>
-              <Text fontWeight="500">SĐT thợ mộc:</Text>
+              <Text fontWeight="bold">SĐT thợ mộc:</Text>
               <Text>Chưa cập nhật</Text>
             </HStack>
             <HStack>
-              <Text fontWeight="500">Địa chỉ thợ mộc:</Text>
-              <Text>Chưa cập nhật</Text>
-            </HStack>
-
-            <Box height="10px" />
-
-            <HStack>
-              <Text fontWeight="500">Họ tên khách hàng:</Text>
-              <Text>Chưa cập nhật</Text>
-            </HStack>
-            <HStack>
-              <Text fontWeight="500">SĐT khách hàng:</Text>
-              <Text>Chưa cập nhật</Text>
-            </HStack>
-            <HStack>
-              <Text fontWeight="500">Địa chỉ khách hàng:</Text>
+              <Text fontWeight="bold">Địa chỉ thợ mộc:</Text>
               <Text>Chưa cập nhật</Text>
             </HStack>
 
             <Box height="10px" />
 
             <HStack>
-              <Text fontWeight="500">Mã hợp đồng:</Text>
+              <Text fontWeight="bold">Họ tên khách hàng:</Text>
+              <Text>Chưa cập nhật</Text>
+            </HStack>
+            <HStack>
+              <Text fontWeight="bold">SĐT khách hàng:</Text>
+              <Text>Chưa cập nhật</Text>
+            </HStack>
+            <HStack>
+              <Text fontWeight="bold">Địa chỉ khách hàng:</Text>
+              <Text>Chưa cập nhật</Text>
+            </HStack>
+
+            <Box height="10px" />
+
+            <HStack>
+              <Text fontWeight="bold">Mã hợp đồng:</Text>
               <Text>Chưa cập nhật</Text>
             </HStack>
 
             <HStack>
-              <Text fontWeight="500">Ngày tạo:</Text>
+              <Text fontWeight="bold">Ngày tạo:</Text>
               <Text>Chưa cập nhật</Text>
             </HStack>
 
             <HStack>
-              <Text fontWeight="500">Ngày ký:</Text>
+              <Text fontWeight="bold">Ngày ký:</Text>
               <Text>Chưa cập nhật</Text>
             </HStack>
 
             <HStack>
-              <Text fontWeight="500">Ngày cam kết giao sản phẩm:</Text>
+              <Text fontWeight="bold">Ngày cam kết giao sản phẩm:</Text>
               <Text>Chưa cập nhật</Text>
             </HStack>
 
             <HStack>
-              <Text fontWeight="500">Giá trị hợp đồng:</Text>
+              <Text fontWeight="bold">Giá trị hợp đồng:</Text>
               <Text>Chưa cập nhật</Text>
             </HStack>
 
             <HStack>
-              <Text fontWeight="500">Thời gian bảo hành:</Text>
+              <Text fontWeight="bold">Thời gian bảo hành:</Text>
               <Text>Chưa cập nhật</Text>
             </HStack>
 
             <Box>
-              <Text fontWeight="500">Chính sách bảo hành:</Text>
+              <Text fontWeight="bold">Chính sách bảo hành:</Text>
               <Text>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                 Reiciendis harum, voluptates quas, laudantium inventore debitis
@@ -96,7 +96,7 @@ export default function ContractAndTransactionTab() {
 
             <HStack>
               <Box>
-                <Text fontWeight="500">Chữ ký thợ mộc</Text>
+                <Text fontWeight="bold">Chữ ký thợ mộc</Text>
                 <Image
                   mt={4}
                   height="100px"
@@ -106,7 +106,7 @@ export default function ContractAndTransactionTab() {
               <Spacer />
 
               <Box>
-                <Text fontWeight="500">Chữ ký khách hàng</Text>
+                <Text fontWeight="bold">Chữ ký khách hàng</Text>
                 <Image
                   mt={4}
                   height="100px"
@@ -120,7 +120,7 @@ export default function ContractAndTransactionTab() {
                 target="_blank"
                 textDecoration="underline"
                 color={appColorTheme.brown_2}
-                href="/contract.html"
+                href="contract"
               >
                 Xem điều khoản hợp đồng
               </ChakraLink>
@@ -139,50 +139,26 @@ export default function ContractAndTransactionTab() {
         </Box>
 
         <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-          <Heading fontWeight={500} as="h3" fontSize="20px" mb={5}>
+          <Heading fontWeight="bold" as="h3" fontSize="20px" mb={5}>
             Thông tin giao dịch
           </Heading>
 
           <Stack spacing={4}>
             <Stack spacing={4}>
               <HStack>
-                <Text fontWeight="500">Chi tiết giao dịch của đơn hàng</Text>
+                <Text fontWeight="bold">Chi tiết giao dịch của đơn hàng</Text>
               </HStack>
 
               <HStack>
-                <Text fontWeight="500">Thành tiền:</Text>
+                <Text fontWeight="bold">Thành tiền:</Text>
               </HStack>
 
               <HStack>
-                <Text fontWeight="500">Số tiền đã thanh toán:</Text>
+                <Text fontWeight="bold">Số tiền đã thanh toán:</Text>
               </HStack>
 
               <HStack>
-                <Text fontWeight="500">Số tiền còn lại:</Text>
-              </HStack>
-            </Stack>
-
-            <Box />
-
-            <Stack spacing={4}>
-              <HStack>
-                <Text fontWeight="500">Đặt cọc lần 1</Text>
-              </HStack>
-
-              <HStack>
-                <Text fontWeight="500">Ngày thanh toán:</Text>
-              </HStack>
-
-              <HStack>
-                <Text fontWeight="500">Số tiền thanh toán:</Text>
-              </HStack>
-
-              <HStack>
-                <Text fontWeight="500">Phần trăm cọc:</Text>
-              </HStack>
-
-              <HStack>
-                <Text fontWeight="500">Trạng thái:</Text>
+                <Text fontWeight="bold">Số tiền còn lại:</Text>
               </HStack>
             </Stack>
 
@@ -190,46 +166,70 @@ export default function ContractAndTransactionTab() {
 
             <Stack spacing={4}>
               <HStack>
-                <Text fontWeight="500">Đặt cọc lần 2</Text>
+                <Text fontWeight="bold">Đặt cọc lần 1</Text>
               </HStack>
 
               <HStack>
-                <Text fontWeight="500">Ngày thanh toán:</Text>
+                <Text fontWeight="bold">Ngày thanh toán:</Text>
               </HStack>
 
               <HStack>
-                <Text fontWeight="500">Số tiền thanh toán:</Text>
+                <Text fontWeight="bold">Số tiền thanh toán:</Text>
               </HStack>
 
               <HStack>
-                <Text fontWeight="500">Phần trăm cọc:</Text>
+                <Text fontWeight="bold">Phần trăm cọc:</Text>
               </HStack>
 
               <HStack>
-                <Text fontWeight="500">Trạng thái:</Text>
+                <Text fontWeight="bold">Trạng thái:</Text>
+              </HStack>
+            </Stack>
+
+            <Box />
+
+            <Stack spacing={4}>
+              <HStack>
+                <Text fontWeight="bold">Đặt cọc lần 2</Text>
+              </HStack>
+
+              <HStack>
+                <Text fontWeight="bold">Ngày thanh toán:</Text>
+              </HStack>
+
+              <HStack>
+                <Text fontWeight="bold">Số tiền thanh toán:</Text>
+              </HStack>
+
+              <HStack>
+                <Text fontWeight="bold">Phần trăm cọc:</Text>
+              </HStack>
+
+              <HStack>
+                <Text fontWeight="bold">Trạng thái:</Text>
               </HStack>
 
               <Box />
 
               <Stack spacing={4}>
                 <HStack>
-                  <Text fontWeight="500">Đặt cọc lần 3</Text>
+                  <Text fontWeight="bold">Đặt cọc lần 3</Text>
                 </HStack>
 
                 <HStack>
-                  <Text fontWeight="500">Ngày thanh toán:</Text>
+                  <Text fontWeight="bold">Ngày thanh toán:</Text>
                 </HStack>
 
                 <HStack>
-                  <Text fontWeight="500">Số tiền thanh toán:</Text>
+                  <Text fontWeight="bold">Số tiền thanh toán:</Text>
                 </HStack>
 
                 <HStack>
-                  <Text fontWeight="500">Phần trăm cọc:</Text>
+                  <Text fontWeight="bold">Phần trăm cọc:</Text>
                 </HStack>
 
                 <HStack>
-                  <Text fontWeight="500">Trạng thái:</Text>
+                  <Text fontWeight="bold">Trạng thái:</Text>
                 </HStack>
               </Stack>
             </Stack>

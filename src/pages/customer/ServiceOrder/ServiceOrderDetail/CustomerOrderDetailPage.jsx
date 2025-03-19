@@ -22,7 +22,7 @@ export default function CustomerOrderDetailPage() {
         <Heading
           fontWeight="normal"
           as="h2"
-          fontSize="26px"
+          fontSize="22px"
           fontFamily="Montserrat"
         >
           Chi tiết đơn hàng

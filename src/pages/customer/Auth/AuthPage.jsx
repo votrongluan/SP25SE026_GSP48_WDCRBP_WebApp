@@ -51,7 +51,7 @@ function AuthPage() {
           xl: "50%",
         }}
       >
-        <Text textAlign="right" p="16px" pb="50px">
+        <Text textAlign="right" p="16px">
           Bạn muốn trở thành nhà cung cấp của chúng tôi?{" "}
           <a
             style={{

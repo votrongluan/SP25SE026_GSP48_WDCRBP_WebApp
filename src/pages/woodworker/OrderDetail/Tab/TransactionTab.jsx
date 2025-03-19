@@ -50,56 +50,56 @@ const processUpdates = [
 export default function TransactionTab() {
   return (
     <>
-      <Heading fontWeight={500} fontSize="20px" mb={5} textAlign="center">
+      <Heading fontWeight="bold" fontSize="20px" mb={5} textAlign="center">
         Thông tin giao dịch
       </Heading>
 
       <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
         <Stack spacing={4}>
           <HStack>
-            <Text fontWeight="500">Mã giao dịch:</Text>
+            <Text fontWeight="bold">Mã giao dịch:</Text>
 
             <Text>202509382</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Ngày tạo:</Text>
+            <Text fontWeight="bold">Ngày tạo:</Text>
 
             <Text>{convertTimeStampToDateTimeString(new Date())}</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Loại hình giao dịch:</Text>
+            <Text fontWeight="bold">Loại hình giao dịch:</Text>
 
             <Text>Thanh toán bằng số dư ví</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Thành tiền:</Text>
+            <Text fontWeight="bold">Thành tiền:</Text>
 
             <Text>{formatPrice(15000000)}</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Số tiền đã thanh toán:</Text>
+            <Text fontWeight="bold">Số tiền đã thanh toán:</Text>
 
             <Text>{formatPrice(1000000)}</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Số tiền còn lại:</Text>
+            <Text fontWeight="bold">Số tiền còn lại:</Text>
 
             <Text>{formatPrice(5000000)}</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Trạng thái:</Text>
+            <Text fontWeight="bold">Trạng thái:</Text>
 
             <Text>Chưa hoàn tất</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Chi tiết các khoản giao dịch:</Text>
+            <Text fontWeight="bold">Chi tiết các khoản giao dịch:</Text>
           </HStack>
         </Stack>
 
@@ -119,7 +119,7 @@ export default function TransactionTab() {
                     p={4}
                   >
                     <Box flex="1" textAlign="left">
-                      <Text fontWeight="500">{update.description}</Text>
+                      <Text fontWeight="bold">{update.description}</Text>
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
@@ -127,24 +127,24 @@ export default function TransactionTab() {
                   <AccordionPanel pb={4}>
                     <Stack spacing={4}>
                       <HStack>
-                        <Text fontWeight="500">Mã truy vấn:</Text>:
+                        <Text fontWeight="bold">Mã truy vấn:</Text>:
                         <Text>202509382</Text>
                       </HStack>
 
                       <HStack>
-                        <Text fontWeight="500">Ngày thanh toán:</Text>:
+                        <Text fontWeight="bold">Ngày thanh toán:</Text>:
                         <Text>
                           {convertTimeStampToDateTimeString(new Date())}
                         </Text>
                       </HStack>
 
                       <HStack>
-                        <Text fontWeight="500">Số tiền phải thanh toán:</Text>:
+                        <Text fontWeight="bold">Số tiền phải thanh toán:</Text>:
                         <Text>{formatPrice(1000000)}</Text>
                       </HStack>
 
                       <HStack>
-                        <Text fontWeight="500">Trạng thái:</Text>:
+                        <Text fontWeight="bold">Trạng thái:</Text>:
                         <Text>Chưa hoàn tất</Text>
                       </HStack>
                     </Stack>

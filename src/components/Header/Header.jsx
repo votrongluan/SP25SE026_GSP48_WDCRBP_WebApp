@@ -85,7 +85,7 @@ function Header() {
           </>
         ) : (
           <IconButton
-            bgColor="white"
+            bgColor="black"
             color="white"
             aria-label="Open menu"
             icon={<HamburgerIcon />}

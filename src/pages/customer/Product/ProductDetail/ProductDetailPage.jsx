@@ -12,12 +12,14 @@ import {
   Stack,
   Text,
   VStack,
+  Link as ChakraLink,
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import ReviewSection from "./ReviewSection.jsx";
 import StarRating from "../../../../components/Utility/StarRating.jsx";
 import { FiShoppingBag, FiShoppingCart } from "react-icons/fi";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector.jsx";
+import { formatPrice } from "../../../../utils/utils.js";
 
 export default function ProductDetailPage() {
   const product = {
@@ -36,7 +38,6 @@ export default function ProductDetailPage() {
     width: 160,
     height: 180,
     wood_type: "Gỗ sồi",
-    color: "Nâu đậm",
     special_feature: "Tích hợp ngăn kéo",
     style: "Hiện đại",
     sculpture: "Không",
@@ -44,12 +45,12 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <Container w="90%" maxW="1400px" pb="50px">
-      <Box height="70px">
+    <>
+      <Box mb={5}>
         <Heading
           fontWeight="normal"
           as="h2"
-          fontSize="26px"
+          fontSize="22px"
           fontFamily="Montserrat"
         >
           Chi tiết sản phẩm
@@ -62,11 +63,10 @@ export default function ProductDetailPage() {
             <ImageListSelector imgUrls={product.media_urls} />
           </Box>
 
-          {/* Cột thông tin sản phẩm */}
           <Stack borderRadius="10px" p={5} bgColor="white" boxShadow="md">
             <Stack spacing={4}>
               <Flex justifyContent="space-between" alignContent="center">
-                <Heading fontWeight="500" fontSize="20px">
+                <Heading fontWeight="bold" fontSize="20px">
                   {product.product_name || "Tên sản phẩm"}
                 </Heading>
                 <Flex alignContent="center" gap={2}>
@@ -103,10 +103,6 @@ export default function ProductDetailPage() {
               </Text>
 
               <Text>
-                <strong>Màu sắc:</strong> {product.color || "Đang cập nhật..."}
-              </Text>
-
-              <Text>
                 <strong>Tính năng đặc biệt:</strong>{" "}
                 {product.special_feature || "Đang cập nhật..."}
               </Text>
@@ -130,6 +126,15 @@ export default function ProductDetailPage() {
             <Spacer />
 
             <Box>
+              <Box my={4} p={4} bgColor={appColorTheme.grey_0}>
+                <Text
+                  fontSize="30px"
+                  color={appColorTheme.brown_2}
+                  fontWeight="bold"
+                >
+                  {formatPrice(12000000)}
+                </Text>
+              </Box>
               {/* Nút "Mua ngay" và "Thêm vào giỏ" */}
               <Flex gap={4} alignItems="center">
                 {/* Mua ngay */}
@@ -163,8 +168,70 @@ export default function ProductDetailPage() {
           </Stack>
         </Grid>
 
+        <Flex
+          mt={5}
+          flexDirection={{
+            base: "column",
+            xl: "row",
+          }}
+          borderRadius="10px"
+          p={5}
+          bgColor="white"
+          boxShadow="md"
+          gap={5}
+        >
+          <Box>
+            <Image
+              src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
+              width="150px"
+              height="150px"
+              objectFit="cover"
+              objectPosition="center"
+              borderRadius="50%"
+            />
+          </Box>
+
+          <Stack flex={1}>
+            <Stack spacing={4}>
+              <Flex justifyContent="space-between" alignContent="center">
+                <Heading fontWeight="bold" fontSize="20px">
+                  Xưởng mộc Hòa Bình Quận 5
+                </Heading>
+                <Flex alignContent="center" gap={2}>
+                  {" "}
+                  <StarRating rating={3.5} />
+                  13 đánh giá
+                </Flex>
+              </Flex>
+
+              <HStack>
+                <Text fontWeight="bold">Địa chỉ xưởng:</Text>
+                <Text>Chưa cập nhật</Text>
+              </HStack>
+
+              <HStack>
+                <Text fontWeight="bold">Loại hình kinh doanh:</Text>
+                <Text>Chưa cập nhật</Text>
+              </HStack>
+
+              <HStack>
+                <Spacer />
+                <Text>
+                  <ChakraLink
+                    target="_blank"
+                    textDecoration="underline"
+                    color={appColorTheme.brown_2}
+                  >
+                    Xem xưởng
+                  </ChakraLink>
+                </Text>
+              </HStack>
+            </Stack>
+          </Stack>
+        </Flex>
+
         <ReviewSection />
       </Box>
-    </Container>
+    </>
   );
 }
