@@ -32,8 +32,8 @@ export default function CustomerSidebar({ isCollapsed, setIsCollapsed }) {
 
   const navItems = [
     { label: "Trang chủ", path: "/", icon: FiHome },
-    { label: "Đơn hàng", path: "order-detail", icon: FiShoppingCart },
-    { label: "BH & Sữa chữa", path: "guarantee", icon: FiSettings },
+    { label: "Đơn hàng", path: "service-order", icon: FiShoppingCart },
+    { label: "BH & Sữa chữa", path: "guarantee-order", icon: FiSettings },
     { label: "Giao dịch", path: "transaction", icon: FiCreditCard },
     { label: "Khiếu nại", path: "complaint", icon: FiAlertTriangle },
     { label: "Tài khoản", path: "account", icon: FiUser },

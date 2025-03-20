@@ -22,7 +22,7 @@ import {
   FiTrash2,
 } from "react-icons/fi";
 import TaskFilter from "./TaskFilter";
-import ServiceTypeFilter from "./ServiceTypeFilter";
+import GuaranteeTypeFilter from "./GuaranteeTypeFilter.jsx";
 import { useNavigate } from "react-router-dom";
 
 const ActionButton = () => {
@@ -46,7 +46,7 @@ const ActionButton = () => {
   );
 };
 
-export default function ServiceOrderListPage() {
+export default function GuaranteeOrderListPage() {
   const [rowData, setRowData] = useState([
     {
       orderId: "DH0001",
@@ -112,7 +112,7 @@ export default function ServiceOrderListPage() {
       <Box mb={5}></Box>
 
       <Box mb={5}>
-        <ServiceTypeFilter />
+        <GuaranteeTypeFilter />
       </Box>
 
       <Box mb={5}>

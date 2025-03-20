@@ -21,7 +21,7 @@ import AdminLayout from "./layouts/AdminLayout.jsx";
 import WoodworkerLayout from "./layouts/WoodworkerLayout.jsx";
 import CustomerLayout from "./layouts/CustomerLayout.jsx";
 import ScrollToTopAndBottom from "./components/Utility/ScrollToTopAndBottom.jsx";
-import CustomerOrderDetailPage from "./pages/customer/ServiceOrder/ServiceOrderDetail/CustomerOrderDetailPage.jsx";
+import CustomerServiceOrderDetailPage from "./pages/customer/ServiceOrder/ServiceOrderDetail/CustomerServiceOrderDetailPage.jsx";
 import { appColorTheme } from "./config/appconfig.js";
 import WoodworkerOrderDetailPage from "./pages/woodworker/OrderDetail/WoodworkerOrderDetailPage.jsx";
 import ProductDetailPage from "./pages/customer/Product/ProductDetail/ProductDetailPage.jsx";
@@ -91,7 +91,7 @@ function App() {
           <Route path="dashboard" element={<NotFoundPage />} />
           <Route path="service-order">
             <Route index element={<ServiceOrderListPage />} />
-            <Route path=":id" element={<CustomerOrderDetailPage />} />
+            <Route path=":id" element={<CustomerServiceOrderDetailPage />} />
           </Route>
           <Route path="contract">
             <Route index element={<ContractPage />} />

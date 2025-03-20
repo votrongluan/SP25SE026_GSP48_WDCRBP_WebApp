@@ -15,7 +15,7 @@ import GeneralInformation from "./Tab/GeneralInformation.jsx";
 import ContractAndTransactionTab from "./Tab/ContractAndTransactionTab.jsx";
 import ProcessTab from "./Tab/ProcessTab.jsx";
 
-export default function CustomerOrderDetailPage() {
+export default function CustomerGuaranteeOrderDetailPage() {
   return (
     <Box>
       <Box mb={5}>
