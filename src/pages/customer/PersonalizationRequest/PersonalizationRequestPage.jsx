@@ -139,12 +139,12 @@ export default function PersonalizationRequestPage() {
   };
 
   return (
-    <Container w="90%" maxW="1400px" pb="50px">
-      <Box height="70px">
+    <>
+      <Box mb={5}>
         <Heading
           fontWeight="normal"
           as="h2"
-          fontSize="26px"
+          fontSize="22px"
           fontFamily="Montserrat"
         >
           Đặt thiết kế và gia công theo yêu cầu
@@ -161,7 +161,7 @@ export default function PersonalizationRequestPage() {
           >
             <Box>
               <Box boxShadow="md" bgColor="white" p={5} borderRadius="10px">
-                <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
+                <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
                   Thông tin khách hàng
                 </Heading>
                 <SimpleGrid
@@ -245,7 +245,7 @@ export default function PersonalizationRequestPage() {
               </Box>
 
               <Box bgColor="white" p={5} borderRadius="10px" mt={5}>
-                <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
+                <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
                   Thông tin xưởng mộc
                 </Heading>
 
@@ -273,7 +273,7 @@ export default function PersonalizationRequestPage() {
               </Box>
 
               <Box bgColor="white" mt={5} p={5} borderRadius="10px">
-                <Heading fontWeight={500} as="h3" fontSize="20px" mb={4}>
+                <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
                   Danh sách sản phẩm đã thêm
                 </Heading>
                 {productList.length === 0 ? (
@@ -345,6 +345,6 @@ export default function PersonalizationRequestPage() {
           </Flex>
         </Box>
       </form>
-    </Container>
+    </>
   );
 }

@@ -105,7 +105,7 @@ export default function HomeWhy() {
                         }}
                       />
                     </Box>
-                    <Text mt="30px" fontFamily="Montserrat" fontSize="26px">
+                    <Text mt="30px" fontFamily="Montserrat" fontSize="22px">
                       Công nghệ in tiên tiến
                     </Text>
                     <Text mt="30px" fontSize="18px" textAlign="justify">
@@ -133,7 +133,7 @@ export default function HomeWhy() {
                         }}
                       />
                     </Box>
-                    <Text mt="30px" fontFamily="Montserrat" fontSize="26px">
+                    <Text mt="30px" fontFamily="Montserrat" fontSize="22px">
                       Vật liệu chất lượng
                     </Text>
                     <Text mt="30px" fontSize="18px" textAlign="justify">
@@ -162,7 +162,7 @@ export default function HomeWhy() {
                         }}
                       />
                     </Box>
-                    <Text mt="30px" fontFamily="Montserrat" fontSize="26px">
+                    <Text mt="30px" fontFamily="Montserrat" fontSize="22px">
                       Dịch vụ in ấn theo yêu cầu{" "}
                     </Text>
                     <Text mt="30px" fontSize="18px" textAlign="justify">
@@ -191,7 +191,7 @@ export default function HomeWhy() {
                         }}
                       />
                     </Box>
-                    <Text mt="30px" fontFamily="Montserrat" fontSize="26px">
+                    <Text mt="30px" fontFamily="Montserrat" fontSize="22px">
                       Hướng dẫn của chuyên gia{" "}
                     </Text>
                     <Text mt="30px" fontSize="18px" textAlign="justify">

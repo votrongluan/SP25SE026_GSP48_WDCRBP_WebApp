@@ -35,7 +35,7 @@ export default function AddPersonalizationProduct({
   return (
     <Box pl="20px">
       <Box bgColor="white" p="20px" borderRadius="10px">
-        <Heading fontWeight={500} fontSize="20px" mb={4}>
+        <Heading fontWeight="bold" fontSize="20px" mb={4}>
           Thêm sản phẩm
         </Heading>
 

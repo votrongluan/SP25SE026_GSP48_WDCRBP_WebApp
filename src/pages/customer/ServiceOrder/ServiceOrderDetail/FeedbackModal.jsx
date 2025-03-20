@@ -14,18 +14,15 @@ import {
   Select,
   SimpleGrid,
   Spacer,
-  Textarea,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiRefreshCw } from "react-icons/fi";
-import AppointmentTab from "../Tab/AppointmentTab.jsx";
-import AutoResizeTextarea from "../../../../../components/Input/AutoResizeTextarea.jsx";
-import ProductTab from "../Tab/ProductTab.jsx";
+import AutoResizeTextarea from "../../../../components/Input/AutoResizeTextarea";
 
-export default function AppointmentUpdateModal({ order, reFetch }) {
+export default function FeedbackModal({ order, reFetch }) {
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -47,9 +44,7 @@ export default function AppointmentUpdateModal({ order, reFetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">
-            Xác nhận, điều chỉnh lịch hẹn
-          </ModalHeader>
+          <ModalHeader bgColor="app_grey.2">Phản hồi của bạn</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <form
@@ -69,13 +64,9 @@ export default function AppointmentUpdateModal({ order, reFetch }) {
                 spacing={10}
               >
                 <Box>
-                  <AppointmentTab />
-                </Box>
-
-                <Box>
                   <Heading
                     textAlign="center"
-                    fontWeight={500}
+                    fontWeight="bold"
                     as="h3"
                     fontSize="20px"
                     mb={4}

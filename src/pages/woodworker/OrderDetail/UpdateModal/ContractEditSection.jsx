@@ -46,14 +46,14 @@ export default function ContractEditSection() {
 
   return (
     <>
-      <Heading fontWeight={500} fontSize="20px" mb={5} textAlign="center">
+      <Heading fontWeight="bold" fontSize="20px" mb={5} textAlign="center">
         Thông tin hợp đồng
       </Heading>
 
       <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
         <Stack spacing={4}>
           <HStack>
-            <Text fontWeight="500" width="150px">
+            <Text fontWeight="bold" width="150px">
               Số hợp đồng:
             </Text>
             <Input
@@ -64,7 +64,7 @@ export default function ContractEditSection() {
           </HStack>
 
           <HStack>
-            <Text fontWeight="500" width="150px">
+            <Text fontWeight="bold" width="150px">
               File hợp đồng (Word):
             </Text>
             <Input
@@ -77,7 +77,7 @@ export default function ContractEditSection() {
           </HStack>
 
           <HStack>
-            <Text fontWeight="500" width="150px">
+            <Text fontWeight="bold" width="150px">
               Ngày tạo:
             </Text>
             <Input
@@ -88,7 +88,7 @@ export default function ContractEditSection() {
           </HStack>
 
           <HStack>
-            <Text fontWeight="500" width="150px">
+            <Text fontWeight="bold" width="150px">
               Ngày ký:
             </Text>
             <Input
@@ -99,7 +99,7 @@ export default function ContractEditSection() {
           </HStack>
 
           <HStack>
-            <Text fontWeight="500" width="150px">
+            <Text fontWeight="bold" width="150px">
               Ngày hoàn thành:
             </Text>
             <Input
@@ -110,7 +110,7 @@ export default function ContractEditSection() {
           </HStack>
 
           <HStack>
-            <Text fontWeight="500" width="150px">
+            <Text fontWeight="bold" width="150px">
               Chính sách bảo hành:
             </Text>
             <Input
@@ -121,7 +121,7 @@ export default function ContractEditSection() {
           </HStack>
 
           <HStack>
-            <Text fontWeight="500" width="150px">
+            <Text fontWeight="bold" width="150px">
               Tổng giá trị hợp đồng:
             </Text>
             <Input
@@ -135,7 +135,7 @@ export default function ContractEditSection() {
           </HStack>
 
           <HStack>
-            <Text fontWeight="500" width="150px">
+            <Text fontWeight="bold" width="150px">
               Bên A đã ký:
             </Text>
             <Input
@@ -145,7 +145,7 @@ export default function ContractEditSection() {
           </HStack>
 
           <HStack>
-            <Text fontWeight="500" width="150px">
+            <Text fontWeight="bold" width="150px">
               Bên B đã ký:
             </Text>
             <Input
@@ -155,7 +155,7 @@ export default function ContractEditSection() {
           </HStack>
 
           <HStack>
-            <Text fontWeight="500" width="150px">
+            <Text fontWeight="bold" width="150px">
               Thông tin Bên A:
             </Text>
             <Input
@@ -166,7 +166,7 @@ export default function ContractEditSection() {
           </HStack>
 
           <HStack>
-            <Text fontWeight="500" width="150px">
+            <Text fontWeight="bold" width="150px">
               Thông tin Bên B:
             </Text>
             <Input

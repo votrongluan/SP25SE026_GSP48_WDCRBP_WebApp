@@ -63,7 +63,7 @@ const processUpdates = [
 export default function ProcessTab() {
   return (
     <Box bg="white" borderRadius="10px" p={5} boxShadow="md">
-      <Heading textAlign="center" fontWeight={500} fontSize="20px" mb={5}>
+      <Heading textAlign="center" fontWeight="bold" fontSize="20px" mb={5}>
         Quá trình
       </Heading>
 
@@ -96,7 +96,7 @@ export default function ProcessTab() {
 
             {/* Nội dung bước */}
             <Box>
-              <Text fontWeight="500">{update.status}</Text>
+              <Text fontWeight="bold">{update.status}</Text>
               <Text>{update.timestamp}</Text>
             </Box>
           </HStack>

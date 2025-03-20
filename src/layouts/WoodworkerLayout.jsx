@@ -6,7 +6,7 @@ import RequireAuth from "../components/Utility/RequireAuth.jsx";
 
 function WoodworkerLayout(props) {
   return (
-    <Box bg="gray.50">
+    <Box fontFamily="Nunito Sans" bg="gray.50">
       {/* sidebar */}
       <Box
         position="fixed"

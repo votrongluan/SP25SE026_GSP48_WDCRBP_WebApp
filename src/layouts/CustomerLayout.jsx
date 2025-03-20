@@ -1,15 +1,14 @@
-import React, { useState } from "react";
-import { Box } from "@chakra-ui/react";
+import { useState } from "react";
+import { Box, Container } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 import CustomerSidebar from "../components/Sidebar/CustomerSidebar.jsx";
 import Header from "../components/Header/Header.jsx";
 
 export default function CustomerLayout() {
-  // State to track sidebar collapse
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <Box>
+    <Box fontFamily="Nunito Sans">
       <Header />
       <Box>
         <Box
@@ -18,7 +17,6 @@ export default function CustomerLayout() {
           bg="white"
           color="black"
           minHeight="100vh"
-          pt={5}
           px={5}
           width={isCollapsed ? "80px" : "300px"}
           transition="width 0.3s"

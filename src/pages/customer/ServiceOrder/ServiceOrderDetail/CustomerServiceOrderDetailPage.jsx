@@ -14,15 +14,16 @@ import { FiFileText, FiActivity, FiFile } from "react-icons/fi";
 import GeneralInformation from "./Tab/GeneralInformation.jsx";
 import ContractAndTransactionTab from "./Tab/ContractAndTransactionTab.jsx";
 import ProcessTab from "./Tab/ProcessTab.jsx";
+import ActionBar from "./ActionBar.jsx";
 
-export default function CustomerOrderDetailPage() {
+export default function CustomerServiceOrderDetailPage() {
   return (
     <Box>
       <Box mb={5}>
         <Heading
           fontWeight="normal"
           as="h2"
-          fontSize="26px"
+          fontSize="22px"
           fontFamily="Montserrat"
         >
           Chi tiết đơn hàng
@@ -73,6 +74,10 @@ export default function CustomerOrderDetailPage() {
             </TabPanel>
           </TabPanels>
         </Tabs>
+      </Box>
+
+      <Box mt={4}>
+        <ActionBar />
       </Box>
     </Box>
   );

@@ -23,20 +23,20 @@ export default function ContractTab() {
 
   return (
     <>
-      <Heading fontWeight={500} fontSize="20px" mb={5} textAlign="center">
+      <Heading fontWeight="bold" fontSize="20px" mb={5} textAlign="center">
         Thông tin hợp đồng
       </Heading>
 
       <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
         <Stack spacing={4}>
           <HStack>
-            <Text fontWeight="500">Số hợp đồng:</Text>
+            <Text fontWeight="bold">Số hợp đồng:</Text>
             <Text>{contract.contract_number}</Text>
           </HStack>
 
           {/* File Word hợp đồng */}
           <HStack>
-            <Text fontWeight="500">File hợp đồng (Word):</Text>
+            <Text fontWeight="bold">File hợp đồng (Word):</Text>
             {contract.contract_word_file ? (
               <Link
                 href={contract.contract_word_file}
@@ -52,7 +52,7 @@ export default function ContractTab() {
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Ngày tạo:</Text>
+            <Text fontWeight="bold">Ngày tạo:</Text>
             <Text>
               {contract.created_at
                 ? convertTimeStampToDateTimeString(contract.created_at)
@@ -61,7 +61,7 @@ export default function ContractTab() {
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Ngày ký:</Text>
+            <Text fontWeight="bold">Ngày ký:</Text>
             <Text>
               {contract.sign_date
                 ? convertTimeStampToDateTimeString(contract.sign_date)
@@ -70,7 +70,7 @@ export default function ContractTab() {
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Ngày hoàn thành:</Text>
+            <Text fontWeight="bold">Ngày hoàn thành:</Text>
             <Text>
               {contract.complete_date
                 ? convertTimeStampToDateTimeString(contract.complete_date)
@@ -79,12 +79,12 @@ export default function ContractTab() {
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Chính sách bảo hành:</Text>
+            <Text fontWeight="bold">Chính sách bảo hành:</Text>
             <Text>{contract.warranty_policy || "Chưa có thông tin"}</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Tổng giá trị hợp đồng:</Text>
+            <Text fontWeight="bold">Tổng giá trị hợp đồng:</Text>
             <Text>
               {contract.contract_total_amount
                 ? `${contract.contract_total_amount} VND`
@@ -93,22 +93,22 @@ export default function ContractTab() {
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Bên A đã ký:</Text>
+            <Text fontWeight="bold">Bên A đã ký:</Text>
             <Text>{contract.is_sign_by_a ? "Đã ký" : "Chưa ký"}</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Bên B đã ký:</Text>
+            <Text fontWeight="bold">Bên B đã ký:</Text>
             <Text>{contract.is_sign_by_b ? "Đã ký" : "Chưa ký"}</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Thông tin Bên A:</Text>
+            <Text fontWeight="bold">Thông tin Bên A:</Text>
             <Text>{contract.a_information || "Chưa có thông tin"}</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Thông tin Bên B:</Text>
+            <Text fontWeight="bold">Thông tin Bên B:</Text>
             <Text>{contract.b_information || "Chưa có thông tin"}</Text>
           </HStack>
         </Stack>

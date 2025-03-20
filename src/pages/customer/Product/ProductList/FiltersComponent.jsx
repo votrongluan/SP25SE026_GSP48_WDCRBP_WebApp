@@ -23,13 +23,13 @@ import { formatPrice } from "../../../../utils/utils.js";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import { FiFilter } from "react-icons/fi";
 
-export function FiltersComponent() {
+export default function FiltersComponent() {
   const [priceRange, setPriceRange] = useState([0, 20000000]);
   const [ratingRange, setRatingRange] = useState([1, 5]);
 
   return (
     <Box p={5} boxShadow="md" bgColor="white">
-      <Heading fontWeight={500} fontSize="20px" mb={5}>
+      <Heading fontWeight="bold" fontSize="20px" mb={5}>
         Bộ lọc
       </Heading>
 
@@ -151,7 +151,7 @@ export function FiltersComponent() {
           </Select>
         </Box>
 
-        <Input placeholder="Từ khóa" />
+        <Input placeholder="Tên sản phẩm" />
 
         <Checkbox defaultChecked value="danang">
           Áp dụng bộ lọc

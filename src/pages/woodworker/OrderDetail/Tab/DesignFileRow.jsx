@@ -94,7 +94,7 @@ export default function DesignFileRow({ designFiles }) {
         )}
 
         <Box flex="1">
-          <Text fontWeight="500">
+          <Text fontWeight="bold">
             Phiên bản: {currentDesign.version} - Ngày upload:{" "}
             {currentDesign.uploadDate}
           </Text>

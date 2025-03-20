@@ -1,6 +1,7 @@
-import { Box, Flex, Grid, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, Image, Stack, Text } from "@chakra-ui/react";
 import Pagination from "../../../../components/Utility/Pagination.jsx";
-export function DesignList() {
+import { Link } from "react-router-dom";
+export default function DesignList() {
   const products = [
     {
       id: 1,
@@ -20,7 +21,7 @@ export function DesignList() {
     },
     {
       id: 1,
-      name: "Giường 2 tầng 1322222222222222222222222222222222222222222222",
+      name: "Giường 2 tầng",
       design_code: "#AB8s4",
       rating: 4,
       image:
@@ -36,7 +37,7 @@ export function DesignList() {
     },
     {
       id: 1,
-      name: "Giường 2 tầng 1322222222222222222222222222222222222222222222",
+      name: "Giường 2 tầng",
       design_code: "#AB8s4",
       rating: 4,
       image:
@@ -52,7 +53,7 @@ export function DesignList() {
     },
     {
       id: 1,
-      name: "Giường 2 tầng 1322222222222222222222222222222222222222222222",
+      name: "Giường 2 tầng tầng tầng tầng tầng tầng tầng tầng tầng tầng tầng tầng tầng tầng tầng tầng tầng tầng tầng tầng tầng tầng",
       design_code: "#AB8s4",
       rating: 4,
       image:
@@ -70,37 +71,29 @@ export function DesignList() {
 
   return (
     <Box>
-      <Text>Tìm thấy 4 sản phẩm</Text>
       <Pagination
-        itemsPerPage={100}
-        totalPages={100}
-        currentPage={1}
-        data={products}
-        DisplayData={({ data }) => (
+        itemsPerPage={4}
+        dataList={products}
+        DisplayComponent={({ data }) => (
           <Grid
             mt={4}
             templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
             gap={4}
           >
             {data.map((product) => (
-              <Box
-                key={product.id}
-                borderWidth="1px"
-                borderRadius="lg"
-                overflow="hidden"
-                p={5}
-                bgColor="white"
-              >
-                <Image src={product.image} alt={product.name} mb={4} />
-                <Text height="50px" noOfLines={2} fontWeight="bold" mb={2}>
-                  {product.name}
-                </Text>
+              <Link key={product.id} to="1">
+                <Box boxShadow="md" overflow="hidden" bgColor="white">
+                  <Image src={product.image} alt={product.name} />
 
-                <Flex justifyContent="space-between">
-                  <Text fontWeight="500">{product.design_code}</Text>
-                  <Text>⭐ {product.rating}</Text>
-                </Flex>
-              </Box>
+                  <Stack gap={2} p={2}>
+                    <Text height="50px" noOfLines={2} fontWeight="bold">
+                      {product.name}
+                    </Text>
+
+                    <Text>⭐ {product.rating.toFixed(1)} (10 đánh giá)</Text>
+                  </Stack>
+                </Box>
+              </Link>
             ))}
           </Grid>
         )}

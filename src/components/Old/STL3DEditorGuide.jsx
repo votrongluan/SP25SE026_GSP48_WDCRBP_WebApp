@@ -12,7 +12,7 @@ export const STL3DEditorGuide = () => {
   return (
     <Box p={5} bg="white" color="black">
       <Heading
-        fontSize="26px"
+        fontSize="22px"
         fontFamily="Montserrat"
         textAlign={"center"}
         as="h2"

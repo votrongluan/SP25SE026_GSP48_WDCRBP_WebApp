@@ -42,7 +42,7 @@ const processUpdates = [
 export default function LogTab() {
   return (
     <Box bg="white" borderRadius="10px" p={5} boxShadow="md">
-      <Heading fontWeight={500} fontSize="20px" mb={5} textAlign="center">
+      <Heading fontWeight="bold" fontSize="20px" mb={5} textAlign="center">
         Nhật ký quá trình cập nhật đơn hàng
       </Heading>
       <Box>
@@ -61,7 +61,7 @@ export default function LogTab() {
                   p={4}
                 >
                   <Box flex="1" textAlign="left">
-                    <Text fontWeight="500">
+                    <Text fontWeight="bold">
                       {update.timestamp} - Đã chuyển sang trạng thái {'"'}Chờ
                       lấy hàng
                       {'"'}
@@ -73,35 +73,35 @@ export default function LogTab() {
                 <AccordionPanel pb={4}>
                   <Stack spacing={4}>
                     <HStack>
-                      <Text fontWeight="500">Ngày cập nhật:</Text>
+                      <Text fontWeight="bold">Ngày cập nhật:</Text>
                       <Text>
                         {convertTimeStampToDateTimeString(new Date())}
                       </Text>
                     </HStack>
 
                     <HStack>
-                      <Text fontWeight="500">
+                      <Text fontWeight="bold">
                         Trạng thái đơn hàng trước đó:
                       </Text>
                       <Text>Đã đăng thiết kế sản phẩm</Text>
                     </HStack>
 
                     <HStack>
-                      <Text fontWeight="500">
+                      <Text fontWeight="bold">
                         Trạng thái đơn hàng cập nhật:
                       </Text>
                       <Text>Đã duyệt thiết kế sản phẩm</Text>
                     </HStack>
 
                     <HStack>
-                      <Text fontWeight="500">Ghi chú:</Text>
+                      <Text fontWeight="bold">Ghi chú:</Text>
                       <Text>
                         Có thể chuyển sang ngày 21/12/2025 lúc 18h không ạ
                       </Text>
                     </HStack>
 
                     <HStack>
-                      <Text fontWeight="500">Người cập nhật:</Text>
+                      <Text fontWeight="bold">Người cập nhật:</Text>
                       <Text>Xưởng mộc ABC</Text>
                     </HStack>
                   </Stack>

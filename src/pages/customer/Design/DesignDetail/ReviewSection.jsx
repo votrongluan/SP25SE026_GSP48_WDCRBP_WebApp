@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Box, Flex, Heading, Text, Image } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, Image, HStack } from "@chakra-ui/react";
 import StarRating from "../../../../components/Utility/StarRating.jsx";
 import FilterPill from "../../../../components/Utility/FilterPill.jsx";
+import { FiClock } from "react-icons/fi";
 
 export default function ReviewSection() {
   const [filterStar, setFilterStar] = useState(null);
 
-  // Ví dụ data đánh giá tĩnh (không có "purchased" hay "tags")
   const reviews = [
     {
       id: 1,
@@ -28,7 +28,7 @@ export default function ReviewSection() {
       id: 3,
       user: "Lê Văn C",
       rating: 1,
-      date: "9/3/2023 23:57",
+      date: "09/03/2023 23:57",
       comment: "Không hài lòng.",
     },
     {
@@ -56,7 +56,7 @@ export default function ReviewSection() {
   return (
     <Box mt={5} p={5} bgColor="white" boxShadow="md" borderRadius="10px">
       <Heading fontSize="20px" mb={4}>
-        Đánh giá sản phẩm làm từ thiết kế
+        Đánh giá thiết kế
       </Heading>
 
       {/* Thanh lọc ở trên: Tất cả, rồi 5 sao -> 1 sao */}
@@ -86,12 +86,16 @@ export default function ReviewSection() {
       {filteredReviews.length > 0 ? (
         filteredReviews.map((review) => (
           <Box key={review.id} mb={5} borderBottom="1px solid #E2E8F0" pb={4}>
-            {/* Tên người dùng + Ngày đánh giá */}
-            <Flex justifyContent="space-between" alignItems="center" mb={1}>
-              <Text fontWeight="bold">{review.user}</Text>
-              <Text fontSize="sm" color="gray.600">
-                {review.date}
+            <Flex alignItems="center" mb={1}>
+              <Text fontWeight="bold" mr={2}>
+                {review.user}
               </Text>
+              <HStack spacing={1}>
+                <FiClock size={12} color="gray.600" />
+                <Text fontSize="sm" color="gray.600">
+                  {review.date}
+                </Text>
+              </HStack>
             </Flex>
 
             {/* Số sao */}

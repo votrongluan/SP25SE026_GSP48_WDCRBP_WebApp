@@ -5,32 +5,32 @@ export default function ReviewTab() {
   return (
     <>
       <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-        <Heading fontWeight={500} fontSize="20px" mb={5}>
+        <Heading fontWeight="bold" fontSize="20px" mb={5}>
           Đánh giá đơn hàng
         </Heading>
         <Stack spacing={4}>
           <HStack>
-            <Text fontWeight="500">Số sao:</Text>
+            <Text fontWeight="bold">Số sao:</Text>
             <Text>5</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Bình luận:</Text>
+            <Text fontWeight="bold">Bình luận:</Text>
             <Text>Sản phẩm cũng ok</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Ngày đăng:</Text>
+            <Text fontWeight="bold">Ngày đăng:</Text>
             <Text>{convertTimeStampToDateTimeString(new Date())}</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Trạng thái:</Text>
+            <Text fontWeight="bold">Trạng thái:</Text>
             <Text>Đã phê duyệt</Text>
           </HStack>
 
           <HStack>
-            <Text fontWeight="500">Ảnh đính kèm:</Text>
+            <Text fontWeight="bold">Ảnh đính kèm:</Text>
             <Image
               src="https://www.noithatkaya.com/wp-content/uploads/2020/10/Cong-trinh-BIUBIU-STAR-14.webp"
               alt="Ảnh đánh giá"

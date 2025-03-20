@@ -78,7 +78,7 @@ export default function DesignUpdateModal({ order, reFetch }) {
                 <Box>
                   <Heading
                     textAlign="center"
-                    fontWeight={500}
+                    fontWeight="bold"
                     as="h3"
                     fontSize="20px"
                     mb={4}
@@ -103,12 +103,12 @@ export default function DesignUpdateModal({ order, reFetch }) {
                     <VStack>
                       <HStack mt={4}>
                         <Text>Số dư ví:</Text>
-                        <Text fontWeight={500}>{formatPrice(12000000)}</Text>
+                        <Text fontWeight="bold">{formatPrice(12000000)}</Text>
                       </HStack>
 
                       <HStack mt={4}>
                         <Text>Số tiền đặt cọc:</Text>
-                        <Text fontWeight={500}>{formatPrice(5000000)}</Text>
+                        <Text fontWeight="bold">{formatPrice(5000000)}</Text>
                       </HStack>
                     </VStack>
                   </Box>

@@ -1,11 +1,15 @@
-import { Box, Flex, Grid, Image, Text } from "@chakra-ui/react";
-import Pagination from "../../../../components/Utility/Pagination.jsx";
-export function ProductList() {
+import { Box, Flex, Grid, Image, Stack, Text } from "@chakra-ui/react";
+import Pagination from "../../../../components/Utility/Pagination";
+import { Link } from "react-router-dom";
+import { appColorTheme } from "../../../../config/appconfig";
+import { formatPrice } from "../../../../utils/utils";
+
+export default function ProductList() {
   const products = [
     {
       id: 1,
       name: "Sản phẩm 1 1322222222222222222222222222222222222222222222",
-      price: "1.000.000 VND",
+      price: "1000000",
       rating: 4,
       image:
         "https://product.hstatic.net/200000821277/product/1__2__ddeb0088f796420abf7ff54b29e64ac7_master.jpg",
@@ -13,7 +17,7 @@ export function ProductList() {
     {
       id: 1,
       name: "Sản phẩm 1",
-      price: "1.000.000 VND",
+      price: "1000000",
       rating: 4,
       image:
         "https://product.hstatic.net/200000821277/product/1__2__ddeb0088f796420abf7ff54b29e64ac7_master.jpg",
@@ -21,7 +25,7 @@ export function ProductList() {
     {
       id: 1,
       name: "Sản phẩm 1 1322222222222222222222222222222222222222222222",
-      price: "1.000.000 VND",
+      price: "1000000",
       rating: 4,
       image:
         "https://product.hstatic.net/200000821277/product/1__2__ddeb0088f796420abf7ff54b29e64ac7_master.jpg",
@@ -29,7 +33,7 @@ export function ProductList() {
     {
       id: 1,
       name: "Sản phẩm 1",
-      price: "1.000.000 VND",
+      price: "1000000",
       rating: 4,
       image:
         "https://product.hstatic.net/200000821277/product/1__2__ddeb0088f796420abf7ff54b29e64ac7_master.jpg",
@@ -37,7 +41,7 @@ export function ProductList() {
     {
       id: 1,
       name: "Sản phẩm 1 1322222222222222222222222222222222222222222222",
-      price: "1.000.000 VND",
+      price: "1000000",
       rating: 4,
       image:
         "https://product.hstatic.net/200000821277/product/1__2__ddeb0088f796420abf7ff54b29e64ac7_master.jpg",
@@ -45,7 +49,7 @@ export function ProductList() {
     {
       id: 1,
       name: "Sản phẩm 1",
-      price: "1.000.000 VND",
+      price: "1000000",
       rating: 4,
       image:
         "https://product.hstatic.net/200000821277/product/1__2__ddeb0088f796420abf7ff54b29e64ac7_master.jpg",
@@ -53,7 +57,7 @@ export function ProductList() {
     {
       id: 1,
       name: "Sản phẩm 1 1322222222222222222222222222222222222222222222",
-      price: "1.000.000 VND",
+      price: "1000000",
       rating: 4,
       image:
         "https://product.hstatic.net/200000821277/product/1__2__ddeb0088f796420abf7ff54b29e64ac7_master.jpg",
@@ -61,7 +65,7 @@ export function ProductList() {
     {
       id: 1,
       name: "Sản phẩm 1",
-      price: "1.000.000 VND",
+      price: "1000000",
       rating: 4,
       image:
         "https://product.hstatic.net/200000821277/product/1__2__ddeb0088f796420abf7ff54b29e64ac7_master.jpg",
@@ -70,37 +74,32 @@ export function ProductList() {
 
   return (
     <Box>
-      <Text>Tìm thấy 4 sản phẩm</Text>
       <Pagination
-        itemsPerPage={100}
-        totalPages={100}
-        currentPage={1}
-        data={products}
-        DisplayData={({ data }) => (
+        itemsPerPage={4}
+        dataList={products}
+        DisplayComponent={({ data }) => (
           <Grid
             mt={4}
             templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
             gap={4}
           >
             {data.map((product) => (
-              <Box
-                key={product.id}
-                borderWidth="1px"
-                borderRadius="lg"
-                overflow="hidden"
-                p={5}
-                bgColor="white"
-              >
-                <Image src={product.image} alt={product.name} mb={4} />
-                <Text height="50px" noOfLines={2} fontWeight="bold" mb={2}>
-                  {product.name}
-                </Text>
+              <Link key={product.id} to="1">
+                <Box overflow="hidden" boxShadow="md" bgColor="white">
+                  <Image src={product.image} alt={product.name} />
+                  <Stack gap={2} p={2}>
+                    <Text height="50px" noOfLines={2} fontWeight="bold">
+                      {product.name}
+                    </Text>
 
-                <Flex justifyContent="space-between">
-                  <Text fontWeight="500">{product.price}</Text>
-                  <Text>⭐ {product.rating}</Text>
-                </Flex>
-              </Box>
+                    <Text fontWeight="bold" color={appColorTheme.brown_2}>
+                      {formatPrice(product.price)}
+                    </Text>
+
+                    <Text>⭐ {product.rating.toFixed(1)} (10 đánh giá)</Text>
+                  </Stack>
+                </Box>
+              </Link>
             ))}
           </Grid>
         )}

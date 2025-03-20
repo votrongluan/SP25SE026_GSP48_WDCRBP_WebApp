@@ -13,7 +13,7 @@ export default function ErrorPage() {
         <Box pt="100px" minH="100vh" bgColor="white" color="black">
           <Container maxW="1200px" as="main" py={10}>
             <Box textAlign="center" minH="70vh">
-              <Heading fontFamily="Montserrat" fontSize="26px">
+              <Heading fontFamily="Montserrat" fontSize="22px">
                 Có lỗi xảy ra trong quá trình xử lý
               </Heading>
               <Text fontSize="18px" mt={10} mb={10}>

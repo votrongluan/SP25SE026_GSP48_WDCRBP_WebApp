@@ -28,14 +28,14 @@ export default function AppointmentEditSection() {
 
   return (
     <>
-      <Heading fontWeight={500} fontSize="20px" mb={5} textAlign="center">
+      <Heading fontWeight="bold" fontSize="20px" mb={5} textAlign="center">
         Thông tin lịch hẹn
       </Heading>
 
       <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
         <Grid templateColumns="100px 1fr" gap={4}>
           <GridItem>
-            <Text fontWeight="500" mb={2}>
+            <Text fontWeight="bold" mb={2}>
               Hình thức:
             </Text>
           </GridItem>
@@ -48,7 +48,7 @@ export default function AppointmentEditSection() {
           </GridItem>
 
           <GridItem>
-            <Text fontWeight="500" mb={2}>
+            <Text fontWeight="bold" mb={2}>
               Địa điểm:
             </Text>
           </GridItem>
@@ -61,7 +61,7 @@ export default function AppointmentEditSection() {
           </GridItem>
 
           <GridItem>
-            <Text fontWeight="500" mb={2}>
+            <Text fontWeight="bold" mb={2}>
               Ngày hẹn:
             </Text>
           </GridItem>
@@ -75,7 +75,7 @@ export default function AppointmentEditSection() {
           </GridItem>
 
           <GridItem>
-            <Text fontWeight="500" mb={2}>
+            <Text fontWeight="bold" mb={2}>
               Mô tả:
             </Text>
           </GridItem>

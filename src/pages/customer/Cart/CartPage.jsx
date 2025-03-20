@@ -114,7 +114,7 @@ export default function CartPage() {
   };
 
   return (
-    <Container w="90%" maxW="1400px" pb="50px">
+    <>
       {Object.keys(productsByEmployee).map((employeeId) => (
         <Grid
           key={employeeId}
@@ -224,6 +224,6 @@ export default function CartPage() {
           </GridItem>
         </Grid>
       ))}
-    </Container>
+    </>
   );
 }

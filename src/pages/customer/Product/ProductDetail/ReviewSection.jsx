@@ -7,7 +7,6 @@ import { FiClock } from "react-icons/fi";
 export default function ReviewSection() {
   const [filterStar, setFilterStar] = useState(null);
 
-  // Ví dụ data đánh giá tĩnh (không có "purchased" hay "tags")
   const reviews = [
     {
       id: 1,
