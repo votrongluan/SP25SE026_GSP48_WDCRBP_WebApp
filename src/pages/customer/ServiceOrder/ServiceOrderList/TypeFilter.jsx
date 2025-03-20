@@ -2,7 +2,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { appColorTheme } from "../../../../config/appconfig";
 
-export default function GuaranteeTypeFilter() {
+export default function TypeFilter() {
   const [selectedType, setSelectedType] = useState("Tất cả");
 
   const typeList = [

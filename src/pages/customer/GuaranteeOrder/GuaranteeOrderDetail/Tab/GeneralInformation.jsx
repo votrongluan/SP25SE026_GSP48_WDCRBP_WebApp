@@ -14,9 +14,16 @@ import {
   AccordionPanel,
   Badge,
   Image,
+  Flex,
+  Checkbox,
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../../config/appconfig";
-import { convertTimeStampToDateTimeString } from "../../../../../utils/utils";
+import {
+  convertTimeStampToDateTimeString,
+  formatPrice,
+} from "../../../../../utils/utils";
+import ImageListSelector from "../../../../../components/Utility/ImageListSelector";
+import { CheckBox } from "@mui/icons-material";
 
 const products = [
   {
@@ -37,66 +44,19 @@ const products = [
   },
 ];
 
+const description = {
+  repairProduct: "Giường 2 tầng (#23)",
+  imgUrls:
+    "https://vuaghego.com/wp-content/uploads/2024/06/giuong-sap-co-lap-lai-duoc-khong-nguyen-nhan-giuong-bi-sap.jpg;https://danviet.mediacdn.vn/upload/4-2019/images/2019-10-26/6-giac-mo-la-diem-go-bao-truoc-van-den-can-than-hoa-sat-than-784-1572106777-width800height684.jpg",
+  errorDescription:
+    "Giường đã bị hư hai chân do lâu ngày sử dụng và bị chuột cắn, bên mình xem có thê sửa lại giúp em được không ạ",
+};
+
 export default function GeneralInformation() {
   return (
     <Box>
-      <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-        <Heading fontWeight="bold" fontSize="20px" mb={5}>
-          Thông tin sản phẩm
-        </Heading>
-
-        <Accordion allowMultiple>
-          {products.map((product) => (
-            <AccordionItem
-              key={product.id}
-              border="1px solid #ddd"
-              bg="white"
-              borderRadius="10px"
-              mb={4}
-            >
-              <AccordionButton
-                _expanded={{ bg: appColorTheme.brown_0 }}
-                borderRadius="10px"
-              >
-                <Box flex="1" textAlign="left">
-                  <Text fontWeight="bold">{product.name}</Text>
-                </Box>
-                <AccordionIcon />
-              </AccordionButton>
-
-              <AccordionPanel pb={4}>
-                <Stack spacing={4}>
-                  <HStack>
-                    <Text fontWeight="bold">Kích thước:</Text>
-                    <Text>{product.dimensions} (dài x rộng x cao)</Text>
-                  </HStack>
-                  <HStack>
-                    <Text fontWeight="bold">Loại gỗ:</Text>
-                    <Text>{product.woodType}</Text>
-                  </HStack>
-                  <HStack>
-                    <Text fontWeight="bold">Hoàn thiện:</Text>
-                    <Text>{product.finish}</Text>
-                  </HStack>
-                  <HStack>
-                    <Text fontWeight="bold">Màu sắc:</Text>
-                    <Text>{product.color}</Text>
-                  </HStack>
-                  <HStack>
-                    <Text fontWeight="bold">Bảng giá chi tiết</Text>
-                  </HStack>
-                  <HStack>
-                    <Text fontWeight="bold">Ảnh liên quan đến sản phẩm</Text>
-                  </HStack>
-                </Stack>
-              </AccordionPanel>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </Box>
-
       <SimpleGrid
-        mt={5}
+        mb={5}
         columns={{
           base: 1,
           xl: 2,
@@ -130,39 +90,68 @@ export default function GeneralInformation() {
             <Stack spacing={4}>
               <HStack>
                 <Text fontWeight="bold">Mã đơn hàng:</Text>
-                <Text>Chưa cập nhật</Text>
+                <Text>12</Text>
               </HStack>
 
               <HStack>
                 <Text fontWeight="bold">Loại dịch vụ:</Text>
-                <Text>Chưa cập nhật</Text>
+                <Text>Sữa chữa</Text>
               </HStack>
 
               <HStack>
                 <Text fontWeight="bold">Ngày đặt:</Text>
-                <Text>Chưa cập nhật</Text>
-              </HStack>
-
-              <HStack>
-                <Text fontWeight="bold">Số lượng sản phẩm:</Text>
-                <Text>Chưa cập nhật</Text>
+                <Text>12/01/2024 12:00</Text>
               </HStack>
 
               <HStack>
                 <Text fontWeight="bold">Lắp đặt sản phẩm:</Text>
-                <Text>Chưa cập nhật</Text>
+                <Text>✅</Text>
               </HStack>
 
               <Box>
-                <Text fontWeight="bold">Ghi chú:</Text>
-                <Text>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Reiciendis harum, voluptates quas, laudantium inventore
-                  debitis aspernatur aperiam voluptate distinctio perspiciatis
-                  doloremque cupiditate cum facere iste reprehenderit totam
-                  tempora impedit non.
-                </Text>
+                <Text fontWeight="bold">Mô tả:</Text>
+
+                <SimpleGrid
+                  mt={4}
+                  columns={{
+                    base: 1,
+                    xl: 2,
+                  }}
+                  columnGap={4}
+                >
+                  <Box>
+                    <ImageListSelector
+                      imgUrls={description.imgUrls}
+                      imgH="100"
+                    />
+                  </Box>
+
+                  <Box>
+                    <Text>Sản phẩm lỗi: {description.repairProduct}</Text>
+                    <Text mt={4}>
+                      Mô tả lỗi: {description.errorDescription}
+                    </Text>
+                  </Box>
+                </SimpleGrid>
               </Box>
+
+              <Flex
+                alignItems="center"
+                my={4}
+                p={4}
+                bgColor={appColorTheme.grey_0}
+              >
+                <Text mr={4} fontSize="20px">
+                  Thành tiền:
+                </Text>
+                <Text
+                  fontSize="30px"
+                  color={appColorTheme.brown_2}
+                  fontWeight="bold"
+                >
+                  {formatPrice(120000)}
+                </Text>
+              </Flex>
             </Stack>
           </Box>
         </Box>
@@ -228,6 +217,74 @@ export default function GeneralInformation() {
           </Box>
         </Box>
       </SimpleGrid>
+
+      <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
+        <Heading fontWeight="bold" fontSize="20px" mb={5}>
+          Thông tin sản phẩm đã đặt trước đó
+        </Heading>
+
+        <Accordion allowMultiple>
+          {products.map((product) => (
+            <AccordionItem
+              key={product.id}
+              border="1px solid #ddd"
+              bg="white"
+              borderRadius="10px"
+              mb={4}
+            >
+              <AccordionButton
+                _expanded={{ bg: appColorTheme.brown_0 }}
+                borderRadius="10px"
+              >
+                <Box flex="1" textAlign="left">
+                  <Text fontWeight="bold">{product.name}</Text>
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+
+              <AccordionPanel pb={4}>
+                <Stack spacing={4}>
+                  <HStack>
+                    <Text fontWeight="bold">Kích thước:</Text>
+                    <Text>{product.dimensions} (dài x rộng x cao)</Text>
+                  </HStack>
+                  <HStack>
+                    <Text fontWeight="bold">Loại gỗ:</Text>
+                    <Text>{product.woodType}</Text>
+                  </HStack>
+                  <HStack>
+                    <Text fontWeight="bold">Hoàn thiện:</Text>
+                    <Text>{product.finish}</Text>
+                  </HStack>
+                  <HStack>
+                    <Text fontWeight="bold">Màu sắc:</Text>
+                    <Text>{product.color}</Text>
+                  </HStack>
+                  <HStack>
+                    <Text fontWeight="bold">Bảng giá chi tiết</Text>
+                  </HStack>
+                  <HStack>
+                    <Text fontWeight="bold">Ảnh liên quan đến sản phẩm</Text>
+                  </HStack>
+                </Stack>
+              </AccordionPanel>
+            </AccordionItem>
+          ))}
+        </Accordion>
+
+        <HStack>
+          <Spacer />
+          <Text>
+            <ChakraLink
+              target="_blank"
+              textDecoration="underline"
+              color={appColorTheme.brown_2}
+            >
+              Xem chi tiết đơn hàng đã đặt trước đó
+            </ChakraLink>
+          </Text>
+        </HStack>
+      </Box>
 
       <Box
         mt={5}

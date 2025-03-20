@@ -14,21 +14,15 @@ import {
   Select,
   SimpleGrid,
   Spacer,
-  Text,
-  Textarea,
   useDisclosure,
   useToast,
-  VStack,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiRefreshCw } from "react-icons/fi";
-import AppointmentTab from "../Tab/AppointmentTab.jsx";
-import AutoResizeTextarea from "../../../../../components/Input/AutoResizeTextarea.jsx";
-import ProductTab from "../Tab/ProductTab.jsx";
-import { formatPrice } from "../../../../../utils/utils.js";
+import AutoResizeTextarea from "../../../../components/Input/AutoResizeTextarea";
 
-export default function DesignUpdateModal({ order, reFetch }) {
+export default function FeedbackModal({ order, reFetch }) {
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -50,9 +44,7 @@ export default function DesignUpdateModal({ order, reFetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">
-            Xác nhận, điều chỉnh thiết kế sản phẩm
-          </ModalHeader>
+          <ModalHeader bgColor="app_grey.2">Phản hồi của bạn</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <form
@@ -71,10 +63,6 @@ export default function DesignUpdateModal({ order, reFetch }) {
                 }}
                 spacing={10}
               >
-                <Box>
-                  <ProductTab />
-                </Box>
-
                 <Box>
                   <Heading
                     textAlign="center"
@@ -99,18 +87,6 @@ export default function DesignUpdateModal({ order, reFetch }) {
                       <FormLabel>Phản hồi</FormLabel>
                       <AutoResizeTextarea />
                     </FormControl>
-
-                    <VStack>
-                      <HStack mt={4}>
-                        <Text>Số dư ví:</Text>
-                        <Text fontWeight="bold">{formatPrice(12000000)}</Text>
-                      </HStack>
-
-                      <HStack mt={4}>
-                        <Text>Số tiền đặt cọc:</Text>
-                        <Text fontWeight="bold">{formatPrice(5000000)}</Text>
-                      </HStack>
-                    </VStack>
                   </Box>
                 </Box>
               </SimpleGrid>

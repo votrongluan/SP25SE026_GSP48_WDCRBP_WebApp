@@ -14,6 +14,7 @@ import { FiFileText, FiActivity, FiFile } from "react-icons/fi";
 import GeneralInformation from "./Tab/GeneralInformation.jsx";
 import ContractAndTransactionTab from "./Tab/ContractAndTransactionTab.jsx";
 import ProcessTab from "./Tab/ProcessTab.jsx";
+import ActionBar from "./ActionBar.jsx";
 
 export default function CustomerServiceOrderDetailPage() {
   return (
@@ -73,6 +74,10 @@ export default function CustomerServiceOrderDetailPage() {
             </TabPanel>
           </TabPanels>
         </Tabs>
+      </Box>
+
+      <Box mt={4}>
+        <ActionBar />
       </Box>
     </Box>
   );

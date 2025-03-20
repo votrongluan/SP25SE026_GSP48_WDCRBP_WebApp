@@ -120,7 +120,7 @@ export default function ContractAndTransactionTab() {
                 target="_blank"
                 textDecoration="underline"
                 color={appColorTheme.brown_2}
-                href="contract"
+                href="/cus/contract"
               >
                 Xem điều khoản hợp đồng
               </ChakraLink>

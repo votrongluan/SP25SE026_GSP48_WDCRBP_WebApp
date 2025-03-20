@@ -35,7 +35,9 @@ import { store } from "./store/store.js";
 import ContractPage from "./pages/customer/Contract/ContractPage.jsx";
 import TestPage from "./pages/TestPage.jsx";
 import ProductsPage from "./pages/customer/Product/ProductList/ProductsPage.jsx";
-import ServiceOrderListPage from "./pages/customer/ServiceOrder/ServiceOrderList/ServiceOrderListPage.jsx";
+import CustomerServiceOrderListPage from "./pages/customer/ServiceOrder/ServiceOrderList/CustomerServiceOrderListPage.jsx";
+import CustomerGuaranteeOrderListPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderList/CustomerGuaranteeOrderListPage.jsx";
+import CustomerGuaranteeOrderDetailPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderDetail/CustomerGuaranteeOrderDetailPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -90,12 +92,16 @@ function App() {
           <Route index element={<NotFoundPage />} />
           <Route path="dashboard" element={<NotFoundPage />} />
           <Route path="service-order">
-            <Route index element={<ServiceOrderListPage />} />
+            <Route index element={<CustomerServiceOrderListPage />} />
             <Route path=":id" element={<CustomerServiceOrderDetailPage />} />
           </Route>
           <Route path="contract">
             <Route index element={<ContractPage />} />
             <Route path=":id" element={<DesignDetailPage />} />
+          </Route>
+          <Route path="guarantee-order">
+            <Route index element={<CustomerGuaranteeOrderListPage />} />
+            <Route path=":id" element={<CustomerGuaranteeOrderDetailPage />} />
           </Route>
         </Route>
 

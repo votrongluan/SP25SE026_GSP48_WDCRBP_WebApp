@@ -2,7 +2,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { appColorTheme } from "../../../../config/appconfig";
 
-export default function ServiceTypeFilter() {
+export default function TypeFilter() {
   const [selectedType, setSelectedType] = useState("Tất cả");
 
   const typeList = [
@@ -12,17 +12,12 @@ export default function ServiceTypeFilter() {
       numberOfTask: 10,
     },
     {
-      label: "Cá nhân",
+      label: "Bảo hành",
       status: 1,
       numberOfTask: 10,
     },
     {
-      label: "Tùy chỉnh",
-      status: 1,
-      numberOfTask: 10,
-    },
-    {
-      label: "Mua hàng",
+      label: "Sửa chữa",
       status: 1,
       numberOfTask: 10,
     },

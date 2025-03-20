@@ -14,9 +14,13 @@ import {
   AccordionPanel,
   Badge,
   Image,
+  Flex,
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../../config/appconfig";
-import { convertTimeStampToDateTimeString } from "../../../../../utils/utils";
+import {
+  convertTimeStampToDateTimeString,
+  formatPrice,
+} from "../../../../../utils/utils";
 
 const products = [
   {
@@ -93,6 +97,15 @@ export default function GeneralInformation() {
             </AccordionItem>
           ))}
         </Accordion>
+
+        <Flex alignItems="center" my={4} p={4} bgColor={appColorTheme.grey_0}>
+          <Text mr={4} fontSize="20px">
+            Thành tiền:
+          </Text>
+          <Text fontSize="30px" color={appColorTheme.brown_2} fontWeight="bold">
+            {formatPrice(12000000)}
+          </Text>
+        </Flex>
       </Box>
 
       <SimpleGrid

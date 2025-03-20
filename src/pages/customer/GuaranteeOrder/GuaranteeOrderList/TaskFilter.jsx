@@ -17,12 +17,7 @@ export default function TaskFilter() {
       numberOfTask: 10,
     },
     {
-      label: "Duyệt hợp đồng",
-      status: 1,
-      numberOfTask: 10,
-    },
-    {
-      label: "Duyệt thiết kế",
+      label: "Xác nhận giao hàng",
       status: 1,
       numberOfTask: 10,
     },
