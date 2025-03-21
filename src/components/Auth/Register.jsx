@@ -4,83 +4,67 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  IconButton,
   Input,
-  Text,
-  useToast,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
-import { Form, Link } from "react-router-dom";
-import axios from "../../api/axios.js";
+import { Form } from "react-router-dom";
 import { useState } from "react";
+import { useNotify } from "../Utility/Notify";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { useRegisterMutation } from "../../services/authApi";
+import { validateRegister } from "../../validations";
 
 export default function Register({ changeTab }) {
-  const toast = useToast();
-  const [isSending, setIsSending] = useState(false);
+  const [register, { isLoading: isRegisterLoading }] = useRegisterMutation();
+  const notify = useNotify();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRePassword, setShowRePassword] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setIsSending(true);
 
     try {
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData.entries());
 
-      // Check if password is same as rePassword
-      if (data.password !== data.rePassword) {
-        toast({
+      // Validate data
+      const errors = validateRegister(data);
+      if (errors.length > 0) {
+        notify({
           title: "Đăng ký thất bại",
-          description: "Mật khẩu không trùng nhau",
-          status: "error",
-          duration: 700,
-          isClosable: true,
+          duration: 5000,
+          description: errors.join(" [---] "),
         });
         return;
       }
 
-      // Check if phone number is valid
-      const phoneRegex = /^0[0-9]{9}$/;
-      if (!phoneRegex.test(data.phone)) {
-        console.log(data.phone);
-        toast({
-          title: "Đăng ký thất bại",
-          description: "Số điện thoại không hợp lệ",
-          status: "error",
-          duration: 700,
-          isClosable: true,
-        });
-        return;
-      }
+      // Remove rePassword before sending to server
+      const { rePassword, ...registerData } = data;
 
-      const res = await axios.post(
-        "/employee/registercustomer",
-        JSON.stringify(data),
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      const res = await register(registerData);
 
-      const user = res.data;
-
-      if (!user) {
-        toast({
+      if (!res.data) {
+        notify({
           title: "Đăng ký thất bại",
           description: "Tài khoản đã tồn tại",
           status: "error",
-          duration: 3000,
-          isClosable: true,
         });
       } else {
-        toast({
+        notify({
           title: "Đăng ký thành công",
           description: "Vui lòng kích hoạt tài khoản bằng OTP đã gửi về email",
           status: "success",
-          duration: 5000,
-          isClosable: true,
         });
       }
     } catch (err) {
-      console.log(err);
-    } finally {
-      setIsSending(false);
+      notify({
+        title: "Đăng ký thất bại",
+        description: "Có lỗi xảy ra, vui lòng thử lại sau",
+        status: "error",
+      });
+      console.error(err);
     }
   };
 
@@ -101,7 +85,7 @@ export default function Register({ changeTab }) {
       <Form onSubmit={handleRegister}>
         <FormControl isRequired mb="20px">
           <FormLabel>Tên của bạn</FormLabel>
-          <Input bgColor="white" type="text" name="name" />
+          <Input bgColor="white" type="text" name="username" />
         </FormControl>
 
         <FormControl isRequired mb="20px">
@@ -111,12 +95,40 @@ export default function Register({ changeTab }) {
 
         <FormControl isRequired mb="20px">
           <FormLabel>Nhập mật khẩu</FormLabel>
-          <Input bgColor="white" type="password" name="password" />
+          <InputGroup>
+            <Input
+              bgColor="white"
+              type={showPassword ? "text" : "password"}
+              name="password"
+            />
+            <InputRightElement>
+              <IconButton
+                aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+                icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                onClick={() => setShowPassword(!showPassword)}
+                variant="ghost"
+              />
+            </InputRightElement>
+          </InputGroup>
         </FormControl>
 
         <FormControl isRequired mb="20px">
           <FormLabel>Nhập lại mật khẩu</FormLabel>
-          <Input bgColor="white" type="password" name="rePassword" />
+          <InputGroup>
+            <Input
+              bgColor="white"
+              type={showRePassword ? "text" : "password"}
+              name="rePassword"
+            />
+            <InputRightElement>
+              <IconButton
+                aria-label={showRePassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+                icon={showRePassword ? <ViewOffIcon /> : <ViewIcon />}
+                onClick={() => setShowRePassword(!showRePassword)}
+                variant="ghost"
+              />
+            </InputRightElement>
+          </InputGroup>
         </FormControl>
 
         <FormControl isRequired mb="20px">
@@ -124,18 +136,13 @@ export default function Register({ changeTab }) {
           <Input bgColor="white" type="tel" name="phone" />
         </FormControl>
 
-        <FormControl isRequired mb="20px">
-          <FormLabel>Nhập địa chỉ</FormLabel>
-          <Input bgColor="white" type="tel" name="address" />
-        </FormControl>
-
         <Button
-          color="black"
-          bgColor="app_brown.0"
+          color="white"
+          bgColor="app_brown.2"
           width="100%"
           type="submit"
           mt="30px"
-          isLoading={isSending}
+          isLoading={isRegisterLoading}
         >
           Đăng ký
         </Button>
@@ -145,14 +152,14 @@ export default function Register({ changeTab }) {
         <Box
           onClick={() => changeTab("login")}
           cursor="pointer"
-          color="app_brown.0"
+          color="app_brown.2"
         >
           Đăng nhập
         </Box>
         <Box
           onClick={() => changeTab("verify")}
           cursor="pointer"
-          color="app_brown.0"
+          color="app_brown.2"
         >
           Kích hoạt tài khoản
         </Box>

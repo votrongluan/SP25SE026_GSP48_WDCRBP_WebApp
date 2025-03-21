@@ -21,9 +21,9 @@ import AdminLayout from "./layouts/AdminLayout.jsx";
 import WoodworkerLayout from "./layouts/WoodworkerLayout.jsx";
 import CustomerLayout from "./layouts/CustomerLayout.jsx";
 import ScrollToTopAndBottom from "./components/Utility/ScrollToTopAndBottom.jsx";
-import CustomerServiceOrderDetailPage from "./pages/customer/ServiceOrder/ServiceOrderDetail/CustomerServiceOrderDetailPage.jsx";
+import CusServiceOrderDetailPage from "./pages/customer/ServiceOrder/ServiceOrderDetail/CusServiceOrderDetailPage.jsx";
 import { appColorTheme } from "./config/appconfig.js";
-import WoodworkerOrderDetailPage from "./pages/woodworker/OrderDetail/WoodworkerOrderDetailPage.jsx";
+import WoodworkerOrderDetailPage from "./pages/woodworker/ServiceOrder/OldUsage/WoodworkerOrderDetailPage.jsx";
 import ProductDetailPage from "./pages/customer/Product/ProductDetail/ProductDetailPage.jsx";
 import WoodworkersPage from "./pages/customer/Woodworker/WoodworkerList/WoodworkersPage.jsx";
 import WoodworkerDetailPage from "./pages/customer/Woodworker/WoodworkerDetail/WoodworkerDetailPage.jsx";
@@ -35,9 +35,13 @@ import { store } from "./store/store.js";
 import ContractPage from "./pages/customer/Contract/ContractPage.jsx";
 import TestPage from "./pages/TestPage.jsx";
 import ProductsPage from "./pages/customer/Product/ProductList/ProductsPage.jsx";
-import CustomerServiceOrderListPage from "./pages/customer/ServiceOrder/ServiceOrderList/CustomerServiceOrderListPage.jsx";
-import CustomerGuaranteeOrderListPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderList/CustomerGuaranteeOrderListPage.jsx";
-import CustomerGuaranteeOrderDetailPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderDetail/CustomerGuaranteeOrderDetailPage.jsx";
+import CusServiceOrderListPage from "./pages/customer/ServiceOrder/ServiceOrderList/CusServiceOrderListPage.jsx";
+import CusGuaranteeOrderListPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderList/CusGuaranteeOrderListPage.jsx";
+import CusGuaranteeOrderDetailPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderDetail/CusGuaranteeOrderDetailPage.jsx";
+import WWServiceOrderListPage from "./pages/woodworker/ServiceOrder/ServiceOrderList/WWServiceOrderListPage.jsx";
+import WWServiceOrderDetailPage from "./pages/woodworker/ServiceOrder/ServiceOrderDetail/WWServiceOrderDetailPage.jsx";
+import WWGuaranteeOrderListPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderList/WWGuaranteeOrderListPage.jsx";
+import WWGuaranteeOrderDetailPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderDetail/WWGuaranteeOrderDetailPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -84,7 +88,15 @@ function App() {
         <Route path="ww" element={<WoodworkerLayout />}>
           <Route index element={<NotFoundPage />} />
           <Route path="dashboard" element={<NotFoundPage />} />
-          <Route path="order-detail" element={<WoodworkerOrderDetailPage />} />
+
+          <Route path="service-order">
+            <Route index element={<WWServiceOrderListPage />} />
+            <Route path=":id" element={<WWServiceOrderDetailPage />} />
+          </Route>
+          <Route path="guarantee-order">
+            <Route index element={<WWGuaranteeOrderListPage />} />
+            <Route path=":id" element={<WWGuaranteeOrderDetailPage />} />
+          </Route>
         </Route>
 
         {/* Customer page route */}
@@ -92,16 +104,16 @@ function App() {
           <Route index element={<NotFoundPage />} />
           <Route path="dashboard" element={<NotFoundPage />} />
           <Route path="service-order">
-            <Route index element={<CustomerServiceOrderListPage />} />
-            <Route path=":id" element={<CustomerServiceOrderDetailPage />} />
+            <Route index element={<CusServiceOrderListPage />} />
+            <Route path=":id" element={<CusServiceOrderDetailPage />} />
           </Route>
           <Route path="contract">
             <Route index element={<ContractPage />} />
             <Route path=":id" element={<DesignDetailPage />} />
           </Route>
           <Route path="guarantee-order">
-            <Route index element={<CustomerGuaranteeOrderListPage />} />
-            <Route path=":id" element={<CustomerGuaranteeOrderDetailPage />} />
+            <Route index element={<CusGuaranteeOrderListPage />} />
+            <Route path=":id" element={<CusGuaranteeOrderDetailPage />} />
           </Route>
         </Route>
 
@@ -147,16 +159,14 @@ function App() {
 
   return (
     <Provider store={store}>
-      <AuthProvider>
-        <GlobalProvider>
-          <CartProvider>
-            <ChakraProvider theme={theme}>
-              <ScrollToTopAndBottom />
-              <RouterProvider router={router} />
-            </ChakraProvider>
-          </CartProvider>
-        </GlobalProvider>
-      </AuthProvider>
+      <GlobalProvider>
+        <CartProvider>
+          <ChakraProvider theme={theme}>
+            <ScrollToTopAndBottom />
+            <RouterProvider router={router} />
+          </ChakraProvider>
+        </CartProvider>
+      </GlobalProvider>
     </Provider>
   );
 }

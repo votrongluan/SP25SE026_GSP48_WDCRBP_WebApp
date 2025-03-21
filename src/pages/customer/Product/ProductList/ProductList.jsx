@@ -80,8 +80,8 @@ export default function ProductList() {
         DisplayComponent={({ data }) => (
           <Grid
             mt={4}
-            templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
-            gap={4}
+            templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+            gap={5}
           >
             {data.map((product) => (
               <Link key={product.id} to="1">

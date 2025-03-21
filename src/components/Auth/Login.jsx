@@ -4,7 +4,10 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  IconButton,
   Input,
+  InputGroup,
+  InputRightElement,
   useToast,
 } from "@chakra-ui/react";
 import { Form, useLocation, useNavigate } from "react-router-dom";
@@ -13,6 +16,8 @@ import axios from "../../api/axios.js";
 import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
 import { appColorTheme } from "../../config/appconfig.js";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { useLoginMutation } from "../../services/authApi.js";
 
 export default function Login({ changeTab }) {
   const toast = useToast();
@@ -20,6 +25,8 @@ export default function Login({ changeTab }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [isSending, setIsSending] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [login, { isLoading: isLoginLoading }] = useLoginMutation();
 
   const from = location.state?.from?.pathname || "/";
 
@@ -31,12 +38,9 @@ export default function Login({ changeTab }) {
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData.entries());
 
-      const res = await axios.post(
-        `/authorize/login?email=${data.email}&password=${data.password}`,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      const res = await login(data);
+
+      console.log(res);
 
       let user = res.data;
       user.token = user.accessTokenToken;
@@ -99,7 +103,21 @@ export default function Login({ changeTab }) {
 
         <FormControl isRequired mb="20px">
           <FormLabel>Mật khẩu</FormLabel>
-          <Input bgColor="white" type="password" name="password" />
+          <InputGroup>
+            <Input
+              bgColor="white"
+              type={showPassword ? "text" : "password"}
+              name="password"
+            />
+            <InputRightElement>
+              <IconButton
+                aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+                icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                onClick={() => setShowPassword(!showPassword)}
+                variant="ghost"
+              />
+            </InputRightElement>
+          </InputGroup>
         </FormControl>
 
         <Button

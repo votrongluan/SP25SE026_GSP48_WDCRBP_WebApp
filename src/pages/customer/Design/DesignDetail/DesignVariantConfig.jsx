@@ -55,7 +55,7 @@ export default function DesignVariantConfig() {
             <Text width="200px" fontWeight="bold">
               {config.name}
             </Text>
-            <Flex flex="1" gap={4}>
+            <Flex flex="1" flexWrap="wrap" gap={4}>
               {config.values.map((value) => (
                 <Box key={value.id}>
                   <Box

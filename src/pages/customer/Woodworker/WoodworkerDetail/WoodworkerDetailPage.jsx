@@ -20,6 +20,7 @@ import WoodworkerProductTab from "./Tab/ProductTab/WoodworkerProductTab.jsx";
 import WoodworkerDesignsTab from "./Tab/DesignTab/WoodworkerDesignsTab.jsx";
 import AvailableService from "./Tab/ServiceTab/AvailableService.jsx";
 import PostTab from "./Tab/PostTab/PostTab.jsx";
+import PackageFrame from "../../../../components/Utility/PackageFrame.jsx";
 
 export default function WoodworkerDetailPage() {
   return (
@@ -35,62 +36,64 @@ export default function WoodworkerDetailPage() {
         </Heading>
       </Box>
 
-      <Box>
-        <Flex
-          flexDirection={{
-            base: "column",
-            xl: "row",
-          }}
-          borderRadius="10px"
-          p={5}
-          bgColor="white"
-          boxShadow="md"
-          gap={5}
-        >
-          <Box flex={1}>
-            <Image
-              src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
-              width="100%"
-            />
-          </Box>
+      <PackageFrame packageType="Bronze">
+        <Box>
+          <Flex
+            flexDirection={{
+              base: "column",
+              xl: "row",
+            }}
+            borderRadius="10px"
+            p={5}
+            bgColor="white"
+            boxShadow="md"
+            gap={5}
+          >
+            <Box flex={1}>
+              <Image
+                src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
+                width="100%"
+              />
+            </Box>
 
-          <Stack flex={1}>
-            <Stack spacing={4}>
-              <Flex justifyContent="space-between" alignContent="center">
-                <Heading fontWeight="bold" fontSize="20px">
-                  Xưởng mộc Hòa Bình Quận 5
-                </Heading>
-                <Flex alignContent="center" gap={2}>
-                  {" "}
-                  <StarRating rating={3.5} />
-                  13 đánh giá
+            <Stack flex={1}>
+              <Stack spacing={4}>
+                <Flex justifyContent="space-between" alignContent="center">
+                  <Heading fontWeight="bold" fontSize="20px">
+                    Xưởng mộc Hòa Bình Quận 5
+                  </Heading>
+                  <Flex alignContent="center" gap={2}>
+                    {" "}
+                    <StarRating rating={3.5} />
+                    13 đánh giá
+                  </Flex>
                 </Flex>
-              </Flex>
 
-              <HStack>
-                <Text fontWeight="bold">Địa chỉ xưởng:</Text>
-                <Text>Chưa cập nhật</Text>
-              </HStack>
+                <HStack>
+                  <Text fontWeight="bold">Địa chỉ xưởng:</Text>
+                  <Text>Chưa cập nhật</Text>
+                </HStack>
 
-              <HStack>
-                <Text fontWeight="bold">Loại hình kinh doanh:</Text>
-                <Text>Chưa cập nhật</Text>
-              </HStack>
+                <HStack>
+                  <Text fontWeight="bold">Loại hình kinh doanh:</Text>
+                  <Text>Chưa cập nhật</Text>
+                </HStack>
 
-              <Box>
-                <Text fontWeight="bold">Giới thiệu:</Text>
-                <Text>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Reiciendis harum, voluptates quas, laudantium inventore
-                  debitis aspernatur aperiam voluptate distinctio perspiciatis
-                  doloremque cupiditate cum facere iste reprehenderit totam
-                  tempora impedit non.
-                </Text>
-              </Box>
+                <Box>
+                  <Text fontWeight="bold">Giới thiệu:</Text>
+                  <Text>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    Reiciendis harum, voluptates quas, laudantium inventore
+                    debitis aspernatur aperiam voluptate distinctio perspiciatis
+                    doloremque cupiditate cum facere iste reprehenderit totam
+                    tempora impedit non.
+                  </Text>
+                </Box>
+              </Stack>
             </Stack>
-          </Stack>
-        </Flex>
-      </Box>
+          </Flex>
+        </Box>
+      </PackageFrame>
 
       <Box mt={5} color="black">
         <Tabs variant="unstyled">
