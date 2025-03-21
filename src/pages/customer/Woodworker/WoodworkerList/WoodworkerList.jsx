@@ -1,5 +1,6 @@
-import { Box, Flex, Grid, Image, Stack, Text } from "@chakra-ui/react";
+import { Box, Grid, Image, Stack, Text } from "@chakra-ui/react";
 import Pagination from "../../../../components/Utility/Pagination";
+import PackageFrame from "../../../../components/Utility/PackageFrame";
 import { Link } from "react-router-dom";
 
 export default function WoodworkerList() {
@@ -10,6 +11,7 @@ export default function WoodworkerList() {
       name: "Xưởng mộc Hòa Bình",
       rating: 4,
       image: "https://www.noithatmocdat.com/Pictures/xuong%20moc.jpg",
+      package: "Bronze",
     },
     {
       id: 2,
@@ -17,6 +19,7 @@ export default function WoodworkerList() {
       address: "1775 Lê Văn Lương, ấp 3, Nhơn Đức, Nhà Bè, TP.HCM",
       rating: 5,
       image: "https://www.noithatmocdat.com/Pictures/xuong%20moc.jpg",
+      package: "Gold",
     },
     {
       id: 3,
@@ -24,6 +27,7 @@ export default function WoodworkerList() {
       address: "1775 Lê Văn Lương, ấp 3, Nhơn Đức, Nhà Bè, TP.HCM",
       rating: 3.5,
       image: "https://www.noithatmocdat.com/Pictures/xuong%20moc.jpg",
+      package: "Silver",
     },
     {
       id: 4,
@@ -31,6 +35,7 @@ export default function WoodworkerList() {
       address: "1775 Lê Văn Lương, ấp 3, Nhơn Đức, Nhà Bè, TP.HCM",
       rating: 4.5,
       image: "https://www.noithatmocdat.com/Pictures/xuong%20moc.jpg",
+      package: "Silver",
     },
     {
       id: 5,
@@ -38,6 +43,7 @@ export default function WoodworkerList() {
       address: "1775 Lê Văn Lương, ấp 3, Nhơn Đức, Nhà Bè, TP.HCM",
       rating: 4,
       image: "https://www.noithatmocdat.com/Pictures/xuong%20moc.jpg",
+      package: "Silver",
     },
     {
       id: 6,
@@ -45,6 +51,7 @@ export default function WoodworkerList() {
       address: "1775 Lê Văn Lương, ấp 3, Nhơn Đức, Nhà Bè, TP.HCM",
       rating: 4.2,
       image: "https://www.noithatmocdat.com/Pictures/xuong%20moc.jpg",
+      package: "Gold",
     },
     {
       id: 7,
@@ -52,6 +59,7 @@ export default function WoodworkerList() {
       address: "1775 Lê Văn Lương, ấp 3, Nhơn Đức, Nhà Bè, TP.HCM",
       rating: 4.7,
       image: "https://www.noithatmocdat.com/Pictures/xuong%20moc.jpg",
+      package: "Gold",
     },
     {
       id: 8,
@@ -59,6 +67,7 @@ export default function WoodworkerList() {
       address: "1775 Lê Văn Lương, ấp 3, Nhơn Đức, Nhà Bè, TP.HCM",
       rating: 3.8,
       image: "https://www.noithatmocdat.com/Pictures/xuong%20moc.jpg",
+      package: "Gold",
     },
   ];
 
@@ -70,28 +79,30 @@ export default function WoodworkerList() {
         DisplayComponent={({ data }) => (
           <Grid
             mt={4}
-            templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
-            gap={4}
+            templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+            gap={5}
           >
             {data.map((product) => (
               <Link to="1" key={product.id}>
-                <Box overflow="hidden" bgColor="white" boxShadow="md">
-                  <Image src={product.image} alt={product.name} />
+                <PackageFrame packageType={product.package}>
+                  <Box overflow="hidden" bgColor="white">
+                    <Image src={product.image} alt={product.name} />
 
-                  <Stack p={2} gap={2}>
-                    <Text height="50px" noOfLines={2} fontWeight="bold">
-                      {product.name}
-                    </Text>
+                    <Stack p={2} gap={2}>
+                      <Text height="50px" noOfLines={2} fontWeight="bold">
+                        {product.name}
+                      </Text>
 
-                    <Text height="50px" noOfLines={2}>
-                      {product.address}
-                    </Text>
+                      <Text height="50px" noOfLines={2}>
+                        {product.address}
+                      </Text>
 
-                    <Text>
-                      ⭐ {product.rating.toFixed(1)} (10 lượt đánh giá)
-                    </Text>
-                  </Stack>
-                </Box>
+                      <Text>
+                        ⭐ {product.rating.toFixed(1)} (10 lượt đánh giá)
+                      </Text>
+                    </Stack>
+                  </Box>
+                </PackageFrame>
               </Link>
             ))}
           </Grid>

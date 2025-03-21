@@ -20,6 +20,7 @@ import StarRating from "../../../../components/Utility/StarRating.jsx";
 import { FiShoppingBag, FiShoppingCart } from "react-icons/fi";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector.jsx";
 import { formatPrice } from "../../../../utils/utils.js";
+import PackageFrame from "../../../../components/Utility/PackageFrame.jsx";
 
 export default function ProductDetailPage() {
   const product = {
@@ -168,67 +169,70 @@ export default function ProductDetailPage() {
           </Stack>
         </Grid>
 
-        <Flex
-          mt={5}
-          flexDirection={{
-            base: "column",
-            xl: "row",
-          }}
-          borderRadius="10px"
-          p={5}
-          bgColor="white"
-          boxShadow="md"
-          gap={5}
-        >
-          <Box>
-            <Image
-              src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
-              width="150px"
-              height="150px"
-              objectFit="cover"
-              objectPosition="center"
-              borderRadius="50%"
-            />
-          </Box>
+        <Box mt={5}>
+          <PackageFrame packageType="Gold">
+            <Flex
+              flexDirection={{
+                base: "column",
+                xl: "row",
+              }}
+              borderRadius="10px"
+              p={5}
+              bgColor="white"
+              boxShadow="md"
+              gap={5}
+            >
+              <Box>
+                <Image
+                  src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
+                  width="150px"
+                  height="150px"
+                  objectFit="cover"
+                  objectPosition="center"
+                  borderRadius="50%"
+                />
+              </Box>
 
-          <Stack flex={1}>
-            <Stack spacing={4}>
-              <Flex justifyContent="space-between" alignContent="center">
-                <Heading fontWeight="bold" fontSize="20px">
-                  Xưởng mộc Hòa Bình Quận 5
-                </Heading>
-                <Flex alignContent="center" gap={2}>
-                  {" "}
-                  <StarRating rating={3.5} />
-                  13 đánh giá
-                </Flex>
-              </Flex>
+              <Stack flex={1}>
+                <Stack spacing={4}>
+                  <Flex justifyContent="space-between" alignContent="center">
+                    <Heading fontWeight="bold" fontSize="20px">
+                      Xưởng mộc Hòa Bình Quận 5
+                    </Heading>
+                    <Flex alignContent="center" gap={2}>
+                      {" "}
+                      <StarRating rating={3.5} />
+                      13 đánh giá
+                    </Flex>
+                  </Flex>
 
-              <HStack>
-                <Text fontWeight="bold">Địa chỉ xưởng:</Text>
-                <Text>Chưa cập nhật</Text>
-              </HStack>
+                  <HStack>
+                    <Text fontWeight="bold">Địa chỉ xưởng:</Text>
+                    <Text>Chưa cập nhật</Text>
+                  </HStack>
 
-              <HStack>
-                <Text fontWeight="bold">Loại hình kinh doanh:</Text>
-                <Text>Chưa cập nhật</Text>
-              </HStack>
+                  <HStack>
+                    <Text fontWeight="bold">Loại hình kinh doanh:</Text>
+                    <Text>Chưa cập nhật</Text>
+                  </HStack>
 
-              <HStack>
-                <Spacer />
-                <Text>
-                  <ChakraLink
-                    target="_blank"
-                    textDecoration="underline"
-                    color={appColorTheme.brown_2}
-                  >
-                    Xem xưởng
-                  </ChakraLink>
-                </Text>
-              </HStack>
-            </Stack>
-          </Stack>
-        </Flex>
+                  <HStack>
+                    <Spacer />
+                    <Text>
+                      <ChakraLink
+                        target="_blank"
+                        textDecoration="underline"
+                        color={appColorTheme.brown_2}
+                      >
+                        Xem xưởng
+                      </ChakraLink>
+                    </Text>
+                  </HStack>
+                </Stack>
+              </Stack>
+            </Flex>
+          </PackageFrame>
+        </Box>
 
         <ReviewSection />
       </Box>

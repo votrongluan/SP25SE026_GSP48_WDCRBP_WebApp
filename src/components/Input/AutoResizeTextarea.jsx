@@ -21,9 +21,6 @@ const AutoResizeTextarea = ({ name, value, onChange }) => {
       onChange={handleInputChange}
       style={{
         width: "100%",
-        minHeight: "40px",
-        resize: "none",
-        overflowY: "hidden",
       }}
     />
   );

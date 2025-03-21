@@ -40,7 +40,7 @@ export default function TaskFilter() {
           Lọc theo công việc
         </Text>
 
-        <Flex flex="1" gap={4}>
+        <Flex flex="1" flexWrap="wrap" gap={4}>
           {taskList.map((value) => (
             <Box key={value.label}>
               <Box
