@@ -15,6 +15,7 @@ import { useNotify } from "../Utility/Notify";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useRegisterMutation } from "../../services/authApi";
 import { validateRegister } from "../../validations";
+import { m } from "framer-motion";
 
 export default function Register({ changeTab }) {
   const [register, { isLoading: isRegisterLoading }] = useRegisterMutation();
@@ -32,11 +33,7 @@ export default function Register({ changeTab }) {
       // Validate data
       const errors = validateRegister(data);
       if (errors.length > 0) {
-        notify({
-          title: "Đăng ký thất bại",
-          duration: 5000,
-          description: errors.join(" [---] "),
-        });
+        notify("Đăng ký thất bại", errors.join(" [---] "), "info", 5000);
         return;
       }
 
@@ -46,24 +43,20 @@ export default function Register({ changeTab }) {
       const res = await register(registerData);
 
       if (!res.data) {
-        notify({
-          title: "Đăng ký thất bại",
-          description: "Tài khoản đã tồn tại",
-          status: "error",
-        });
+        notify("Đăng ký thất bại", "Tài khoản đã tồn tại", "error");
       } else {
-        notify({
-          title: "Đăng ký thành công",
-          description: "Vui lòng kích hoạt tài khoản bằng OTP đã gửi về email",
-          status: "success",
-        });
+        notify(
+          "Đăng ký thành công",
+          "Vui lòng kích hoạt tài khoản bằng OTP đã gửi về email",
+          "success"
+        );
       }
     } catch (err) {
-      notify({
-        title: "Đăng ký thất bại",
-        description: "Có lỗi xảy ra, vui lòng thử lại sau",
-        status: "error",
-      });
+      notify(
+        "Đăng ký thất bại",
+        "Có lỗi xảy ra, vui lòng thử lại sau",
+        "error"
+      );
       console.error(err);
     }
   };

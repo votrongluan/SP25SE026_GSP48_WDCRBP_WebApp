@@ -73,21 +73,13 @@ export default function PriceDetailSection({
   const handleSave = () => {
     const { isValid, errors } = validatePriceDetails(editingDetails);
     if (!isValid) {
-      notify({
-        title: "Dữ liệu không hợp lệ",
-        description: errors.join("\\n"),
-        status: "error",
-      });
+      notify("Dữ liệu không hợp lệ", errors.join("\\n"), "error");
       return;
     }
 
     onPriceDetailsChange(productId, editingDetails);
     setIsEditing(false);
-    notify({
-      title: "Lưu thành công",
-      description: "Đã cập nhật chi tiết giá",
-      status: "success",
-    });
+    notify("Lưu thành công", "Đã cập nhật chi tiết giá", "success");
   };
 
   const handleCancel = () => {
@@ -132,11 +124,7 @@ export default function PriceDetailSection({
 
   const handleExportExcel = () => {
     if (!priceDetails?.length) {
-      notify({
-        title: "Không có dữ liệu",
-        description: "Không có chi tiết giá để xuất",
-        status: "warning",
-      });
+      notify("Không có dữ liệu", "Không có chi tiết giá để xuất", "warning");
       return;
     }
 
@@ -173,17 +161,13 @@ export default function PriceDetailSection({
 
       setEditingDetails(formattedData);
       setIsEditing(true);
-      notify({
-        title: "Nhập dữ liệu thành công",
-        description: "Vui lòng kiểm tra và lưu lại thông tin",
-        status: "success",
-      });
+      notify(
+        "Nhập dữ liệu thành công",
+        "Vui lòng kiểm tra và lưu lại thông tin",
+        "success"
+      );
     } catch (error) {
-      notify({
-        title: "Lỗi nhập dữ liệu",
-        description: "Có lỗi xảy ra khi đọc file Excel",
-        status: "error",
-      });
+      notify("Lỗi nhập dữ liệu", "Có lỗi xảy ra khi đọc file Excel", "error");
     }
   };
 

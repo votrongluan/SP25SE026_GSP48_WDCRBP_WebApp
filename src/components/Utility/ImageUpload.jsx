@@ -16,22 +16,22 @@ export default function ImageUpload({ onUploadComplete, maxFiles = 5 }) {
     (acceptedFiles) => {
       // Kiểm tra số lượng file
       if (files.length + acceptedFiles.length > maxFiles) {
-        notify({
-          title: "Quá nhiều ảnh",
-          description: `Bạn chỉ có thể upload tối đa ${maxFiles} ảnh`,
-          status: "error",
-        });
+        notify(
+          "Quá nhiều ảnh",
+          `Bạn chỉ có thể upload tối đa ${maxFiles} ảnh`,
+          "error"
+        );
         return;
       }
 
       // Kiểm tra kích thước file (max 5MB)
       const validFiles = acceptedFiles.filter((file) => {
         if (file.size > 5 * 1024 * 1024) {
-          notify({
-            title: "File quá lớn",
-            description: "Kích thước file không được vượt quá 5MB",
-            status: "error",
-          });
+          notify(
+            "File quá lớn",
+            "Kích thước file không được vượt quá 5MB",
+            "error"
+          );
           return false;
         }
         return true;
@@ -69,11 +69,11 @@ export default function ImageUpload({ onUploadComplete, maxFiles = 5 }) {
       setFiles([]);
       setPreviews([]);
     } catch (err) {
-      notify({
-        title: "Upload thất bại",
-        description: error || "Có lỗi xảy ra khi upload ảnh",
-        status: "error",
-      });
+      notify(
+        "Upload thất bại",
+        error || "Có lỗi xảy ra khi upload ảnh",
+        "error"
+      );
     }
   };
 

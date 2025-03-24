@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 export default function PackageFrame({ children, packageType }) {
   const colors = {
     Bronze: {
-      displayText: "Gói Đồng",
+      displayText: "Xưởng Đồng",
       displayTextColor: "#CD7F32",
       border: useColorModeValue("#CD7F32", "#CD7F32"),
       glow: useColorModeValue(
@@ -13,7 +13,7 @@ export default function PackageFrame({ children, packageType }) {
       ),
     },
     Silver: {
-      displayText: "Gói Bạc",
+      displayText: "Xưởng Bạc",
       displayTextColor: "#C0C0C0",
       border: useColorModeValue("#6B7280", "#6B7280"),
       glow: useColorModeValue(
@@ -22,7 +22,7 @@ export default function PackageFrame({ children, packageType }) {
       ),
     },
     Gold: {
-      displayText: "Gói Vàng",
+      displayText: "Xưởng Vàng",
       displayTextColor: "#FFD700",
       border: useColorModeValue("#FFD700", "#FFD700"),
       glow: useColorModeValue(

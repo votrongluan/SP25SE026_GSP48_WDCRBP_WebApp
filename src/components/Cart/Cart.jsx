@@ -79,13 +79,13 @@ export default function Cart() {
 
             <Button
               _hover={{
-                backgroundColor: "white",
-                color: "black",
+                backgroundColor: "app_brown.1",
+                color: "white",
               }}
               px="40px"
               py="25px"
-              bgColor="app_brown.0"
-              color="black"
+              bgColor="app_brown.2"
+              color="white"
               mt="40px"
               zIndex="1"
               position="absolute"

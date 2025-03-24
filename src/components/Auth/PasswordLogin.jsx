@@ -1,0 +1,128 @@
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  IconButton,
+  Input,
+  InputGroup,
+  InputRightElement,
+} from "@chakra-ui/react";
+import { Form } from "react-router-dom";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { appColorTheme } from "../../config/appconfig.js";
+import PropTypes from "prop-types";
+import { useState } from "react";
+import useAuth from "../../hooks/useAuth.js";
+import { jwtDecode } from "jwt-decode";
+import { useNotify } from "../Utility/Notify.jsx";
+import { useLocation, useNavigate } from "react-router-dom";
+
+export default function PasswordLogin({ onSuccess }) {
+  const notify = useNotify();
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const from = location.state?.from?.pathname || "/";
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Đăng nhập thất bại");
+      }
+
+      const user = await response.json();
+      user.token = user.accessTokenToken;
+
+      const decodedToken = jwtDecode(user.accessTokenToken);
+      const userWithToken = { ...user, ...decodedToken };
+
+      switch (userWithToken.role) {
+        case 1:
+          setAuth(userWithToken);
+          navigate(from);
+          break;
+        case 2:
+          setAuth(userWithToken);
+          navigate("/supplier");
+          break;
+        case 3:
+          setAuth(userWithToken);
+          navigate("/admin");
+          break;
+        default:
+          setAuth(userWithToken);
+          navigate(from);
+          break;
+      }
+
+      onSuccess?.();
+    } catch (err) {
+      notify("Đăng nhập thất bại", err.message, "error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <Form onSubmit={handleSubmit}>
+      <FormControl isRequired mb="20px">
+        <FormLabel>Email</FormLabel>
+        <Input bgColor="white" type="text" name="email" />
+      </FormControl>
+
+      <FormControl isRequired mb="20px">
+        <FormLabel>Mật khẩu</FormLabel>
+        <InputGroup>
+          <Input
+            bgColor="white"
+            type={showPassword ? "text" : "password"}
+            name="password"
+          />
+          <InputRightElement>
+            <IconButton
+              aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+              icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+              onClick={() => setShowPassword(!showPassword)}
+              variant="ghost"
+            />
+          </InputRightElement>
+        </InputGroup>
+      </FormControl>
+
+      <Button
+        color="white"
+        bgColor={appColorTheme.brown_2}
+        width="100%"
+        type="submit"
+        mt="30px"
+        isLoading={isLoading}
+      >
+        Đăng nhập
+      </Button>
+    </Form>
+  );
+}
+
+PasswordLogin.propTypes = {
+  onSuccess: PropTypes.func,
+};

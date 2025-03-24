@@ -9,12 +9,13 @@ import {
   Input,
   SimpleGrid,
   Textarea,
-  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { appColorTheme } from "../../../config/appconfig";
+import { useNotify } from "../../../components/Utility/Notify";
 
 function ContactPage() {
-  const toast = useToast();
+  const notify = useNotify();
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -42,14 +43,11 @@ function ContactPage() {
       support: "",
       message: "",
     });
-    toast({
-      title: "Tin nhắn đã được gửi",
-      description:
-        "Chúng tôi đã nhận được tin nhắn của bạn, bạn sẽ nhận được phản hồi trong thời gian sớm nhất",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
+    notify(
+      "Tin nhắn đã được gửi",
+      "Chúng tôi đã nhận được tin nhắn của bạn, bạn sẽ nhận được phản hồi trong thời gian sớm nhất",
+      "success"
+    );
   };
 
   return (
@@ -65,8 +63,8 @@ function ContactPage() {
         </Heading>
       </Box>
       <Box
-        bgColor="black"
-        color="white"
+        bgColor="white"
+        color="black"
         padding="40px"
         borderRadius="10px"
         width={{ base: "100%", xl: "80%" }}
@@ -159,11 +157,11 @@ function ContactPage() {
             />
           </FormControl>
           <Button
-            _hover={{ backgroundColor: "app_brown.0", color: "black" }}
+            _hover={{ backgroundColor: "app_brown.1", color: "white" }}
             px="40px"
             py="25px"
-            bgColor="white"
-            color="black"
+            bgColor={appColorTheme.brown_2}
+            color="white"
             borderRadius="40px"
             mt="40px"
             zIndex="1"
