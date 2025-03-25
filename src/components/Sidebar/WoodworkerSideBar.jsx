@@ -44,13 +44,13 @@ export default function WoodworkerSideBar({ isCollapsed, setIsCollapsed }) {
     { label: "Bài đăng", path: "post", icon: FiFileText },
     { label: "Khiếu nại", path: "complaint", icon: FiAlertTriangle },
     { label: "Đánh giá", path: "review", icon: FiStar },
-    { label: "Giao dịch", path: "wallet", icon: FiCreditCard },
+    { label: "Ví", path: "wallet", icon: FiCreditCard },
     { label: "Cá nhân", path: "account", icon: FiUser },
     { label: "Đăng xuất", path: "/logout", icon: FiLogOut },
   ];
 
   return (
-    <Box mt={5} position="relative">
+    <Box position="relative">
       <IconButton
         position="absolute"
         top="50%"

@@ -7,6 +7,7 @@ import {
   IconButton,
   Text,
   useBreakpointValue,
+  Heading,
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 import {
@@ -34,14 +35,14 @@ export default function CustomerSidebar({ isCollapsed, setIsCollapsed }) {
     { label: "Trang chủ", path: "/", icon: FiHome },
     { label: "Đơn hàng", path: "service-order", icon: FiShoppingCart },
     { label: "BH & Sữa chữa", path: "guarantee-order", icon: FiSettings },
-    { label: "Giao dịch", path: "transaction", icon: FiCreditCard },
+    { label: "Ví", path: "wallet", icon: FiCreditCard },
     { label: "Khiếu nại", path: "complaint", icon: FiAlertTriangle },
-    { label: "Tài khoản", path: "account", icon: FiUser },
+    { label: "Hồ sơ", path: "profile", icon: FiUser },
     { label: "Đăng xuất", path: "/logout", icon: FiLogOut },
   ];
 
   return (
-    <Box mt={5} position="relative">
+    <Box position="relative">
       <IconButton
         position="absolute"
         top="50%"

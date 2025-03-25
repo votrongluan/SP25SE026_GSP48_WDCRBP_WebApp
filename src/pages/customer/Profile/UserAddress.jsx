@@ -7,7 +7,6 @@ import {
   Select,
   Stack,
   Heading,
-  useToast,
   IconButton,
   HStack,
   Text,
@@ -20,15 +19,12 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useState, useMemo } from "react";
-import { DeleteIcon, EditIcon, AddIcon } from "@chakra-ui/icons";
-import {
-  useGetProvincesQuery,
-  useGetDistrictsQuery,
-  useGetWardsQuery,
-} from "../../../services/VNLocationApi";
+import { EditIcon, AddIcon } from "@chakra-ui/icons";
+import { useSelector } from "react-redux";
+import { useNotify } from "../../../components/Utility/Notify";
 
 export default function UserAddress() {
-  const toast = useToast();
+  const notify = useNotify();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isEditing, setIsEditing] = useState(false);
   const [currentAddress, setCurrentAddress] = useState(null);
@@ -58,25 +54,25 @@ export default function UserAddress() {
     isDefault: false,
   });
 
-  // Fetch all data
-  const { data: provinces, isLoading: isLoadingProvinces } =
-    useGetProvincesQuery();
-  const { data: allDistricts, isLoading: isLoadingDistricts } =
-    useGetDistrictsQuery();
-  const { data: allWards, isLoading: isLoadingWards } = useGetWardsQuery();
+  // Get data from Redux store
+  const { provinces, districts, wards } = useSelector(
+    (state) => state.vnLocation
+  );
 
   // Filter districts and wards based on selected values
-  const districts = useMemo(() => {
-    if (!allDistricts || !formData.province) return [];
-    return allDistricts.filter(
-      (district) => district.province_code == formData.province
+  const filteredDistricts = useMemo(() => {
+    if (!formData.province) return [];
+    return Object.entries(districts).filter(([key]) =>
+      key.startsWith(formData.province)
     );
-  }, [allDistricts, formData.province]);
+  }, [districts, formData.province]);
 
-  const wards = useMemo(() => {
-    if (!allWards || !formData.district) return [];
-    return allWards.filter((ward) => ward.district_code == formData.district);
-  }, [allWards, formData.district]);
+  const filteredWards = useMemo(() => {
+    if (!formData.district) return [];
+    return Object.entries(wards).filter(([key]) =>
+      key.startsWith(formData.district)
+    );
+  }, [wards, formData.district]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -89,33 +85,40 @@ export default function UserAddress() {
     }));
   };
 
+  const validateForm = () => {
+    if (!formData.province) {
+      notify("Vui lòng chọn tỉnh/thành phố", "", "error");
+      return false;
+    }
+    if (!formData.district) {
+      notify("Vui lòng chọn quận/huyện", "", "error");
+      return false;
+    }
+    if (!formData.ward) {
+      notify("Vui lòng chọn phường/xã", "", "error");
+      return false;
+    }
+    if (!formData.address.trim()) {
+      notify("Vui lòng nhập tên đường/số nhà", "", "error");
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     if (isEditing) {
       handleAddressUpdate(currentAddress.id, formData);
-      toast({
-        title: "Địa chỉ đã được cập nhật",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      notify("Địa chỉ đã được cập nhật", "", "success");
     } else {
       if (addresses.length >= 3) {
-        toast({
-          title: "Đã đạt giới hạn tối đa 3 địa chỉ",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
+        notify("Đã đạt giới hạn tối đa 3 địa chỉ", "", "error");
         return;
       }
       handleAddressAdd(formData);
-      toast({
-        title: "Địa chỉ đã được thêm",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      notify("Địa chỉ đã được thêm", "", "success");
     }
     onClose();
     resetForm();
@@ -148,17 +151,13 @@ export default function UserAddress() {
   const handleAddressUpdate = (addressId, updatedData) => {
     setAddresses((prev) =>
       prev.map((address) =>
-        address.id === addressId
+        address.id == addressId
           ? { ...address, ...updatedData }
           : updatedData.isDefault
           ? { ...address, isDefault: false }
           : address
       )
     );
-  };
-
-  const handleAddressDelete = (addressId) => {
-    setAddresses((prev) => prev.filter((address) => address.id !== addressId));
   };
 
   const handleAddressAdd = (newAddress) => {
@@ -174,12 +173,7 @@ export default function UserAddress() {
 
   const handleSetDefault = (addressId) => {
     handleAddressUpdate(addressId, { isDefault: true });
-    toast({
-      title: "Đã đặt làm địa chỉ mặc định",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
+    notify("Đã đặt làm địa chỉ mặc định", "", "success");
   };
 
   return (
@@ -242,18 +236,11 @@ export default function UserAddress() {
                   variant="ghost"
                   onClick={() => handleEdit(address)}
                 />
-                <IconButton
-                  icon={<DeleteIcon />}
-                  size="sm"
-                  variant="ghost"
-                  colorScheme="red"
-                  onClick={() => handleAddressDelete(address.id)}
-                />
               </HStack>
             </HStack>
             <Text>
-              {address.address}, {address.ward}, {address.district},{" "}
-              {address.province}
+              {address.address}, {wards[address.ward]},{" "}
+              {districts[address.district]}, {provinces[address.province]}
             </Text>
           </Box>
         ))}
@@ -269,7 +256,7 @@ export default function UserAddress() {
           <ModalBody pb={6}>
             <form onSubmit={handleSubmit}>
               <Stack spacing={4}>
-                <FormControl>
+                <FormControl isRequired>
                   <FormLabel>Tỉnh/Thành phố</FormLabel>
                   <Select
                     name="province"
@@ -277,20 +264,15 @@ export default function UserAddress() {
                     onChange={handleChange}
                     placeholder="Chọn tỉnh/thành phố"
                     bg="white"
-                    disabled={isLoadingProvinces}
                   >
-                    {isLoadingProvinces ? (
-                      <option>Đang tải...</option>
-                    ) : (
-                      provinces?.map((province) => (
-                        <option key={province.value} value={province.value}>
-                          {province.label}
-                        </option>
-                      ))
-                    )}
+                    {Object.entries(provinces).map(([value, label]) => (
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
+                    ))}
                   </Select>
                 </FormControl>
-                <FormControl>
+                <FormControl isRequired>
                   <FormLabel>Quận/Huyện</FormLabel>
                   <Select
                     name="district"
@@ -298,20 +280,16 @@ export default function UserAddress() {
                     onChange={handleChange}
                     placeholder="Chọn quận/huyện"
                     bg="white"
-                    isDisabled={!formData.province || isLoadingDistricts}
+                    isDisabled={!formData.province}
                   >
-                    {isLoadingDistricts ? (
-                      <option>Đang tải...</option>
-                    ) : (
-                      districts.map((district) => (
-                        <option key={district.value} value={district.value}>
-                          {district.label}
-                        </option>
-                      ))
-                    )}
+                    {filteredDistricts.map(([value, label]) => (
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
+                    ))}
                   </Select>
                 </FormControl>
-                <FormControl>
+                <FormControl isRequired>
                   <FormLabel>Phường/Xã</FormLabel>
                   <Select
                     name="ward"
@@ -319,20 +297,16 @@ export default function UserAddress() {
                     onChange={handleChange}
                     placeholder="Chọn phường/xã"
                     bg="white"
-                    isDisabled={!formData.district || isLoadingWards}
+                    isDisabled={!formData.district}
                   >
-                    {isLoadingWards ? (
-                      <option>Đang tải...</option>
-                    ) : (
-                      wards.map((ward) => (
-                        <option key={ward.value} value={ward.value}>
-                          {ward.label}
-                        </option>
-                      ))
-                    )}
+                    {filteredWards.map(([value, label]) => (
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
+                    ))}
                   </Select>
                 </FormControl>
-                <FormControl>
+                <FormControl isRequired>
                   <FormLabel>Tên đường/Số nhà</FormLabel>
                   <Input
                     name="address"

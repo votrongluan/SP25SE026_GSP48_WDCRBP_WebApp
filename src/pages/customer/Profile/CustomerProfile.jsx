@@ -15,9 +15,9 @@ import UserAddress from "./UserAddress";
 export default function CustomerProfile() {
   const toast = useToast();
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
+    name: "Võ Trọng Luân",
+    email: "trongluan111@gmail.com",
+    phone: "0821737123",
   });
 
   const handleChange = (e) => {
