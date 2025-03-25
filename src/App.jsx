@@ -44,6 +44,7 @@ import WWGuaranteeOrderListPage from "./pages/woodworker/GuaranteeOrder/Guarante
 import WWGuaranteeOrderDetailPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderDetail/WWGuaranteeOrderDetailPage.jsx";
 import WWRegister from "./pages/customer/Auth/WWRegister.jsx";
 import Pricing from "./pages/customer/Pricing/Pricing.jsx";
+import CustomerProfile from "./pages/customer/Profile/CustomerProfile.jsx";
 
 function App() {
   useEffect(() => {
@@ -105,6 +106,7 @@ function App() {
         <Route path="cus" element={<CustomerLayout />}>
           <Route index element={<NotFoundPage />} />
           <Route path="dashboard" element={<NotFoundPage />} />
+          <Route path="profile" element={<CustomerProfile />} />
           <Route path="service-order">
             <Route index element={<CusServiceOrderListPage />} />
             <Route path=":id" element={<CusServiceOrderDetailPage />} />
