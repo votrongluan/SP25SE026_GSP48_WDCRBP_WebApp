@@ -65,7 +65,7 @@ const plans = [
       "Quản lý đơn hàng dịch vụ",
       "Trang cá nhân (Profile) (Giới thiệu, thông tin, hình ảnh)",
       "20 bài đăng trên trang cá nhân/tháng",
-      "Có quyền quản lý sản phẩm & bán sản phẩm có sẵn",
+      "Quản lý sản phẩm & bán sản phẩm có sẵn",
       "Ưu tiên cao nhất trong kết quả tìm kiếm",
       "Có chức năng cung cấp dịch vụ cá nhân hóa",
     ],

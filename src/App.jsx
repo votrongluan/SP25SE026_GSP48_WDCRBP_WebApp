@@ -42,7 +42,7 @@ import WWServiceOrderListPage from "./pages/woodworker/ServiceOrder/ServiceOrder
 import WWServiceOrderDetailPage from "./pages/woodworker/ServiceOrder/ServiceOrderDetail/WWServiceOrderDetailPage.jsx";
 import WWGuaranteeOrderListPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderList/WWGuaranteeOrderListPage.jsx";
 import WWGuaranteeOrderDetailPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderDetail/WWGuaranteeOrderDetailPage.jsx";
-import WWRegister from "./pages/customer/Account/WWRegister.jsx";
+import WWRegister from "./pages/customer/Auth/WWRegister.jsx";
 import Pricing from "./pages/customer/Pricing/Pricing.jsx";
 
 function App() {
