@@ -2,53 +2,65 @@ import {
   Box,
   Button,
   Grid,
-  GridItem,
   Heading,
   HStack,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Spacer,
   Text,
   Tooltip,
   useDisclosure,
+  VStack,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
-import { FiCalendar, FiEye } from "react-icons/fi";
+import { useRef } from "react";
+import { FiEye } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
-import AutoResizeTextarea from "../../../../components/Input/AutoResizeTextarea";
+import ImageListSelector from "../../../../components/Utility/ImageListSelector";
+import { formatPrice } from "../../../../utils/utils";
 
-// Hàm lấy thời gian địa phương theo định dạng "YYYY-MM-DDTHH:mm"
-const getLocalDateTime = () => {
-  const now = new Date();
-  const offset = now.getTimezoneOffset() * 60000;
-  return new Date(now - offset).toISOString().slice(0, 16);
-};
-
-const appointmentData = {
-  type: "Online",
-  location: "https://google.com",
-  date: getLocalDateTime(),
-  description:
-    "Bàn bạc chi tiết mô tả và chỉnh sửa lại các yêu cầu để đảm báo tính khả thi",
-};
-
-export default function DesignDetailModal({ order, reFetch }) {
-  // Modal
+export default function DesignDetailModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
+  const design = {
+    name: "Bàn gỗ thủ công",
+    imgUrls:
+      "https://i.pinimg.com/1200x/18/82/40/18824088b9a9a8ebe87f79ac35b48ad7.jpg;https://i.pinimg.com/1200x/88/6c/02/886c021fa372379d95990e16c4fbd022.jpg",
+    category: "Bàn",
+    description: "Không có gì",
 
-  const [formData, setFormData] = useState(appointmentData);
-
-  const handleChange = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+    configurations: [
+      {
+        id: 1,
+        name: "Loại gỗ",
+        values: [
+          { id: 101, name: "Gỗ Sồi" },
+          { id: 102, name: "Gỗ Óc Chó" },
+        ],
+      },
+      {
+        id: 2,
+        name: "Bề mặt hoàn thiện",
+        values: [
+          { id: 201, name: "Tự nhiên" },
+          { id: 202, name: "Sơn bóng" },
+        ],
+      },
+    ],
+    prices: [
+      { config: [1, 2], configValue: [101, 201], price: 12000000 },
+      { config: [1, 2], configValue: [101, 202], price: 14000000 },
+      { config: [1, 2], configValue: [102, 201], price: 15000000 },
+      { config: [1, 2], configValue: [102, 202], price: 17000000 },
+    ],
   };
 
   return (
@@ -67,105 +79,140 @@ export default function DesignDetailModal({ order, reFetch }) {
       </Tooltip>
 
       <Modal
-        size="xl"
+        size="6xl"
         initialFocusRef={initialRef}
         isOpen={isOpen}
         onClose={onClose}
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">
-            Tạo, điều chỉnh lịch hẹn
-          </ModalHeader>
+          <ModalHeader bgColor="app_grey.2">Chi tiết thiết kế</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
-            <form
-              onSubmit={async (e) => {
-                e.preventDefault();
-                const formData = new FormData(e.target);
-                const putData = Object.fromEntries(formData);
-                putData.orderStatus = +putData.orderStatus;
-              }}
-            >
+            <Grid templateColumns="1fr 1fr" gap={6}>
+              {/* Phần hình ảnh */}
               <Box>
-                <Heading
-                  fontWeight="bold"
-                  fontSize="20px"
-                  mb={5}
-                  textAlign="center"
-                >
-                  Thông tin lịch hẹn
+                <Heading size="md" mb={4}>
+                  Hình ảnh sản phẩm
                 </Heading>
+                <ImageListSelector imgH={300} imgUrls={design?.imgUrls} />
+              </Box>
 
-                <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-                  <Grid templateColumns="100px 1fr" gap={4}>
-                    <GridItem>
-                      <Text fontWeight="bold" mb={2}>
-                        Hình thức:
-                      </Text>
-                    </GridItem>
-                    <GridItem>
-                      <Input
-                        value={formData.type}
-                        onChange={(e) => handleChange("type", e.target.value)}
-                        placeholder="Hình thức"
-                      />
-                    </GridItem>
-
-                    <GridItem>
-                      <Text fontWeight="bold" mb={2}>
-                        Địa điểm:
-                      </Text>
-                    </GridItem>
-                    <GridItem>
-                      <Input
-                        value={formData.location}
-                        onChange={(e) =>
-                          handleChange("location", e.target.value)
-                        }
-                        placeholder="Địa điểm"
-                      />
-                    </GridItem>
-
-                    <GridItem>
-                      <Text fontWeight="bold" mb={2}>
-                        Ngày hẹn:
-                      </Text>
-                    </GridItem>
-                    <GridItem>
-                      <Input
-                        type="datetime-local"
-                        value={formData.date}
-                        onChange={(e) => handleChange("date", e.target.value)}
-                        placeholder="Ngày hẹn"
-                      />
-                    </GridItem>
-
-                    <GridItem>
-                      <Text fontWeight="bold" mb={2}>
-                        Mô tả:
-                      </Text>
-                    </GridItem>
-                    <GridItem>
-                      <AutoResizeTextarea
-                        value={formData.description}
-                        onChange={(e) =>
-                          handleChange("description", e.target.value)
-                        }
-                        placeholder="Mô tả"
-                      />
-                    </GridItem>
-                  </Grid>
+              {/* Phần thông tin cơ bản */}
+              <Box>
+                <Heading size="md" mb={4}>
+                  Thông tin cơ bản
+                </Heading>
+                <Box bg="white" p={4} borderRadius="lg" boxShadow="sm">
+                  <VStack align="stretch" spacing={4}>
+                    <Box>
+                      <Text fontWeight="bold">Tên sản phẩm:</Text>
+                      <Text>{design?.name}</Text>
+                    </Box>
+                    <Box>
+                      <Text fontWeight="bold">Danh mục:</Text>
+                      <Text>{design?.category}</Text>
+                    </Box>
+                    <Box>
+                      <Text fontWeight="bold">Mô tả:</Text>
+                      <Text>{design?.description}</Text>
+                    </Box>
+                  </VStack>
                 </Box>
               </Box>
-              <HStack mt={10}>
-                <Spacer />
-                <Button colorScheme="blue" mr={3} type="submit">
-                  Cập nhật
-                </Button>
-                <Button onClick={onClose}>Hủy</Button>
-              </HStack>
-            </form>
+
+              {/* Phần cấu hình */}
+              <Box gridColumn="span 2">
+                <Heading size="md" mb={4}>
+                  Cấu hình sản phẩm
+                </Heading>
+                <Box bg="white" p={4} borderRadius="lg" boxShadow="sm">
+                  <VStack align="stretch" spacing={4}>
+                    {design?.configurations.map((config) => (
+                      <Box key={config.id}>
+                        <Text fontWeight="bold" mb={2}>
+                          {config.name}:
+                        </Text>
+                        <HStack spacing={2} flexWrap="wrap">
+                          {config.values.map((value) => (
+                            <Text
+                              key={value.id}
+                              px={3}
+                              py={1}
+                              bg="gray.100"
+                              borderRadius="full"
+                              bgColor="white"
+                              border={`1px solid ${appColorTheme.brown_2}`}
+                              color={appColorTheme.brown_2}
+                            >
+                              {value.name}
+                            </Text>
+                          ))}
+                        </HStack>
+                      </Box>
+                    ))}
+                  </VStack>
+                </Box>
+              </Box>
+
+              {/* Phần bảng giá */}
+              <Box gridColumn="span 2">
+                <Heading size="md" mb={4}>
+                  Bảng giá theo cấu hình
+                </Heading>
+                <Box
+                  bg="white"
+                  p={4}
+                  borderRadius="lg"
+                  boxShadow="sm"
+                  overflowX="auto"
+                >
+                  <Table variant="simple">
+                    <Thead>
+                      <Tr>
+                        {design?.configurations.map((config) => (
+                          <Th key={config.id}>{config.name}</Th>
+                        ))}
+                        <Th>Giá</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {design?.prices.map((price, index) => (
+                        <Tr key={index}>
+                          {price.configValue.map((valueId) => {
+                            const configId = Math.floor(valueId / 100);
+                            const config = design.configurations.find(
+                              (c) => c.id == configId
+                            );
+                            const value = config?.values.find(
+                              (v) => v.id == valueId
+                            );
+                            return (
+                              <Td key={valueId}>
+                                <Text>{value?.name}</Text>
+                              </Td>
+                            );
+                          })}
+                          <Td>
+                            <Text
+                              fontSize="xl"
+                              as="b"
+                              color={appColorTheme.brown_2}
+                            >
+                              {formatPrice(price.price)}
+                            </Text>
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </Box>
+              </Box>
+            </Grid>
+
+            <HStack justify="flex-end" mt={6}>
+              <Button onClick={onClose}>Đóng</Button>
+            </HStack>
           </ModalBody>
         </ModalContent>
       </Modal>

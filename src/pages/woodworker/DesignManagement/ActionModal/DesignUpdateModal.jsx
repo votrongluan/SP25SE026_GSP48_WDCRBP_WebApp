@@ -1,10 +1,8 @@
 import {
   Box,
   Button,
-  Grid,
-  GridItem,
-  Heading,
-  HStack,
+  FormControl,
+  FormLabel,
   Input,
   Modal,
   ModalBody,
@@ -12,43 +10,197 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Spacer,
+  Select,
+  Stack,
   Text,
-  Tooltip,
+  VStack,
+  HStack,
+  IconButton,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
   useDisclosure,
+  Flex,
+  Textarea,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { FiCalendar, FiEdit2, FiEye } from "react-icons/fi";
+import { FiEdit2, FiPlus, FiTrash, FiXCircle } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
-import AutoResizeTextarea from "../../../../components/Input/AutoResizeTextarea";
+import ImageUpload from "../../../../components/Utility/ImageUpload";
+import { formatPrice } from "../../../../utils/utils";
+import ImageListSelector from "../../../../components/Utility/ImageListSelector";
 
-// Hàm lấy thời gian địa phương theo định dạng "YYYY-MM-DDTHH:mm"
-const getLocalDateTime = () => {
-  const now = new Date();
-  const offset = now.getTimezoneOffset() * 60000;
-  return new Date(now - offset).toISOString().slice(0, 16);
-};
-
-const appointmentData = {
-  type: "Online",
-  location: "https://google.com",
-  date: getLocalDateTime(),
-  description:
-    "Bàn bạc chi tiết mô tả và chỉnh sửa lại các yêu cầu để đảm báo tính khả thi",
-};
-
-export default function DesignUpdateModal({ order, reFetch }) {
-  // Modal
+export default function DesignUpdateModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
+  const [configurations, setConfigurations] = useState([
+    {
+      id: 1,
+      name: "Loại gỗ",
+      values: [
+        { id: 101, name: "Gỗ Sồi" },
+        { id: 102, name: "Gỗ Óc Chó" },
+      ],
+    },
+    {
+      id: 2,
+      name: "Bề mặt hoàn thiện",
+      values: [
+        { id: 201, name: "Tự nhiên" },
+        { id: 202, name: "Sơn bóng" },
+      ],
+    },
+  ]);
+  const [prices, setPrices] = useState([
+    { config: [1, 2], configValue: [101, 201], price: 12000000 },
+    { config: [1, 2], configValue: [101, 202], price: 14000000 },
+    { config: [1, 2], configValue: [102, 201], price: 15000000 },
+    { config: [1, 2], configValue: [102, 202], price: 17000000 },
+  ]);
+  const [imgUrls, setImgUrls] = useState(["https://via.placeholder.com/300"]);
 
-  const [formData, setFormData] = useState(appointmentData);
+  const handleAddConfig = () => {
+    const newConfigId = configurations.length + 1;
+    setConfigurations([
+      ...configurations,
+      {
+        id: newConfigId,
+        name: "",
+        values: [],
+      },
+    ]);
+  };
 
-  const handleChange = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+  const handleAddValue = (configId) => {
+    const configIndex = configurations.findIndex((c) => c.id == configId);
+    if (configIndex === -1) return;
+
+    const newValueId =
+      configId * 100 + (configurations[configIndex].values.length + 1);
+    const newConfigurations = [...configurations];
+    newConfigurations[configIndex].values.push({
+      id: newValueId,
+      name: "",
+    });
+    setConfigurations(newConfigurations);
+    updatePrices(newConfigurations);
+  };
+
+  const handleConfigChange = (configId, field, value) => {
+    const configIndex = configurations.findIndex((c) => c.id == configId);
+    if (configIndex === -1) return;
+
+    const newConfigurations = [...configurations];
+    newConfigurations[configIndex][field] = value;
+    setConfigurations(newConfigurations);
+  };
+
+  const handleValueChange = (configId, valueId, value) => {
+    const configIndex = configurations.findIndex((c) => c.id == configId);
+    if (configIndex === -1) return;
+
+    const valueIndex = configurations[configIndex].values.findIndex(
+      (v) => v.id == valueId
+    );
+    if (valueIndex === -1) return;
+
+    const newConfigurations = [...configurations];
+    newConfigurations[configIndex].values[valueIndex].name = value;
+    setConfigurations(newConfigurations);
+  };
+
+  const handleRemoveConfig = (configId) => {
+    setConfigurations(configurations.filter((c) => c.id != configId));
+    updatePrices(configurations.filter((c) => c.id != configId));
+  };
+
+  const handleRemoveValue = (configId, valueId) => {
+    const configIndex = configurations.findIndex((c) => c.id == configId);
+    if (configIndex === -1) return;
+
+    const newConfigurations = [...configurations];
+    newConfigurations[configIndex].values = newConfigurations[
+      configIndex
+    ].values.filter((v) => v.id != valueId);
+    setConfigurations(newConfigurations);
+    updatePrices(newConfigurations);
+  };
+
+  const updatePrices = (configs) => {
+    const combinations = generateCombinations(configs);
+    const newPrices = combinations.map((combo) => {
+      const existingPrice = prices.find(
+        (p) =>
+          JSON.stringify(p.config) == JSON.stringify(combo.config) &&
+          JSON.stringify(p.configValue) == JSON.stringify(combo.configValue)
+      );
+      return (
+        existingPrice || {
+          config: combo.config,
+          configValue: combo.configValue,
+          price: 0,
+        }
+      );
+    });
+    setPrices(newPrices);
+  };
+
+  const generateCombinations = (configs) => {
+    if (configs.length === 0) return [];
+
+    const result = [];
+    const configIds = configs.map((c) => c.id);
+    const valueIds = configs.map((c) => c.values.map((v) => v.id));
+
+    function generate(current, index) {
+      if (index === configs.length) {
+        result.push({
+          config: [...configIds],
+          configValue: [...current],
+        });
+        return;
+      }
+
+      for (const valueId of valueIds[index]) {
+        current.push(valueId);
+        generate(current, index + 1);
+        current.pop();
+      }
+    }
+
+    generate([], 0);
+    return result;
+  };
+
+  const handlePriceChange = (config, configValue, price) => {
+    const priceIndex = prices.findIndex(
+      (p) =>
+        JSON.stringify(p.config) == JSON.stringify(config) &&
+        JSON.stringify(p.configValue) == JSON.stringify(configValue)
+    );
+    if (priceIndex === -1) return;
+
+    const newPrices = [...prices];
+    newPrices[priceIndex].price = price;
+    setPrices(newPrices);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = {
+      name: formData.get("name"),
+      imgUrls: formData.get("imgUrls"),
+      category: formData.get("category"),
+      description: formData.get("description"),
+      configurations,
+      prices,
+    };
+    console.log(data);
+    onClose();
   };
 
   return (
@@ -58,113 +210,234 @@ export default function DesignUpdateModal({ order, reFetch }) {
           p="1px"
           color={appColorTheme.blue_0}
           bg="none"
-          onClick={onOpen}
           border={`1px solid ${appColorTheme.blue_0}`}
           _hover={{ bg: appColorTheme.blue_0, color: "white" }}
+          onClick={onOpen}
         >
           <FiEdit2 />
         </Button>
       </Tooltip>
 
       <Modal
-        size="xl"
+        size="6xl"
         initialFocusRef={initialRef}
         isOpen={isOpen}
         onClose={onClose}
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">
-            Tạo, điều chỉnh lịch hẹn
-          </ModalHeader>
+          <ModalHeader bgColor="app_grey.2">Chỉnh sửa thiết kế</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
-            <form
-              onSubmit={async (e) => {
-                e.preventDefault();
-                const formData = new FormData(e.target);
-                const putData = Object.fromEntries(formData);
-                putData.orderStatus = +putData.orderStatus;
-              }}
-            >
-              <Box>
-                <Heading
-                  fontWeight="bold"
-                  fontSize="20px"
-                  mb={5}
-                  textAlign="center"
-                >
-                  Thông tin lịch hẹn
-                </Heading>
+            <form onSubmit={handleSubmit}>
+              <Stack spacing={4}>
+                <FormControl isRequired>
+                  <FormLabel>Tên thiết kế</FormLabel>
+                  <Input
+                    name="name"
+                    placeholder="Nhập tên thiết kế"
+                    bg="white"
+                    defaultValue="Bàn gỗ thủ công"
+                  />
+                </FormControl>
 
-                <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-                  <Grid templateColumns="100px 1fr" gap={4}>
-                    <GridItem>
-                      <Text fontWeight="bold" mb={2}>
-                        Hình thức:
-                      </Text>
-                    </GridItem>
-                    <GridItem>
-                      <Input
-                        value={formData.type}
-                        onChange={(e) => handleChange("type", e.target.value)}
-                        placeholder="Hình thức"
-                      />
-                    </GridItem>
+                <FormControl isRequired>
+                  <FormLabel>Hình ảnh</FormLabel>
+                  <ImageListSelector
+                    imgH={300}
+                    imgUrls="https://i.pinimg.com/1200x/18/82/40/18824088b9a9a8ebe87f79ac35b48ad7.jpg;https://i.pinimg.com/1200x/88/6c/02/886c021fa372379d95990e16c4fbd022.jpg"
+                  />
+                </FormControl>
 
-                    <GridItem>
-                      <Text fontWeight="bold" mb={2}>
-                        Địa điểm:
-                      </Text>
-                    </GridItem>
-                    <GridItem>
-                      <Input
-                        value={formData.location}
-                        onChange={(e) =>
-                          handleChange("location", e.target.value)
-                        }
-                        placeholder="Địa điểm"
-                      />
-                    </GridItem>
+                <FormControl isRequired>
+                  <FormLabel>Danh mục</FormLabel>
+                  <Select
+                    name="category"
+                    placeholder="Chọn danh mục"
+                    bg="white"
+                    defaultValue="Bàn"
+                  >
+                    <option value="Bàn ăn">Bàn ăn</option>
+                    <option value="Tủ quần áo">Tủ quần áo</option>
+                    <option value="Giường ngủ">Giường ngủ</option>
+                  </Select>
+                </FormControl>
 
-                    <GridItem>
-                      <Text fontWeight="bold" mb={2}>
-                        Ngày hẹn:
-                      </Text>
-                    </GridItem>
-                    <GridItem>
-                      <Input
-                        type="datetime-local"
-                        value={formData.date}
-                        onChange={(e) => handleChange("date", e.target.value)}
-                        placeholder="Ngày hẹn"
-                      />
-                    </GridItem>
+                <FormControl isRequired>
+                  <FormLabel>Mô tả</FormLabel>
+                  <Textarea
+                    name="description"
+                    placeholder="Nhập mô tả"
+                    bg="white"
+                    rows={5}
+                    defaultValue="Không có gì"
+                  />
+                </FormControl>
 
-                    <GridItem>
-                      <Text fontWeight="bold" mb={2}>
-                        Mô tả:
-                      </Text>
-                    </GridItem>
-                    <GridItem>
-                      <AutoResizeTextarea
-                        value={formData.description}
-                        onChange={(e) =>
-                          handleChange("description", e.target.value)
-                        }
-                        placeholder="Mô tả"
-                      />
-                    </GridItem>
-                  </Grid>
+                <Box>
+                  <HStack justify="space-between" mb={4}>
+                    <Text fontWeight="bold">Cấu hình sản phẩm</Text>
+                    <Button
+                      leftIcon={<FiPlus />}
+                      onClick={handleAddConfig}
+                      size="sm"
+                    >
+                      Thêm cấu hình
+                    </Button>
+                  </HStack>
+
+                  <VStack spacing={4} align="stretch">
+                    {configurations.map((config) => (
+                      <Box
+                        key={config.id}
+                        p={4}
+                        borderWidth="1px"
+                        borderRadius="lg"
+                        bg="white"
+                        position="relative"
+                      >
+                        <HStack mb={2}>
+                          <FormControl isRequired>
+                            <FormLabel>Tên cấu hình</FormLabel>
+                            <Input
+                              value={config.name}
+                              onChange={(e) =>
+                                handleConfigChange(
+                                  config.id,
+                                  "name",
+                                  e.target.value
+                                )
+                              }
+                              placeholder="Nhập tên cấu hình"
+                            />
+                          </FormControl>
+                          <IconButton
+                            position="absolute"
+                            right={1}
+                            top={1}
+                            icon={<FiXCircle />}
+                            colorScheme="red"
+                            variant="ghost"
+                            onClick={() => handleRemoveConfig(config.id)}
+                          />
+                        </HStack>
+
+                        <VStack spacing={2} align="stretch">
+                          <FormLabel m={0} isRequired>
+                            Giá trị <span style={{ color: "red" }}>*</span>
+                          </FormLabel>
+                          {config.values.map((value) => (
+                            <HStack key={value.id}>
+                              <FormControl isRequired>
+                                <Input
+                                  value={value.name}
+                                  onChange={(e) =>
+                                    handleValueChange(
+                                      config.id,
+                                      value.id,
+                                      e.target.value
+                                    )
+                                  }
+                                  placeholder="Nhập giá trị"
+                                />
+                              </FormControl>
+                              <IconButton
+                                icon={<FiTrash />}
+                                colorScheme="red"
+                                variant="ghost"
+                                onClick={() =>
+                                  handleRemoveValue(config.id, value.id)
+                                }
+                              />
+                            </HStack>
+                          ))}
+                          <Button
+                            leftIcon={<FiPlus />}
+                            onClick={() => handleAddValue(config.id)}
+                            size="sm"
+                          >
+                            Thêm giá trị
+                          </Button>
+                        </VStack>
+                      </Box>
+                    ))}
+                  </VStack>
                 </Box>
-              </Box>
-              <HStack mt={10}>
-                <Spacer />
-                <Button colorScheme="blue" mr={3} type="submit">
-                  Cập nhật
-                </Button>
-                <Button onClick={onClose}>Hủy</Button>
-              </HStack>
+
+                {prices.length > 0 && (
+                  <Box>
+                    <Text fontWeight="bold" mb={4}>
+                      Bảng giá theo cấu hình
+                    </Text>
+                    <VStack spacing={4} align="stretch">
+                      {prices.map((price, index) => (
+                        <Box
+                          key={index}
+                          p={4}
+                          borderWidth="1px"
+                          borderRadius="lg"
+                          bg="white"
+                        >
+                          <HStack justify="space-between">
+                            <Box pr={4} borderRight="1px solid #CCC" flex="1">
+                              {price.configValue.map((valueId) => {
+                                const configId = Math.floor(valueId / 100);
+                                const config = configurations.find(
+                                  (c) => c.id == configId
+                                );
+                                const value = config?.values.find(
+                                  (v) => v.id == valueId
+                                );
+                                return (
+                                  <Flex justify="space-between" key={valueId}>
+                                    <Text>{config?.name}:</Text>
+                                    <Text as="b">{value?.name}</Text>
+                                  </Flex>
+                                );
+                              })}
+                            </Box>
+
+                            <HStack justifyContent="flex-end" flex="1">
+                              <Text as="b" color={appColorTheme.brown_2}>
+                                {formatPrice(price.price)}
+                              </Text>
+
+                              <FormControl isRequired maxW="200px">
+                                <NumberInput
+                                  value={price.price}
+                                  onChange={(value) =>
+                                    handlePriceChange(
+                                      price.config,
+                                      price.configValue,
+                                      parseInt(value)
+                                    )
+                                  }
+                                  min={0}
+                                  max={50000000}
+                                  step={1000}
+                                >
+                                  <NumberInputField />
+                                  <NumberInputStepper>
+                                    <NumberIncrementStepper />
+                                    <NumberDecrementStepper />
+                                  </NumberInputStepper>
+                                </NumberInput>
+                              </FormControl>
+                            </HStack>
+                          </HStack>
+                        </Box>
+                      ))}
+                    </VStack>
+                  </Box>
+                )}
+
+                <HStack justify="flex-end" mt={4}>
+                  <Button onClick={onClose}>Hủy</Button>
+                  <Button colorScheme="blue" type="submit">
+                    Cập nhật
+                  </Button>
+                </HStack>
+              </Stack>
             </form>
           </ModalBody>
         </ModalContent>
