@@ -23,7 +23,7 @@ import { FiMessageCircle, FiRefreshCw, FiXCircle } from "react-icons/fi";
 import AutoResizeTextarea from "../../../../components/Input/AutoResizeTextarea";
 import { appColorTheme } from "../../../../config/appconfig";
 
-export default function FeedbackModal({ order, reFetch }) {
+export default function FeedbackModal({ order, refetch }) {
   const toast = useToast();
   const navigate = useNavigate();
 

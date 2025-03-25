@@ -27,7 +27,7 @@ import ProductTab from "../Tab/ProductTab.jsx";
 import LogTab from "../Tab/LogTab.jsx";
 import AppointmentEditSection from "./AppointmentEditSection.jsx";
 
-export default function AppointmentUpdateModal({ order, reFetch }) {
+export default function AppointmentUpdateModal({ order, refetch }) {
   const toast = useToast();
   const navigate = useNavigate();
 

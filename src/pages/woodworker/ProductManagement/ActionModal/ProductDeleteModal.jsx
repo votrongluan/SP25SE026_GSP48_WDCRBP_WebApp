@@ -1,35 +1,28 @@
 import {
-  Box,
   Button,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
-  Tooltip,
   useDisclosure,
-  VStack,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import { FiTrash } from "react-icons/fi";
 import PropTypes from "prop-types";
 import { appColorTheme } from "../../../../config/appconfig";
 
-export default function DesignDeleteModal({ design, refetch }) {
+export default function ProductDeleteModal({ product, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
 
   const handleDelete = async () => {
-    try {
-      // TODO: Gọi API xóa thiết kế
-      console.log("Xóa thiết kế:", design);
-      onClose();
-      refetch?.();
-    } catch (error) {
-      console.error("Lỗi khi xóa thiết kế:", error);
-    }
+    console.log("Xóa sản phẩm:", product);
+    onClose();
+    refetch?.();
   };
 
   return (
@@ -48,44 +41,41 @@ export default function DesignDeleteModal({ design, refetch }) {
       </Tooltip>
 
       <Modal
-        size="md"
         initialFocusRef={initialRef}
         isOpen={isOpen}
-        isCentered
         onClose={onClose}
+        isCentered
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">Xác nhận xóa</ModalHeader>
+          <ModalHeader bgColor="app_grey.2">Xác nhận xóa sản phẩm</ModalHeader>
           <ModalCloseButton />
-          <ModalBody bgColor="app_grey.1" pb={6}>
-            <VStack spacing={4} align="stretch">
-              <Text>
-                Bạn có chắc chắn muốn xóa thiết kế &ldquo;{design?.name}&rdquo;
-                không? Hành động này không thể hoàn tác.
-              </Text>
-
-              <Box display="flex" justifyContent="flex-end" gap={3}>
-                <Button onClick={onClose}>Hủy</Button>
-                <Button colorScheme="red" onClick={handleDelete}>
-                  Xóa
-                </Button>
-              </Box>
-            </VStack>
+          <ModalBody bgColor="app_grey.1" py={6}>
+            Bạn có chắc chắn muốn xóa sản phẩm &ldquo;{product?.name}&rdquo;
+            không? Hành động này không thể hoàn tác.
           </ModalBody>
+          <ModalFooter bgColor="app_grey.1" pb={6}>
+            <Button variant="ghost" mr={3} onClick={onClose}>
+              Hủy
+            </Button>
+            <Button colorScheme="red" onClick={handleDelete}>
+              Xóa
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
   );
 }
 
-DesignDeleteModal.propTypes = {
-  design: PropTypes.shape({
+ProductDeleteModal.propTypes = {
+  product: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
   }).isRequired,
   refetch: PropTypes.func,
 };
 
-DesignDeleteModal.defaultProps = {
+ProductDeleteModal.defaultProps = {
   refetch: undefined,
 };

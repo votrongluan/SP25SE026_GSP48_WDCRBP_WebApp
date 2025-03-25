@@ -36,7 +36,7 @@ const appointmentData = {
     "Bàn bạc chi tiết mô tả và chỉnh sửa lại các yêu cầu để đảm báo tính khả thi",
 };
 
-export default function AppointmentUpdateModal({ order, reFetch }) {
+export default function AppointmentUpdateModal({ order, refetch }) {
   // Modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);

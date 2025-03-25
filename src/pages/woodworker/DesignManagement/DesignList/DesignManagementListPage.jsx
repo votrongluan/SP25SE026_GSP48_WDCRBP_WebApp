@@ -1,9 +1,11 @@
 import {
   Box,
   Button,
+  Flex,
   Heading,
   HStack,
   Spacer,
+  Stack,
   Tooltip,
 } from "@chakra-ui/react";
 import { AgGridReact } from "ag-grid-react";
@@ -21,21 +23,36 @@ export default function DesignManagementListPage() {
   const [rowData, setRowData] = useState([
     {
       designId: "TK001",
-      name: "Bàn ăn gỗ công nghiệp",
-      description: "Bàn ăn 6 người, gỗ công nghiệp MDF phủ melamine",
-      category: "Bàn ăn",
-    },
-    {
-      designId: "TK002",
-      name: "Tủ quần áo gỗ tự nhiên",
-      description: "Tủ 3 cánh, gỗ xoan đào, thiết kế hiện đại",
-      category: "Tủ quần áo",
-    },
-    {
-      designId: "TK003",
-      name: "Giường ngủ gỗ sồi",
-      description: "Giường đôi 1.6m, gỗ sồi tự nhiên, có hộc tủ",
-      category: "Giường ngủ",
+      name: "Bàn gỗ thủ công",
+      imgUrls:
+        "https://i.pinimg.com/1200x/18/82/40/18824088b9a9a8ebe87f79ac35b48ad7.jpg;https://i.pinimg.com/1200x/88/6c/02/886c021fa372379d95990e16c4fbd022.jpg",
+      category: "Bàn",
+      description: "Không có gì",
+
+      configurations: [
+        {
+          id: 1,
+          name: "Loại gỗ",
+          values: [
+            { id: 101, name: "Gỗ Sồi" },
+            { id: 102, name: "Gỗ Óc Chó" },
+          ],
+        },
+        {
+          id: 2,
+          name: "Bề mặt hoàn thiện",
+          values: [
+            { id: 201, name: "Tự nhiên" },
+            { id: 202, name: "Sơn bóng" },
+          ],
+        },
+      ],
+      prices: [
+        { config: [1, 2], configValue: [101, 201], price: 12000000 },
+        { config: [1, 2], configValue: [101, 202], price: 14000000 },
+        { config: [1, 2], configValue: [102, 201], price: 15000000 },
+        { config: [1, 2], configValue: [102, 202], price: 17000000 },
+      ],
     },
   ]);
 
@@ -48,10 +65,10 @@ export default function DesignManagementListPage() {
       headerName: "Thao tác",
       cellRenderer: ({ data }) => {
         return (
-          <HStack columnGap="4px">
-            <DesignDetailModal />
-            <DesignUpdateModal />
-            <DesignDeleteModal />
+          <HStack spacing={1}>
+            <DesignDetailModal design={data} refetch={null} />
+            <DesignUpdateModal design={data} refetch={null} />
+            <DesignDeleteModal design={data} refetch={null} />
           </HStack>
         );
       },
@@ -67,8 +84,8 @@ export default function DesignManagementListPage() {
   }, []);
 
   return (
-    <Box>
-      <HStack mb={5}>
+    <Stack>
+      <Flex justify="space-between" align="center">
         <Heading
           fontWeight="normal"
           as="h2"
@@ -77,13 +94,8 @@ export default function DesignManagementListPage() {
         >
           Quản lý ý tưởng thiết kế
         </Heading>
-
-        <Spacer />
-
-        <Box>
-          <DesignCreateModal />
-        </Box>
-      </HStack>
+        <DesignCreateModal refetch={null} />
+      </Flex>
 
       <Box>
         <div
@@ -100,6 +112,6 @@ export default function DesignManagementListPage() {
           />
         </div>
       </Box>
-    </Box>
+    </Stack>
   );
 }

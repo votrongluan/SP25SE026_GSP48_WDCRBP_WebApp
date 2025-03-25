@@ -20,7 +20,7 @@ import axios from "../../api/axios.js";
 import { useRef } from "react";
 import useAuth from "../../hooks/useAuth.js";
 
-export default function PrintOrderUpdateButton({ order, reFetch }) {
+export default function PrintOrderUpdateButton({ order, refetch }) {
   const toast = useToast();
   const { auth } = useAuth();
 
@@ -62,7 +62,7 @@ export default function PrintOrderUpdateButton({ order, reFetch }) {
                       isClosable: true,
                     });
 
-                    reFetch();
+                    refetch();
                   })
                   .catch((error) => {
                     console.error("Error placing order", error);

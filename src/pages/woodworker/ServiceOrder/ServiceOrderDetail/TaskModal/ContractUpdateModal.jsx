@@ -18,7 +18,7 @@ import ContractEditSection from "./ContractEditSection.jsx";
 import ProductEditSection from "./ProductEditSection.jsx";
 import { appColorTheme } from "../../../../../config/appconfig.js";
 
-export default function ContractUpdateModal({ order, reFetch }) {
+export default function ContractUpdateModal({ order, refetch }) {
   // Modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);

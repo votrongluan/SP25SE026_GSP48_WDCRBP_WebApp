@@ -29,7 +29,7 @@ import AppointmentEditSection from "./AppointmentEditSection.jsx";
 import ContractEditSection from "./ContractEditSection.jsx";
 import ProductEditSection from "./ProductEditSection.jsx";
 
-export default function ContractUpdateModal({ order, reFetch }) {
+export default function ContractUpdateModal({ order, refetch }) {
   const toast = useToast();
   const navigate = useNavigate();
 

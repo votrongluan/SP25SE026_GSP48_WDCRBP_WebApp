@@ -30,7 +30,7 @@ import ContractEditSection from "./ContractEditSection.jsx";
 import ProductEditSection from "./ProductEditSection.jsx";
 import DesignEditSection from "./DesignEditSection.jsx";
 
-export default function DesignUpdateModal({ order, reFetch }) {
+export default function DesignUpdateModal({ order, refetch }) {
   const toast = useToast();
   const navigate = useNavigate();
 

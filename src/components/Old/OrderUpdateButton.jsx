@@ -21,13 +21,13 @@ import axios from "../../api/axios.js";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function OrderUpdateButton({ order, reFetch }) {
+export default function OrderUpdateButton({ order, refetch }) {
   const toast = useToast();
   const navigate = useNavigate();
 
   // Modal
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const initialRef = useRef(null);  
+  const initialRef = useRef(null);
 
   return (
     <>
@@ -61,7 +61,7 @@ export default function OrderUpdateButton({ order, reFetch }) {
                       isClosable: true,
                     });
 
-                    reFetch();
+                    refetch();
                   })
                   .catch((error) => {
                     console.error("Error placing order", error);

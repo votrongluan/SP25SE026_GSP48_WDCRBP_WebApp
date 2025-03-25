@@ -33,7 +33,7 @@ import ImageUpload from "../../../../components/Utility/ImageUpload";
 import { formatPrice } from "../../../../utils/utils";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector";
 
-export default function DesignUpdateModal() {
+export default function DesignUpdateModal({ design, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const [configurations, setConfigurations] = useState([

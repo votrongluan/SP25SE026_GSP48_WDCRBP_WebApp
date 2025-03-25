@@ -31,7 +31,7 @@ import { appColorTheme } from "../../../../config/appconfig";
 import ImageUpload from "../../../../components/Utility/ImageUpload";
 import { formatPrice } from "../../../../utils/utils";
 
-export default function DesignCreateModal() {
+export default function DesignCreateModal({ refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const [configurations, setConfigurations] = useState([]);

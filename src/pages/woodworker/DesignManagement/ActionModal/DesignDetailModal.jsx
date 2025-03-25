@@ -20,6 +20,8 @@ import {
   Tr,
   Th,
   Td,
+  Stack,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import { FiEye } from "react-icons/fi";
@@ -27,41 +29,9 @@ import { appColorTheme } from "../../../../config/appconfig";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector";
 import { formatPrice } from "../../../../utils/utils";
 
-export default function DesignDetailModal() {
+export default function DesignDetailModal({ design, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
-  const design = {
-    name: "Bàn gỗ thủ công",
-    imgUrls:
-      "https://i.pinimg.com/1200x/18/82/40/18824088b9a9a8ebe87f79ac35b48ad7.jpg;https://i.pinimg.com/1200x/88/6c/02/886c021fa372379d95990e16c4fbd022.jpg",
-    category: "Bàn",
-    description: "Không có gì",
-
-    configurations: [
-      {
-        id: 1,
-        name: "Loại gỗ",
-        values: [
-          { id: 101, name: "Gỗ Sồi" },
-          { id: 102, name: "Gỗ Óc Chó" },
-        ],
-      },
-      {
-        id: 2,
-        name: "Bề mặt hoàn thiện",
-        values: [
-          { id: 201, name: "Tự nhiên" },
-          { id: 202, name: "Sơn bóng" },
-        ],
-      },
-    ],
-    prices: [
-      { config: [1, 2], configValue: [101, 201], price: 12000000 },
-      { config: [1, 2], configValue: [101, 202], price: 14000000 },
-      { config: [1, 2], configValue: [102, 201], price: 15000000 },
-      { config: [1, 2], configValue: [102, 202], price: 17000000 },
-    ],
-  };
 
   return (
     <>
@@ -89,37 +59,45 @@ export default function DesignDetailModal() {
           <ModalHeader bgColor="app_grey.2">Chi tiết thiết kế</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
-            <Grid templateColumns="1fr 1fr" gap={6}>
-              {/* Phần hình ảnh */}
-              <Box>
-                <Heading size="md" mb={4}>
-                  Hình ảnh sản phẩm
-                </Heading>
-                <ImageListSelector imgH={300} imgUrls={design?.imgUrls} />
-              </Box>
-
-              {/* Phần thông tin cơ bản */}
-              <Box>
-                <Heading size="md" mb={4}>
-                  Thông tin cơ bản
-                </Heading>
-                <Box bg="white" p={4} borderRadius="lg" boxShadow="sm">
-                  <VStack align="stretch" spacing={4}>
-                    <Box>
-                      <Text fontWeight="bold">Tên sản phẩm:</Text>
-                      <Text>{design?.name}</Text>
-                    </Box>
-                    <Box>
-                      <Text fontWeight="bold">Danh mục:</Text>
-                      <Text>{design?.category}</Text>
-                    </Box>
-                    <Box>
-                      <Text fontWeight="bold">Mô tả:</Text>
-                      <Text>{design?.description}</Text>
-                    </Box>
-                  </VStack>
+            <Stack gap={6}>
+              <SimpleGrid
+                columns={{
+                  base: 1,
+                  xl: 2,
+                }}
+                gap={6}
+              >
+                {/* Phần hình ảnh */}
+                <Box>
+                  <Heading size="md" mb={4}>
+                    Hình ảnh sản phẩm
+                  </Heading>
+                  <ImageListSelector imgH={300} imgUrls={design?.imgUrls} />
                 </Box>
-              </Box>
+
+                {/* Phần thông tin cơ bản */}
+                <Box>
+                  <Heading size="md" mb={4}>
+                    Thông tin cơ bản
+                  </Heading>
+                  <Box bg="white" p={4} borderRadius="lg" boxShadow="sm">
+                    <VStack align="stretch" spacing={4}>
+                      <Box>
+                        <Text fontWeight="bold">Tên sản phẩm:</Text>
+                        <Text>{design?.name}</Text>
+                      </Box>
+                      <Box>
+                        <Text fontWeight="bold">Danh mục:</Text>
+                        <Text>{design?.category}</Text>
+                      </Box>
+                      <Box>
+                        <Text fontWeight="bold">Mô tả:</Text>
+                        <Text>{design?.description}</Text>
+                      </Box>
+                    </VStack>
+                  </Box>
+                </Box>
+              </SimpleGrid>
 
               {/* Phần cấu hình */}
               <Box gridColumn="span 2">
@@ -208,7 +186,7 @@ export default function DesignDetailModal() {
                   </Table>
                 </Box>
               </Box>
-            </Grid>
+            </Stack>
 
             <HStack justify="flex-end" mt={6}>
               <Button onClick={onClose}>Đóng</Button>
