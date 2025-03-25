@@ -12,50 +12,12 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import { FiEdit2, FiEye, FiPlus, FiTrash } from "react-icons/fi";
 import { useMemo, useState } from "react";
+import DesignCreateModal from "../ActionModal/DesignCreateModal.jsx";
+import DesignDetailModal from "../ActionModal/DesignDetailModal.jsx";
+import DesignUpdateModal from "../ActionModal/DesignUpdateModal.jsx";
+import DesignDeleteModal from "../ActionModal/DesignDeleteModal.jsx";
 
 export default function DesignManagementListPage() {
-  const ActionButton = () => {
-    return (
-      <HStack columnGap="4px">
-        <Tooltip label="Chi tiết" hasArrow>
-          <Button
-            p="1px"
-            color={appColorTheme.brown_2}
-            bg="none"
-            border={`1px solid ${appColorTheme.brown_2}`}
-            _hover={{ bg: appColorTheme.brown_2, color: "white" }}
-          >
-            <FiEye />
-          </Button>
-        </Tooltip>
-
-        <Tooltip label="Chỉnh sửa" hasArrow>
-          <Button
-            p="1px"
-            color={appColorTheme.blue_0}
-            bg="none"
-            border={`1px solid ${appColorTheme.blue_0}`}
-            _hover={{ bg: appColorTheme.blue_0, color: "white" }}
-          >
-            <FiEdit2 />
-          </Button>
-        </Tooltip>
-
-        <Tooltip label="Xóa" hasArrow>
-          <Button
-            p="1px"
-            color={appColorTheme.red_0}
-            bg="none"
-            border={`1px solid ${appColorTheme.red_0}`}
-            _hover={{ bg: appColorTheme.red_0, color: "white" }}
-          >
-            <FiTrash />
-          </Button>
-        </Tooltip>
-      </HStack>
-    );
-  };
-
   const [rowData, setRowData] = useState([
     {
       designId: "TK001",
@@ -82,7 +44,18 @@ export default function DesignManagementListPage() {
     { headerName: "Tên thiết kế", field: "name" },
     { headerName: "Mô tả", field: "description" },
     { headerName: "Danh mục", field: "category" },
-    { headerName: "Thao tác", cellRenderer: ActionButton },
+    {
+      headerName: "Thao tác",
+      cellRenderer: ({ data }) => {
+        return (
+          <HStack columnGap="4px">
+            <DesignDetailModal />
+            <DesignUpdateModal />
+            <DesignDeleteModal />
+          </HStack>
+        );
+      },
+    },
   ]);
 
   const defaultColDef = useMemo(() => {
@@ -108,16 +81,7 @@ export default function DesignManagementListPage() {
         <Spacer />
 
         <Box>
-          <Button
-            px={2}
-            color={appColorTheme.green_0}
-            bg="none"
-            border={`1px solid ${appColorTheme.green_0}`}
-            _hover={{ bg: appColorTheme.green_0, color: "white" }}
-            leftIcon={<FiPlus />}
-          >
-            Thêm thiết kế mới
-          </Button>
+          <DesignCreateModal />
         </Box>
       </HStack>
 
