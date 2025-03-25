@@ -1,83 +1,27 @@
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormLabel,
-  IconButton,
-  Input,
-  InputGroup,
-  InputRightElement,
-  useToast,
-} from "@chakra-ui/react";
-import { Form, useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth.js";
-import axios from "../../api/axios.js";
-import { jwtDecode } from "jwt-decode";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { appColorTheme } from "../../config/appconfig.js";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { useLoginMutation } from "../../services/authApi.js";
+import PropTypes from "prop-types";
+import PasswordLogin from "./PasswordLogin";
+import EmailOTPLogin from "./EmailOTPLogin";
+import PhoneOTPLogin from "./PhoneOTPLogin";
 
 export default function Login({ changeTab }) {
-  const toast = useToast();
-  const { setAuth } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [isSending, setIsSending] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [login, { isLoading: isLoginLoading }] = useLoginMutation();
+  const [loginMethod, setLoginMethod] = useState("password");
 
-  const from = location.state?.from?.pathname || "/";
+  const renderLoginForm = () => {
+    switch (loginMethod) {
+      case "password":
+        return <PasswordLogin />;
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setIsSending(true);
+      case "emailOTP":
+        return <EmailOTPLogin />;
 
-    try {
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData.entries());
+      case "phoneOTP":
+        return <PhoneOTPLogin />;
 
-      const res = await login(data);
-
-      console.log(res);
-
-      let user = res.data;
-      user.token = user.accessTokenToken;
-
-      // Assuming the accessToken is part of the user object
-      const decodedToken = jwtDecode(user.accessTokenToken);
-
-      // Add decoded token to user object while keeping old properties
-      user = { ...user, ...decodedToken };
-
-      switch (user.role) {
-        case 1:
-          setAuth(user);
-          navigate(from);
-          break;
-        case 2:
-          setAuth(user);
-          navigate("/supplier");
-          break;
-        case 3:
-          setAuth(user);
-          navigate("/admin");
-          break;
-        default:
-          setAuth(user);
-          navigate(from);
-          break;
-      }
-    } catch (err) {
-      toast({
-        title: "Đăng nhập thất bại",
-        status: "error",
-        colorScheme: "red",
-        duration: 660,
-      });
-    } finally {
-      setIsSending(false);
+      default:
+        return null;
     }
   };
 
@@ -95,42 +39,38 @@ export default function Login({ changeTab }) {
         Đăng nhập
       </Box>
 
-      <Form onSubmit={handleLogin}>
-        <FormControl isRequired mb="20px">
-          <FormLabel>Email</FormLabel>
-          <Input bgColor="white" type="text" name="email" />
-        </FormControl>
+      {renderLoginForm()}
 
-        <FormControl isRequired mb="20px">
-          <FormLabel>Mật khẩu</FormLabel>
-          <InputGroup>
-            <Input
-              bgColor="white"
-              type={showPassword ? "text" : "password"}
-              name="password"
-            />
-            <InputRightElement>
-              <IconButton
-                aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
-                icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
-                onClick={() => setShowPassword(!showPassword)}
-                variant="ghost"
-              />
-            </InputRightElement>
-          </InputGroup>
-        </FormControl>
+      <Box mt={4} mb={2} color="gray.600" fontSize="sm">
+        Phương thức đăng nhập
+      </Box>
 
+      <Flex gap={2}>
         <Button
-          color="white"
-          bgColor={appColorTheme.brown_2}
-          width="100%"
-          type="submit"
-          mt="30px"
-          isLoading={isSending}
+          flex={1}
+          variant={loginMethod === "password" ? "solid" : "outline"}
+          colorScheme={loginMethod === "password" ? "blue" : "gray"}
+          onClick={() => setLoginMethod("password")}
         >
-          Đăng nhập
+          Mật khẩu
         </Button>
-      </Form>
+        <Button
+          flex={1}
+          variant={loginMethod === "emailOTP" ? "solid" : "outline"}
+          colorScheme={loginMethod === "emailOTP" ? "blue" : "gray"}
+          onClick={() => setLoginMethod("emailOTP")}
+        >
+          Email OTP
+        </Button>
+        <Button
+          flex={1}
+          variant={loginMethod === "phoneOTP" ? "solid" : "outline"}
+          colorScheme={loginMethod === "phoneOTP" ? "blue" : "gray"}
+          onClick={() => setLoginMethod("phoneOTP")}
+        >
+          Số điện thoại OTP
+        </Button>
+      </Flex>
 
       <Flex mt="20px" justifyContent="space-between">
         <Box
@@ -151,3 +91,7 @@ export default function Login({ changeTab }) {
     </>
   );
 }
+
+Login.propTypes = {
+  changeTab: PropTypes.func.isRequired,
+};

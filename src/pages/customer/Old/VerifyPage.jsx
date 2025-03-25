@@ -83,8 +83,8 @@ export default function VerifyPage({ changeTab }) {
         </FormControl>
 
         <Button
-          color="black"
-          bgColor="app_brown.0"
+          color="white"
+          bgColor="app_brown.2"
           width="100%"
           type="submit"
           isLoading={isSending}
@@ -99,7 +99,7 @@ export default function VerifyPage({ changeTab }) {
         <Box
           onClick={() => changeTab("login")}
           cursor="pointer"
-          color="app_brown.0"
+          color="app_brown.2"
         >
           Đăng nhập
         </Box>

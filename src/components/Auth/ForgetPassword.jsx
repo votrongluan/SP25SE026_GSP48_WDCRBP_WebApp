@@ -110,8 +110,8 @@ export default function ForgetPassword({ changeTab }) {
             <Spacer />
             <Button
               mt={2}
-              color="black"
-              bgColor="app_brown.0"
+              color="white"
+              bgColor="app_brown.2"
               width="50%"
               onClick={handleSendOTP}
               isDisabled={isOtpSending}
@@ -155,8 +155,8 @@ export default function ForgetPassword({ changeTab }) {
         </FormControl>
 
         <Button
-          color="black"
-          bgColor="app_brown.0"
+          color="white"
+          bgColor="app_brown.2"
           width="100%"
           type="submit"
           mt="30px"
@@ -171,7 +171,7 @@ export default function ForgetPassword({ changeTab }) {
           <Box
             onClick={() => changeTab("login")}
             cursor="pointer"
-            color="app_brown.0"
+            color="app_brown.2"
           >
             Đăng nhập
           </Box>

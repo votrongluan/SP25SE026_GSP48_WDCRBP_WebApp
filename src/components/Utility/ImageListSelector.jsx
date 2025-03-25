@@ -1,12 +1,27 @@
 import { Box, Flex, Image, Text, IconButton } from "@chakra-ui/react";
 import { ArrowLeftIcon, ArrowRightIcon, CloseIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { appColorTheme } from "../../config/appconfig";
+import PropTypes from "prop-types";
 
 export default function ImageListSelector({ imgUrls, imgH = 500 }) {
   const imageList = imgUrls ? imgUrls.split(";") : [];
   const [mainImage, setMainImage] = useState(imageList[0] || "");
   const [isFullScreen, setIsFullScreen] = useState(false);
+
+  // Xử lý overflow của body khi fullscreen thay đổi
+  useEffect(() => {
+    if (isFullScreen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    // Cleanup khi component unmount
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isFullScreen]);
 
   // Switch mainImage to whichever thumbnail was clicked
   const handleThumbnailClick = (img) => {
@@ -97,8 +112,8 @@ export default function ImageListSelector({ imgUrls, imgH = 500 }) {
           position="fixed"
           top="0"
           left="0"
-          w="100svw"
-          h="100svh"
+          w="100vw"
+          h="100vh"
           bg="rgba(0,0,0,0.9)"
           zIndex="9999"
         >
@@ -184,3 +199,13 @@ export default function ImageListSelector({ imgUrls, imgH = 500 }) {
     </Box>
   );
 }
+
+ImageListSelector.propTypes = {
+  imgUrls: PropTypes.string,
+  imgH: PropTypes.number,
+};
+
+ImageListSelector.defaultProps = {
+  imgUrls: "",
+  imgH: 500,
+};
