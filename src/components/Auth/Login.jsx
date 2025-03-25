@@ -41,7 +41,7 @@ export default function Login({ changeTab }) {
 
       {renderLoginForm()}
 
-      <Box textAlign="center" mt={4} mb={4} fontSize="sm">
+      <Box mt={4} mb={2} color="gray.600" fontSize="sm">
         Phương thức đăng nhập
       </Box>
 

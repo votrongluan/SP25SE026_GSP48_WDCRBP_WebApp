@@ -32,6 +32,7 @@ function Header() {
     { path: "/design", label: "Thiết kế" },
     { path: "/woodworker", label: "Xưởng mộc" },
     { path: "/contact", label: "Liên hệ" },
+    { path: "/pricing", label: "Pricing" },
   ];
   const navLinkStyle = ({ isActive }) => {
     return {

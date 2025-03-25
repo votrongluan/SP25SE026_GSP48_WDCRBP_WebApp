@@ -5,9 +5,12 @@ import { FiUpload, FiX } from "react-icons/fi";
 import { useImageUpload } from "../../hooks/useImageUpload";
 import { appColorTheme } from "../../config/appconfig";
 import { useNotify } from "../Utility/Notify";
+import ImageListSelector from "./ImageListSelector";
 
 export default function ImageUpload({ onUploadComplete, maxFiles = 5 }) {
   const [previews, setPreviews] = useState([]);
+  const [results, setResults] = useState([]);
+  const [isUploadComplete, setIsUploadComplete] = useState(false);
   const [files, setFiles] = useState([]);
   const { uploadMultipleImages, uploading, error } = useImageUpload();
   const notify = useNotify();
@@ -65,10 +68,12 @@ export default function ImageUpload({ onUploadComplete, maxFiles = 5 }) {
   const handleUpload = async () => {
     try {
       const results = await uploadMultipleImages(files);
-      onUploadComplete(results);
-      setFiles([]);
-      setPreviews([]);
+      const imgUrls = results.map((result) => result.url);
+      onUploadComplete(imgUrls);
+      setResults(imgUrls);
+      setIsUploadComplete(true);
     } catch (err) {
+      console.log(err);
       notify(
         "Upload thất bại",
         error || "Có lỗi xảy ra khi upload ảnh",
@@ -76,6 +81,10 @@ export default function ImageUpload({ onUploadComplete, maxFiles = 5 }) {
       );
     }
   };
+
+  if (isUploadComplete) {
+    return <ImageListSelector imgH="150" imgUrls={results.join(";")} />;
+  }
 
   return (
     <VStack spacing={4} width="100%">
