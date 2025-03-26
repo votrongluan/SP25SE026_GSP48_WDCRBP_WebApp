@@ -63,7 +63,7 @@ const processUpdates = [
 export default function ProcessTab() {
   return (
     <Box bg="white" borderRadius="10px" p={5} boxShadow="md">
-      <Heading textAlign="center" fontWeight="bold" fontSize="20px" mb={5}>
+      <Heading textAlign="center" fontWeight="bold" fontSize="20px" mb={6}>
         Quá trình
       </Heading>
 

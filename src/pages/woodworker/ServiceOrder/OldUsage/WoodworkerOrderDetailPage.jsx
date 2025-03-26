@@ -35,7 +35,7 @@ export default function WoodworkerOrderDetailPage() {
   return (
     <Container px="40px" maxW="1400px">
       <ActionBar />
-      <Box mb={5}>
+      <Box mb={6}>
         <Heading
           fontWeight="normal"
           as="h2"

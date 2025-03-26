@@ -26,7 +26,7 @@ export default function FiltersComponent() {
 
   return (
     <Box p={5} boxShadow="md" bgColor="white">
-      <Heading fontWeight="bold" fontSize="20px" mb={5}>
+      <Heading fontWeight="bold" fontSize="20px" mb={6}>
         Bộ lọc
       </Heading>
 

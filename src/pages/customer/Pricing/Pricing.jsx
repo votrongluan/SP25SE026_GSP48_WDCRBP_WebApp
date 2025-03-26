@@ -90,12 +90,12 @@ export default function Pricing() {
   return (
     <Box>
       {/* Title Section */}
-      <Stack spacing={4} align="center" mb={5}>
+      <Stack spacing={4} align="center" mb={6}>
         <Heading
+          color={appColorTheme.brown_2}
           fontFamily="Montserrat"
-          fontWeight="normal"
           as="h3"
-          fontSize="22px"
+          fontSize="2xl"
         >
           Các gói dịch vụ dành cho xưởng mộc
         </Heading>
@@ -112,7 +112,7 @@ export default function Pricing() {
         borderRadius="full"
         maxW="md"
         mx="auto"
-        mb={5}
+        mb={6}
       >
         {Object.entries(periodLabels).map(([period, label]) => (
           <Button

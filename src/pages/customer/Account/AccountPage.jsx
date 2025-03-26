@@ -90,7 +90,7 @@ export default function AccountPage() {
 
   return (
     <Box minHeight="100vh" pb="40px">
-      <Box mb={5}>
+      <Box mb={6}>
         <Heading
           fontWeight="normal"
           as="h2"

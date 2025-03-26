@@ -140,7 +140,7 @@ export default function PersonalizationRequestPage() {
 
   return (
     <>
-      <Box mb={5}>
+      <Box mb={6}>
         <Heading
           fontWeight="normal"
           as="h2"

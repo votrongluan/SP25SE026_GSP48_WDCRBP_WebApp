@@ -46,10 +46,9 @@ export default function CustomerProfile() {
         {/* Thông tin cá nhân */}
         <Stack spacing={6} mb={8}>
           <Heading
+            color={appColorTheme.brown_2}
             fontFamily="Montserrat"
-            fontWeight="normal"
-            as="h3"
-            fontSize="22px"
+            fontSize="2xl"
           >
             Thông tin cá nhân
           </Heading>

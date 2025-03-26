@@ -1,15 +1,15 @@
 import { Box, Container, Heading, Grid } from "@chakra-ui/react";
-import FiltersComponent  from "./FiltersComponent.jsx";
-import  DesignList  from "./DesignList.jsx";
+import FiltersComponent from "./FiltersComponent.jsx";
+import DesignList from "./DesignList.jsx";
+import { appColorTheme } from "../../../../config/appconfig.js";
 
 export default function DesignsPage() {
   return (
     <>
-      <Box mb={5}>
+      <Box mb={6}>
         <Heading
-          fontWeight="normal"
-          as="h2"
-          fontSize="22px"
+          color={appColorTheme.brown_2}
+          fontSize="2xl"
           fontFamily="Montserrat"
         >
           Danh sách thiết kế

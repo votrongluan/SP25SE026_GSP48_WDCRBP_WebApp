@@ -20,7 +20,7 @@ const appointmentData = {
 export default function AppointmentTab() {
   return (
     <>
-      <Heading fontWeight="bold" fontSize="20px" mb={5} textAlign="center">
+      <Heading fontWeight="bold" fontSize="20px" mb={6} textAlign="center">
         Thông tin lịch hẹn
       </Heading>
 

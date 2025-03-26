@@ -23,7 +23,7 @@ export default function ContractTab() {
 
   return (
     <>
-      <Heading fontWeight="bold" fontSize="20px" mb={5} textAlign="center">
+      <Heading fontWeight="bold" fontSize="20px" mb={6} textAlign="center">
         Thông tin hợp đồng
       </Heading>
 

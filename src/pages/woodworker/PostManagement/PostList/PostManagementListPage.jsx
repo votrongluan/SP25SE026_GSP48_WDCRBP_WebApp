@@ -7,6 +7,7 @@ import PostCreateModal from "../ActionModal/PostCreateModal";
 import PostDetailModal from "../ActionModal/PostDetailModal";
 import PostUpdateModal from "../ActionModal/PostUpdateModal";
 import PostDeleteModal from "../ActionModal/PostDeleteModal";
+import { appColorTheme } from "../../../../config/appconfig";
 
 export default function PostManagementListPage() {
   const [rowData, setRowData] = useState([
@@ -66,9 +67,8 @@ export default function PostManagementListPage() {
     <Stack spacing={6}>
       <Flex justify="space-between" align="center">
         <Heading
-          fontWeight="normal"
-          as="h2"
-          fontSize="22px"
+          color={appColorTheme.brown_2}
+          fontSize="2xl"
           fontFamily="Montserrat"
         >
           Quản lý bài viết

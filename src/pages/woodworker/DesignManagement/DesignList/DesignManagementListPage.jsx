@@ -87,9 +87,9 @@ export default function DesignManagementListPage() {
     <Stack spacing={6}>
       <Flex justify="space-between" align="center">
         <Heading
-          fontWeight="normal"
+          color={appColorTheme.brown_2}
           as="h2"
-          fontSize="22px"
+          fontSize="2xl"
           fontFamily="Montserrat"
         >
           Quản lý ý tưởng thiết kế

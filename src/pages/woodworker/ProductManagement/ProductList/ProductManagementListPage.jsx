@@ -87,9 +87,8 @@ export default function ProductManagementListPage() {
     <Stack spacing={6}>
       <Flex justify="space-between" align="center">
         <Heading
-          fontWeight="normal"
-          as="h2"
-          fontSize="22px"
+          color={appColorTheme.brown_2}
+          fontSize="2xl"
           fontFamily="Montserrat"
         >
           Quản lý sản phẩm

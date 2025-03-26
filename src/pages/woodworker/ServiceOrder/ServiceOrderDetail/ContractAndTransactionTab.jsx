@@ -18,7 +18,7 @@ export default function ContractAndTransactionTab() {
     <Box>
       <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={5}>
         <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-          <Heading fontWeight="bold" as="h3" fontSize="20px" mb={5}>
+          <Heading fontWeight="bold" as="h3" fontSize="20px" mb={6}>
             Thông tin hợp đồng
           </Heading>
 
@@ -139,7 +139,7 @@ export default function ContractAndTransactionTab() {
         </Box>
 
         <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-          <Heading fontWeight="bold" as="h3" fontSize="20px" mb={5}>
+          <Heading fontWeight="bold" as="h3" fontSize="20px" mb={6}>
             Thông tin giao dịch
           </Heading>
 

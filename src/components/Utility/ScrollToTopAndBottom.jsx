@@ -4,10 +4,10 @@ import { ArrowUpIcon, ArrowDownIcon } from "@chakra-ui/icons";
 import { FiMessageSquare } from "react-icons/fi"; // Import Facebook Messenger icon
 
 const ScrollToTopAndBottom = () => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   const toggleVisibility = () => {
-    if (window.pageYOffset >= 0) {
+    if (window.pageYOffset >= 300) {
       setIsVisible(true);
     } else {
       setIsVisible(false);

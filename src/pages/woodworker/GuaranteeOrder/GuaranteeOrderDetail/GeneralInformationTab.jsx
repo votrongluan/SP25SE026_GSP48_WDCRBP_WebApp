@@ -56,7 +56,7 @@ export default function GeneralInformationTab() {
   return (
     <Box>
       <SimpleGrid
-        mb={5}
+        mb={6}
         columns={{
           base: 1,
           xl: 2,
@@ -83,7 +83,7 @@ export default function GeneralInformationTab() {
           </Badge>
 
           <Box>
-            <Heading fontWeight="bold" as="h3" fontSize="20px" mb={5}>
+            <Heading fontWeight="bold" as="h3" fontSize="20px" mb={6}>
               Thông tin đơn hàng
             </Heading>
 
@@ -211,7 +211,7 @@ export default function GeneralInformationTab() {
       </SimpleGrid>
 
       <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-        <Heading fontWeight="bold" fontSize="20px" mb={5}>
+        <Heading fontWeight="bold" fontSize="20px" mb={6}>
           Thông tin sản phẩm đã đặt trước đó
         </Heading>
 
@@ -286,7 +286,7 @@ export default function GeneralInformationTab() {
         borderRadius="10px"
         position="relative"
       >
-        <Heading fontWeight="bold" fontSize="20px" mb={5}>
+        <Heading fontWeight="bold" fontSize="20px" mb={6}>
           Đánh giá đơn hàng
         </Heading>
         <Stack spacing={4}>

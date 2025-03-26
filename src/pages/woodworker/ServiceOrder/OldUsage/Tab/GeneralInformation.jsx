@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 export default function GeneralInformation() {
   return (
     <>
-      <Heading fontWeight="bold" fontSize="20px" mb={5} textAlign="center">
+      <Heading fontWeight="bold" fontSize="20px" mb={6} textAlign="center">
         Thông tin chung
       </Heading>
 

@@ -60,7 +60,7 @@ export default function ProductEditSection() {
 
   return (
     <Box>
-      <Heading fontWeight="bold" fontSize="20px" mb={5} textAlign="center">
+      <Heading fontWeight="bold" fontSize="20px" mb={6} textAlign="center">
         Thông tin sản phẩm
       </Heading>
 

@@ -5,7 +5,7 @@ export default function ReviewTab() {
   return (
     <>
       <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-        <Heading fontWeight="bold" fontSize="20px" mb={5}>
+        <Heading fontWeight="bold" fontSize="20px" mb={6}>
           Đánh giá đơn hàng
         </Heading>
         <Stack spacing={4}>

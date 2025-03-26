@@ -90,7 +90,7 @@ export default function AppointmentUpdateModal({ order, refetch }) {
                 <Heading
                   fontWeight="bold"
                   fontSize="20px"
-                  mb={5}
+                  mb={6}
                   textAlign="center"
                 >
                   Thông tin lịch hẹn

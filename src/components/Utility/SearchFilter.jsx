@@ -172,7 +172,7 @@ function SearchFilter({
         </Flex>
       </HStack>
 
-      <Text color="gray.500" mb={5}>
+      <Text color="gray.500" mb={6}>
         Tìm thấy {filteredData.length} kết quả
       </Text>
 

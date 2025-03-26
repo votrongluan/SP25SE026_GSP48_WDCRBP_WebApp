@@ -25,7 +25,7 @@ import PackageFrame from "../../../../components/Utility/PackageFrame.jsx";
 export default function WoodworkerDetailPage() {
   return (
     <>
-      <Box mb={5}>
+      <Box mb={6}>
         <Heading
           fontWeight="normal"
           as="h2"

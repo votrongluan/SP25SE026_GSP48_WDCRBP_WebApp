@@ -85,7 +85,7 @@ export default function ReviewSection() {
       {/* Danh sách đánh giá */}
       {filteredReviews.length > 0 ? (
         filteredReviews.map((review) => (
-          <Box key={review.id} mb={5} borderBottom="1px solid #E2E8F0" pb={4}>
+          <Box key={review.id} mb={6} borderBottom="1px solid #E2E8F0" pb={4}>
             <Flex alignItems="center" mb={1}>
               <Text fontWeight="bold" mr={2}>
                 {review.user}

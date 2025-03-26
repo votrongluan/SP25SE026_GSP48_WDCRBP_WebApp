@@ -44,7 +44,7 @@ const deliveries = [
 export default function DeliveryTab() {
   return (
     <>
-      <Heading fontWeight="bold" fontSize="20px" mb={5} textAlign="center">
+      <Heading fontWeight="bold" fontSize="20px" mb={6} textAlign="center">
         Thông tin giao hàng
       </Heading>
 

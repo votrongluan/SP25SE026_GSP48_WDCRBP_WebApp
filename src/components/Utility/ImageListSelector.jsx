@@ -29,7 +29,7 @@ export default function ImageListSelector({ imgUrls, imgH = 500 }) {
       if (!isFullScreen) return;
 
       switch (e.key) {
-        case "Escape":
+        case "q":
           handleCloseFullScreen();
           break;
         case "ArrowRight":

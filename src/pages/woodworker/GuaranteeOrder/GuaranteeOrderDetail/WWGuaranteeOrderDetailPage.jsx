@@ -21,7 +21,7 @@ import ActionBar from "./ActionBar.jsx";
 export default function WWGuaranteeOrderDetailPage() {
   return (
     <Box>
-      <HStack mb={5}>
+      <HStack mb={6}>
         <Heading
           fontWeight="normal"
           as="h2"

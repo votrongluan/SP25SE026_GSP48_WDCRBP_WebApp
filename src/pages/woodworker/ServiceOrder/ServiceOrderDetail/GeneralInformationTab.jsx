@@ -45,7 +45,7 @@ export default function GeneralInformationTab() {
   return (
     <Box>
       <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-        <Heading fontWeight="bold" fontSize="20px" mb={5}>
+        <Heading fontWeight="bold" fontSize="20px" mb={6}>
           Thông tin sản phẩm
         </Heading>
 
@@ -136,7 +136,7 @@ export default function GeneralInformationTab() {
           </Badge>
 
           <Box>
-            <Heading fontWeight="bold" as="h3" fontSize="20px" mb={5}>
+            <Heading fontWeight="bold" as="h3" fontSize="20px" mb={6}>
               Thông tin đơn hàng
             </Heading>
 
@@ -242,7 +242,7 @@ export default function GeneralInformationTab() {
         borderRadius="10px"
         position="relative"
       >
-        <Heading fontWeight="bold" fontSize="20px" mb={5}>
+        <Heading fontWeight="bold" fontSize="20px" mb={6}>
           Đánh giá đơn hàng
         </Heading>
         <Stack spacing={4}>

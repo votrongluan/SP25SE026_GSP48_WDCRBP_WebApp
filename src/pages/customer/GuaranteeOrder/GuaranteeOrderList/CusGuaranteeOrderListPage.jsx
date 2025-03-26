@@ -98,7 +98,7 @@ export default function CusGuaranteeOrderListPage() {
 
   return (
     <Box>
-      <Box mb={5}>
+      <Box mb={6}>
         <Heading
           fontWeight="normal"
           as="h2"
@@ -109,13 +109,13 @@ export default function CusGuaranteeOrderListPage() {
         </Heading>
       </Box>
 
-      <Box mb={5}></Box>
+      <Box mb={6}></Box>
 
-      <Box mb={5}>
+      <Box mb={6}>
         <TypeFilter />
       </Box>
 
-      <Box mb={5}>
+      <Box mb={6}>
         <TaskFilter />
       </Box>
 

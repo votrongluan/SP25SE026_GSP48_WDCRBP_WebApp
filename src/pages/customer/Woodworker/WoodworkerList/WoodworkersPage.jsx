@@ -1,15 +1,16 @@
 import { Box, Container, Heading, Grid } from "@chakra-ui/react";
 import FiltersComponent from "./FiltersComponent.jsx";
 import WoodworkerList from "./WoodworkerList.jsx";
+import { appColorTheme } from "../../../../config/appconfig.js";
 
 export default function WoodworkersPage() {
   return (
     <>
-      <Box mb={5}>
+      <Box mb={6}>
         <Heading
-          fontWeight="normal"
+          color={appColorTheme.brown_2}
           as="h2"
-          fontSize="22px"
+          fontSize="2xl"
           fontFamily="Montserrat"
         >
           Danh sách xưởng mộc
