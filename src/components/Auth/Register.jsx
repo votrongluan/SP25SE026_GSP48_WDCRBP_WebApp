@@ -42,15 +42,11 @@ export default function Register({ changeTab }) {
 
       const res = await register(registerData);
 
-      if (!res.data) {
-        notify("Đăng ký thất bại", "Tài khoản đã tồn tại", "error");
-      } else {
-        notify(
-          "Đăng ký thành công",
-          "Vui lòng kích hoạt tài khoản bằng OTP đã gửi về email",
-          "success"
-        );
-      }
+      notify(
+        "Đăng ký thành công",
+        "Vui lòng kích hoạt tài khoản bằng OTP đã gửi về email",
+        "success"
+      );
     } catch (err) {
       notify(
         "Đăng ký thất bại",

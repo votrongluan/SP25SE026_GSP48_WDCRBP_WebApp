@@ -14,6 +14,7 @@ import {
 import { appColorTheme } from "../../../config/appconfig";
 import { useNotify } from "../../../components/Utility/Notify";
 import ImageUpload from "../../../components/Utility/ImageUpload";
+import { useState } from "react";
 
 export default function WWRegister() {
   const notify = useNotify();
