@@ -1,123 +1,67 @@
-import { Box, Button, Heading, HStack, Tooltip } from "@chakra-ui/react";
-import { AgGridReact } from "ag-grid-react";
+import { Box, Text, HStack } from "@chakra-ui/react";
+import { useState } from "react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { useMemo, useState } from "react";
+import AppointmentList from "./AppointmentList.jsx";
+import ServiceOrderList from "./ServiceOrderList.jsx";
 import { appColorTheme } from "../../../../config/appconfig";
-import { FiEye } from "react-icons/fi";
-import TaskFilter from "./TaskFilter";
-import TypeFilter from "./TypeFilter.jsx";
-import { useNavigate } from "react-router-dom";
-
-const ActionButton = () => {
-  const navigate = useNavigate();
-
-  return (
-    <HStack columnGap="4px">
-      <Tooltip label="Chi tiết" hasArrow>
-        <Button
-          p="1px"
-          onClick={() => navigate("1")}
-          color={appColorTheme.brown_2}
-          bg="none"
-          border={`1px solid ${appColorTheme.brown_2}`}
-          _hover={{ bg: appColorTheme.brown_2, color: "white" }}
-        >
-          <FiEye />
-        </Button>
-      </Tooltip>
-    </HStack>
-  );
-};
+import ContractList from "./ContractList.jsx";
+import DesignList from "./DesignList.jsx";
 
 export default function WWServiceOrderListPage() {
-  const [rowData, setRowData] = useState([
-    {
-      orderId: "DH0001",
-      serviceType: "Cá nhân",
-      orderDate: "2025-03-19",
-      customerPhone: "0901234567",
-      customerAddress: "123 Lý Thường Kiệt, Q.10, TP.HCM",
-      status: "Chờ xác nhận",
-    },
-    {
-      orderId: "DH0002",
-      serviceType: "Tùy chỉnh",
-      orderDate: "2023-09-02",
-      customerPhone: "0987654321",
-      customerAddress: "456 Hai Bà Trưng, Q.3, TP.HCM",
-      status: "Đã xác nhận",
-    },
-    {
-      orderId: "DH0003",
-      serviceType: "Mua hàng",
-      orderDate: "2023-09-05",
-      customerPhone: "0912345678",
-      customerAddress: "789 Lê Duẩn, Q.1, TP.HCM",
-      status: "Hoàn thành",
-    },
-  ]);
+  const [currentTab, setCurrentTab] = useState("orders");
 
-  const [colDefs, setColDefs] = useState([
-    { headerName: "Mã đơn hàng", field: "orderId" },
-    { headerName: "Loại dịch vụ", field: "serviceType" },
-    {
-      headerName: "Ngày đặt",
-      field: "orderDate",
-      valueFormatter: (p) => p.value + " l",
-    },
-    { headerName: "SĐT k.hang", field: "customerPhone" },
-    { headerName: "Địa chỉ khách", field: "customerAddress" },
-    { headerName: "Trạng thái", field: "status" },
-    { headerName: "Thao tác", cellRenderer: ActionButton },
-  ]);
-
-  const defaultColDef = useMemo(() => {
-    return {
-      filter: true,
-      floatingFilter: true,
-      // flex: 1,
-    };
-  }, []);
+  const changeTab = (tab) => {
+    setCurrentTab(tab);
+  };
 
   return (
     <Box>
-      <Box mb={5}>
-        <Heading
-          fontWeight="normal"
-          as="h2"
-          fontSize="22px"
-          fontFamily="Montserrat"
+      <HStack fontSize="20px" spacing={4} mb={6}>
+        <Text
+          padding={2}
+          color={currentTab === "orders" ? appColorTheme.brown_2 : "black"}
+          textDecor={currentTab === "orders" ? "underline" : "none"}
+          cursor="pointer"
+          onClick={() => changeTab("orders")}
         >
-          Danh sách đơn đặt dịch vụ
-        </Heading>
-      </Box>
-
-      <Box mb={5}></Box>
-
-      <Box mb={5}>
-        <TypeFilter />
-      </Box>
-
-      <Box mb={5}>
-        <TaskFilter />
-      </Box>
-
-      <Box>
-        <div
-          className="ag-theme-quartz"
-          style={{ height: 700, fontSize: "16px" }}
+          Đơn hàng
+        </Text>
+        <Text
+          padding={2}
+          color={
+            currentTab === "appointments" ? appColorTheme.brown_2 : "black"
+          }
+          textDecor={currentTab === "appointments" ? "underline" : "none"}
+          cursor="pointer"
+          onClick={() => changeTab("appointments")}
         >
-          <AgGridReact
-            pagination
-            paginationPageSize={20}
-            paginationPageSizeSelector={[10, 20, 50, 100]}
-            defaultColDef={defaultColDef}
-            rowData={rowData}
-            columnDefs={colDefs}
-          />
-        </div>
-      </Box>
+          Lịch hẹn
+        </Text>
+        <Text
+          padding={2}
+          color={currentTab === "contracts" ? appColorTheme.brown_2 : "black"}
+          textDecor={currentTab === "contracts" ? "underline" : "none"}
+          cursor="pointer"
+          onClick={() => changeTab("contracts")}
+        >
+          Hợp đồng
+        </Text>
+        <Text
+          padding={2}
+          color={currentTab === "designs" ? appColorTheme.brown_2 : "black"}
+          textDecor={currentTab === "designs" ? "underline" : "none"}
+          cursor="pointer"
+          onClick={() => changeTab("designs")}
+        >
+          Thiết kế
+        </Text>
+      </HStack>
+
+      {currentTab === "orders" && <ServiceOrderList />}
+      {currentTab === "appointments" && <AppointmentList />}
+      {currentTab === "contracts" && <ContractList />}
+      {currentTab === "designs" && <DesignList />}
     </Box>
   );
 }

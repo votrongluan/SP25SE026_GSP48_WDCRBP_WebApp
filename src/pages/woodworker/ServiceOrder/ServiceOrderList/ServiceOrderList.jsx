@@ -1,0 +1,101 @@
+import { Box, Button, Heading, HStack, Tooltip } from "@chakra-ui/react";
+import { AgGridReact } from "ag-grid-react";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-quartz.css";
+import { useMemo, useState } from "react";
+import { appColorTheme } from "../../../../config/appconfig";
+import { FiEye } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import AppointmentList from "./AppointmentList.jsx";
+
+const ActionButton = () => {
+  const navigate = useNavigate();
+
+  return (
+    <HStack columnGap="4px">
+      <Tooltip label="Chi tiết" hasArrow>
+        <Button
+          p="1px"
+          onClick={() => navigate("1")}
+          color={appColorTheme.brown_2}
+          bg="none"
+          border={`1px solid ${appColorTheme.brown_2}`}
+          _hover={{ bg: appColorTheme.brown_2, color: "white" }}
+        >
+          <FiEye />
+        </Button>
+      </Tooltip>
+    </HStack>
+  );
+};
+
+export default function ServiceOrderList() {
+  const [rowData, setRowData] = useState([
+    {
+      orderId: "DH0001",
+      serviceType: "Cá nhân",
+      orderDate: "2025-03-19",
+      customerPhone: "0901234567",
+      customerAddress: "123 Lý Thường Kiệt, Q.10, TP.HCM",
+      status: "Chờ xác nhận",
+    },
+    {
+      orderId: "DH0002",
+      serviceType: "Tùy chỉnh",
+      orderDate: "2023-09-02",
+      customerPhone: "0987654321",
+      customerAddress: "456 Hai Bà Trưng, Q.3, TP.HCM",
+      status: "Đã xác nhận",
+    },
+    {
+      orderId: "DH0003",
+      serviceType: "Mua hàng",
+      orderDate: "2023-09-05",
+      customerPhone: "0912345678",
+      customerAddress: "789 Lê Duẩn, Q.1, TP.HCM",
+      status: "Hoàn thành",
+    },
+  ]);
+
+  const [colDefs, setColDefs] = useState([
+    { headerName: "Mã đơn hàng", field: "orderId" },
+    { headerName: "Loại dịch vụ", field: "serviceType" },
+    {
+      headerName: "Ngày đặt",
+      field: "orderDate",
+      valueFormatter: (p) => p.value + " l",
+    },
+    { headerName: "SĐT k.hang", field: "customerPhone" },
+    { headerName: "Địa chỉ khách", field: "customerAddress" },
+    { headerName: "Trạng thái", field: "status" },
+    { headerName: "Thao tác", cellRenderer: ActionButton },
+  ]);
+
+  const defaultColDef = useMemo(() => {
+    return {
+      filter: true,
+      floatingFilter: true,
+      // flex: 1,
+    };
+  }, []);
+
+  return (
+    <Box>
+      <Box>
+        <div
+          className="ag-theme-quartz"
+          style={{ height: 700, fontSize: "16px" }}
+        >
+          <AgGridReact
+            pagination
+            paginationPageSize={20}
+            paginationPageSizeSelector={[10, 20, 50, 100]}
+            defaultColDef={defaultColDef}
+            rowData={rowData}
+            columnDefs={colDefs}
+          />
+        </div>
+      </Box>
+    </Box>
+  );
+}
