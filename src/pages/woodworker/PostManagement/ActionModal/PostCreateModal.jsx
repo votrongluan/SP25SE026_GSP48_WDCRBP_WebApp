@@ -17,6 +17,7 @@ import { useRef, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import ImageUpdateUploader from "../../../../components/Utility/ImageUpdateUploader";
+import ImageUpload from "../../../../components/Utility/ImageUpload";
 
 export default function PostCreateModal({ refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -91,10 +92,11 @@ export default function PostCreateModal({ refetch }) {
 
                 <FormControl isRequired>
                   <FormLabel>Hình ảnh</FormLabel>
-                  <ImageUpdateUploader
+                  <ImageUpload
                     maxFiles={5}
-                    onUploadComplete={setImgUrls}
-                    imgUrls={imgUrls}
+                    onUploadComplete={(result) => {
+                      setImgUrls(result);
+                    }}
                   />
                 </FormControl>
 
@@ -111,4 +113,4 @@ export default function PostCreateModal({ refetch }) {
       </Modal>
     </>
   );
-} 
+}

@@ -9,7 +9,7 @@ import ImageListSelector from "./ImageListSelector";
 
 export default function ImageUpload({ onUploadComplete, maxFiles = 5 }) {
   const [previews, setPreviews] = useState([]);
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState("");
   const [isUploadComplete, setIsUploadComplete] = useState(false);
   const [files, setFiles] = useState([]);
   const { uploadMultipleImages, uploading, error } = useImageUpload();
@@ -68,7 +68,8 @@ export default function ImageUpload({ onUploadComplete, maxFiles = 5 }) {
   const handleUpload = async () => {
     try {
       const results = await uploadMultipleImages(files);
-      const imgUrls = results.map((result) => result.url);
+      const imgUrlsList = results.map((result) => result.url);
+      const imgUrls = imgUrlsList.join(";");
       onUploadComplete(imgUrls);
       setResults(imgUrls);
       setIsUploadComplete(true);
@@ -83,7 +84,7 @@ export default function ImageUpload({ onUploadComplete, maxFiles = 5 }) {
   };
 
   if (isUploadComplete) {
-    return <ImageListSelector imgH="150" imgUrls={results.join(";")} />;
+    return <ImageListSelector imgH="150" imgUrls={results} />;
   }
 
   return (

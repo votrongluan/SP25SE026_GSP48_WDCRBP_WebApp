@@ -17,6 +17,7 @@ import ImageUpload from "../../../components/Utility/ImageUpload";
 
 export default function WWRegister() {
   const notify = useNotify();
+  const [imgUrls, setImgUrls] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -156,7 +157,10 @@ export default function WWRegister() {
                 <FormControl isRequired>
                   <FormLabel>Ảnh đại diện cho xưởng</FormLabel>
                   <ImageUpload
-                    onUploadComplete={(results) => console.log(results)}
+                    onUploadComplete={(results) => {
+                      console.log(results);
+                      setImgUrls(results);
+                    }}
                     maxFiles={1}
                   />
                 </FormControl>

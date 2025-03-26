@@ -27,16 +27,13 @@ import { FiEdit2 } from "react-icons/fi";
 import PropTypes from "prop-types";
 import { appColorTheme } from "../../../../config/appconfig";
 import { formatPrice } from "../../../../utils/utils";
-import ImageListSelector from "../../../../components/Utility/ImageListSelector";
+import ImageUpdateUploader from "../../../../components/Utility/ImageUpdateUploader";
 
 export default function ProductUpdateModal({ product, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const [price, setPrice] = useState(product?.price);
-  const [imgUrls, setImgUrls] = useState(product?.imgUrls);
-
-  console.log(imgUrls);
-  console.log(product);
+  const [imgUrls, setImgUrls] = useState(product?.imgUrls || "");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -313,6 +310,17 @@ export default function ProductUpdateModal({ product, refetch }) {
                     <option value="Gỗ sồi">Gỗ sồi</option>
                     <option value="Gỗ trầm">Gỗ trầm</option>
                   </Select>
+                </FormControl>
+
+                <FormControl isRequired>
+                  <FormLabel>Hình ảnh</FormLabel>
+                  <ImageUpdateUploader
+                    maxFiles={5}
+                    onUploadComplete={(result) => {
+                      setImgUrls(result);
+                    }}
+                    imgUrls={imgUrls}
+                  />
                 </FormControl>
 
                 <HStack justify="flex-end" mt={4}>

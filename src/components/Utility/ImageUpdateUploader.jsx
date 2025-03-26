@@ -13,6 +13,7 @@ import { FiUpload, FiX } from "react-icons/fi";
 import { useImageUpload } from "../../hooks/useImageUpload";
 import { appColorTheme } from "../../config/appconfig";
 import { useNotify } from "./Notify";
+import ImageListSelector from "./ImageListSelector";
 
 export default function ImageUpdateUploader({
   onUploadComplete,
@@ -163,20 +164,22 @@ export default function ImageUpdateUploader({
                   objectFit="cover"
                   borderRadius="md"
                 />
-                <Button
-                  position="absolute"
-                  top={-2}
-                  right={-2}
-                  size="sm"
-                  colorScheme="red"
-                  onClick={() => removeFile(index)}
-                  borderRadius="full"
-                  p={0}
-                  minW="24px"
-                  h="24px"
-                >
-                  <FiX />
-                </Button>
+                {!isUploadComplete && (
+                  <Button
+                    position="absolute"
+                    top={-2}
+                    right={-2}
+                    size="sm"
+                    colorScheme="red"
+                    onClick={() => removeFile(index)}
+                    borderRadius="full"
+                    p={0}
+                    minW="24px"
+                    h="24px"
+                  >
+                    <FiX />
+                  </Button>
+                )}
               </Box>
             ))}
           </Flex>

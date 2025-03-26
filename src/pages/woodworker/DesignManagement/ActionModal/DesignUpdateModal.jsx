@@ -29,13 +29,14 @@ import {
 import { useRef, useState } from "react";
 import { FiEdit2, FiPlus, FiTrash, FiXCircle } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
-import ImageUpload from "../../../../components/Utility/ImageUpload";
 import { formatPrice } from "../../../../utils/utils";
-import ImageListSelector from "../../../../components/Utility/ImageListSelector";
+import ImageUpdateUploader from "../../../../components/Utility/ImageUpdateUploader";
 
 export default function DesignUpdateModal({ design, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
+  const [imgUrls, setImgUrls] = useState(design?.imgUrls || "");
+
   const [configurations, setConfigurations] = useState([
     {
       id: 1,
@@ -60,7 +61,6 @@ export default function DesignUpdateModal({ design, refetch }) {
     { config: [1, 2], configValue: [102, 201], price: 15000000 },
     { config: [1, 2], configValue: [102, 202], price: 17000000 },
   ]);
-  const [imgUrls, setImgUrls] = useState(["https://via.placeholder.com/300"]);
 
   const handleAddConfig = () => {
     const newConfigId = configurations.length + 1;
@@ -422,6 +422,17 @@ export default function DesignUpdateModal({ design, refetch }) {
                     </VStack>
                   </Box>
                 )}
+
+                <FormControl isRequired>
+                  <FormLabel>Hình ảnh</FormLabel>
+                  <ImageUpdateUploader
+                    maxFiles={5}
+                    onUploadComplete={(result) => {
+                      setImgUrls(result);
+                    }}
+                    imgUrls={imgUrls}
+                  />
+                </FormControl>
 
                 <HStack justify="flex-end" mt={4}>
                   <Button onClick={onClose}>Hủy</Button>

@@ -104,7 +104,6 @@ export default function PostUpdateModal({ post, refetch }) {
                   <ImageUpdateUploader
                     maxFiles={5}
                     onUploadComplete={(result) => {
-                      console.log(result);
                       setImgUrls(result);
                     }}
                     imgUrls={imgUrls}

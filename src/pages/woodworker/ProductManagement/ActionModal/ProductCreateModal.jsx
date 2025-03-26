@@ -32,7 +32,7 @@ import { formatPrice } from "../../../../utils/utils";
 export default function ProductCreateModal({ refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
-  const [imgUrls, setImgUrls] = useState([]);
+  const [imgUrls, setImgUrls] = useState("");
   const [price, setPrice] = useState(0);
 
   const handleSubmit = async (e) => {
@@ -75,7 +75,12 @@ export default function ProductCreateModal({ refetch }) {
               <Stack spacing={4}>
                 <FormControl isRequired>
                   <FormLabel>Hình ảnh</FormLabel>
-                  <ImageUpload maxFiles={4} onUploadComplete={setImgUrls} />
+                  <ImageUpload
+                    maxFiles={4}
+                    onUploadComplete={(result) => {
+                      setImgUrls(result);
+                    }}
+                  />
                 </FormControl>
 
                 <FormControl isRequired>

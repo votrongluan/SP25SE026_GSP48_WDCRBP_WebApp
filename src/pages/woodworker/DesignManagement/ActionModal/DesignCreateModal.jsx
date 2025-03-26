@@ -36,7 +36,7 @@ export default function DesignCreateModal({ refetch }) {
   const initialRef = useRef(null);
   const [configurations, setConfigurations] = useState([]);
   const [prices, setPrices] = useState([]);
-  const [imgUrls, setImgUrls] = useState([]);
+  const [imgUrls, setImgUrls] = useState("");
 
   const handleAddConfig = () => {
     const newConfigId = configurations.length + 1;
@@ -221,7 +221,12 @@ export default function DesignCreateModal({ refetch }) {
 
                 <FormControl isRequired>
                   <FormLabel>Hình ảnh</FormLabel>
-                  <ImageUpload maxFiles={4} onUploadComplete={setImgUrls} />
+                  <ImageUpload
+                    maxFiles={4}
+                    onUploadComplete={(result) => {
+                      setImgUrls(result);
+                    }}
+                  />
                 </FormControl>
 
                 <FormControl isRequired>
