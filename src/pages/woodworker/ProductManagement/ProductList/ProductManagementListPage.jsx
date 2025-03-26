@@ -38,7 +38,7 @@ export default function ProductManagementListPage() {
       height: 75,
       width: 90,
       imgUrls:
-        "https://i.pinimg.com/1200x/bc/43/04/bc430447510db23354b53fd24015c75c.jpg;https://i.pinimg.com/1200x/cf/79/09/cf7909b031c62ea601196af6380e2a7d.jpg",
+        "https://i.pinimg.com/1200x/17/99/2a/17992af2512a41db6b739c546a95944e.jpg;https://i.pinimg.com/1200x/aa/b0/ad/aab0ad2b357f91c06718f4177fd4932f.jpg",
       wood_type: "Gỗ công nghiệp",
       color: "Nâu đậm",
       special_feature: "Chống nước",
@@ -84,7 +84,7 @@ export default function ProductManagementListPage() {
   }, []);
 
   return (
-    <Stack>
+    <Stack spacing={6}>
       <Flex justify="space-between" align="center">
         <Heading
           fontWeight="normal"

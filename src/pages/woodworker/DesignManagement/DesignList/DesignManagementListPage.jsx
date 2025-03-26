@@ -25,7 +25,7 @@ export default function DesignManagementListPage() {
       designId: "TK001",
       name: "Bàn gỗ thủ công",
       imgUrls:
-        "https://i.pinimg.com/1200x/18/82/40/18824088b9a9a8ebe87f79ac35b48ad7.jpg;https://i.pinimg.com/1200x/88/6c/02/886c021fa372379d95990e16c4fbd022.jpg",
+        "https://i.pinimg.com/1200x/aa/b0/ad/aab0ad2b357f91c06718f4177fd4932f.jpg;https://i.pinimg.com/1200x/17/99/2a/17992af2512a41db6b739c546a95944e.jpg",
       category: "Bàn",
       description: "Không có gì",
 
@@ -84,7 +84,7 @@ export default function DesignManagementListPage() {
   }, []);
 
   return (
-    <Stack>
+    <Stack spacing={6}>
       <Flex justify="space-between" align="center">
         <Heading
           fontWeight="normal"

@@ -154,7 +154,7 @@ export default function WWRegister() {
               </GridItem>
               <GridItem colSpan={{ base: 1, xl: 2 }}>
                 <FormControl isRequired>
-                  <FormLabel>Ảnh đại diện</FormLabel>
+                  <FormLabel>Ảnh đại diện cho xưởng</FormLabel>
                   <ImageUpload
                     onUploadComplete={(results) => console.log(results)}
                     maxFiles={1}

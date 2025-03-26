@@ -47,6 +47,7 @@ import Pricing from "./pages/customer/Pricing/Pricing.jsx";
 import CustomerProfile from "./pages/customer/Profile/CustomerProfile.jsx";
 import DesignManagementListPage from "./pages/woodworker/DesignManagement/DesignList/DesignManagementListPage.jsx";
 import ProductManagementListPage from "./pages/woodworker/ProductManagement/ProductList/ProductManagementListPage.jsx";
+import PostManagementListPage from "./pages/woodworker/PostManagement/PostList/PostManagementListPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -96,6 +97,7 @@ function App() {
 
           <Route path="design" element={<DesignManagementListPage />} />
           <Route path="product" element={<ProductManagementListPage />} />
+          <Route path="post" element={<PostManagementListPage />} />
 
           <Route path="service-order">
             <Route index element={<WWServiceOrderListPage />} />
