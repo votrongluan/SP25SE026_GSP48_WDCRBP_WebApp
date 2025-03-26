@@ -23,6 +23,30 @@ export default function ImageListSelector({ imgUrls, imgH = 500 }) {
     };
   }, [isFullScreen]);
 
+  // Thêm event listener cho bàn phím
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!isFullScreen) return;
+
+      switch (e.key) {
+        case "Escape":
+          handleCloseFullScreen();
+          break;
+        case "ArrowRight":
+          handleNextImage();
+          break;
+        case "ArrowLeft":
+          handlePrevImage();
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isFullScreen, mainImage, imageList]);
+
   // Switch mainImage to whichever thumbnail was clicked
   const handleThumbnailClick = (img) => {
     setMainImage(img);
