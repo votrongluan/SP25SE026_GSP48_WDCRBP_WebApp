@@ -143,7 +143,7 @@ export default function ImageUpdateUploader({
           <Text>
             {isDragActive
               ? "Thả ảnh vào đây"
-              : "Kéo thả ảnh vào đây hoặc click để chọn"}
+              : `Kéo thả ảnh vào đây hoặc click để chọn (Tối đa ${maxFiles} ảnh)`}
           </Text>
           <Text fontSize="sm" color="gray.500">
             Hỗ trợ: JPG, JPEG, PNG, GIF (Tối đa 5MB)

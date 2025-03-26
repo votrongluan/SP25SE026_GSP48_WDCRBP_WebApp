@@ -91,9 +91,9 @@ export default function PostCreateModal({ refetch }) {
                 </FormControl>
 
                 <FormControl isRequired>
-                  <FormLabel>Hình ảnh</FormLabel>
+                  <FormLabel>Hình ảnh (tối đa 4 ảnh)</FormLabel>
                   <ImageUpload
-                    maxFiles={5}
+                    maxFiles={4}
                     onUploadComplete={(result) => {
                       setImgUrls(result);
                     }}

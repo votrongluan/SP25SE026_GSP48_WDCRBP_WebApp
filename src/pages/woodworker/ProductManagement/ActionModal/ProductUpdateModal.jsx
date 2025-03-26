@@ -315,7 +315,7 @@ export default function ProductUpdateModal({ product, refetch }) {
                 <FormControl isRequired>
                   <FormLabel>Hình ảnh</FormLabel>
                   <ImageUpdateUploader
-                    maxFiles={5}
+                    maxFiles={4}
                     onUploadComplete={(result) => {
                       setImgUrls(result);
                     }}
