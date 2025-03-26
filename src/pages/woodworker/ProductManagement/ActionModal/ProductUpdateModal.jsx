@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   FormControl,
   FormLabel,
@@ -13,7 +12,6 @@ import {
   Select,
   Stack,
   Text,
-  VStack,
   HStack,
   NumberInput,
   NumberInputField,
@@ -28,37 +26,23 @@ import { useRef, useState } from "react";
 import { FiEdit2 } from "react-icons/fi";
 import PropTypes from "prop-types";
 import { appColorTheme } from "../../../../config/appconfig";
-import ImageUpload from "../../../../components/Utility/ImageUpload";
+import { formatPrice } from "../../../../utils/utils";
+import ImageListSelector from "../../../../components/Utility/ImageListSelector";
 
 export default function ProductUpdateModal({ product, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
-  const [imgUrls, setImgUrls] = useState(
-    product?.imgUrls ? product.imgUrls.split(";") : []
-  );
+  const [price, setPrice] = useState(product?.price);
+  const [imgUrls, setImgUrls] = useState(product?.imgUrls);
+
+  console.log(imgUrls);
+  console.log(product);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const data = {
-      id: formData.get("id"),
-      category: formData.get("category"),
-      name: formData.get("name"),
-      description: formData.get("description"),
-      price: parseInt(formData.get("price")),
-      stock: parseInt(formData.get("stock")),
-      weight: parseFloat(formData.get("weight")),
-      length: parseFloat(formData.get("length")),
-      height: parseFloat(formData.get("height")),
-      width: parseFloat(formData.get("width")),
-      imgUrls: imgUrls.join(";"),
-      wood_type: formData.get("wood_type"),
-      color: formData.get("color"),
-      special_feature: formData.get("special_feature"),
-      style: formData.get("style"),
-      sculpture: formData.get("sculpture"),
-      scent: formData.get("scent"),
-    };
+    const data = Object.fromEntries(formData.entries());
+
     console.log(data);
     onClose();
     refetch?.();
@@ -103,15 +87,6 @@ export default function ProductUpdateModal({ product, refetch }) {
                 </FormControl>
 
                 <FormControl isRequired>
-                  <FormLabel>Hình ảnh</FormLabel>
-                  <ImageUpload
-                    maxFiles={4}
-                    onUploadComplete={setImgUrls}
-                    defaultImages={imgUrls}
-                  />
-                </FormControl>
-
-                <FormControl isRequired>
                   <FormLabel>Danh mục</FormLabel>
                   <Select
                     name="category"
@@ -147,24 +122,32 @@ export default function ProductUpdateModal({ product, refetch }) {
                 </FormControl>
 
                 <HStack spacing={4}>
-                  <FormControl isRequired>
+                  <FormControl flex="1" isRequired>
                     <FormLabel>Giá</FormLabel>
-                    <NumberInput
-                      name="price"
-                      min={0}
-                      max={1000000000}
-                      step={100000}
-                      defaultValue={product?.price}
-                    >
-                      <NumberInputField bg="white" />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
+                    <HStack>
+                      <Text flex="1" as="b" color={appColorTheme.brown_2}>
+                        {formatPrice(price)}
+                      </Text>
+
+                      <NumberInput
+                        name="price"
+                        min={0}
+                        flex="1"
+                        max={50000000}
+                        step={1000}
+                        value={price}
+                        onChange={(value) => setPrice(Number(value))}
+                      >
+                        <NumberInputField bg="white" />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
+                        </NumberInputStepper>
+                      </NumberInput>
+                    </HStack>
                   </FormControl>
 
-                  <FormControl isRequired>
+                  <FormControl flex="1" isRequired>
                     <FormLabel>Tồn kho</FormLabel>
                     <NumberInput
                       name="stock"

@@ -27,11 +27,13 @@ import { useRef, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import ImageUpload from "../../../../components/Utility/ImageUpload";
+import { formatPrice } from "../../../../utils/utils";
 
 export default function ProductCreateModal({ refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const [imgUrls, setImgUrls] = useState([]);
+  const [price, setPrice] = useState(0);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,11 +74,6 @@ export default function ProductCreateModal({ refetch }) {
             <form onSubmit={handleSubmit}>
               <Stack spacing={4}>
                 <FormControl isRequired>
-                  <FormLabel>Mã sản phẩm</FormLabel>
-                  <Input name="id" placeholder="Nhập mã sản phẩm" bg="white" />
-                </FormControl>
-
-                <FormControl isRequired>
                   <FormLabel>Hình ảnh</FormLabel>
                   <ImageUpload maxFiles={4} onUploadComplete={setImgUrls} />
                 </FormControl>
@@ -114,23 +111,32 @@ export default function ProductCreateModal({ refetch }) {
                 </FormControl>
 
                 <HStack spacing={4}>
-                  <FormControl isRequired>
+                  <FormControl flex="1" isRequired>
                     <FormLabel>Giá</FormLabel>
-                    <NumberInput
-                      name="price"
-                      min={0}
-                      max={1000000000}
-                      step={100000}
-                    >
-                      <NumberInputField bg="white" />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
+                    <HStack>
+                      <Text flex="1" as="b" color={appColorTheme.brown_2}>
+                        {formatPrice(price)}
+                      </Text>
+
+                      <NumberInput
+                        name="price"
+                        min={0}
+                        flex="1"
+                        max={50000000}
+                        step={1000}
+                        value={price}
+                        onChange={(value) => setPrice(Number(value))}
+                      >
+                        <NumberInputField bg="white" />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
+                        </NumberInputStepper>
+                      </NumberInput>
+                    </HStack>
                   </FormControl>
 
-                  <FormControl isRequired>
+                  <FormControl flex="1" isRequired>
                     <FormLabel>Tồn kho</FormLabel>
                     <NumberInput name="stock" min={0} max={1000} step={1}>
                       <NumberInputField bg="white" />

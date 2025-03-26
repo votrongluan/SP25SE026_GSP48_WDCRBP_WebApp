@@ -242,14 +242,6 @@ export default function DesignUpdateModal({ design, refetch }) {
                 </FormControl>
 
                 <FormControl isRequired>
-                  <FormLabel>Hình ảnh</FormLabel>
-                  <ImageListSelector
-                    imgH={300}
-                    imgUrls="https://i.pinimg.com/1200x/18/82/40/18824088b9a9a8ebe87f79ac35b48ad7.jpg;https://i.pinimg.com/1200x/88/6c/02/886c021fa372379d95990e16c4fbd022.jpg"
-                  />
-                </FormControl>
-
-                <FormControl isRequired>
                   <FormLabel>Danh mục</FormLabel>
                   <Select
                     name="category"
