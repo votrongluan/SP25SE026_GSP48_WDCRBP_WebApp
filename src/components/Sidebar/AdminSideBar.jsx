@@ -8,12 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
-import {
-  FiChevronLeft,
-  FiChevronRight,
-  FiGrid,
-  FiUserCheck,
-} from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiUserCheck } from "react-icons/fi";
 import { appColorTheme } from "../../config/appconfig.js";
 
 export default function AdminSidebar({ isCollapsed, setIsCollapsed }) {
@@ -33,7 +28,7 @@ export default function AdminSidebar({ isCollapsed, setIsCollapsed }) {
     <Box position="relative">
       <IconButton
         position="absolute"
-        top="50%"
+        top="0"
         right="-35px"
         size="sm"
         variant="ghost"

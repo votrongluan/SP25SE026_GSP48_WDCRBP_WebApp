@@ -16,8 +16,8 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useState, useMemo } from "react";
 import { FiSearch } from "react-icons/fi";
-import { appColorTheme } from "../../../config/appconfig";
-import WWRegistrationDetailModal from "./ActionModal/WWRegistrationDetailModal";
+import { appColorTheme } from "../../../../config/appconfig";
+import WWRegistrationDetailModal from "../ActionModal/WWRegistrationDetailModal";
 
 export default function WWRegistrationManagementListPage() {
   const [rowData, setRowData] = useState([

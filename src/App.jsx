@@ -23,7 +23,6 @@ import CustomerLayout from "./layouts/CustomerLayout.jsx";
 import ScrollToTopAndBottom from "./components/Utility/ScrollToTopAndBottom.jsx";
 import CusServiceOrderDetailPage from "./pages/customer/ServiceOrder/ServiceOrderDetail/CusServiceOrderDetailPage.jsx";
 import { appColorTheme } from "./config/appconfig.js";
-import WoodworkerOrderDetailPage from "./pages/woodworker/ServiceOrder/OldUsage/WoodworkerOrderDetailPage.jsx";
 import ProductDetailPage from "./pages/general/Product/ProductDetail/ProductDetailPage.jsx";
 import WoodworkersPage from "./pages/general/Woodworker/WoodworkerList/WoodworkersPage.jsx";
 import WoodworkerDetailPage from "./pages/general/Woodworker/WoodworkerDetail/WoodworkerDetailPage.jsx";
@@ -50,7 +49,10 @@ import ProductManagementListPage from "./pages/woodworker/ProductManagement/Prod
 import PostManagementListPage from "./pages/woodworker/PostManagement/PostList/PostManagementListPage.jsx";
 import ServiceConfiguration from "./pages/woodworker/ServiceConfiguration/ServiceConfiguration.jsx";
 import SuccessPage from "./pages/general/StatusPage/SuccessPage.jsx";
-import WWRegistrationManagementListPage from "./pages/admin/WWRegistrationManagement/WWRegistrationManagementListPage.jsx";
+import WWRegistrationManagementListPage from "./pages/admin/WWRegistrationManagement/RegistrationList/WWRegistrationManagementListPage.jsx";
+import ComplaintManagementListPage from "./pages/woodworker/ComplaintManagement/ComplaintList/ComplaintManagementListPage.jsx";
+import ReviewManagementListPage from "./pages/woodworker/ReviewManagement/ReviewList/ReviewManagementListPage.jsx";
+import WalletManagementListPage from "./pages/woodworker/WalletManagement/WalletList/WalletManagementListPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -109,6 +111,9 @@ function App() {
           <Route path="product" element={<ProductManagementListPage />} />
           <Route path="post" element={<PostManagementListPage />} />
           <Route path="service" element={<ServiceConfiguration />} />
+          <Route path="complaint" element={<ComplaintManagementListPage />} />
+          <Route path="review" element={<ReviewManagementListPage />} />
+          <Route path="wallet" element={<WalletManagementListPage />} />
 
           <Route path="service-order">
             <Route index element={<WWServiceOrderListPage />} />

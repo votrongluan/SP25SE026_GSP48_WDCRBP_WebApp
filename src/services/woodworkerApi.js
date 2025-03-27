@@ -1,14 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_URL } from "../config";
+import Cookies from "js-cookie";
 
 export const woodworkerApi = createApi({
   reducerPath: "woodworkerApi",
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth.token;
-      if (token) {
-        headers.set("authorization", `Bearer ${token}`);
+    prepareHeaders: (headers) => {
+      const cookieAuth = Cookies.get("auth");
+      const auth = cookieAuth ? JSON.parse(cookieAuth) : null;
+
+      if (auth && auth?.token) {
+        headers.set("authorization", `Bearer ${auth?.token}`);
       }
       return headers;
     },

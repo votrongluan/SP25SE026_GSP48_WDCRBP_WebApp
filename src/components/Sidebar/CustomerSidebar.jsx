@@ -43,7 +43,7 @@ export default function CustomerSidebar({ isCollapsed, setIsCollapsed }) {
     <Box position="relative">
       <IconButton
         position="absolute"
-        top="50%"
+        top="0"
         right="-35px"
         size="sm"
         variant="ghost"

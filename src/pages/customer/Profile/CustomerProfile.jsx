@@ -87,11 +87,11 @@ export default function CustomerProfile() {
 
         <Button
           type="submit"
-          bg={appColorTheme.brown_0}
-          color="black"
+          bg={appColorTheme.brown_2}
+          color="white"
           size="lg"
           w="full"
-          _hover={{ bg: appColorTheme.brown_1, color: "white" }}
+          _hover={{ bg: appColorTheme.brown_1 }}
         >
           Lưu thông tin
         </Button>
