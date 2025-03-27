@@ -1,6 +1,6 @@
 import { Box, Grid, Image, Stack, Text } from "@chakra-ui/react";
-import Pagination from "../../../../components/Utility/Pagination";
-import PackageFrame from "../../../../components/Utility/PackageFrame";
+import Pagination from "../../../../components/Utility/Pagination.jsx";
+import PackageFrame from "../../../../components/Utility/PackageFrame.jsx";
 import { Link } from "react-router-dom";
 
 export default function WoodworkerList() {

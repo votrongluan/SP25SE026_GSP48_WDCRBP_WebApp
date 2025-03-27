@@ -1,6 +1,6 @@
 import { Box, Grid, Image, Stack, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import Pagination from "../../../../../../components/Utility/Pagination";
+import Pagination from "../../../../../../components/Utility/Pagination.jsx";
 export default function DesignList() {
   const products = [
     {

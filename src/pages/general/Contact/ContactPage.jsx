@@ -11,8 +11,8 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { appColorTheme } from "../../../config/appconfig";
-import { useNotify } from "../../../components/Utility/Notify";
+import { appColorTheme } from "../../../config/appconfig.js";
+import { useNotify } from "../../../components/Utility/Notify.jsx";
 
 function ContactPage() {
   const notify = useNotify();

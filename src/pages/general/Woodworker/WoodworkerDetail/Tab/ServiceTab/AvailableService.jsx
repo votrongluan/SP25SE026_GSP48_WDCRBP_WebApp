@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Text, Button, Stack, Icon } from "@chakra-ui/react";
 import { FiArrowRight } from "react-icons/fi";
-import { appColorTheme } from "../../../../../../config/appconfig";
+import { appColorTheme } from "../../../../../../config/appconfig.js";
 
 export default function AvailableService() {
   const services = [

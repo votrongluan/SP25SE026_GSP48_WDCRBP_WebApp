@@ -7,8 +7,8 @@ import {
   HStack,
   Spacer,
 } from "@chakra-ui/react";
-import ImageListSelector from "../../../../../../components/Utility/ImageListSelector";
-import RelativeTime from "../../../../../../components/Utility/RelativeTime";
+import ImageListSelector from "../../../../../../components/Utility/ImageListSelector.jsx";
+import RelativeTime from "../../../../../../components/Utility/RelativeTime.jsx";
 
 const posts = [
   {

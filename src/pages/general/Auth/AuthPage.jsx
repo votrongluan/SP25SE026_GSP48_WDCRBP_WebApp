@@ -5,7 +5,7 @@ import Login from "../../../components/Auth/Login.jsx";
 import Register from "../../../components/Auth/Register.jsx";
 import ForgetPassword from "../../../components/Auth/ForgetPassword.jsx";
 import { useState } from "react";
-import VerifyPage from "../Old/VerifyPage.jsx";
+import VerifyPage from "../Verify/VerifyPage.jsx";
 import { appColorTheme } from "../../../config/appconfig.js";
 
 function AuthPage() {

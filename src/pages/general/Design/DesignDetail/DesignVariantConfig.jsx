@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Box, Text, VStack, Flex, Stack } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../config/appconfig";
-import { formatPrice } from "../../../../utils/utils";
+import { appColorTheme } from "../../../../config/appconfig.js";
+import { formatPrice } from "../../../../utils/utils.js";
 
 export default function DesignVariantConfig() {
   // Sản phẩm, cấu hình, giá

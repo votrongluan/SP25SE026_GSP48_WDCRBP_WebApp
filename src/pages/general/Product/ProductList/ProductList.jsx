@@ -1,8 +1,8 @@
 import { Box, Flex, Grid, Image, Stack, Text } from "@chakra-ui/react";
-import Pagination from "../../../../components/Utility/Pagination";
+import Pagination from "../../../../components/Utility/Pagination.jsx";
 import { Link } from "react-router-dom";
-import { appColorTheme } from "../../../../config/appconfig";
-import { formatPrice } from "../../../../utils/utils";
+import { appColorTheme } from "../../../../config/appconfig.js";
+import { formatPrice } from "../../../../utils/utils.js";
 
 export default function ProductList() {
   const products = [

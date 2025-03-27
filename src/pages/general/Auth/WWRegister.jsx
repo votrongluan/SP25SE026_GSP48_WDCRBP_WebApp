@@ -10,11 +10,11 @@ import {
   Textarea,
   Select,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../config/appconfig";
-import { useNotify } from "../../../components/Utility/Notify";
-import ImageUpload from "../../../components/Utility/ImageUpload";
+import { appColorTheme } from "../../../config/appconfig.js";
+import { useNotify } from "../../../components/Utility/Notify.jsx";
+import ImageUpload from "../../../components/Utility/ImageUpload.jsx";
 import { useState } from "react";
-import { useRegisterWoodworkerMutation } from "../../../services/woodworkerApi";
+import { useRegisterWoodworkerMutation } from "../../../services/woodworkerApi.js";
 import { useNavigate } from "react-router-dom";
 
 export default function WWRegister() {
