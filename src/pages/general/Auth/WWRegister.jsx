@@ -9,29 +9,48 @@ import {
   SimpleGrid,
   Textarea,
   Select,
-  Divider,
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../config/appconfig";
 import { useNotify } from "../../../components/Utility/Notify";
 import ImageUpload from "../../../components/Utility/ImageUpload";
 import { useState } from "react";
+import { useRegisterWoodworkerMutation } from "../../../services/woodworkerApi";
+import { useNavigate } from "react-router-dom";
 
 export default function WWRegister() {
-  const notify = useNotify();
-  const [imgUrls, setImgUrls] = useState("");
+  const { notify } = useNotify();
+  const [imgUrl, setImgUrl] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const [registerWoodworker, { isLoading }] = useRegisterWoodworkerMutation();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    console.log(data); // For testing, remove in production
 
-    notify(
-      "Đăng ký thành công",
-      "Chúng tôi đã nhận được thông tin của bạn, bạn sẽ nhận được phản hồi trong thời gian sớm nhất",
-      "success"
-    );
-    e.target.reset();
+    try {
+      const registerData = {
+        ...data,
+        imgUrl,
+      };
+
+      await registerWoodworker(registerData).unwrap();
+
+      notify(
+        "Đăng ký thành công",
+        "Chúng tôi đã nhận được thông tin của bạn, bạn sẽ nhận được phản hồi trong thời gian sớm nhất",
+        "success"
+      );
+
+      navigate("/"); // Hoặc chuyển đến trang phù hợp sau khi đăng ký
+    } catch (error) {
+      notify(
+        "Đăng ký thất bại",
+        error.data?.message || "Vui lòng thử lại sau",
+        "error"
+      );
+    }
   };
 
   return (
@@ -102,11 +121,11 @@ export default function WWRegister() {
             <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={10}>
               <GridItem colSpan={{ base: 2, xl: "none" }}>
                 <FormControl isRequired>
-                  <FormLabel>Tên xưởng</FormLabel>
+                  <FormLabel>Tên thương hiệu</FormLabel>
                   <Input
                     variant="flushed"
-                    placeholder="Nhập tên xưởng"
-                    name="workshopName"
+                    placeholder="Nhập tên thương hiệu"
+                    name="brandName"
                   />
                 </FormControl>
               </GridItem>
@@ -118,8 +137,8 @@ export default function WWRegister() {
                     placeholder="Chọn loại hình"
                     name="businessType"
                   >
-                    <option value="personal">Cá nhân</option>
-                    <option value="family">Hộ gia đình</option>
+                    <option value="Cá nhân">Cá nhân</option>
+                    <option value="Hộ gia đình">Hộ gia đình</option>
                   </Select>
                 </FormControl>
               </GridItem>
@@ -149,7 +168,7 @@ export default function WWRegister() {
                   <Textarea
                     variant="flushed"
                     placeholder="Giới thiệu về xưởng mộc của bạn"
-                    name="description"
+                    name="bio"
                     rows={4}
                   />
                 </FormControl>
@@ -159,8 +178,7 @@ export default function WWRegister() {
                   <FormLabel>Ảnh đại diện cho xưởng</FormLabel>
                   <ImageUpload
                     onUploadComplete={(results) => {
-                      console.log(results);
-                      setImgUrls(results);
+                      setImgUrl(results);
                     }}
                     maxFiles={1}
                   />
@@ -179,6 +197,7 @@ export default function WWRegister() {
             mt="40px"
             zIndex="1"
             type="submit"
+            isLoading={isLoading}
           >
             Đăng ký
           </Button>
