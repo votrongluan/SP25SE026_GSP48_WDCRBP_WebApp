@@ -1,7 +1,4 @@
-import { Button, HStack, Spacer } from "@chakra-ui/react";
-import { FiCalendar, FiCheck, FiXCircle } from "react-icons/fi";
-import { appColorTheme } from "../../../../config/appconfig";
-import FeedbackModal from "./FeedbackModal";
+import { HStack, Spacer } from "@chakra-ui/react";
 import AppointmentUpdateModal from "./TaskModal/AppointmentUpdateModal";
 import ContractUpdateModal from "./TaskModal/ContractUpdateModal";
 
