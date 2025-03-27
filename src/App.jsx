@@ -6,13 +6,13 @@ import {
 } from "react-router-dom";
 import RootLayout from "./layouts/RootLayout.jsx";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-import NotFoundPage from "./pages/general/Unauth/NotFoundPage.jsx";
-import ErrorPage from "./pages/general/Unauth/ErrorPage.jsx";
+import NotFoundPage from "./pages/general/StatusPage/NotFoundPage.jsx";
+import ErrorPage from "./pages/general/StatusPage/ErrorPage.jsx";
 import { GlobalProvider } from "./context/GlobalContext.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
 import AuthPage from "./pages/general/Auth/AuthPage.jsx";
 import { AuthProvider } from "./context/AuthProvider.jsx";
-import UnauthorizedPage from "./pages/general/Unauth/UnauthorizedPage.jsx";
+import UnauthorizedPage from "./pages/general/StatusPage/UnauthorizedPage.jsx";
 import { useEffect } from "react";
 import ContactPage from "./pages/general/Contact/ContactPage.jsx";
 import CartPage from "./pages/customer/Cart/CartPage.jsx";
@@ -49,6 +49,8 @@ import DesignManagementListPage from "./pages/woodworker/DesignManagement/Design
 import ProductManagementListPage from "./pages/woodworker/ProductManagement/ProductList/ProductManagementListPage.jsx";
 import PostManagementListPage from "./pages/woodworker/PostManagement/PostList/PostManagementListPage.jsx";
 import ServiceConfiguration from "./pages/woodworker/ServiceConfiguration/ServiceConfiguration.jsx";
+import SuccessPage from "./pages/general/StatusPage/SuccessPage.jsx";
+import WWRegistrationManagementListPage from "./pages/admin/WWRegistrationManagement/WWRegistrationManagementListPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -89,7 +91,14 @@ function App() {
     createRoutesFromElements(
       <Route>
         {/* Admin page route */}
-        <Route path="ad" element={<AdminLayout />}></Route>
+        <Route path="ad" element={<AdminLayout />}>
+          <Route index element={<NotFoundPage />} />
+          <Route path="dashboard" element={<NotFoundPage />} />
+          <Route
+            path="ww-registration"
+            element={<WWRegistrationManagementListPage />}
+          />
+        </Route>
 
         {/* Woodworker page route */}
         <Route path="ww" element={<WoodworkerLayout />}>
@@ -136,6 +145,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="ww-register" element={<WWRegister />} />
           <Route path="pricing" element={<Pricing />} />
+          <Route path="success" element={<SuccessPage />} />
 
           <Route path="test" element={<TestPage />} />
 

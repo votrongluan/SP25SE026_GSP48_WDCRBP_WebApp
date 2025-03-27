@@ -19,7 +19,7 @@ export default function RootLayout() {
   return (
     <Box fontFamily="Nunito Sans">
       <Header />
-      <Box minH="50vh" pb={10} pt={10} bgColor="app_grey.1" color="black">
+      <Box minH="70vh" pb={10} pt={10} bgColor="app_grey.1" color="black">
         <Container w="90%" maxW="1400px">
           <Outlet />
         </Container>

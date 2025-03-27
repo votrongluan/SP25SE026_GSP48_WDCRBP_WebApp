@@ -18,7 +18,7 @@ import { useRegisterWoodworkerMutation } from "../../../services/woodworkerApi.j
 import { useNavigate } from "react-router-dom";
 
 export default function WWRegister() {
-  const { notify } = useNotify();
+  const notify = useNotify();
   const [imgUrl, setImgUrl] = useState("");
   const navigate = useNavigate();
 
@@ -37,17 +37,13 @@ export default function WWRegister() {
 
       await registerWoodworker(registerData).unwrap();
 
-      notify(
-        "Đăng ký thành công",
-        "Chúng tôi đã nhận được thông tin của bạn, bạn sẽ nhận được phản hồi trong thời gian sớm nhất",
-        "success"
+      navigate(
+        "/success?title=Đăng ký thành công&desc=Chúng tôi đã nhận được thông tin của bạn, bạn sẽ nhận được phản hồi trong thời gian sớm nhất"
       );
-
-      navigate("/"); // Hoặc chuyển đến trang phù hợp sau khi đăng ký
     } catch (error) {
       notify(
         "Đăng ký thất bại",
-        error.data?.message || "Vui lòng thử lại sau",
+        error.data?.data || "Vui lòng thử lại sau",
         "error"
       );
     }

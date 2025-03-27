@@ -6,8 +6,6 @@ import {
   ListItem,
   IconButton,
   Text,
-  useBreakpointValue,
-  Heading,
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 import {
