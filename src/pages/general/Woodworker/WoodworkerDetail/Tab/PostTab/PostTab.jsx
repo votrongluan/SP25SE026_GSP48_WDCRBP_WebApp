@@ -32,7 +32,7 @@ const posts = [
 
 export default function PostTab() {
   return (
-    <Stack mt={5} spacing={5}>
+    <Stack mt={6} spacing={6}>
       {posts.map((post) => (
         <Flex justifyContent="center" key={post.post_id}>
           <Box

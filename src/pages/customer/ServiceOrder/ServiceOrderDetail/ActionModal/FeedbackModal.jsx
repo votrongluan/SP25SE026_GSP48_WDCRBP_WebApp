@@ -20,8 +20,8 @@ import {
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiMessageCircle, FiRefreshCw, FiXCircle } from "react-icons/fi";
-import AutoResizeTextarea from "../../../../components/Input/AutoResizeTextarea";
-import { appColorTheme } from "../../../../config/appconfig";
+import AutoResizeTextarea from "../../../../../components/Input/AutoResizeTextarea.jsx";
+import { appColorTheme } from "../../../../../config/appconfig.js";
 
 export default function FeedbackModal({ order, refetch }) {
   const toast = useToast();

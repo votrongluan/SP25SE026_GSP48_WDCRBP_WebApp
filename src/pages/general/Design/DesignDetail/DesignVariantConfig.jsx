@@ -51,11 +51,11 @@ export default function DesignVariantConfig() {
     <>
       <Stack spacing={4}>
         {woodworkProduct.configurations.map((config, configIndex) => (
-          <Flex gap={4} justifyContent="space-between" key={config.id}>
+          <Flex gap={5} justifyContent="space-between" key={config.id}>
             <Text width="200px" fontWeight="bold">
               {config.name}
             </Text>
-            <Flex flex="1" flexWrap="wrap" gap={4}>
+            <Flex flex="1" flexWrap="wrap" gap={5}>
               {config.values.map((value) => (
                 <Box key={value.id}>
                   <Box
@@ -89,7 +89,7 @@ export default function DesignVariantConfig() {
         ))}
       </Stack>
 
-      <Box mt={4} p={4} bgColor={appColorTheme.grey_0}>
+      <Box mt={4} p={5} bgColor={appColorTheme.grey_0}>
         <Text fontSize="30px" color={appColorTheme.brown_2} fontWeight="bold">
           {selectedPrice ? `${formatPrice(selectedPrice)}` : "Không có giá"}
         </Text>

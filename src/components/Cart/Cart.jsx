@@ -53,7 +53,7 @@ export default function Cart() {
           bgColor="app_grey.1"
           color="black"
         >
-          <DrawerCloseButton p={4} bgColor="white" color="black" />
+          <DrawerCloseButton p={5} bgColor="white" color="black" />
           <DrawerHeader fontFamily="Montserrat" color="white" bgColor="black">
             Giỏ hàng
           </DrawerHeader>

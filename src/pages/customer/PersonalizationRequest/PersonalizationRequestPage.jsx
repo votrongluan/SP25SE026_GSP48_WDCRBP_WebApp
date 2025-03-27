@@ -244,7 +244,7 @@ export default function PersonalizationRequestPage() {
                 </FormControl>
               </Box>
 
-              <Box bgColor="white" p={5} borderRadius="10px" mt={5}>
+              <Box bgColor="white" p={5} borderRadius="10px" mt={6}>
                 <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
                   Thông tin xưởng mộc
                 </Heading>
@@ -272,7 +272,7 @@ export default function PersonalizationRequestPage() {
                 </Stack>
               </Box>
 
-              <Box bgColor="white" mt={5} p={5} borderRadius="10px">
+              <Box bgColor="white" mt={6} p={5} borderRadius="10px">
                 <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
                   Danh sách sản phẩm đã thêm
                 </Heading>

@@ -13,7 +13,6 @@ import { FiUpload, FiX } from "react-icons/fi";
 import { useImageUpload } from "../../hooks/useImageUpload";
 import { appColorTheme } from "../../config/appconfig";
 import { useNotify } from "./Notify";
-import ImageListSelector from "./ImageListSelector";
 
 export default function ImageUpdateUploader({
   onUploadComplete,
@@ -153,7 +152,7 @@ export default function ImageUpdateUploader({
 
       {previews.length > 0 && (
         <>
-          <Flex wrap="wrap" gap={4} width="100%">
+          <Flex wrap="wrap" gap={5} width="100%">
             {previews.map((preview, index) => (
               <Box key={index} position="relative">
                 <Image
@@ -183,22 +182,23 @@ export default function ImageUpdateUploader({
               </Box>
             ))}
           </Flex>
-
-          {!isUploadComplete && (
-            <HStack spacing={4}>
-              <Button onClick={handleCancel}>Hủy</Button>
-              <Button
-                bgColor={appColorTheme.green_0}
-                color="white"
-                onClick={handleUpload}
-                isLoading={isUploading}
-                leftIcon={<FiUpload />}
-              >
-                Cập nhật ảnh
-              </Button>
-            </HStack>
-          )}
         </>
+      )}
+
+      {!isUploadComplete && (
+        <HStack spacing={4}>
+          <Button onClick={handleCancel}>Hủy</Button>
+          <Button
+            bgColor={appColorTheme.green_0}
+            color="white"
+            onClick={handleUpload}
+            isLoading={isUploading}
+            leftIcon={<FiUpload />}
+            isDisabled={previews.length == 0}
+          >
+            Cập nhật ảnh
+          </Button>
+        </HStack>
       )}
     </VStack>
   );

@@ -71,7 +71,7 @@ export default function PostManagementListPage() {
           fontSize="2xl"
           fontFamily="Montserrat"
         >
-          Quản lý bài viết
+          Quản lý Bài viết
         </Heading>
         <PostCreateModal />
       </Flex>

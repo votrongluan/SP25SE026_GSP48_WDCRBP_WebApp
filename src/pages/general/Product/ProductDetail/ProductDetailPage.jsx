@@ -127,7 +127,7 @@ export default function ProductDetailPage() {
             <Spacer />
 
             <Box>
-              <Box my={4} p={4} bgColor={appColorTheme.grey_0}>
+              <Box my={4} p={5} bgColor={appColorTheme.grey_0}>
                 <Text
                   fontSize="30px"
                   color={appColorTheme.brown_2}
@@ -137,7 +137,7 @@ export default function ProductDetailPage() {
                 </Text>
               </Box>
               {/* Nút "Mua ngay" và "Thêm vào giỏ" */}
-              <Flex gap={4} alignItems="center">
+              <Flex gap={5} alignItems="center">
                 {/* Mua ngay */}
                 <Button
                   bg={appColorTheme.brown_2}
@@ -169,7 +169,7 @@ export default function ProductDetailPage() {
           </Stack>
         </Grid>
 
-        <Box mt={5}>
+        <Box mt={6}>
           <PackageFrame packageType="Gold">
             <Flex
               flexDirection={{

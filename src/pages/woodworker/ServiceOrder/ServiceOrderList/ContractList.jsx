@@ -31,7 +31,7 @@ const ActionButton = () => {
 const StatusBox = ({ label, isSelected, onClick, count }) => {
   return (
     <Box
-      p={4}
+      p={5}
       borderWidth="1px"
       borderRadius="md"
       cursor="pointer"
@@ -129,7 +129,7 @@ export default function ContractList() {
 
   return (
     <Box>
-      <Flex gap={4} mb={6}>
+      <Flex gap={5} mb={6}>
         <StatusBox
           label="Tất cả"
           isSelected={statusFilter === "all"}

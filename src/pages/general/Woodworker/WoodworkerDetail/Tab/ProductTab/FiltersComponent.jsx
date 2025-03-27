@@ -117,7 +117,7 @@ export default function FiltersComponent() {
       </Accordion>
 
       {/* Thanh search */}
-      <Flex flexDirection="column" mt={4} gap={4}>
+      <Flex flexDirection="column" mt={4} gap={5}>
         {/* "Sắp xếp theo" select */}
         <Box>
           <Select placeholder="Sắp xếp theo" bgColor="white">

@@ -1,7 +1,7 @@
 import { Button, HStack, Spacer } from "@chakra-ui/react";
 import { FiCheck, FiXCircle } from "react-icons/fi";
-import { appColorTheme } from "../../../../config/appconfig";
-import FeedbackModal from "./FeedbackModal";
+import { appColorTheme } from "../../../../../config/appconfig.js";
+import FeedbackModal from "./FeedbackModal.jsx";
 
 export default function ActionBar() {
   return (

@@ -95,7 +95,7 @@ export default function ServiceConfiguration() {
         fontWeight="bold"
         mb={6}
       >
-        Cấu hình Dịch vụ
+        Quản lý Dịch vụ
       </Text>
 
       <VStack spacing={6} align="stretch">
@@ -105,7 +105,7 @@ export default function ServiceConfiguration() {
             borderRadius="lg"
             boxShadow="md"
             key={service}
-            p={4}
+            p={5}
             transition="all 0.2s"
           >
             <HStack justify="space-between" mb={3}>

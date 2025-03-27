@@ -92,7 +92,7 @@ export default function DesignManagementListPage() {
           fontSize="2xl"
           fontFamily="Montserrat"
         >
-          Quản lý ý tưởng thiết kế
+          Quản lý Ý tưởng thiết kế
         </Heading>
         <DesignCreateModal refetch={null} />
       </Flex>

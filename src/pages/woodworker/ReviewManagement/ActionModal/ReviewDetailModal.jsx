@@ -69,8 +69,8 @@ export default function ReviewDetailModal({ review, refetch }) {
                 <Heading size="md" mb={4}>
                   Thông tin đánh giá
                 </Heading>
-                <Box bg="white" p={4} borderRadius="lg" boxShadow="sm">
-                  <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+                <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
+                  <Grid templateColumns="repeat(2, 1fr)" gap={5}>
                     <Box>
                       <Text fontWeight="bold">Mã đánh giá:</Text>
                       <Text>{review?.reviewId}</Text>
@@ -112,7 +112,7 @@ export default function ReviewDetailModal({ review, refetch }) {
                 <Heading size="md" mb={4}>
                   Đánh giá và nội dung
                 </Heading>
-                <Box bg="white" p={4} borderRadius="lg" boxShadow="sm">
+                <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
                   <VStack spacing={4} align="stretch">
                     <HStack spacing={1}>
                       {[...Array(5)].map((_, index) => (
@@ -137,7 +137,7 @@ export default function ReviewDetailModal({ review, refetch }) {
                 <Heading size="md" mb={4}>
                   Phản hồi
                 </Heading>
-                <Box bg="white" p={4} borderRadius="lg" boxShadow="sm">
+                <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
                   <VStack spacing={4} align="stretch">
                     <Textarea
                       value={response}

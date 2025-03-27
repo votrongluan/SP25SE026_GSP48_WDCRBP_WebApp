@@ -30,12 +30,12 @@ export default function TypeFilter() {
 
   return (
     <>
-      <Flex gap={4} justifyContent="space-between">
+      <Flex gap={5} justifyContent="space-between">
         <Text width="200px" fontWeight="bold">
           Lọc theo loại dịch vụ
         </Text>
 
-        <Flex flex="1" flexWrap="wrap" gap={4}>
+        <Flex flex="1" flexWrap="wrap" gap={5}>
           {typeList.map((value) => (
             <Box key={value.label}>
               <Box

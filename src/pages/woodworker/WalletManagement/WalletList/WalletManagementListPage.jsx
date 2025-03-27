@@ -95,7 +95,7 @@ export default function WalletManagementListPage() {
           fontSize="2xl"
           fontFamily="Montserrat"
         >
-          Quản lý ví
+          Quản lý Ví
         </Heading>
       </Flex>
 

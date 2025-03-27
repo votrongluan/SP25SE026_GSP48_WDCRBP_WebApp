@@ -3,7 +3,7 @@ import { Box, Flex, Image, Text } from "@chakra-ui/react";
 export default function CartItem({ product }) {
   return (
     <>
-      <Flex columnGap={4}>
+      <Flex columnGap={5}>
         <Image
           height="80px"
           width="80px"

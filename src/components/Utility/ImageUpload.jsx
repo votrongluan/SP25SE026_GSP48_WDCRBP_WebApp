@@ -113,7 +113,7 @@ export default function ImageUpload({ onUploadComplete, maxFiles = 5 }) {
       </Box>
 
       {previews.length > 0 && (
-        <Flex wrap="wrap" gap={4} width="100%">
+        <Flex wrap="wrap" gap={5} width="100%">
           {previews.map((preview, index) => (
             <Box key={index} position="relative">
               <Image

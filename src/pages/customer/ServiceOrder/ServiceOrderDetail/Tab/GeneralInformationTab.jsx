@@ -16,11 +16,11 @@ import {
   Image,
   Flex,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../config/appconfig.js";
+import { appColorTheme } from "../../../../../config/appconfig.js";
 import {
   convertTimeStampToDateTimeString,
   formatPrice,
-} from "../../../../utils/utils.js";
+} from "../../../../../utils/utils.js";
 
 const products = [
   {
@@ -98,7 +98,7 @@ export default function GeneralInformationTab() {
           ))}
         </Accordion>
 
-        <Flex alignItems="center" my={4} p={4} bgColor={appColorTheme.grey_0}>
+        <Flex alignItems="center" my={4} p={5} bgColor={appColorTheme.grey_0}>
           <Text mr={4} fontSize="20px">
             Thành tiền:
           </Text>
@@ -109,12 +109,12 @@ export default function GeneralInformationTab() {
       </Box>
 
       <SimpleGrid
-        mt={5}
+        mt={6}
         columns={{
           base: 1,
           xl: 2,
         }}
-        spacing={5}
+        spacing={6}
       >
         <Box
           position="relative"
@@ -212,7 +212,7 @@ export default function GeneralInformationTab() {
             </Stack>
           </Box>
 
-          <Box mt={5}>
+          <Box mt={6}>
             <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
               Thông tin lịch hẹn tư vấn
             </Heading>
@@ -243,7 +243,7 @@ export default function GeneralInformationTab() {
       </SimpleGrid>
 
       <Box
-        mt={5}
+        mt={6}
         p={5}
         bgColor="white"
         boxShadow="md"

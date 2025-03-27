@@ -61,7 +61,7 @@ export default function GeneralInformationTab() {
           base: 1,
           xl: 2,
         }}
-        spacing={5}
+        spacing={6}
       >
         <Box
           position="relative"
@@ -117,7 +117,7 @@ export default function GeneralInformationTab() {
                     base: 1,
                     xl: 2,
                   }}
-                  columnGap={4}
+                  columnGap={5}
                 >
                   <Box>
                     <ImageListSelector
@@ -138,7 +138,7 @@ export default function GeneralInformationTab() {
               <Flex
                 alignItems="center"
                 my={4}
-                p={4}
+                p={5}
                 bgColor={appColorTheme.grey_0}
               >
                 <Text mr={4} fontSize="20px">
@@ -188,7 +188,7 @@ export default function GeneralInformationTab() {
             </Stack>
           </Box>
 
-          <Box mt={5}>
+          <Box mt={6}>
             <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
               Thông tin lịch hẹn tư vấn
             </Heading>
@@ -287,7 +287,7 @@ export default function GeneralInformationTab() {
       </Box>
 
       <Box
-        mt={5}
+        mt={6}
         p={5}
         bgColor="white"
         boxShadow="md"

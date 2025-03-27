@@ -97,7 +97,7 @@ export default function AppointmentUpdateModal({ order, refetch }) {
                 </Heading>
 
                 <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-                  <Grid templateColumns="100px 1fr" gap={4}>
+                  <Grid templateColumns="100px 1fr" gap={5}>
                     <GridItem>
                       <Text fontWeight="bold" mb={2}>
                         Hình thức:

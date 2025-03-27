@@ -57,8 +57,8 @@ export default function TransactionDetailModal({ transaction }) {
                 <Heading size="md" mb={4}>
                   Thông tin giao dịch
                 </Heading>
-                <Box bg="white" p={4} borderRadius="lg" boxShadow="sm">
-                  <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+                <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
+                  <Grid templateColumns="repeat(2, 1fr)" gap={5}>
                     <Box>
                       <Text fontWeight="bold">Mã giao dịch:</Text>
                       <Text>{transaction?.transactionId}</Text>
@@ -126,7 +126,7 @@ export default function TransactionDetailModal({ transaction }) {
                 <Heading size="md" mb={4}>
                   Mô tả
                 </Heading>
-                <Box bg="white" p={4} borderRadius="lg" boxShadow="sm">
+                <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
                   <Text>{transaction?.description}</Text>
                 </Box>
               </Box>

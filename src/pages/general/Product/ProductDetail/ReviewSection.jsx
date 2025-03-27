@@ -54,7 +54,7 @@ export default function ReviewSection() {
   };
 
   return (
-    <Box mt={5} p={5} bgColor="white" boxShadow="md" borderRadius="10px">
+    <Box mt={6} p={5} bgColor="white" boxShadow="md" borderRadius="10px">
       <Heading fontSize="20px" mb={4}>
         Đánh giá sản phẩm
       </Heading>

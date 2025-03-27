@@ -24,7 +24,7 @@ export default function AvailableService() {
 
   return (
     <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-      <Stack spacing={5}>
+      <Stack spacing={6}>
         {services.map((service, index) => (
           <Box key={index}>
             <Text as="h3" fontSize="20px" mb={4}>

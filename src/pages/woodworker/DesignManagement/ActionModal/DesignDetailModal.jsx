@@ -80,7 +80,7 @@ export default function DesignDetailModal({ design, refetch }) {
                   <Heading size="md" mb={4}>
                     Thông tin cơ bản
                   </Heading>
-                  <Box bg="white" p={4} borderRadius="lg" boxShadow="sm">
+                  <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
                     <VStack align="stretch" spacing={4}>
                       <Box>
                         <Text fontWeight="bold">Tên sản phẩm:</Text>
@@ -104,7 +104,7 @@ export default function DesignDetailModal({ design, refetch }) {
                 <Heading size="md" mb={4}>
                   Cấu hình sản phẩm
                 </Heading>
-                <Box bg="white" p={4} borderRadius="lg" boxShadow="sm">
+                <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
                   <VStack align="stretch" spacing={4}>
                     {design?.configurations.map((config) => (
                       <Box key={config.id}>
@@ -140,7 +140,7 @@ export default function DesignDetailModal({ design, refetch }) {
                 </Heading>
                 <Box
                   bg="white"
-                  p={4}
+                  p={5}
                   borderRadius="lg"
                   boxShadow="sm"
                   overflowX="auto"

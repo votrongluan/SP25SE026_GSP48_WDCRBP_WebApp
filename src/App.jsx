@@ -21,7 +21,7 @@ import AdminLayout from "./layouts/AdminLayout.jsx";
 import WoodworkerLayout from "./layouts/WoodworkerLayout.jsx";
 import CustomerLayout from "./layouts/CustomerLayout.jsx";
 import ScrollToTopAndBottom from "./components/Utility/ScrollToTopAndBottom.jsx";
-import CusServiceOrderDetailPage from "./pages/customer/ServiceOrder/ServiceOrderDetail/CusServiceOrderDetailPage.jsx";
+import CusServiceOrderDetailPage from "./pages/customer/ServiceOrder/ServiceOrderDetail/DetailPage/CusServiceOrderDetailPage.jsx";
 import { appColorTheme } from "./config/appconfig.js";
 import ProductDetailPage from "./pages/general/Product/ProductDetail/ProductDetailPage.jsx";
 import WoodworkersPage from "./pages/general/Woodworker/WoodworkerList/WoodworkersPage.jsx";
@@ -38,7 +38,7 @@ import CusServiceOrderListPage from "./pages/customer/ServiceOrder/ServiceOrderL
 import CusGuaranteeOrderListPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderList/CusGuaranteeOrderListPage.jsx";
 import CusGuaranteeOrderDetailPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderDetail/CusGuaranteeOrderDetailPage.jsx";
 import WWServiceOrderListPage from "./pages/woodworker/ServiceOrder/ServiceOrderList/WWServiceOrderListPage.jsx";
-import WWServiceOrderDetailPage from "./pages/woodworker/ServiceOrder/ServiceOrderDetail/WWServiceOrderDetailPage.jsx";
+import WWServiceOrderDetailPage from "./pages/woodworker/ServiceOrder/ServiceOrderDetail/DetailPage/WWServiceOrderDetailPage.jsx";
 import WWGuaranteeOrderListPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderList/WWGuaranteeOrderListPage.jsx";
 import WWGuaranteeOrderDetailPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderDetail/WWGuaranteeOrderDetailPage.jsx";
 import WWRegister from "./pages/general/Auth/WWRegister.jsx";
@@ -53,6 +53,8 @@ import WWRegistrationManagementListPage from "./pages/admin/WWRegistrationManage
 import ComplaintManagementListPage from "./pages/woodworker/ComplaintManagement/ComplaintList/ComplaintManagementListPage.jsx";
 import ReviewManagementListPage from "./pages/woodworker/ReviewManagement/ReviewList/ReviewManagementListPage.jsx";
 import WalletManagementListPage from "./pages/woodworker/WalletManagement/WalletList/WalletManagementListPage.jsx";
+import Logout from "./pages/general/Auth/Logout.jsx";
+import ProfileManagementPage from "./pages/woodworker/ProfileManagement/ProfilePage/ProfileManagementPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -114,6 +116,7 @@ function App() {
           <Route path="complaint" element={<ComplaintManagementListPage />} />
           <Route path="review" element={<ReviewManagementListPage />} />
           <Route path="wallet" element={<WalletManagementListPage />} />
+          <Route path="profile" element={<ProfileManagementPage />} />
 
           <Route path="service-order">
             <Route index element={<WWServiceOrderListPage />} />
@@ -151,6 +154,7 @@ function App() {
           <Route path="ww-register" element={<WWRegister />} />
           <Route path="pricing" element={<Pricing />} />
           <Route path="success" element={<SuccessPage />} />
+          <Route path="logout" element={<Logout />} />
 
           <Route path="test" element={<TestPage />} />
 
@@ -190,12 +194,14 @@ function App() {
   return (
     <Provider store={store}>
       <GlobalProvider>
-        <CartProvider>
-          <ChakraProvider theme={theme}>
-            <ScrollToTopAndBottom />
-            <RouterProvider router={router} />
-          </ChakraProvider>
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <ChakraProvider theme={theme}>
+              <ScrollToTopAndBottom />
+              <RouterProvider router={router} />
+            </ChakraProvider>
+          </CartProvider>
+        </AuthProvider>
       </GlobalProvider>
     </Provider>
   );

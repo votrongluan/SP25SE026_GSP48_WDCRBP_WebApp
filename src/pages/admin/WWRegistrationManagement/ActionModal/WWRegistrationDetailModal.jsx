@@ -88,7 +88,7 @@ export default function WWRegistrationDetailModal({ registration, refetch }) {
                   <Heading size="md" mb={4}>
                     Thông tin cơ bản
                   </Heading>
-                  <Box bg="white" p={4} borderRadius="lg" boxShadow="sm">
+                  <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
                     <VStack align="stretch" spacing={4}>
                       <Box>
                         <Text fontWeight="bold">Mã đăng ký:</Text>
@@ -116,8 +116,8 @@ export default function WWRegistrationDetailModal({ registration, refetch }) {
                 <Heading size="md" mb={4}>
                   Thông tin xưởng mộc
                 </Heading>
-                <Box bg="white" p={4} borderRadius="lg" boxShadow="sm">
-                  <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+                <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
+                  <Grid templateColumns="repeat(2, 1fr)" gap={5}>
                     <Box>
                       <Text fontWeight="bold">Tên thương hiệu:</Text>
                       <Text>{registration?.brandName}</Text>

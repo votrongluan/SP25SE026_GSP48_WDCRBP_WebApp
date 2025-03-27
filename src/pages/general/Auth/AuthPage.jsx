@@ -48,7 +48,7 @@ function AuthPage() {
           textDecor={"underline"}
           cursor={"pointer"}
           margin="0 auto"
-          mt={5}
+          mt={6}
           width={{
             base: "calc(100% - 40px)",
             xl: "50%",

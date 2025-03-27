@@ -110,7 +110,7 @@ export default function ImageListSelector({ imgUrls, imgH = 500 }) {
       </Box>
 
       {/* Thumbnail List */}
-      <Flex gap={4} overflowX="auto">
+      <Flex gap={5} overflowX="auto">
         {imageList.map((img, index) => (
           <Image
             key={index}

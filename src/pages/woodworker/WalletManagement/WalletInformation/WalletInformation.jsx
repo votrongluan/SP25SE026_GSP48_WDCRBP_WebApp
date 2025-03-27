@@ -48,7 +48,7 @@ export default function WalletInformation() {
           <Heading size="md" mb={4}>
             Thông tin ngân hàng
           </Heading>
-          <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+          <Grid templateColumns="repeat(2, 1fr)" gap={5}>
             <Box>
               <Text fontWeight="bold">Ngân hàng:</Text>
               <Text>Vietcombank</Text>

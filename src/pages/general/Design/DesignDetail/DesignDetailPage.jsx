@@ -79,7 +79,7 @@ export default function DesignDetailPage() {
               <Box>
                 <DesignVariantConfig />
               </Box>
-              <Flex mt={4} gap={4} alignItems="center">
+              <Flex mt={4} gap={5} alignItems="center">
                 {/* Mua ngay */}
                 <Button
                   bg={appColorTheme.brown_2}
@@ -111,7 +111,7 @@ export default function DesignDetailPage() {
           </Stack>
         </Grid>
 
-        <Box mt={5}>
+        <Box mt={6}>
           <PackageFrame packageType="Silver">
             <Flex
               flexDirection={{

@@ -82,7 +82,7 @@ export default function ProductEditSection() {
 
             <AccordionPanel pb={4}>
               <Stack spacing={4}>
-                <SimpleGrid templateColumns="150px 1fr" gap={4}>
+                <SimpleGrid templateColumns="150px 1fr" gap={5}>
                   <Box>
                     <Text fontWeight="bold">Kích thước:</Text>
                   </Box>

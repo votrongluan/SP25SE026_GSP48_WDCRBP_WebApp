@@ -1,6 +1,6 @@
 import { HStack, Spacer } from "@chakra-ui/react";
-import AppointmentUpdateModal from "./TaskModal/AppointmentUpdateModal";
-import ContractUpdateModal from "./TaskModal/ContractUpdateModal";
+import AppointmentUpdateModal from "./AppointmentUpdateModal.jsx";
+import ContractUpdateModal from "./ContractUpdateModal.jsx";
 
 export default function ActionBar() {
   return (

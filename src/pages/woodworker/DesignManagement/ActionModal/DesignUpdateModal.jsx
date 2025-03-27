@@ -282,7 +282,7 @@ export default function DesignUpdateModal({ design, refetch }) {
                     {configurations.map((config) => (
                       <Box
                         key={config.id}
-                        p={4}
+                        p={5}
                         borderWidth="1px"
                         borderRadius="lg"
                         bg="white"
@@ -365,7 +365,7 @@ export default function DesignUpdateModal({ design, refetch }) {
                       {prices.map((price, index) => (
                         <Box
                           key={index}
-                          p={4}
+                          p={5}
                           borderWidth="1px"
                           borderRadius="lg"
                           bg="white"

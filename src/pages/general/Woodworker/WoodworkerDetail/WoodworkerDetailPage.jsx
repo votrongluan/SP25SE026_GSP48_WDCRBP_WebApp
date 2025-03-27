@@ -95,7 +95,7 @@ export default function WoodworkerDetailPage() {
         </Box>
       </PackageFrame>
 
-      <Box mt={5} color="black">
+      <Box mt={6} color="black">
         <Tabs variant="unstyled">
           <TabList
             overflowX="auto"

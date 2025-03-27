@@ -106,7 +106,7 @@ export default function AccountPage() {
         bgColor="black"
         color="white"
         borderRadius="md"
-        p={4}
+        p={5}
         maxWidth="1000px"
         mx="auto"
       >
@@ -137,7 +137,7 @@ export default function AccountPage() {
                     key={order.orderId}
                     borderWidth="1px"
                     borderRadius="md"
-                    p={4}
+                    p={5}
                   >
                     <HStack justify="space-between">
                       <Text fontWeight="bold">Order #{order.orderId}</Text>
@@ -186,7 +186,7 @@ export default function AccountPage() {
                     key={order.printOrderId}
                     borderWidth="1px"
                     borderRadius="md"
-                    p={4}
+                    p={5}
                   >
                     <HStack justify="space-between">
                       <Text fontWeight="bold">Order #{order.printOrderId}</Text>

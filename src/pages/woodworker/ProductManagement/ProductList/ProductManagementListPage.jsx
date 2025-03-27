@@ -91,7 +91,7 @@ export default function ProductManagementListPage() {
           fontSize="2xl"
           fontFamily="Montserrat"
         >
-          Quản lý sản phẩm
+          Quản lý Sản phẩm
         </Heading>
         <ProductCreateModal />
       </Flex>

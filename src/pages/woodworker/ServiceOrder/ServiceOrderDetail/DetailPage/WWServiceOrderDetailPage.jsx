@@ -13,10 +13,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { FiFileText, FiActivity, FiFile } from "react-icons/fi";
-import GeneralInformationTab from "./GeneralInformationTab.jsx";
-import ContractAndTransactionTab from "./ContractAndTransactionTab.jsx";
-import ProcessTab from "./ProcessTab.jsx";
-import ActionBar from "./ActionBar.jsx";
+import GeneralInformationTab from "../Tab/GeneralInformationTab.jsx";
+import ContractAndTransactionTab from "../Tab/ContractAndTransactionTab.jsx";
+import ProcessTab from "../Tab/ProcessTab.jsx";
+import ActionBar from "../ActionModal/ActionBar.jsx";
 
 export default function WWServiceOrderDetailPage() {
   return (

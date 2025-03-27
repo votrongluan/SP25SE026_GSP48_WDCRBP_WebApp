@@ -75,7 +75,7 @@ export default function ComplaintManagementListPage() {
           fontSize="2xl"
           fontFamily="Montserrat"
         >
-          Quản lý khiếu nại
+          Quản lý Khiếu nại
         </Heading>
       </Flex>
 

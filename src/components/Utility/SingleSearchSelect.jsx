@@ -49,7 +49,7 @@ export default function SingleSearchSelect({
     <Box position="relative" ref={containerRef}>
       {selectedValue ? (
         <Box
-          p={4}
+          p={5}
           borderWidth="1px"
           borderRadius="md"
           bgColor="white"

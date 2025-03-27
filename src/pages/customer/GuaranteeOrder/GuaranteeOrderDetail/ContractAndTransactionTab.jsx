@@ -16,7 +16,7 @@ import { appColorTheme } from "../../../../config/appconfig.js";
 export default function ContractAndTransactionTab() {
   return (
     <Box>
-      <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={5}>
+      <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={6}>
         <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
           <Heading fontWeight="bold" as="h3" fontSize="20px" mb={6}>
             Thông tin hợp đồng

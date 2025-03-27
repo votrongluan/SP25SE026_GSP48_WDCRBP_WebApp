@@ -103,7 +103,7 @@ function Header() {
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay>
           <DrawerContent bgColor="app_grey.1" color="black">
-            <DrawerCloseButton p={4} bgColor="white" color="black" />
+            <DrawerCloseButton p={5} bgColor="white" color="black" />
             <DrawerHeader fontFamily="Montserrat" color="white" bgColor="black">
               Menu
             </DrawerHeader>

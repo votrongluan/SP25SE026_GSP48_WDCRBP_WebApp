@@ -144,7 +144,7 @@ export default function Pricing() {
             boxShadow="md"
             position="relative"
           >
-            <Stack spacing={5}>
+            <Stack spacing={6}>
               <Heading as="h3" fontSize="2xl">
                 {plan.name}
               </Heading>

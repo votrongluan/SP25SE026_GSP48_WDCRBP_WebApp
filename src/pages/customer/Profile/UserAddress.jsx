@@ -200,7 +200,7 @@ export default function UserAddress() {
         {addresses.map((address) => (
           <Box
             key={address.id}
-            p={4}
+            p={5}
             borderWidth="1px"
             borderRadius="lg"
             bg="white"

@@ -69,8 +69,8 @@ export default function ComplaintDetailModal({ complaint, refetch }) {
                 <Heading size="md" mb={4}>
                   Thông tin khiếu nại
                 </Heading>
-                <Box bg="white" p={4} borderRadius="lg" boxShadow="sm">
-                  <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+                <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
+                  <Grid templateColumns="repeat(2, 1fr)" gap={5}>
                     <Box>
                       <Text fontWeight="bold">Mã khiếu nại:</Text>
                       <Text>{complaint?.complaintId}</Text>
@@ -112,7 +112,7 @@ export default function ComplaintDetailModal({ complaint, refetch }) {
                 <Heading size="md" mb={4}>
                   Nội dung khiếu nại
                 </Heading>
-                <Box bg="white" p={4} borderRadius="lg" boxShadow="sm">
+                <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
                   <Text>{complaint?.description}</Text>
                 </Box>
               </Box>
@@ -122,7 +122,7 @@ export default function ComplaintDetailModal({ complaint, refetch }) {
                 <Heading size="md" mb={4}>
                   Phản hồi
                 </Heading>
-                <Box bg="white" p={4} borderRadius="lg" boxShadow="sm">
+                <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
                   <VStack spacing={4} align="stretch">
                     <Textarea
                       value={explanation}

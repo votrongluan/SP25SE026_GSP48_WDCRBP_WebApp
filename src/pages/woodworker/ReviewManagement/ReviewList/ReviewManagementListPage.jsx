@@ -94,7 +94,7 @@ export default function ReviewManagementListPage() {
           fontSize="2xl"
           fontFamily="Montserrat"
         >
-          Quản lý đánh giá
+          Quản lý Đánh giá
         </Heading>
       </Flex>
 

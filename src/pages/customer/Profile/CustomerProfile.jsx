@@ -98,7 +98,7 @@ export default function CustomerProfile() {
       </form>
 
       {/* Địa chỉ */}
-      <Stack mt={10} spacing={5}>
+      <Stack mt={10} spacing={6}>
         <UserAddress />
       </Stack>
     </Box>
