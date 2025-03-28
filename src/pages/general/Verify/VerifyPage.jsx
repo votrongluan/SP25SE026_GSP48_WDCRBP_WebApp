@@ -4,56 +4,87 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  HStack,
   Input,
-  Spacer,
-  useToast,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import { Form } from "react-router-dom";
-import axios from "../../../api/axios.js";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {
+  useVerifyOTPMutation,
+  useSendOTPMutation,
+} from "../../../services/authApi";
+import { useNotify } from "../../../components/Utility/Notify";
 
-export default function VerifyPage({ changeTab }) {
-  const toast = useToast();
-  const [isSending, setIsSending] = useState(false);
+export default function VerifyPage({ changeTab, registerEmail }) {
+  const notify = useNotify();
+  const [verifyOTP, { isLoading: isVerifying }] = useVerifyOTPMutation();
+  const [sendOTP] = useSendOTPMutation();
+  const [countdown, setCountdown] = useState(registerEmail ? 60 : 0);
+  const [sendOTPLoading, setSendOTPLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    email: registerEmail || "",
+    otp: "",
+  });
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    setIsSending(true);
+  useEffect(() => {
+    let timer;
+    if (countdown > 0) {
+      timer = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [countdown]);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleResendOTP = async () => {
     try {
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData.entries());
-
-      const res = await axios.post(
-        `/Employee/VerifyOTPCreateAccount?email=${data.email}`,
-        JSON.stringify(data),
-        {
-          headers: { "Content-Type": "application/json" },
-        }
+      setSendOTPLoading(true);
+      await sendOTP(formData.email).unwrap();
+      notify(
+        "Gửi mã OTP thành công",
+        "Vui lòng kiểm tra email của bạn",
+        "success"
       );
 
-      const user = res.data;
+      setCountdown(60);
+      setSendOTPLoading(false);
+    } catch (error) {
+      notify(
+        "Gửi mã OTP thất bại",
+        error?.data?.message || "Có lỗi xảy ra, vui lòng thử lại sau",
+        "error"
+      );
+      setSendOTPLoading(false);
+    }
+  };
 
-      if (!user) {
-        toast({
-          title: "Thao tác thất bại",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-      } else {
-        toast({
-          title: "Kích hoạt thành công, bạn có thể đăng nhập",
-          description: "Bạn có thể đăng nhập vào hệ thống bằng tài khoản này",
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
-      }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setIsSending(false);
+  const handleVerify = async (e) => {
+    e.preventDefault();
+
+    try {
+      await verifyOTP(formData).unwrap();
+      notify(
+        "Xác thực thành công",
+        "Bạn có thể đăng nhập vào hệ thống bằng tài khoản này",
+        "success"
+      );
+      changeTab("login");
+    } catch (error) {
+      notify(
+        "Xác thực thất bại",
+        error?.data?.message || "Có lỗi xảy ra, vui lòng thử lại sau",
+        "error"
+      );
     }
   };
 
@@ -68,18 +99,45 @@ export default function VerifyPage({ changeTab }) {
         pb="8px"
         borderBottom="1px solid black"
       >
-        Kích hoạt tài khoản
+        Xác nhận tài khoản
       </Box>
 
-      <Form onSubmit={handleRegister}>
+      <Form onSubmit={handleVerify}>
         <FormControl isRequired mb="20px">
           <FormLabel>Nhập email</FormLabel>
-          <Input bgColor="white" type="email" name="email" />
+          <Input
+            bgColor="white"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            disabled={!!registerEmail}
+          />
         </FormControl>
 
         <FormControl isRequired mb="20px">
-          <FormLabel>Nhập OTP</FormLabel>
-          <Input bgColor="white" type="text" name="otp" />
+          <HStack>
+            <FormLabel mr="auto">Nhập OTP</FormLabel>
+            <Button
+              h="1.75rem"
+              size="sm"
+              onClick={handleResendOTP}
+              isDisabled={countdown > 0 || sendOTPLoading}
+              color={countdown > 0 ? "gray.500" : "app_brown.2"}
+              variant="ghost"
+            >
+              {countdown > 0
+                ? `Vui lòng chờ ${countdown} giây để gửi lại OTP`
+                : "Gửi OTP"}
+            </Button>
+          </HStack>
+          <Input
+            bgColor="white"
+            type="text"
+            name="otp"
+            value={formData.otp}
+            onChange={handleChange}
+          />
         </FormControl>
 
         <Button
@@ -87,15 +145,13 @@ export default function VerifyPage({ changeTab }) {
           bgColor="app_brown.2"
           width="100%"
           type="submit"
-          isLoading={isSending}
+          isLoading={isVerifying}
         >
-          Kích hoạt
+          Xác nhận
         </Button>
       </Form>
 
-      <Flex mt="20px" justifyContent="space-between">
-        <Spacer />
-
+      <Flex mt="20px" justifyContent="flex-end">
         <Box
           onClick={() => changeTab("login")}
           cursor="pointer"

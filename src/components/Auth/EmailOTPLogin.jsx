@@ -3,122 +3,105 @@ import {
   FormControl,
   FormLabel,
   Input,
-  InputGroup,
-  useToast,
+  HStack,
 } from "@chakra-ui/react";
 import { Form } from "react-router-dom";
 import { appColorTheme } from "../../config/appconfig.js";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useAuth from "../../hooks/useAuth.js";
 import { jwtDecode } from "jwt-decode";
 import { useLocation, useNavigate } from "react-router-dom";
+import {
+  useLoginWithOTPMutation,
+  useSendOTPMutation,
+} from "../../services/authApi";
+import { useNotify } from "../Utility/Notify";
 
-export default function EmailOTPLogin({ onSuccess }) {
-  const toast = useToast();
+export default function EmailOTPLogin() {
+  const notify = useNotify();
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const [isLoading, setIsLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [emailOTP, setEmailOTP] = useState("");
+  const [loginWithOTP, { isLoading: isLoggingIn }] = useLoginWithOTPMutation();
+  const [sendOTP] = useSendOTPMutation();
+  const [countdown, setCountdown] = useState(0);
+  const [sendOTPLoading, setSendOTPLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    otp: "",
+  });
 
   const from = location.state?.from?.pathname || "/";
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+  useEffect(() => {
+    let timer;
+    if (countdown > 0) {
+      timer = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [countdown]);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleResendOTP = async () => {
     try {
-      // TODO: Implement email OTP login
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/auth/login/email-otp`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, otp: emailOTP }),
-        }
+      setSendOTPLoading(true);
+      await sendOTP(formData.email).unwrap();
+      notify(
+        "Gửi mã OTP thành công",
+        "Vui lòng kiểm tra email của bạn",
+        "success"
       );
-
-      if (!response.ok) {
-        throw new Error("Đăng nhập thất bại");
-      }
-
-      const user = await response.json();
-      user.token = user.accessTokenToken;
-
-      const decodedToken = jwtDecode(user.accessTokenToken);
-      const userWithToken = { ...user, ...decodedToken };
-
-      switch (userWithToken.role) {
-        case 1:
-          setAuth(userWithToken);
-          navigate(from);
-          break;
-        case 2:
-          setAuth(userWithToken);
-          navigate("/supplier");
-          break;
-        case 3:
-          setAuth(userWithToken);
-          navigate("/admin");
-          break;
-        default:
-          setAuth(userWithToken);
-          navigate(from);
-          break;
-      }
-
-      onSuccess?.();
-    } catch (err) {
-      toast({
-        title: "Đăng nhập thất bại",
-        description: err.message,
-        status: "error",
-        colorScheme: "red",
-        duration: 3000,
-      });
-    } finally {
-      setIsLoading(false);
+      setCountdown(60);
+      setSendOTPLoading(false);
+    } catch (error) {
+      notify(
+        "Gửi mã OTP thất bại",
+        error?.data?.message || "Có lỗi xảy ra, vui lòng thử lại sau",
+        "error"
+      );
+      setSendOTPLoading(false);
     }
   };
 
-  const handleSendOTP = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     try {
-      setIsLoading(true);
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/auth/send-email-otp`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email }),
-        }
-      );
+      const res = await loginWithOTP(formData).unwrap();
+      const user = res.data;
 
-      if (!response.ok) {
-        throw new Error("Gửi OTP thất bại");
+      const decodedToken = jwtDecode(user.accessToken);
+      const auth = {
+        token: user.accessToken,
+        ...decodedToken,
+        refreshToken: user.refreshToken,
+      };
+
+      switch (auth.role) {
+        case "Customer":
+          setAuth(auth);
+          navigate(from);
+          break;
+        case "Woodworker":
+          setAuth(auth);
+          navigate("/ww");
+          break;
       }
-
-      toast({
-        title: "Gửi OTP thành công",
-        description: "Vui lòng kiểm tra email của bạn",
-        status: "success",
-        colorScheme: "green",
-        duration: 3000,
-      });
-    } catch (err) {
-      toast({
-        title: "Gửi OTP thất bại",
-        description: err.message,
-        status: "error",
-        colorScheme: "red",
-        duration: 3000,
-      });
-    } finally {
-      setIsLoading(false);
+    } catch (error) {
+      notify(
+        "Đăng nhập thất bại",
+        error?.data?.message || "Có lỗi xảy ra, vui lòng thử lại sau",
+        "error"
+      );
     }
   };
 
@@ -126,26 +109,37 @@ export default function EmailOTPLogin({ onSuccess }) {
     <Form onSubmit={handleSubmit}>
       <FormControl isRequired mb="20px">
         <FormLabel>Email</FormLabel>
-        <InputGroup>
-          <Input
-            bgColor="white"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Button onClick={handleSendOTP} ml={2} colorScheme="blue">
-            Gửi OTP
-          </Button>
-        </InputGroup>
+        <Input
+          bgColor="white"
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+        />
       </FormControl>
 
       <FormControl isRequired mb="20px">
-        <FormLabel>Mã OTP</FormLabel>
+        <HStack>
+          <FormLabel mr="auto">Mã OTP</FormLabel>
+          <Button
+            h="1.75rem"
+            size="sm"
+            onClick={handleResendOTP}
+            isDisabled={countdown > 0 || sendOTPLoading}
+            color={countdown > 0 ? "gray.500" : "app_brown.2"}
+            variant="ghost"
+          >
+            {countdown > 0
+              ? `Vui lòng chờ ${countdown} giây để gửi lại OTP`
+              : "Gửi OTP"}
+          </Button>
+        </HStack>
         <Input
           bgColor="white"
           type="text"
-          value={emailOTP}
-          onChange={(e) => setEmailOTP(e.target.value)}
+          name="otp"
+          value={formData.otp}
+          onChange={handleChange}
         />
       </FormControl>
 
@@ -155,7 +149,7 @@ export default function EmailOTPLogin({ onSuccess }) {
         width="100%"
         type="submit"
         mt="30px"
-        isLoading={isLoading}
+        isLoading={isLoggingIn}
       >
         Đăng nhập
       </Button>

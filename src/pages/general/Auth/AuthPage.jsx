@@ -12,10 +12,10 @@ function AuthPage() {
   const { auth } = useAuth();
 
   const [currentTab, setCurrentTab] = useState("login");
+  const [registerEmail, setRegisterEmail] = useState("");
 
   if (auth) return <Navigate to="/" />;
 
-  // Function to change the current tab
   const changeTab = (tab) => {
     setCurrentTab(tab);
   };
@@ -35,11 +35,15 @@ function AuthPage() {
       >
         {/* Conditional rendering based on currentTab state */}
         {currentTab === "login" && <Login changeTab={changeTab} />}
-        {currentTab === "register" && <Register changeTab={changeTab} />}
+        {currentTab === "register" && (
+          <Register setRegisterEmail={setRegisterEmail} changeTab={changeTab} />
+        )}
         {currentTab === "forgetPassword" && (
           <ForgetPassword changeTab={changeTab} />
         )}
-        {currentTab === "verify" && <VerifyPage changeTab={changeTab} />}
+        {currentTab === "verify" && (
+          <VerifyPage changeTab={changeTab} registerEmail={registerEmail} />
+        )}
       </Box>
 
       <Link to="/ww-register">

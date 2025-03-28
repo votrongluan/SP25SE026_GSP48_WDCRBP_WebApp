@@ -21,7 +21,7 @@ export default function CustomerProfile() {
   const toast = useToast();
   const { auth } = useAuth();
   const {
-    data: userData,
+    data: userDataResponse,
     isLoading,
     error,
   } = useGetUserInformationQuery(auth?.userId);
@@ -32,14 +32,16 @@ export default function CustomerProfile() {
   });
 
   useEffect(() => {
-    if (userData) {
+    if (userDataResponse) {
+      const userData = userDataResponse.data;
+
       setFormData({
         username: userData.username || "",
         email: userData.email || "",
         phone: userData.phone || "",
       });
     }
-  }, [userData]);
+  }, [userDataResponse]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

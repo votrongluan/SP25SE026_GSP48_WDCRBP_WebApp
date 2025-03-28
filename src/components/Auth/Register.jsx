@@ -16,7 +16,7 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useRegisterMutation } from "../../services/authApi";
 import { validateRegister } from "../../validations";
 
-export default function Register({ changeTab }) {
+export default function Register({ setRegisterEmail, changeTab }) {
   const [register, { isLoading: isRegisterLoading }] = useRegisterMutation();
   const notify = useNotify();
   const [showPassword, setShowPassword] = useState(false);
@@ -42,17 +42,18 @@ export default function Register({ changeTab }) {
 
       notify(
         "Đăng ký thành công",
-        `Vui lòng kích hoạt tài khoản bằng OTP đã gửi về email ${data.email}`,
+        `Vui lòng xác nhận bằng OTP đã gửi về email ${data.email}`,
         "success"
       );
 
+      setRegisterEmail(data.email);
       changeTab("verify");
     } catch (err) {
       console.log(err);
 
       notify(
         "Đăng ký thất bại",
-        "Có lỗi xảy ra, vui lòng thử lại sau",
+        err?.data?.message || "Có lỗi xảy ra, vui lòng thử lại sau",
         "error"
       );
     }
@@ -151,7 +152,7 @@ export default function Register({ changeTab }) {
           cursor="pointer"
           color="app_brown.2"
         >
-          Kích hoạt tài khoản
+          Xác nhận tài khoản
         </Box>
       </Flex>
     </>

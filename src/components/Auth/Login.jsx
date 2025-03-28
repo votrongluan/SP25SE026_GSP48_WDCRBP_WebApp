@@ -61,14 +61,14 @@ export default function Login({ changeTab }) {
         >
           Email OTP
         </Button>
-        <Button
+        {/* <Button
           flex={1}
           variant={loginMethod === "phoneOTP" ? "solid" : "outline"}
           colorScheme={loginMethod === "phoneOTP" ? "blue" : "gray"}
           onClick={() => setLoginMethod("phoneOTP")}
         >
           Số điện thoại OTP
-        </Button>
+        </Button> */}
       </Flex>
 
       <Flex mt="20px" justifyContent="space-between">

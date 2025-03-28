@@ -37,11 +37,13 @@ export default function PasswordLogin() {
       delete data.email;
 
       const res = await login(data).unwrap();
-      const decodedToken = jwtDecode(res.access_token);
+      const user = res.data;
+
+      const decodedToken = jwtDecode(user.access_token);
       const auth = {
-        token: res.access_token,
+        token: user.access_token,
         ...decodedToken,
-        refreshToken: res.refresh_token,
+        refreshToken: user.refresh_token,
       };
 
       switch (auth.role) {
