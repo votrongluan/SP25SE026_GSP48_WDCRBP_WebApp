@@ -7,7 +7,6 @@ import {
 } from "@chakra-ui/react";
 import { Form } from "react-router-dom";
 import { appColorTheme } from "../../config/appconfig.js";
-import PropTypes from "prop-types";
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth.js";
 import { jwtDecode } from "jwt-decode";
@@ -149,7 +148,3 @@ export default function PhoneOTPLogin({ onSuccess }) {
     </Form>
   );
 }
-
-PhoneOTPLogin.propTypes = {
-  onSuccess: PropTypes.func,
-};

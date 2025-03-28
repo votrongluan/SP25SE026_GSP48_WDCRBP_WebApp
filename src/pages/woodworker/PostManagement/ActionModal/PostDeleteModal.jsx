@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import { FiTrash2 } from "react-icons/fi";
-import PropTypes from "prop-types";
 import { appColorTheme } from "../../../../config/appconfig";
 
 export default function PostDeleteModal({ post, refetch }) {
@@ -56,7 +55,7 @@ export default function PostDeleteModal({ post, refetch }) {
           <ModalHeader bgColor="app_grey.2">Xác nhận xóa bài viết</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1">
-            <p>Bạn có chắc chắn muốn xóa bài viết "{post?.title}"?</p>
+            <p>Bạn có chắc chắn muốn xóa bài viết &quot;{post?.title}&quot;?</p>
             <p>Hành động này không thể hoàn tác.</p>
           </ModalBody>
           <ModalFooter bgColor="app_grey.1" gap={2}>
@@ -70,18 +69,3 @@ export default function PostDeleteModal({ post, refetch }) {
     </>
   );
 }
-
-PostDeleteModal.propTypes = {
-  post: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    imgUrls: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
-  }).isRequired,
-  refetch: PropTypes.func,
-};
-
-PostDeleteModal.defaultProps = {
-  refetch: undefined,
-};

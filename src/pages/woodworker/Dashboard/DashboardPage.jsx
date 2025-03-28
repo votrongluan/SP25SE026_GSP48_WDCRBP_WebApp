@@ -1,7 +1,6 @@
 import {
   Box,
   SimpleGrid,
-  Stat,
   StatLabel,
   StatNumber,
   StatHelpText,
@@ -13,7 +12,6 @@ import {
   Stack,
   HStack,
   Icon,
-  Progress,
   Badge,
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../config/appconfig";
@@ -29,7 +27,6 @@ import {
   Bar,
 } from "recharts";
 import { FaBox, FaUsers, FaStar, FaExclamationTriangle } from "react-icons/fa";
-import PropTypes from "prop-types";
 
 // Mock data - TODO: Replace with API data
 const revenueData = [
@@ -106,13 +103,6 @@ const StatCard = ({ label, value, change, icon }) => (
     </CardBody>
   </Card>
 );
-
-StatCard.propTypes = {
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  change: PropTypes.number.isRequired,
-  icon: PropTypes.elementType.isRequired,
-};
 
 export default function DashboardPage() {
   return (

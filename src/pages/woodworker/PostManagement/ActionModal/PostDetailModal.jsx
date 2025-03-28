@@ -10,14 +10,12 @@ import {
   Tooltip,
   VStack,
   Text,
-  Image,
   Divider,
   Grid,
   GridItem,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import { FiEye } from "react-icons/fi";
-import PropTypes from "prop-types";
 import { appColorTheme } from "../../../../config/appconfig";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector";
 
@@ -85,13 +83,3 @@ export default function PostDetailModal({ post }) {
     </>
   );
 }
-
-PostDetailModal.propTypes = {
-  post: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    imgUrls: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
-  }).isRequired,
-};

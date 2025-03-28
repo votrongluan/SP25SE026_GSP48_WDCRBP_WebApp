@@ -16,7 +16,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import PropTypes from "prop-types";
 import { appColorTheme } from "../../../../config/appconfig";
 
 export default function WithdrawModal({ isOpen, onClose, balance }) {
@@ -94,9 +93,3 @@ export default function WithdrawModal({ isOpen, onClose, balance }) {
     </Modal>
   );
 }
-
-WithdrawModal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  balance: PropTypes.number.isRequired,
-};

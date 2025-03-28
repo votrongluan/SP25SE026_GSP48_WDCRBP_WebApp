@@ -10,7 +10,6 @@ import {
 import { Form } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { appColorTheme } from "../../config/appconfig.js";
-import PropTypes from "prop-types";
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth.js";
 import { jwtDecode } from "jwt-decode";
@@ -103,7 +102,3 @@ export default function PasswordLogin() {
     </Form>
   );
 }
-
-PasswordLogin.propTypes = {
-  onSuccess: PropTypes.func,
-};

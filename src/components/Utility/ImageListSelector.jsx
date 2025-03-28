@@ -2,7 +2,6 @@ import { Box, Flex, Image, Text, IconButton } from "@chakra-ui/react";
 import { ArrowLeftIcon, ArrowRightIcon, CloseIcon } from "@chakra-ui/icons";
 import { useState, useEffect } from "react";
 import { appColorTheme } from "../../config/appconfig";
-import PropTypes from "prop-types";
 
 export default function ImageListSelector({ imgUrls, imgH = 500 }) {
   const imageList = imgUrls ? imgUrls.split(";") : [];
@@ -223,13 +222,3 @@ export default function ImageListSelector({ imgUrls, imgH = 500 }) {
     </Box>
   );
 }
-
-ImageListSelector.propTypes = {
-  imgUrls: PropTypes.string,
-  imgH: PropTypes.number,
-};
-
-ImageListSelector.defaultProps = {
-  imgUrls: "",
-  imgH: 500,
-};

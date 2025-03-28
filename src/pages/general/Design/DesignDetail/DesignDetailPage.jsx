@@ -1,8 +1,6 @@
-import React, { useState } from "react";
 import {
   Box,
   Button,
-  Container,
   Flex,
   Grid,
   Heading,
@@ -21,6 +19,7 @@ import { FiShoppingBag, FiShoppingCart } from "react-icons/fi";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector.jsx";
 import DesignVariantConfig from "./DesignVariantConfig.jsx";
 import PackageFrame from "../../../../components/Utility/PackageFrame.jsx";
+import useAuth from "../../../../hooks/useAuth.js";
 
 export default function DesignDetailPage() {
   const product = {
@@ -29,6 +28,7 @@ export default function DesignDetailPage() {
     media_urls:
       "https://noithatthaibinh.com/wp-content/uploads/2023/10/Giuong-2-tang-tre-em-1m2-MS-3014-1.jpg;https://www.noithatkaya.com/wp-content/uploads/2020/10/Cong-trinh-BIUBIU-STAR-14.webp",
   };
+  const { auth } = useAuth();
 
   return (
     <>
@@ -79,34 +79,34 @@ export default function DesignDetailPage() {
               <Box>
                 <DesignVariantConfig />
               </Box>
-              <Flex mt={4} gap={5} alignItems="center">
-                {/* Mua ngay */}
-                <Button
-                  bg={appColorTheme.brown_2}
-                  color="white"
-                  borderRadius="30px"
-                  px={8}
-                  py={6}
-                  leftIcon={<FiShoppingBag />}
-                  _hover={{ bg: appColorTheme.brown_1 }}
-                >
-                  ĐẶT NGAY
-                </Button>
+              {auth?.role != "Woodworker" && (
+                <Flex mt={4} gap={5} alignItems="center">
+                  <Button
+                    bg={appColorTheme.brown_2}
+                    color="white"
+                    borderRadius="30px"
+                    px={8}
+                    py={6}
+                    leftIcon={<FiShoppingBag />}
+                    _hover={{ bg: appColorTheme.brown_1 }}
+                  >
+                    ĐẶT NGAY
+                  </Button>
 
-                {/* Thêm vào giỏ */}
-                <Button
-                  variant="outline"
-                  borderColor={appColorTheme.brown_2}
-                  color={appColorTheme.brown_2}
-                  borderRadius="30px"
-                  px={4}
-                  py={6}
-                  leftIcon={<FiShoppingCart />}
-                  _hover={{ opacity: ".9" }}
-                >
-                  Thêm vào giỏ
-                </Button>
-              </Flex>
+                  <Button
+                    variant="outline"
+                    borderColor={appColorTheme.brown_2}
+                    color={appColorTheme.brown_2}
+                    borderRadius="30px"
+                    px={4}
+                    py={6}
+                    leftIcon={<FiShoppingCart />}
+                    _hover={{ opacity: ".9" }}
+                  >
+                    Thêm vào giỏ
+                  </Button>
+                </Flex>
+              )}
             </Box>
           </Stack>
         </Grid>

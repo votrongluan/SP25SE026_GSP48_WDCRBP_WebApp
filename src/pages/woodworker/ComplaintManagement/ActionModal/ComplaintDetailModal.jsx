@@ -19,7 +19,6 @@ import {
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FiEye } from "react-icons/fi";
-import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { appColorTheme } from "../../../../config/appconfig";
 import { convertTimeStampToDateTimeString } from "../../../../utils/utils";
@@ -154,15 +153,3 @@ export default function ComplaintDetailModal({ complaint, refetch }) {
     </>
   );
 }
-
-ComplaintDetailModal.propTypes = {
-  complaint: PropTypes.shape({
-    complaintId: PropTypes.string.isRequired,
-    orderId: PropTypes.string.isRequired,
-    userId: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
-    explanation: PropTypes.string,
-  }).isRequired,
-};

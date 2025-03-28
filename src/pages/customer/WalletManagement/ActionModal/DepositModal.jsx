@@ -16,7 +16,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import PropTypes from "prop-types";
 import { appColorTheme } from "../../../../config/appconfig";
 
 export default function DepositModal({ isOpen, onClose }) {
@@ -84,8 +83,3 @@ export default function DepositModal({ isOpen, onClose }) {
     </Modal>
   );
 }
-
-DepositModal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-};

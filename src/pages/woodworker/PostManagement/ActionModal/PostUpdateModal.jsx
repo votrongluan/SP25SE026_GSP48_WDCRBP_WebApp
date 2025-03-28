@@ -16,7 +16,6 @@ import {
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FiEdit2 } from "react-icons/fi";
-import PropTypes from "prop-types";
 import { appColorTheme } from "../../../../config/appconfig";
 import ImageUpdateUploader from "../../../../components/Utility/ImageUpdateUploader";
 
@@ -124,18 +123,3 @@ export default function PostUpdateModal({ post, refetch }) {
     </>
   );
 }
-
-PostUpdateModal.propTypes = {
-  post: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    imgUrls: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
-  }).isRequired,
-  refetch: PropTypes.func,
-};
-
-PostUpdateModal.defaultProps = {
-  refetch: undefined,
-};

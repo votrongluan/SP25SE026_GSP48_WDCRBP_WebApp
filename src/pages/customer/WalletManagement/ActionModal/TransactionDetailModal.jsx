@@ -17,7 +17,6 @@ import {
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import { FiEye } from "react-icons/fi";
-import PropTypes from "prop-types";
 import { appColorTheme } from "../../../../config/appconfig";
 import { convertTimeStampToDateTimeString } from "../../../../utils/utils";
 
@@ -141,14 +140,3 @@ export default function TransactionDetailModal({ transaction }) {
     </>
   );
 }
-
-TransactionDetailModal.propTypes = {
-  transaction: PropTypes.shape({
-    transactionId: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    amount: PropTypes.number.isRequired,
-  }).isRequired,
-};

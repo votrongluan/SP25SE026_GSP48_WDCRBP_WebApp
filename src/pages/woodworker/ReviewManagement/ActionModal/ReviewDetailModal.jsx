@@ -19,7 +19,6 @@ import {
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FiEye, FiStar } from "react-icons/fi";
-import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { appColorTheme } from "../../../../config/appconfig";
 import { convertTimeStampToDateTimeString } from "../../../../utils/utils";
@@ -169,16 +168,3 @@ export default function ReviewDetailModal({ review, refetch }) {
     </>
   );
 }
-
-ReviewDetailModal.propTypes = {
-  review: PropTypes.shape({
-    reviewId: PropTypes.string.isRequired,
-    orderId: PropTypes.string.isRequired,
-    userId: PropTypes.string.isRequired,
-    rating: PropTypes.number.isRequired,
-    comment: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired,
-    updatedAt: PropTypes.string.isRequired,
-    response: PropTypes.string,
-  }).isRequired,
-};

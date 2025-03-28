@@ -46,7 +46,6 @@ export default function WoodworkerSideBar({ isCollapsed, setIsCollapsed }) {
     { label: "Đánh giá", path: "review", icon: FiStar },
     { label: "Ví", path: "wallet", icon: FiCreditCard },
     { label: "Hồ sơ", path: "profile", icon: FiUser },
-    { label: "Đăng xuất", path: "/logout", icon: FiLogOut },
   ];
 
   return (

@@ -24,7 +24,6 @@ import {
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FiEdit2 } from "react-icons/fi";
-import PropTypes from "prop-types";
 import { appColorTheme } from "../../../../config/appconfig";
 import { formatPrice } from "../../../../utils/utils";
 import ImageUpdateUploader from "../../../../components/Utility/ImageUpdateUploader";
@@ -337,30 +336,3 @@ export default function ProductUpdateModal({ product, refetch }) {
     </>
   );
 }
-
-ProductUpdateModal.propTypes = {
-  product: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    stock: PropTypes.number.isRequired,
-    weight: PropTypes.number.isRequired,
-    length: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
-    width: PropTypes.number.isRequired,
-    imgUrls: PropTypes.string.isRequired,
-    wood_type: PropTypes.string.isRequired,
-    color: PropTypes.string.isRequired,
-    special_feature: PropTypes.string.isRequired,
-    style: PropTypes.string.isRequired,
-    sculpture: PropTypes.string.isRequired,
-    scent: PropTypes.string.isRequired,
-  }).isRequired,
-  refetch: PropTypes.func,
-};
-
-ProductUpdateModal.defaultProps = {
-  refetch: undefined,
-};

@@ -1,7 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { appColorTheme } from "../../config/appconfig.js";
-import PropTypes from "prop-types";
 import PasswordLogin from "./PasswordLogin";
 import EmailOTPLogin from "./EmailOTPLogin";
 import PhoneOTPLogin from "./PhoneOTPLogin";
@@ -91,7 +90,3 @@ export default function Login({ changeTab }) {
     </>
   );
 }
-
-Login.propTypes = {
-  changeTab: PropTypes.func.isRequired,
-};

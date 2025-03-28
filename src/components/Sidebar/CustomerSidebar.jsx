@@ -36,7 +36,6 @@ export default function CustomerSidebar({ isCollapsed, setIsCollapsed }) {
     { label: "Ví", path: "wallet", icon: FiCreditCard },
     { label: "Khiếu nại", path: "complaint", icon: FiAlertTriangle },
     { label: "Hồ sơ", path: "profile", icon: FiUser },
-    { label: "Đăng xuất", path: "/logout", icon: FiLogOut },
   ];
 
   return (

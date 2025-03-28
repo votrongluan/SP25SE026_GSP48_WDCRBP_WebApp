@@ -19,7 +19,6 @@ import {
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import { FiEye } from "react-icons/fi";
-import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { appColorTheme } from "../../../../config/appconfig";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector";
@@ -155,19 +154,3 @@ export default function WWRegistrationDetailModal({ registration, refetch }) {
     </>
   );
 }
-
-WWRegistrationDetailModal.propTypes = {
-  registration: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    fullName: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-    phone: PropTypes.string.isRequired,
-    address: PropTypes.string.isRequired,
-    businessType: PropTypes.string.isRequired,
-    taxCode: PropTypes.string.isRequired,
-    brandName: PropTypes.string.isRequired,
-    bio: PropTypes.string.isRequired,
-    imgUrl: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired,
-  }).isRequired,
-};

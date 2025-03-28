@@ -4,12 +4,14 @@ import { Outlet } from "react-router-dom";
 import WoodworkerSideBar from "../components/Sidebar/WoodworkerSideBar.jsx";
 import { appColorTheme } from "../config/appconfig.js";
 import { FiMenu } from "react-icons/fi";
+import Header from "../components/Header/Header.jsx";
 
 export default function WoodworkerLayout() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
     <Box fontFamily="Nunito Sans">
+      <Header />
       <Box>
         <Box
           as="aside"

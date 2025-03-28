@@ -1,5 +1,4 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
 import {
   Box,
   Button,
@@ -323,16 +322,3 @@ export default function PriceDetailSection({
     </Box>
   );
 }
-
-PriceDetailSection.propTypes = {
-  productId: PropTypes.number.isRequired,
-  priceDetails: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      type: PropTypes.string.isRequired,
-      quantity: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
-    })
-  ),
-  onPriceDetailsChange: PropTypes.func.isRequired,
-};

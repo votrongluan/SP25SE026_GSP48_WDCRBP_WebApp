@@ -1,5 +1,4 @@
 import { Box, Text, useColorModeValue } from "@chakra-ui/react";
-import PropTypes from "prop-types";
 
 export default function PackageFrame({ children, packageType }) {
   const colors = {
@@ -69,8 +68,3 @@ export default function PackageFrame({ children, packageType }) {
     </Box>
   );
 }
-
-PackageFrame.propTypes = {
-  children: PropTypes.node.isRequired,
-  packageType: PropTypes.oneOf(["Bronze", "Silver", "Gold"]).isRequired,
-};

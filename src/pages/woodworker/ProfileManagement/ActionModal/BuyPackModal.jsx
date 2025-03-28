@@ -15,7 +15,6 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import PropTypes from "prop-types";
 import { convertTimeStampToDateTimeString } from "../../../../utils/utils";
 
 const PACK_PRICES = {
@@ -146,8 +145,3 @@ export default function BuyPackModal({ isOpen, onClose }) {
     </Modal>
   );
 }
-
-BuyPackModal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-};

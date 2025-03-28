@@ -16,7 +16,6 @@ import {
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../../config/appconfig";
 import { formatPrice } from "../../../../../utils/utils";
-import PropTypes from "prop-types";
 import ImageListSelector from "../../../../../components/Utility/ImageListSelector";
 
 const products = [
@@ -55,15 +54,6 @@ const ConfigurationItem = ({ config, selectedValue }) => (
     <Text>{selectedValue.name}</Text>
   </HStack>
 );
-
-ConfigurationItem.propTypes = {
-  config: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-  }).isRequired,
-  selectedValue: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-  }).isRequired,
-};
 
 export default function CustomizationProductList() {
   return (

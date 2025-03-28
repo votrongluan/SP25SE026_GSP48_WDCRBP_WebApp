@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import { FiTrash } from "react-icons/fi";
-import PropTypes from "prop-types";
 import { appColorTheme } from "../../../../config/appconfig";
 
 export default function ProductDeleteModal({ product, refetch }) {
@@ -67,15 +66,3 @@ export default function ProductDeleteModal({ product, refetch }) {
     </>
   );
 }
-
-ProductDeleteModal.propTypes = {
-  product: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-  }).isRequired,
-  refetch: PropTypes.func,
-};
-
-ProductDeleteModal.defaultProps = {
-  refetch: undefined,
-};
