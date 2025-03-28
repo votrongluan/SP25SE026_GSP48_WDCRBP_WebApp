@@ -1,41 +1,44 @@
-import React, { useState } from "react";
-import { Box, Heading, Stack, HStack, Text, Input } from "@chakra-ui/react";
-import { convertTimeStampToDateTimeString } from "../../../../../utils/utils.js";
+import { useRef, useState } from "react";
+import {
+  Box,
+  Heading,
+  Stack,
+  HStack,
+  Text,
+  Input,
+  Button,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+  Image,
+  VStack,
+  Textarea,
+} from "@chakra-ui/react";
+import SignatureCanvas from "react-signature-canvas";
+import { appColorTheme } from "../../../../../config/appconfig";
 
 const initialContract = {
-  contract_id: "12345",
-  contract_number: "CN-2025-0001",
-  is_sign_by_a: true,
-  is_sign_by_b: false,
-  warranty_policy: "Bảo hành 12 tháng",
-  contract_total_amount: 15000000,
-  complete_date: new Date("2025-03-05T16:00:00"), // or null if chưa hoàn thành
-  sign_date: new Date("2025-03-03T10:00:00"),
-  a_information: "Bên A: Công ty A, Địa chỉ A, MST A...",
-  b_information: "Bên B: Công ty B, Địa chỉ B, MST B...",
-  created_at: new Date("2025-03-01T09:00:00"),
-  platform_commission: 500000,
-  order_id: "ORD-ABC-123",
-  contract_word_file: "https://example.com/contract_template.docx",
-};
-
-// Hàm chuyển đổi Date sang định dạng "YYYY-MM-DDTHH:mm" cho input datetime-local
-const formatDateForInput = (date) => {
-  if (!date) return "";
-  const dt = new Date(date);
-  const pad = (n) => n.toString().padStart(2, "0");
-  return `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(
-    dt.getDate()
-  )}T${pad(dt.getHours())}:${pad(dt.getMinutes())}`;
+  contractId: "",
+  warrantyPolicy: "",
+  contractTotalAmount: 0,
+  completeDate: "",
+  signDate: "",
+  createdAt: new Date(),
+  orderId: "",
+  woodworkerSignature: "",
+  cusFullName: "",
+  cusAddress: "",
+  cusPhone: "",
+  warrantyPeriod: 0,
 };
 
 export default function ContractEditSection() {
-  const [contract, setContract] = useState({
-    ...initialContract,
-    created_at: formatDateForInput(initialContract.created_at),
-    sign_date: formatDateForInput(initialContract.sign_date),
-    complete_date: formatDateForInput(initialContract.complete_date),
-  });
+  const [contract, setContract] = useState(initialContract);
+  const [signatureImage, setSignatureImage] = useState(null);
+  const signaturePad = useRef(null);
+  const [canvasSize, setCanvasSize] = useState({ width: 500, height: 200 });
 
   const handleChange = (field, value) => {
     setContract((prev) => ({
@@ -44,139 +47,195 @@ export default function ContractEditSection() {
     }));
   };
 
+  // Xử lý ký tên
+  const clearSignature = () => {
+    signaturePad.current.clear();
+    setSignatureImage(null);
+  };
+
+  const saveSignature = () => {
+    if (signaturePad.current.isEmpty()) {
+      alert("Vui lòng ký tên trước khi lưu");
+      return;
+    }
+    const image = signaturePad.current.toDataURL();
+    setSignatureImage(image);
+    handleChange("woodworkerSignature", image);
+  };
+
+  // Xử lý thay đổi kích thước canvas
+  const handleSizeChange = (field, value) => {
+    signaturePad.current.clear();
+    setCanvasSize((prev) => ({
+      ...prev,
+      [field]: parseInt(value),
+    }));
+  };
+
   return (
-    <>
+    <Box>
       <Heading fontWeight="bold" fontSize="20px" mb={6} textAlign="center">
         Thông tin hợp đồng
       </Heading>
 
-      <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-        <Stack spacing={4}>
-          <HStack>
-            <Text fontWeight="bold" width="150px">
-              Số hợp đồng:
-            </Text>
-            <Input
-              value={contract.contract_number}
-              onChange={(e) => handleChange("contract_number", e.target.value)}
-              placeholder="Số hợp đồng"
-            />
-          </HStack>
+      <Stack spacing={6}>
+        {/* Thông tin cơ bản */}
+        <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
+          <Stack spacing={4}>
+            <HStack>
+              <Text fontWeight="bold" width="200px">
+                Chính sách bảo hành:
+              </Text>
+              <Textarea
+                rows={4}
+                value={contract.warrantyPolicy}
+                onChange={(e) => handleChange("warrantyPolicy", e.target.value)}
+                placeholder="Chính sách bảo hành"
+              />
+            </HStack>
 
-          <HStack>
-            <Text fontWeight="bold" width="150px">
-              File hợp đồng (Word):
-            </Text>
-            <Input
-              type="file"
-              onChange={(e) =>
-                handleChange("contract_word_file", e.target.value)
-              }
-              placeholder="File hợp đồng (Word)"
-            />
-          </HStack>
+            <HStack>
+              <Text fontWeight="bold" width="200px">
+                Thời hạn bảo hành (tháng):
+              </Text>
+              <NumberInput
+                value={contract.warrantyPeriod}
+                onChange={(value) => handleChange("warrantyPeriod", value)}
+                min={0}
+                max={120}
+                width="full"
+              >
+                <NumberInputField placeholder="Thời hạn bảo hành" />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </HStack>
 
-          <HStack>
-            <Text fontWeight="bold" width="150px">
-              Ngày tạo:
-            </Text>
-            <Input
-              type="datetime-local"
-              value={contract.created_at}
-              onChange={(e) => handleChange("created_at", e.target.value)}
-            />
-          </HStack>
+            <HStack>
+              <Text fontWeight="bold" width="200px">
+                Tổng giá trị hợp đồng:
+              </Text>
+              <NumberInput
+                value={contract.contractTotalAmount}
+                onChange={(value) => handleChange("contractTotalAmount", value)}
+                min={0}
+                width="full"
+              >
+                <NumberInputField placeholder="Tổng giá trị hợp đồng" />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </HStack>
 
-          <HStack>
-            <Text fontWeight="bold" width="150px">
-              Ngày ký:
-            </Text>
-            <Input
-              type="datetime-local"
-              value={contract.sign_date}
-              onChange={(e) => handleChange("sign_date", e.target.value)}
-            />
-          </HStack>
+            <HStack>
+              <Text fontWeight="bold" width="200px">
+                Ngày hoàn thành:
+              </Text>
+              <Input
+                type="date"
+                value={contract.completeDate}
+                onChange={(e) => handleChange("completeDate", e.target.value)}
+              />
+            </HStack>
+          </Stack>
+        </Box>
 
-          <HStack>
-            <Text fontWeight="bold" width="150px">
-              Ngày hoàn thành:
-            </Text>
-            <Input
-              type="datetime-local"
-              value={contract.complete_date}
-              onChange={(e) => handleChange("complete_date", e.target.value)}
-            />
-          </HStack>
+        {/* Phần ký tên */}
+        <Box
+          p={5}
+          bgColor={appColorTheme.grey_1}
+          boxShadow="md"
+          borderRadius="10px"
+        >
+          <Heading size="md" mb={4}>
+            Chữ ký
+          </Heading>
 
-          <HStack>
-            <Text fontWeight="bold" width="150px">
-              Chính sách bảo hành:
-            </Text>
-            <Input
-              value={contract.warranty_policy}
-              onChange={(e) => handleChange("warranty_policy", e.target.value)}
-              placeholder="Chính sách bảo hành"
-            />
-          </HStack>
+          <VStack spacing={4} align="stretch">
+            <HStack spacing={4}>
+              <HStack>
+                <Text fontWeight="bold" mb={2}>
+                  Chiều rộng (px):
+                </Text>
+                <NumberInput
+                  value={canvasSize.width}
+                  onChange={(value) => handleSizeChange("width", value)}
+                  min={200}
+                  max={1000}
+                  border="1px solid black"
+                  borderRadius="8px"
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </HStack>
 
-          <HStack>
-            <Text fontWeight="bold" width="150px">
-              Tổng giá trị hợp đồng:
-            </Text>
-            <Input
-              type="number"
-              value={contract.contract_total_amount}
-              onChange={(e) =>
-                handleChange("contract_total_amount", e.target.value)
-              }
-              placeholder="Tổng giá trị hợp đồng"
-            />
-          </HStack>
+              <HStack>
+                <Text fontWeight="bold" mb={2}>
+                  Chiều cao (px):
+                </Text>
+                <NumberInput
+                  value={canvasSize.height}
+                  onChange={(value) => handleSizeChange("height", value)}
+                  min={100}
+                  max={500}
+                  border="1px solid black"
+                  borderRadius="8px"
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </HStack>
+            </HStack>
 
-          <HStack>
-            <Text fontWeight="bold" width="150px">
-              Bên A đã ký:
-            </Text>
-            <Input
-              value={contract.is_sign_by_a ? "Đã ký" : "Chưa ký"}
-              isReadOnly
-            />
-          </HStack>
+            <VStack>
+              <SignatureCanvas
+                backgroundColor="white"
+                ref={signaturePad}
+                canvasProps={{
+                  width: canvasSize.width,
+                  height: canvasSize.height,
+                  className: "signature-canvas",
+                }}
+              />
+            </VStack>
 
-          <HStack>
-            <Text fontWeight="bold" width="150px">
-              Bên B đã ký:
-            </Text>
-            <Input
-              value={contract.is_sign_by_b ? "Đã ký" : "Chưa ký"}
-              isReadOnly
-            />
-          </HStack>
+            <HStack spacing={4}>
+              <Button onClick={saveSignature} colorScheme="green" width="150px">
+                Lưu chữ ký
+              </Button>
+              <Button onClick={clearSignature} variant="outline" width="150px">
+                Xóa
+              </Button>
+            </HStack>
 
-          <HStack>
-            <Text fontWeight="bold" width="150px">
-              Thông tin Bên A:
-            </Text>
-            <Input
-              value={contract.a_information}
-              onChange={(e) => handleChange("a_information", e.target.value)}
-              placeholder="Thông tin Bên A"
-            />
-          </HStack>
-
-          <HStack>
-            <Text fontWeight="bold" width="150px">
-              Thông tin Bên B:
-            </Text>
-            <Input
-              value={contract.b_information}
-              onChange={(e) => handleChange("b_information", e.target.value)}
-              placeholder="Thông tin Bên B"
-            />
-          </HStack>
-        </Stack>
-      </Box>
-    </>
+            {signatureImage && (
+              <VStack>
+                <Text fontWeight="bold" mb={2}>
+                  Xem trước chữ ký:
+                </Text>
+                <Image
+                  src={signatureImage}
+                  alt="Chữ ký"
+                  border="1px solid"
+                  borderColor="gray.200"
+                  borderRadius="md"
+                />
+              </VStack>
+            )}
+          </VStack>
+        </Box>
+      </Stack>
+    </Box>
   );
 }

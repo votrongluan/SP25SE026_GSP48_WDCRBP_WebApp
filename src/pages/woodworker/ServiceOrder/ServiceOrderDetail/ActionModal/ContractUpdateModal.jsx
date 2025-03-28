@@ -60,7 +60,7 @@ export default function ContractUpdateModal({ order, refetch }) {
               }}
             >
               <Box>
-                <ProductEditSection />
+                <ContractEditSection />
               </Box>
 
               <HStack mt={10}>

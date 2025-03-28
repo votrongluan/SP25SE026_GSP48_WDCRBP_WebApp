@@ -45,7 +45,7 @@ export default function AccountMenu() {
                   bg="white"
                   color="black"
                   as={RouterLink}
-                  to="/account"
+                  to="/cus/profile"
                 >
                   Tài khoản
                 </MenuItem>

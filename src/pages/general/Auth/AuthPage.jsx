@@ -27,7 +27,7 @@ function AuthPage() {
         bgColor="white"
         color="black"
         margin="0 auto"
-        p="40px"
+        p={5}
         width={{
           base: "calc(100% - 40px)",
           xl: "50%",

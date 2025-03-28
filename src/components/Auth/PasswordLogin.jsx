@@ -16,70 +16,51 @@ import useAuth from "../../hooks/useAuth.js";
 import { jwtDecode } from "jwt-decode";
 import { useNotify } from "../Utility/Notify.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useLoginWithPasswordMutation } from "../../services/authApi.js";
 
-export default function PasswordLogin({ onSuccess }) {
+export default function PasswordLogin() {
   const notify = useNotify();
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [login, { isLoading }] = useLoginWithPasswordMutation();
 
   const from = location.state?.from?.pathname || "/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
 
     try {
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData.entries());
+      data.emailOrPhone = data.email;
+      delete data.email;
 
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/auth/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const res = await login(data).unwrap();
+      const decodedToken = jwtDecode(res.access_token);
+      const auth = {
+        token: res.access_token,
+        ...decodedToken,
+        refreshToken: res.refresh_token,
+      };
 
-      if (!response.ok) {
-        throw new Error("Đăng nhập thất bại");
-      }
-
-      const user = await response.json();
-      user.token = user.accessTokenToken;
-
-      const decodedToken = jwtDecode(user.accessTokenToken);
-      const userWithToken = { ...user, ...decodedToken };
-
-      switch (userWithToken.role) {
-        case 1:
-          setAuth(userWithToken);
+      switch (auth.role) {
+        case "Customer":
+          setAuth(auth);
           navigate(from);
           break;
-        case 2:
-          setAuth(userWithToken);
-          navigate("/supplier");
-          break;
-        case 3:
-          setAuth(userWithToken);
-          navigate("/admin");
-          break;
-        default:
-          setAuth(userWithToken);
-          navigate(from);
+        case "Woodworker":
+          setAuth(auth);
+          navigate("/ww");
           break;
       }
-
-      onSuccess?.();
     } catch (err) {
-      notify("Đăng nhập thất bại", err.message, "error");
-    } finally {
-      setIsLoading(false);
+      notify(
+        "Đăng nhập thất bại",
+        err.data?.message || "Vui lòng kiểm tra lại thông tin đăng nhập",
+        "error"
+      );
     }
   };
 

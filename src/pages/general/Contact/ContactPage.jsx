@@ -64,7 +64,7 @@ function ContactPage() {
       <Box
         bgColor="white"
         color="black"
-        padding="40px"
+        padding={5}
         borderRadius="10px"
         width={{ base: "100%", xl: "80%" }}
       >

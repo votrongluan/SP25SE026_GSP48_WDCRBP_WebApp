@@ -13,6 +13,7 @@ import {
 import { appColorTheme } from "../../../config/appconfig.js";
 import { useNotify } from "../../../components/Utility/Notify.jsx";
 import ImageUpload from "../../../components/Utility/ImageUpload.jsx";
+import AddressInput from "../../../components/Utility/AddressInput.jsx";
 import { useState } from "react";
 import { useRegisterWoodworkerMutation } from "../../../services/woodworkerApi.js";
 import { useNavigate } from "react-router-dom";
@@ -21,17 +22,36 @@ export default function WWRegister() {
   const notify = useNotify();
   const [imgUrl, setImgUrl] = useState("");
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    address: "",
+    wardCode: "",
+    districtId: "",
+    cityId: "",
+    businessType: "",
+    taxCode: "",
+    brandName: "",
+    bio: "",
+  });
 
   const [registerWoodworker, { isLoading }] = useRegisterWoodworkerMutation();
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
 
     try {
       const registerData = {
-        ...data,
+        ...formData,
         imgUrl,
       };
 
@@ -81,6 +101,8 @@ export default function WWRegister() {
                     variant="flushed"
                     placeholder="Nhập họ và tên"
                     name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
                   />
                 </FormControl>
               </GridItem>
@@ -92,6 +114,8 @@ export default function WWRegister() {
                     placeholder="Nhập email"
                     name="email"
                     type="email"
+                    value={formData.email}
+                    onChange={handleChange}
                   />
                 </FormControl>
               </GridItem>
@@ -103,6 +127,8 @@ export default function WWRegister() {
                     placeholder="Nhập số điện thoại"
                     name="phone"
                     type="tel"
+                    value={formData.phone}
+                    onChange={handleChange}
                   />
                 </FormControl>
               </GridItem>
@@ -122,6 +148,8 @@ export default function WWRegister() {
                     variant="flushed"
                     placeholder="Nhập tên thương hiệu"
                     name="brandName"
+                    value={formData.brandName}
+                    onChange={handleChange}
                   />
                 </FormControl>
               </GridItem>
@@ -132,6 +160,8 @@ export default function WWRegister() {
                     variant="flushed"
                     placeholder="Chọn loại hình"
                     name="businessType"
+                    value={formData.businessType}
+                    onChange={handleChange}
                   >
                     <option value="Cá nhân">Cá nhân</option>
                     <option value="Hộ gia đình">Hộ gia đình</option>
@@ -145,8 +175,13 @@ export default function WWRegister() {
                     variant="flushed"
                     placeholder="Nhập địa chỉ xưởng"
                     name="address"
+                    value={formData.address}
+                    onChange={handleChange}
                   />
                 </FormControl>
+              </GridItem>
+              <GridItem colSpan={{ base: 2, xl: "none" }}>
+                <AddressInput formData={formData} onChange={handleChange} />
               </GridItem>
               <GridItem>
                 <FormControl isRequired>
@@ -155,6 +190,8 @@ export default function WWRegister() {
                     variant="flushed"
                     placeholder="Nhập mã số thuế"
                     name="taxCode"
+                    value={formData.taxCode}
+                    onChange={handleChange}
                   />
                 </FormControl>
               </GridItem>
@@ -166,6 +203,8 @@ export default function WWRegister() {
                     placeholder="Giới thiệu về xưởng mộc của bạn"
                     name="bio"
                     rows={4}
+                    value={formData.bio}
+                    onChange={handleChange}
                   />
                 </FormControl>
               </GridItem>

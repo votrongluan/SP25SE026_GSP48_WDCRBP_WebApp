@@ -7,18 +7,39 @@ import {
   Stack,
   Heading,
   useToast,
+  Spinner,
+  Center,
+  Text,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { appColorTheme } from "../../../config/appconfig";
 import UserAddress from "./UserAddress";
+import { useGetUserInformationQuery } from "../../../services/authApi";
+import useAuth from "../../../hooks/useAuth";
 
 export default function CustomerProfile() {
   const toast = useToast();
+  const { auth } = useAuth();
+  const {
+    data: userData,
+    isLoading,
+    error,
+  } = useGetUserInformationQuery(auth?.userId);
   const [formData, setFormData] = useState({
-    name: "Võ Trọng Luân",
-    email: "trongluan111@gmail.com",
-    phone: "0821737123",
+    username: "",
+    email: "",
+    phone: "",
   });
+
+  useEffect(() => {
+    if (userData) {
+      setFormData({
+        username: userData.username || "",
+        email: userData.email || "",
+        phone: userData.phone || "",
+      });
+    }
+  }, [userData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,6 +61,30 @@ export default function CustomerProfile() {
     });
   };
 
+  if (isLoading) {
+    return (
+      <Center h="200px">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color={appColorTheme.brown_2}
+          size="xl"
+        />
+      </Center>
+    );
+  }
+
+  if (error) {
+    return (
+      <Center h="200px">
+        <Text color="red.500">
+          Có lỗi xảy ra khi tải thông tin. Vui lòng thử lại sau.
+        </Text>
+      </Center>
+    );
+  }
+
   return (
     <Box maxW="container.md" mx="auto">
       <form onSubmit={handleSubmit}>
@@ -55,8 +100,8 @@ export default function CustomerProfile() {
           <FormControl>
             <FormLabel>Tên của bạn</FormLabel>
             <Input
-              name="name"
-              value={formData.name}
+              name="username"
+              value={formData.username}
               onChange={handleChange}
               placeholder="Nhập họ và tên"
               bg="white"
@@ -89,15 +134,12 @@ export default function CustomerProfile() {
           type="submit"
           bg={appColorTheme.brown_2}
           color="white"
-          size="lg"
-          w="full"
           _hover={{ bg: appColorTheme.brown_1 }}
         >
           Lưu thông tin
         </Button>
       </form>
 
-      {/* Địa chỉ */}
       <Stack mt={10} spacing={6}>
         <UserAddress />
       </Stack>

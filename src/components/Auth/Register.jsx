@@ -15,7 +15,6 @@ import { useNotify } from "../Utility/Notify";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useRegisterMutation } from "../../services/authApi";
 import { validateRegister } from "../../validations";
-import { m } from "framer-motion";
 
 export default function Register({ changeTab }) {
   const [register, { isLoading: isRegisterLoading }] = useRegisterMutation();
@@ -39,21 +38,23 @@ export default function Register({ changeTab }) {
 
       // Remove rePassword before sending to server
       const { rePassword, ...registerData } = data;
-
-      const res = await register(registerData);
+      const res = await register(registerData).unwrap();
 
       notify(
         "Đăng ký thành công",
-        "Vui lòng kích hoạt tài khoản bằng OTP đã gửi về email",
+        `Vui lòng kích hoạt tài khoản bằng OTP đã gửi về email ${data.email}`,
         "success"
       );
+
+      changeTab("verify");
     } catch (err) {
+      console.log(err);
+
       notify(
         "Đăng ký thất bại",
         "Có lỗi xảy ra, vui lòng thử lại sau",
         "error"
       );
-      console.error(err);
     }
   };
 

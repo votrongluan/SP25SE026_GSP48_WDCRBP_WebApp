@@ -17,127 +17,153 @@ export const CartProvider = ({ children }) => {
     }
   }, [cart]);
 
-  const addCartItem = (employeeId, product) => {
-    product.quantity = 1;
-
+  const addDesignToCart = (design) => {
     setCart((prevCart) => {
-      const employeeCart = prevCart.find(
-        (item) => item.employeeId === employeeId
+      const woodworkerCart = prevCart.find(
+        (item) => item.woodworkerId === design.woodworkerId
       );
 
-      if (employeeCart) {
-        const existingProduct = employeeCart.products.find(
-          (item) => item.productId === product.productId
+      if (woodworkerCart) {
+        return prevCart.map((item) =>
+          item.woodworkerId === design.woodworkerId
+            ? {
+                ...item,
+                designs: [...(item.designs || []), design],
+              }
+            : item
         );
-
-        if (existingProduct) {
-          return prevCart.map((item) =>
-            item.employeeId === employeeId
-              ? {
-                  ...item,
-                  products: item.products.map((prod) =>
-                    prod.productId === product.productId
-                      ? { ...prod, quantity: 1 }
-                      : prod
-                  ),
-                }
-              : item
-          );
-        } else {
-          return prevCart.map((item) =>
-            item.employeeId === employeeId
-              ? { ...item, products: [...item.products, product] }
-              : item
-          );
-        }
       } else {
         return [
           ...prevCart,
-          { name: product.employee.name, employeeId, products: [product] },
+          {
+            woodworkerId: design.woodworkerId,
+            designs: [design],
+            products: [],
+          },
         ];
       }
     });
   };
 
-  const changeQuantity = (employeeId, productId, quantity) => {
+  const addProductToCart = (product) => {
+    setCart((prevCart) => {
+      const woodworkerCart = prevCart.find(
+        (item) => item.woodworkerId === product.woodworkerId
+      );
+
+      if (woodworkerCart) {
+        return prevCart.map((item) =>
+          item.woodworkerId === product.woodworkerId
+            ? {
+                ...item,
+                products: [...(item.products || []), product],
+              }
+            : item
+        );
+      } else {
+        return [
+          ...prevCart,
+          {
+            woodworkerId: product.woodworkerId,
+            designs: [],
+            products: [product],
+          },
+        ];
+      }
+    });
+  };
+
+  const removeCartItem = (woodworkerId, itemId, itemType) => {
     setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.employeeId === employeeId
-          ? {
-              ...item,
-              products: item.products.map((prod) =>
-                prod.productId === productId ? { ...prod, quantity } : prod
-              ),
+      prevCart
+        .map((item) => {
+          if (item.woodworkerId === woodworkerId) {
+            if (itemType === "design") {
+              return {
+                ...item,
+                designs: item.designs.filter(
+                  (design) => design.designId !== itemId
+                ),
+              };
+            } else {
+              return {
+                ...item,
+                products: item.products.filter(
+                  (product) => product.id !== itemId
+                ),
+              };
             }
-          : item
-      )
+          }
+          return item;
+        })
+        .filter(
+          (item) =>
+            (item.designs && item.designs.length > 0) ||
+            (item.products && item.products.length > 0)
+        )
     );
   };
 
-  const removeCartItem = (employeeId, productId) => {
-    setCart(
-      (prevCart) =>
-        prevCart
-          .map((item) =>
-            item.employeeId === employeeId
-              ? {
-                  ...item,
-                  products: item.products.filter(
-                    (prod) => prod.productId !== productId
-                  ),
-                }
-              : item
-          )
-          .filter((item) => item.products.length > 0) // remove empty employee entries
+  const clearCart = (woodworkerId) => {
+    setCart((prevCart) =>
+      prevCart.filter((item) => item.woodworkerId !== woodworkerId)
     );
-  };
-
-  const clearCart = (id) => {
-    const newCart = cart.filter((item) => item.employeeId != id);
-
-    setCart(newCart);
   };
 
   const getCartLength = () => {
     return cart.reduce(
       (total, item) =>
-        total +
-        item.products.reduce((prodTotal, prod) => prodTotal + prod.quantity, 0),
+        total + (item.designs?.length || 0) + (item.products?.length || 0),
       0
     );
   };
 
-  const getNameById = (employeeId) => {
-    const employeeCart = cart.find((item) => item.employeeId === employeeId);
-
-    return employeeCart.name;
-  };
-
-  const calculateTotalPrice = (employeeId) => {
-    const employeeCart = cart.find((item) => item.employeeId === employeeId);
-
-    if (!employeeCart) return 0; // If no products for the given employeeId, return 0
-
-    return employeeCart.products.reduce(
-      (total, product) => total + product.price * product.quantity,
-      0
+  const calculateTotalPrice = (woodworkerId) => {
+    const woodworkerCart = cart.find(
+      (item) => item.woodworkerId === woodworkerId
     );
+
+    if (!woodworkerCart) return 0;
+
+    const designsTotal =
+      woodworkerCart.designs?.reduce(
+        (total, design) => total + design.prices.price,
+        0
+      ) || 0;
+
+    const productsTotal =
+      woodworkerCart.products?.reduce(
+        (total, product) => total + product.price,
+        0
+      ) || 0;
+
+    return designsTotal + productsTotal;
   };
 
   const getCart = () => cart;
+
+  const getCartByWoodworker = (woodworkerId) => {
+    return (
+      cart.find((item) => item.woodworkerId === woodworkerId) || {
+        woodworkerId,
+        designs: [],
+        products: [],
+      }
+    );
+  };
 
   return (
     <CartContext.Provider
       value={{
         cart,
-        addCartItem,
-        changeQuantity,
+        addDesignToCart,
+        addProductToCart,
         removeCartItem,
         clearCart,
         getCartLength,
         getCart,
+        getCartByWoodworker,
         calculateTotalPrice,
-        getNameById,
       }}
     >
       {children}

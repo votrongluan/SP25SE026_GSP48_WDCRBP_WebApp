@@ -40,9 +40,9 @@ export default function ProfileManagementPage() {
   });
 
   const [packData, setPackData] = useState({
-    startDate: "2024-03-01 12:00",
-    endDate: "2024-06-01 12:00",
-    packType: "vàng",
+    startDate: "",
+    endDate: "",
+    packType: "Chưa đăng ký",
   });
 
   const handleSubmit = async (e) => {
@@ -86,7 +86,7 @@ export default function ProfileManagementPage() {
       </Heading>
 
       {/* Current Pack Information */}
-      <PackageFrame packageType="Gold">
+      <PackageFrame packageType="none">
         <Box bg="white" p={6} borderRadius="lg" boxShadow="sm">
           <Heading size="md" mb={4}>
             Thông tin gói dịch vụ
@@ -100,11 +100,15 @@ export default function ProfileManagementPage() {
             </Box>
             <Box>
               <Text fontWeight="bold">Ngày bắt đầu:</Text>
-              <Text fontSize="xl">{packData.startDate}</Text>
+              <Text fontSize="xl">
+                {packData?.startDate ? packData.startDate : "Chưa đăng ký"}
+              </Text>
             </Box>
             <Box>
               <Text fontWeight="bold">Ngày kết thúc:</Text>
-              <Text fontSize="xl">{packData.endDate}</Text>
+              <Text fontSize="xl">
+                {packData?.endDate ? packData.endDate : "Chưa đăng ký"}
+              </Text>
             </Box>
           </SimpleGrid>
           <Button

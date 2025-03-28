@@ -1,18 +1,8 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  HStack,
-  Spacer,
-  Stack,
-  Tooltip,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, HStack, Stack } from "@chakra-ui/react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { appColorTheme } from "../../../../config/appconfig.js";
-import { FiEdit2, FiEye, FiPlus, FiTrash } from "react-icons/fi";
 import { useMemo, useState } from "react";
 import DesignCreateModal from "../ActionModal/DesignCreateModal.jsx";
 import DesignDetailModal from "../ActionModal/DesignDetailModal.jsx";

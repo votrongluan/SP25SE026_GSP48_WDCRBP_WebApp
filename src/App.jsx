@@ -55,6 +55,8 @@ import ReviewManagementListPage from "./pages/woodworker/ReviewManagement/Review
 import WalletManagementListPage from "./pages/woodworker/WalletManagement/WalletList/WalletManagementListPage.jsx";
 import Logout from "./pages/general/Auth/Logout.jsx";
 import ProfileManagementPage from "./pages/woodworker/ProfileManagement/ProfilePage/ProfileManagementPage.jsx";
+import CustomerComplaintPage from "./pages/customer/ComplaintManagement/ComplaintList/CustomerComplaintPage.jsx";
+import CustomerWalletPage from "./pages/customer/WalletManagement/WalletList/CustomerWalletPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -133,6 +135,8 @@ function App() {
           <Route index element={<NotFoundPage />} />
           <Route path="dashboard" element={<NotFoundPage />} />
           <Route path="profile" element={<CustomerProfile />} />
+          <Route path="complaint" element={<CustomerComplaintPage />} />
+          <Route path="wallet" element={<CustomerWalletPage />} />
           <Route path="service-order">
             <Route index element={<CusServiceOrderListPage />} />
             <Route path=":id" element={<CusServiceOrderDetailPage />} />

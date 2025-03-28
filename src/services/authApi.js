@@ -5,6 +5,17 @@ export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
+    prepareHeaders: (headers, { getState }) => {
+      // Lấy token từ state
+      const token = getState()?.auth?.token;
+
+      // Nếu có token thì thêm vào header
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+
+      return headers;
+    },
   }),
   endpoints: (builder) => ({
     loginWithPassword: builder.mutation({
@@ -21,7 +32,19 @@ export const authApi = createApi({
         body: data,
       }),
     }),
+    getUserInformation: builder.query({
+      query: (id) => `/api/v1/auth/getUserInformationById/${id}`,
+      transformResponse: (response) => {
+        // Transform response nếu cần
+        return response.data;
+      },
+      providesTags: (result, error, id) => [{ type: "User", id }],
+    }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation } = authApi;
+export const {
+  useLoginWithPasswordMutation,
+  useRegisterMutation,
+  useGetUserInformationQuery,
+} = authApi;
