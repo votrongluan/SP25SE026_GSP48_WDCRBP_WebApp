@@ -48,6 +48,8 @@ export default function DesignUpdateModal({ order, refetch }) {
         size="full"
         initialFocusRef={initialRef}
         isOpen={isOpen}
+        closeOnOverlayClick={false}
+        closeOnEsc={false}
         onClose={onClose}
       >
         <ModalOverlay />

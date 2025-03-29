@@ -3,7 +3,6 @@ import {
   Button,
   Grid,
   Heading,
-  HStack,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -16,23 +15,52 @@ import {
   Tooltip,
   useDisclosure,
   VStack,
+  Textarea,
+  FormControl,
+  FormLabel,
+  useToast,
+  HStack,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { FiEye } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
 import { appColorTheme } from "../../../../config/appconfig";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector";
+import { useUpdateWoodworkerStatusMutation } from "../../../../services/woodworkerApi";
+import CheckboxList from "../../../../components/Utility/CheckboxList";
+import { useNotify } from "../../../../components/Utility/Notify";
 
 export default function WWRegistrationDetailModal({ registration, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [buttonDisabled, setButtonDisabled] = useState(true);
   const initialRef = useRef(null);
-  const navigate = useNavigate();
+  const notify = useNotify();
+  const [description, setDescription] = useState("");
 
-  const handleApprove = () => {
-    // TODO: Implement approve logic
-    navigate(
-      "/success?title=Duyệt đăng ký thành công&desc=Đã duyệt đăng ký thợ mộc thành công&path=/ad/ww-registration"
-    );
+  const [updateStatus, { isLoading }] = useUpdateWoodworkerStatusMutation();
+
+  const handleStatusUpdate = async (status) => {
+    try {
+      if (!description) {
+        setDescription(
+          status
+            ? "Chúc mừng bạn đơn đăng ký của bạn đã được kiểm duyệt"
+            : "Rất tiếc, đơn đăng ký của bạn đã bị từ chối"
+        );
+      }
+
+      const res = await updateStatus({
+        woodworkerId: registration.woodworkerId,
+        status,
+        description,
+      }).unwrap();
+
+      notify("Thao tác thành công", res?.message);
+
+      refetch();
+      onClose();
+    } catch (error) {
+      notify("Có lỗi xảy ra", error.data?.message || "Vui lòng thử lại sau");
+    }
   };
 
   return (
@@ -54,7 +82,9 @@ export default function WWRegistrationDetailModal({ registration, refetch }) {
         size="6xl"
         initialFocusRef={initialRef}
         isOpen={isOpen}
-        onClose={onClose}
+        closeOnOverlayClick={false}
+        closeOnEsc={false}
+        onClose={isLoading ? null : onClose}
       >
         <ModalOverlay />
         <ModalContent>
@@ -91,7 +121,7 @@ export default function WWRegistrationDetailModal({ registration, refetch }) {
                     <VStack align="stretch" spacing={4}>
                       <Box>
                         <Text fontWeight="bold">Mã đăng ký:</Text>
-                        <Text>{registration?.id}</Text>
+                        <Text>{registration?.woodworkerId}</Text>
                       </Box>
                       <Box>
                         <Text fontWeight="bold">Họ và tên:</Text>
@@ -140,14 +170,53 @@ export default function WWRegistrationDetailModal({ registration, refetch }) {
                   </Grid>
                 </Box>
               </Box>
+
+              {/* Phần ghi chú */}
+              <Box>
+                <FormControl>
+                  <FormLabel>Ghi chú</FormLabel>
+                  <Textarea
+                    placeholder="Nhập ghi chú về việc duyệt/từ chối đăng ký"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </FormControl>
+              </Box>
             </Stack>
 
-            <HStack justify="flex-end" mt={6}>
-              <Button onClick={onClose}>Đóng</Button>
-              <Button colorScheme="blue" onClick={handleApprove}>
+            <HStack mt={6}>
+              <CheckboxList
+                items={[
+                  {
+                    isOptional: false,
+                    description: "Xác nhận đã kiểm tra thông tin đăng ký",
+                  },
+                ]}
+                setButtonDisabled={setButtonDisabled}
+              />
+            </HStack>
+
+            <Stack direction="row" justify="flex-end" mt={6} spacing={4}>
+              <Button isLoading={isLoading} onClick={onClose}>
+                Đóng
+              </Button>
+              <Button
+                colorScheme="red"
+                onClick={() => handleStatusUpdate(false)}
+                isLoading={isLoading}
+                isDisabled={buttonDisabled}
+              >
+                Từ chối
+              </Button>
+              <Button
+                colorScheme="blue"
+                onClick={() => handleStatusUpdate(true)}
+                isLoading={isLoading}
+                isDisabled={buttonDisabled}
+              >
                 Duyệt
               </Button>
-            </HStack>
+            </Stack>
           </ModalBody>
         </ModalContent>
       </Modal>

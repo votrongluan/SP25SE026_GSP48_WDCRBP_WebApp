@@ -8,12 +8,11 @@ export const authApi = createApi({
     baseUrl: API_URL,
     prepareHeaders: (headers) => {
       const cookieAuth = Cookies.get("auth");
-      const token = cookieAuth ? JSON.parse(cookieAuth).token : null;
+      const auth = cookieAuth ? JSON.parse(cookieAuth) : null;
 
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
+      if (auth?.token) {
+        headers.set("authorization", `Bearer ${auth.token}`);
       }
-
       return headers;
     },
   }),
@@ -40,10 +39,18 @@ export const authApi = createApi({
       }),
     }),
     refreshToken: builder.mutation({
-      query: () => ({
-        url: "/api/v1/auth/refresh-token",
-        method: "POST",
-      }),
+      query: () => {
+        const cookieAuth = Cookies.get("auth");
+        const auth = cookieAuth ? JSON.parse(cookieAuth) : null;
+
+        return {
+          url: "/api/v1/auth/refresh-token",
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${auth?.refreshToken}`,
+          },
+        };
+      },
     }),
     sendOTP: builder.mutation({
       query: (email) => ({

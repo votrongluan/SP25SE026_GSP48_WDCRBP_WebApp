@@ -43,6 +43,8 @@ export default function TransactionDetailModal({ transaction }) {
         size="4xl"
         initialFocusRef={initialRef}
         isOpen={isOpen}
+        closeOnOverlayClick={false}
+        closeOnEsc={false}
         onClose={onClose}
       >
         <ModalOverlay />

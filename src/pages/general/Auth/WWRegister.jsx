@@ -16,11 +16,16 @@ import ImageUpload from "../../../components/Utility/ImageUpload.jsx";
 import AddressInput from "../../../components/Utility/AddressInput.jsx";
 import { useState } from "react";
 import { useRegisterWoodworkerMutation } from "../../../services/woodworkerApi.js";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { validateWoodworkerRegister } from "../../../validations/index.js";
+import useAuth from "../../../hooks/useAuth.js";
+import CheckboxList from "../../../components/Utility/CheckboxList.jsx";
 
 export default function WWRegister() {
+  const { auth } = useAuth();
   const notify = useNotify();
   const [imgUrl, setImgUrl] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(true);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
@@ -35,8 +40,9 @@ export default function WWRegister() {
     brandName: "",
     bio: "",
   });
-
   const [registerWoodworker, { isLoading }] = useRegisterWoodworkerMutation();
+
+  if (auth) return <Navigate to="/" />;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,16 +55,23 @@ export default function WWRegister() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const errors = validateWoodworkerRegister({ ...formData, imgUrl });
+    if (errors.length > 0) {
+      notify("Đăng ký thất bại", errors.join(" [---] "), "error");
+      return;
+    }
+
     try {
       const registerData = {
         ...formData,
+        address: `${formData.address}, ${formData.wardCode}, ${formData.districtId}, ${formData.cityId}`,
         imgUrl,
       };
 
       await registerWoodworker(registerData).unwrap();
 
       navigate(
-        "/success?title=Đăng ký thành công&desc=Chúng tôi đã nhận được thông tin của bạn, bạn sẽ nhận được phản hồi trong thời gian sớm nhất"
+        "/success?title=Đăng ký thành công&desc=Chúng tôi đã nhận được thông tin của bạn, bạn sẽ nhận được phản hồi trong thời gian sớm nhất. Thông tin tài khoản của bạn sẽ được gửi đến email của bạn sau khi được kiểm duyệt."
       );
     } catch (error) {
       notify(
@@ -98,7 +111,6 @@ export default function WWRegister() {
                 <FormControl isRequired>
                   <FormLabel>Họ và tên</FormLabel>
                   <Input
-                    variant="flushed"
                     placeholder="Nhập họ và tên"
                     name="fullName"
                     value={formData.fullName}
@@ -110,7 +122,6 @@ export default function WWRegister() {
                 <FormControl isRequired>
                   <FormLabel>Email</FormLabel>
                   <Input
-                    variant="flushed"
                     placeholder="Nhập email"
                     name="email"
                     type="email"
@@ -123,7 +134,6 @@ export default function WWRegister() {
                 <FormControl isRequired>
                   <FormLabel>Số điện thoại</FormLabel>
                   <Input
-                    variant="flushed"
                     placeholder="Nhập số điện thoại"
                     name="phone"
                     type="tel"
@@ -145,7 +155,6 @@ export default function WWRegister() {
                 <FormControl isRequired>
                   <FormLabel>Tên thương hiệu</FormLabel>
                   <Input
-                    variant="flushed"
                     placeholder="Nhập tên thương hiệu"
                     name="brandName"
                     value={formData.brandName}
@@ -157,7 +166,6 @@ export default function WWRegister() {
                 <FormControl isRequired>
                   <FormLabel>Loại hình kinh doanh</FormLabel>
                   <Select
-                    variant="flushed"
                     placeholder="Chọn loại hình"
                     name="businessType"
                     value={formData.businessType}
@@ -172,8 +180,7 @@ export default function WWRegister() {
                 <FormControl isRequired>
                   <FormLabel>Địa chỉ xưởng</FormLabel>
                   <Input
-                    variant="flushed"
-                    placeholder="Nhập địa chỉ xưởng"
+                    placeholder="Nhập tên đường, số nhà"
                     name="address"
                     value={formData.address}
                     onChange={handleChange}
@@ -187,7 +194,6 @@ export default function WWRegister() {
                 <FormControl isRequired>
                   <FormLabel>Mã số thuế</FormLabel>
                   <Input
-                    variant="flushed"
                     placeholder="Nhập mã số thuế"
                     name="taxCode"
                     value={formData.taxCode}
@@ -199,7 +205,6 @@ export default function WWRegister() {
                 <FormControl isRequired>
                   <FormLabel>Giới thiệu</FormLabel>
                   <Textarea
-                    variant="flushed"
                     placeholder="Giới thiệu về xưởng mộc của bạn"
                     name="bio"
                     rows={4}
@@ -222,6 +227,24 @@ export default function WWRegister() {
             </SimpleGrid>
           </Box>
 
+          <Box mt={4}>
+            <CheckboxList
+              items={[
+                {
+                  isOptional: false,
+                  description:
+                    "Tôi đã đọc và đồng ý với điều khoản và điều kiện của nền tảng",
+                },
+                {
+                  isOptional: false,
+                  description:
+                    "Tôi đã kiểm tra thông tin đã cung cấp và đảm bảo tất cả thông tin là chính xác",
+                },
+              ]}
+              setButtonDisabled={setButtonDisabled}
+            />
+          </Box>
+
           <Button
             _hover={{ backgroundColor: "app_brown.1", color: "white" }}
             px="40px"
@@ -229,8 +252,9 @@ export default function WWRegister() {
             bgColor={appColorTheme.brown_2}
             color="white"
             borderRadius="40px"
-            mt="40px"
+            mt={6}
             zIndex="1"
+            isDisabled={buttonDisabled}
             type="submit"
             isLoading={isLoading}
           >

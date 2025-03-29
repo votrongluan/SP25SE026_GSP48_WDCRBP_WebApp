@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { Link, Navigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth.js";
 import Login from "../../../components/Auth/Login.jsx";

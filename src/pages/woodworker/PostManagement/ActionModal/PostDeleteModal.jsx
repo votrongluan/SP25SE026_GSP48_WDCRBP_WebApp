@@ -47,6 +47,8 @@ export default function PostDeleteModal({ post, refetch }) {
       <Modal
         initialFocusRef={initialRef}
         isOpen={isOpen}
+        closeOnOverlayClick={false}
+        closeOnEsc={false}
         onClose={onClose}
         isCentered
       >

@@ -95,6 +95,10 @@ export default function EmailOTPLogin() {
           setAuth(auth);
           navigate("/ww");
           break;
+        case "Admin":
+          setAuth(auth);
+          navigate("/ad");
+          break;
       }
     } catch (error) {
       notify(

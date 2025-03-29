@@ -42,6 +42,8 @@ export default function ProductDeleteModal({ product, refetch }) {
       <Modal
         initialFocusRef={initialRef}
         isOpen={isOpen}
+        closeOnOverlayClick={false}
+        closeOnEsc={false}
         onClose={onClose}
         isCentered
       >

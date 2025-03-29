@@ -4,14 +4,13 @@ import useAuth from "../../hooks/useAuth.js";
 const RequireAuth = ({ allowedRoles, children }) => {
   const { auth } = useAuth();
 
-  // Check if allowedRoles is an array and if the user's role exists in that array
   const hasAccess = Array.isArray(allowedRoles)
-    ? allowedRoles.includes(auth?.Role)
-    : auth?.Role == allowedRoles;
+    ? allowedRoles.includes(auth?.role)
+    : auth?.role == allowedRoles;
 
   return hasAccess ? (
     children
-  ) : auth?.Role ? (
+  ) : auth?.role ? (
     <Navigate to="/unauthorized" replace />
   ) : (
     <Navigate to="/auth" replace />

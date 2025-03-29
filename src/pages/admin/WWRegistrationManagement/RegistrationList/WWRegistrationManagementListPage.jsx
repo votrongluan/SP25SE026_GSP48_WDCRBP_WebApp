@@ -1,56 +1,49 @@
 import {
   Box,
-  Container,
   Flex,
   Heading,
-  HStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Select,
   Stack,
-  useDisclosure,
+  Spinner,
+  Text,
+  Center,
+  HStack,
 } from "@chakra-ui/react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useState, useMemo } from "react";
-import { FiSearch } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import WWRegistrationDetailModal from "../ActionModal/WWRegistrationDetailModal";
+import { useGetInactiveWoodworkersQuery } from "../../../../services/woodworkerApi";
 
 export default function WWRegistrationManagementListPage() {
-  const [rowData, setRowData] = useState([
-    {
-      id: "WW001",
-      fullName: "Nguyễn Văn A",
-      email: "nguyenvana@example.com",
-      phone: "0123456789",
-      address: "123 Đường ABC, Quận 1, TP.HCM",
-      businessType: "Cá nhân",
-      taxCode: "0123456789",
-      brandName: "Xưởng Mộc A",
-      bio: "Chuyên sản xuất đồ gỗ nội thất theo yêu cầu",
-      imgUrl:
-        "https://i.pinimg.com/1200x/aa/b0/ad/aab0ad2b357f91c06718f4177fd4932f.jpg;https://i.pinimg.com/1200x/17/99/2a/17992af2512a41db6b739c546a95944e.jpg",
-      status: "Chờ duyệt",
-    },
-  ]);
+  const {
+    data: response,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useGetInactiveWoodworkersQuery();
 
   const [colDefs] = useState([
-    { headerName: "Mã đăng ký", field: "id" },
+    { headerName: "Mã đăng ký", field: "woodworkerId" },
     { headerName: "Họ và tên", field: "fullName" },
     { headerName: "Email", field: "email" },
     { headerName: "Số điện thoại", field: "phone" },
     { headerName: "Tên thương hiệu", field: "brandName" },
     { headerName: "Loại hình", field: "businessType" },
-    { headerName: "Trạng thái", field: "status" },
+    {
+      headerName: "Trạng thái",
+      field: "status",
+      valueFormatter: (params) =>
+        params.value === "false" ? "Chờ duyệt" : "Đã duyệt",
+    },
     {
       headerName: "Thao tác",
       cellRenderer: ({ data }) => {
         return (
-          <HStack spacing={1}>
-            <WWRegistrationDetailModal registration={data} refetch={null} />
+          <HStack>
+            <WWRegistrationDetailModal registration={data} refetch={refetch} />
           </HStack>
         );
       },
@@ -64,6 +57,14 @@ export default function WWRegistrationManagementListPage() {
       flex: 1,
     };
   }, []);
+
+  if (isLoading) {
+    return (
+      <Center h="500px">
+        <Spinner size="xl" color={appColorTheme.brown_2} />
+      </Center>
+    );
+  }
 
   return (
     <Stack spacing={6}>
@@ -87,7 +88,7 @@ export default function WWRegistrationManagementListPage() {
             paginationPageSize={20}
             paginationPageSizeSelector={[10, 20, 50, 100]}
             defaultColDef={defaultColDef}
-            rowData={rowData}
+            rowData={response?.data || []}
             columnDefs={colDefs}
           />
         </div>

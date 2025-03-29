@@ -16,7 +16,7 @@ export const woodworkerApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["WoodworkerProfile"],
+  tagTypes: ["WoodworkerProfile", "ServicePack"],
   endpoints: (builder) => ({
     // Get list of woodworkers
     listWoodworkers: builder.query({
@@ -27,6 +27,12 @@ export const woodworkerApi = createApi({
     // Get woodworker by ID
     getWoodworkerById: builder.query({
       query: (wwId) => `/api/v1/ww/listWW/${wwId}`,
+      providesTags: ["WoodworkerProfile"],
+    }),
+
+    // Get inactive woodworkers
+    getInactiveWoodworkers: builder.query({
+      query: () => "/api/v1/ww/listWW/inactive",
       providesTags: ["WoodworkerProfile"],
     }),
 
@@ -49,12 +55,35 @@ export const woodworkerApi = createApi({
       }),
       invalidatesTags: ["WoodworkerProfile"],
     }),
+
+    // Add service pack
+    addServicePack: builder.mutation({
+      query: (data) => ({
+        url: "/api/v1/ww/addServicePack",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["ServicePack", "WoodworkerProfile"],
+    }),
+
+    // Add service pack by woodworker ID
+    addServicePackById: builder.mutation({
+      query: ({ wwId, ...data }) => ({
+        url: `/api/v1/ww/addServicePack/${wwId}`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["ServicePack", "WoodworkerProfile"],
+    }),
   }),
 });
 
 export const {
   useListWoodworkersQuery,
   useGetWoodworkerByIdQuery,
+  useGetInactiveWoodworkersQuery,
   useRegisterWoodworkerMutation,
   useUpdateWoodworkerStatusMutation,
+  useAddServicePackMutation,
+  useAddServicePackByIdMutation,
 } = woodworkerApi;

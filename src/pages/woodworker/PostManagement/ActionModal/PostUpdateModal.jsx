@@ -58,6 +58,8 @@ export default function PostUpdateModal({ post, refetch }) {
         size="6xl"
         initialFocusRef={initialRef}
         isOpen={isOpen}
+        closeOnOverlayClick={false}
+        closeOnEsc={false}
         onClose={onClose}
       >
         <ModalOverlay />

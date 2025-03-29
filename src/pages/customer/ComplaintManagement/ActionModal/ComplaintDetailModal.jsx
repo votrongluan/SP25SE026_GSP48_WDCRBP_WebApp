@@ -55,6 +55,8 @@ export default function ComplaintDetailModal({ complaint, refetch }) {
         size="4xl"
         initialFocusRef={initialRef}
         isOpen={isOpen}
+        closeOnOverlayClick={false}
+        closeOnEsc={false}
         onClose={onClose}
       >
         <ModalOverlay />

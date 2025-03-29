@@ -50,6 +50,8 @@ export default function DesignDeleteModal({ design, refetch }) {
         size="md"
         initialFocusRef={initialRef}
         isOpen={isOpen}
+        closeOnOverlayClick={false}
+        closeOnEsc={false}
         isCentered
         onClose={onClose}
       >

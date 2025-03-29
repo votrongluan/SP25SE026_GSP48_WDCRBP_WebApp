@@ -46,6 +46,8 @@ export default function ProductDetailModal({ product, refetch }) {
         size="6xl"
         initialFocusRef={initialRef}
         isOpen={isOpen}
+        closeOnOverlayClick={false}
+        closeOnEsc={false}
         onClose={onClose}
       >
         <ModalOverlay />

@@ -55,6 +55,10 @@ export default function PasswordLogin() {
           setAuth(auth);
           navigate("/ww");
           break;
+        case "Admin":
+          setAuth(auth);
+          navigate("/ad");
+          break;
       }
     } catch (err) {
       notify(

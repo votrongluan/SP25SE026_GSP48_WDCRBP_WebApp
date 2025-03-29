@@ -69,6 +69,8 @@ export default function AppointmentUpdateModal({ order, refetch }) {
         size="xl"
         initialFocusRef={initialRef}
         isOpen={isOpen}
+        closeOnOverlayClick={false}
+        closeOnEsc={false}
         onClose={onClose}
       >
         <ModalOverlay />
