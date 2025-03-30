@@ -28,7 +28,12 @@ export default function WalletManagementListPage() {
     refetch,
   } = useGetUserTransactionsQuery(auth?.userId);
 
-  const transactions = response?.data;
+  const transactions = response?.data?.map((transaction) => {
+    return {
+      ...transaction,
+      createdAt: new Date(transaction.createdAt),
+    };
+  });
 
   const [colDefs] = useState([
     { headerName: "Mã giao dịch", field: "transactionId" },
@@ -59,9 +64,10 @@ export default function WalletManagementListPage() {
     },
     {
       headerName: "Trạng thái",
-      valueFormatter: (params) => (params.value ? "Thành công" : "Thất bại"),
+      valueFormatter: (params) =>
+        params?.data?.status ? "Đã thanh toán" : "Chưa thanh toán",
       cellStyle: (params) => {
-        if (params.value) {
+        if (params?.data?.status) {
           return { color: appColorTheme.green_0 };
         }
         return { color: appColorTheme.red_0 };

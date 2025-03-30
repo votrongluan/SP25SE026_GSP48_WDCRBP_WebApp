@@ -58,6 +58,7 @@ import ProfileManagementPage from "./pages/woodworker/ProfileManagement/ProfileP
 import CustomerComplaintPage from "./pages/customer/ComplaintManagement/ComplaintList/CustomerComplaintPage.jsx";
 import CustomerWalletPage from "./pages/customer/WalletManagement/WalletList/CustomerWalletPage.jsx";
 import WoodworkerWelcomePage from "./pages/woodworker/Welcome/WoodworkerWelcomePage.jsx";
+import PaymentSuccessPage from "./pages/general/PaymentSuccess/PaymentSuccessPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -156,6 +157,7 @@ function App() {
         <Route path="/" element={<RootLayout />} errorElement={<ErrorPage />}>
           {/* Index page route */}
           <Route index element={<HomePage />} />
+          <Route path="payment-success" element={<PaymentSuccessPage />} />
           <Route path="ww-register" element={<WWRegister />} />
           <Route path="pricing" element={<Pricing />} />
           <Route path="success" element={<SuccessPage />} />

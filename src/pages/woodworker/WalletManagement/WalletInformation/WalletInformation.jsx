@@ -15,6 +15,7 @@ import DepositModal from "../ActionModal/DepositModal";
 import WithdrawModal from "../ActionModal/WithdrawModal";
 import { useGetUserWalletQuery } from "../../../../services/walletApi";
 import useAuth from "../../../../hooks/useAuth";
+import { formatPrice } from "../../../../utils/utils";
 
 export default function WalletInformation() {
   const { auth } = useAuth();
@@ -64,10 +65,7 @@ export default function WalletInformation() {
             Số dư ví
           </Heading>
           <Text fontSize="2xl" fontWeight="bold" color={appColorTheme.brown_2}>
-            {new Intl.NumberFormat("vi-VN", {
-              style: "currency",
-              currency: "VND",
-            }).format(wallet?.balance || 0)}
+            {formatPrice(wallet?.balance || 0)}
           </Text>
         </Box>
 
@@ -119,6 +117,7 @@ export default function WalletInformation() {
       <DepositModal
         isOpen={isDepositOpen}
         onClose={onDepositClose}
+        wallet={wallet}
         onSuccess={() => {
           refetch();
           onDepositClose();

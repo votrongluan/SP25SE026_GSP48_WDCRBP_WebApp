@@ -246,7 +246,13 @@ export default function UserAddress() {
         ))}
       </Stack>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        closeOnOverlayClick={false}
+        closeOnEsc={false}
+        size="xl"
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>

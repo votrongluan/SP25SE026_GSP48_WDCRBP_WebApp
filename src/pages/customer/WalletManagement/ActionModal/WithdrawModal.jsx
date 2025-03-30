@@ -17,8 +17,9 @@ import {
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { appColorTheme } from "../../../../config/appconfig";
+import { formatPrice } from "../../../../utils/utils";
 
-export default function WithdrawModal({ isOpen, onClose, balance }) {
+export default function WithdrawModal({ isOpen, onClose, wallet }) {
   const initialRef = useRef(null);
   const [amount, setAmount] = useState("");
 
@@ -33,20 +34,20 @@ export default function WithdrawModal({ isOpen, onClose, balance }) {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={initialRef}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      closeOnOverlayClick={false}
+      closeOnEsc={false}
+      initialFocusRef={initialRef}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Rút tiền</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
           <Stack spacing={4}>
-            <Text>
-              Số dư hiện tại:{" "}
-              {new Intl.NumberFormat("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              }).format(balance)}
-            </Text>
+            <Text>Số dư hiện tại: {formatPrice(wallet?.balance || 0)}</Text>
 
             <FormControl>
               <FormLabel>Số tiền rút</FormLabel>
@@ -66,10 +67,7 @@ export default function WithdrawModal({ isOpen, onClose, balance }) {
                   color={appColorTheme.brown_2}
                   fontWeight="bold"
                 >
-                  {new Intl.NumberFormat("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
-                  }).format(parseInt(amount))}
+                  {formatPrice(parseInt(amount))}
                 </Text>
               </HStack>
             )}

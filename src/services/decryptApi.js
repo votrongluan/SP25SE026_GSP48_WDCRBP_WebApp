@@ -18,12 +18,12 @@ export const decryptApi = createApi({
   }),
   endpoints: (builder) => ({
     decryptData: builder.query({
-      query: () => ({
-        url: "/api/v1/decrypt/decrypt-data",
+      query: (data) => ({
+        url: `/api/v1/decrypt/decrypt-data?value=${data}`,
         method: "GET",
       }),
     }),
   }),
 });
 
-export const { useDecryptDataQuery } = decryptApi; 
+export const { useDecryptDataQuery } = decryptApi;

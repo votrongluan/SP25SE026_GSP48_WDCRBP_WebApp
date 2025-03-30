@@ -17,8 +17,15 @@ import {
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { appColorTheme } from "../../../../config/appconfig";
+import { useTopUpWalletMutation } from "../../../../services/paymentApi";
+import { useNotify } from "../../../../components/Utility/Notify";
+import useAuth from "../../../../hooks/useAuth";
+import { formatPrice } from "../../../../utils/utils";
 
-export default function DepositModal({ isOpen, onClose }) {
+export default function DepositModal({ isOpen, onClose, wallet }) {
+  const notify = useNotify();
+  const { auth } = useAuth();
+  const [topUpWallet, { isLoading }] = useTopUpWalletMutation();
   const initialRef = useRef(null);
   const [amount, setAmount] = useState("");
 
@@ -27,13 +34,38 @@ export default function DepositModal({ isOpen, onClose }) {
     setAmount(value);
   };
 
-  const handleSubmit = () => {
-    // TODO: Implement deposit logic
-    onClose();
+  const handleSubmit = async () => {
+    try {
+      const postData = {
+        userId: wallet.userId,
+        walletId: wallet.walletId,
+        transactionType: "Nạp ví",
+        amount: parseInt(amount),
+        email: auth.sub,
+      };
+
+      const res = await topUpWallet(postData).unwrap();
+
+      onClose();
+
+      window.location.href = res.url;
+    } catch (err) {
+      notify(
+        "Nạp tiền thất bại",
+        err?.data?.message || "Có lỗi xảy ra, vui lòng thử lại sau",
+        "error"
+      );
+    }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={initialRef}>
+    <Modal
+      isOpen={isOpen}
+      onClose={isLoading ? null : onClose}
+      closeOnOverlayClick={false}
+      closeOnEsc={false}
+      initialFocusRef={initialRef}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Nạp tiền</ModalHeader>
@@ -58,22 +90,25 @@ export default function DepositModal({ isOpen, onClose }) {
                   color={appColorTheme.brown_2}
                   fontWeight="bold"
                 >
-                  {new Intl.NumberFormat("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
-                  }).format(parseInt(amount))}
+                  {formatPrice(parseInt(amount))}
                 </Text>
               </HStack>
             )}
           </Stack>
         </ModalBody>
         <ModalFooter>
-          <Button variant="ghost" mr={3} onClick={onClose}>
-            Hủy
+          <Button
+            isLoading={isLoading}
+            variant="ghost"
+            mr={3}
+            onClick={onClose}
+          >
+            Đóng
           </Button>
           <Button
             colorScheme="green"
             onClick={handleSubmit}
+            isLoading={isLoading}
             isDisabled={!amount || parseInt(amount) <= 0}
           >
             Nạp tiền

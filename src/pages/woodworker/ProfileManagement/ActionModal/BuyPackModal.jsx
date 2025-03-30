@@ -15,7 +15,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { formatDateTimeString } from "../../../../utils/utils";
+import { formatDateTimeString, formatPrice } from "../../../../utils/utils";
 import { useServicePackPaymentMutation } from "../../../../services/walletApi";
 import { useNotify } from "../../../../components/Utility/Notify.jsx";
 import useAuth from "../../../../hooks/useAuth";
@@ -99,7 +99,13 @@ export default function BuyPackModal({ isOpen, onClose, onSuccess }) {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xl">
+    <Modal
+      closeOnOverlayClick={false}
+      closeOnEsc={false}
+      isOpen={isOpen}
+      onClose={onClose}
+      size="xl"
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Mua gói mới</ModalHeader>
@@ -147,10 +153,7 @@ export default function BuyPackModal({ isOpen, onClose, onSuccess }) {
                 <Box>
                   <Text fontWeight="bold">Giá gói:</Text>
                   <Text fontSize="xl" color="green.500">
-                    {new Intl.NumberFormat("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    }).format(getPrice())}
+                    {formatPrice(getPrice())}
                   </Text>
                 </Box>
               </VStack>

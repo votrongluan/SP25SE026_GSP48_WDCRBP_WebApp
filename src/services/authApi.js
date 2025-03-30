@@ -68,6 +68,16 @@ export const authApi = createApi({
     getUserInformation: builder.query({
       query: (id) => `/api/v1/user/getUserInformationById/${id}`,
     }),
+    resetPassword: builder.mutation({
+      query: (postData) => ({
+        url: `/api/v1/auth/reset-password?email=${postData.email}&otp=${postData.otp}`,
+        method: "POST",
+        body: {
+          newPassword: postData.newPassword,
+          confirmPassword: postData.confirmPassword,
+        },
+      }),
+    }),
   }),
 });
 
@@ -79,4 +89,5 @@ export const {
   useSendOTPMutation,
   useVerifyOTPMutation,
   useGetUserInformationQuery,
+  useResetPasswordMutation,
 } = authApi;

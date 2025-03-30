@@ -7,75 +7,73 @@ import {
   FormLabel,
   Input,
   Spacer,
-  useToast,
+  HStack,
 } from "@chakra-ui/react";
 import { Form } from "react-router-dom";
-import { useState } from "react";
-import axios from "../../api/axios.js";
+import { useState, useEffect } from "react";
+import {
+  useSendOTPMutation,
+  useResetPasswordMutation,
+} from "../../services/authApi";
+import { useNotify } from "../Utility/Notify";
+import PasswordInput from "../Input/PasswordInput";
 
 export default function ForgetPassword({ changeTab }) {
-  const toast = useToast();
+  const notify = useNotify();
   const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [isOtpSending, setIsOtpSending] = useState(false);
-  const [isSending, setIsSending] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+  const [sendOTPLoading, setSendOTPLoading] = useState(false);
+  const [sendOTP] = useSendOTPMutation();
+  const [resetPassword] = useResetPasswordMutation();
 
-  const handleSendOTP = async () => {
-    setIsOtpSending(true);
-    const res = await axios.post("/Employee/ForgotPassword", { email });
+  useEffect(() => {
+    let timer;
+    if (countdown > 0) {
+      timer = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [countdown]);
 
+  const handleResendOTP = async () => {
     try {
-      toast({
-        title: "Mã xác nhận đã được gửi!",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-    } catch (err) {
-      toast({
-        title: "Lỗi khi gửi mã xác nhận!",
-        description: err.response?.data?.message || "Vui lòng thử lại sau.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      setSendOTPLoading(true);
+      await sendOTP(email).unwrap();
+      notify(
+        "Gửi mã OTP thành công",
+        "Vui lòng kiểm tra email của bạn",
+        "success"
+      );
+      setCountdown(60);
+      setSendOTPLoading(false);
+    } catch (error) {
+      notify(
+        "Gửi mã OTP thất bại",
+        error?.data?.message || "Có lỗi xảy ra, vui lòng thử lại sau",
+        "error"
+      );
+      setSendOTPLoading(false);
     }
   };
 
-  const handleChangePassword = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSending(true);
+
+    const formData = new FormData(e.target);
+    const postData = Object.fromEntries(formData);
 
     try {
-      // First, verify the OTP
-      await axios.post(`/Employee/VerifyOTPForgotPassword?email=${email}`, {
-        otp,
-      });
+      await resetPassword(postData).unwrap();
 
-      // Then, reset the password
-      await axios.post(`/Employee/ResetPassword?email=${email}`, {
-        newPassword,
-        confirmPassword,
-      });
-
-      toast({
-        title: "Mật khẩu đã được thay đổi!",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-    } catch (err) {
-      toast({
-        title: "Lỗi khi đổi mật khẩu!",
-        description: err.response?.data?.message || "Vui lòng thử lại sau.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    } finally {
-      setIsSending(false);
+      notify("Đổi mật khẩu thành công", "Vui lòng đăng nhập lại", "success");
+      changeTab("login");
+    } catch (error) {
+      notify(
+        "Đổi mật khẩu thất bại",
+        error?.data?.message || "Có lỗi xảy ra, vui lòng thử lại sau",
+        "error"
+      );
     }
   };
 
@@ -93,7 +91,7 @@ export default function ForgetPassword({ changeTab }) {
         Quên mật khẩu
       </Box>
 
-      <Form onSubmit={handleChangePassword}>
+      <Form onSubmit={handleSubmit}>
         <FormControl isRequired mb="20px">
           <FormLabel>Email</FormLabel>
           <Input
@@ -103,54 +101,48 @@ export default function ForgetPassword({ changeTab }) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <FormHelperText>
-            Hệ thống sẽ gửi mã OTP về mail của bạn
-          </FormHelperText>
-          <Flex>
-            <Spacer />
-            <Button
-              mt={2}
-              color="white"
-              bgColor="app_brown.2"
-              width="50%"
-              onClick={handleSendOTP}
-              isDisabled={isOtpSending}
-            >
-              Gửi mã xác nhận
-            </Button>
-          </Flex>
         </FormControl>
 
         <FormControl isRequired mb="20px">
-          <FormLabel>Mã OTP</FormLabel>
-          <Input
-            bgColor="white"
-            type="text"
-            name="otp"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-          />
+          <HStack>
+            <FormLabel mr="auto">Mã OTP</FormLabel>
+
+            <Button
+              h="1.75rem"
+              size="sm"
+              onClick={handleResendOTP}
+              isDisabled={countdown > 0 || sendOTPLoading}
+              color={countdown > 0 ? "gray.500" : "app_brown.2"}
+              variant="ghost"
+            >
+              {countdown > 0
+                ? `Vui lòng chờ ${countdown} giây để gửi lại OTP`
+                : "Gửi OTP"}
+            </Button>
+          </HStack>
+          <Input bgColor="white" type="text" name="otp" />
+          <HStack>
+            <FormHelperText ml="auto">
+              Hệ thống sẽ gửi mã OTP về mail của bạn
+            </FormHelperText>
+          </HStack>
         </FormControl>
 
         <FormControl isRequired mb="20px">
           <FormLabel>Mật khẩu mới</FormLabel>
-          <Input
-            bgColor="white"
-            type="password"
+          <PasswordInput
             name="newPassword"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder="Nhập mật khẩu mới"
+            variant="outline"
           />
         </FormControl>
 
         <FormControl isRequired mb="20px">
           <FormLabel>Xác nhận mật khẩu</FormLabel>
-          <Input
-            bgColor="white"
-            type="password"
+          <PasswordInput
             name="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Xác nhận mật khẩu mới"
+            variant="outline"
           />
         </FormControl>
 
@@ -160,14 +152,12 @@ export default function ForgetPassword({ changeTab }) {
           width="100%"
           type="submit"
           mt="30px"
-          isLoading={isSending}
         >
           Xác nhận
         </Button>
 
         <Flex mt="20px" justifyContent="space-between">
           <Spacer />
-
           <Box
             onClick={() => changeTab("login")}
             cursor="pointer"

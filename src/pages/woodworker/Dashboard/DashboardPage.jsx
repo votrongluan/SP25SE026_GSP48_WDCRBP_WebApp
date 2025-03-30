@@ -27,6 +27,7 @@ import {
   Bar,
 } from "recharts";
 import { FaBox, FaUsers, FaStar, FaExclamationTriangle } from "react-icons/fa";
+import { formatPrice } from "../../../utils/utils";
 
 // Mock data - TODO: Replace with API data
 const revenueData = [
@@ -147,14 +148,7 @@ export default function DashboardPage() {
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="month" />
                   <YAxis />
-                  <Tooltip
-                    formatter={(value) =>
-                      new Intl.NumberFormat("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      }).format(value)
-                    }
-                  />
+                  <Tooltip formatter={(value) => formatPrice(value)} />
                   <Line
                     type="monotone"
                     dataKey="value"
@@ -215,12 +209,7 @@ export default function DashboardPage() {
                       <Text color="gray.600">{order.customer}</Text>
                     </Box>
                     <Box textAlign="right">
-                      <Text fontWeight="bold">
-                        {new Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }).format(order.amount)}
-                      </Text>
+                      <Text fontWeight="bold">{formatPrice(order.amount)}</Text>
                       <Badge
                         colorScheme={
                           order.status === "Đã hoàn thành"

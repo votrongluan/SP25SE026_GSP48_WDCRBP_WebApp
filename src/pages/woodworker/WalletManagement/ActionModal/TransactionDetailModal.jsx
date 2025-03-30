@@ -20,7 +20,7 @@ import {
 import { useRef } from "react";
 import { FiEye } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
-import { formatDateTimeString } from "../../../../utils/utils";
+import { formatDateTimeString, formatPrice } from "../../../../utils/utils";
 import { useGetTransactionByIdQuery } from "../../../../services/walletApi";
 
 export default function TransactionDetailModal({ transaction }) {
@@ -35,8 +35,6 @@ export default function TransactionDetailModal({ transaction }) {
   });
 
   const transactionDetail = response?.data[0];
-
-  console.log(transactionDetail);
 
   const renderContent = () => {
     if (isLoading) {
@@ -87,10 +85,7 @@ export default function TransactionDetailModal({ transaction }) {
               <Box>
                 <Text fontWeight="bold">Số tiền:</Text>
                 <Text color={appColorTheme.brown_2} fontWeight="bold">
-                  {new Intl.NumberFormat("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
-                  }).format(detail?.amount)}
+                  {formatPrice(detail?.amount)}
                 </Text>
               </Box>
               <Box>
