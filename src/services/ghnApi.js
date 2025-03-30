@@ -25,6 +25,18 @@ export const ghnApi = createApi({
       }),
     }),
 
+    // Lấy danh sách tỉnh/thành thành value và label
+    getAllProvinceSelect: builder.query({
+      query: () => "/api/v1/GHNApi/provinces",
+      transformResponse: (response) => {
+        if (!response?.data) return [];
+        return response.data.data.map((province) => ({
+          value: province.ProvinceID,
+          label: province.ProvinceName,
+        }));
+      },
+    }),
+
     // Lấy danh sách quận/huyện theo tỉnh/thành
     getDistrictByProvinceId: builder.query({
       query: (provinceId) => ({
@@ -45,6 +57,7 @@ export const ghnApi = createApi({
 
 export const {
   useGetAllProvinceQuery,
+  useGetAllProvinceSelectQuery,
   useGetDistrictByProvinceIdQuery,
   useGetWardByDistrictIdQuery,
 } = ghnApi;

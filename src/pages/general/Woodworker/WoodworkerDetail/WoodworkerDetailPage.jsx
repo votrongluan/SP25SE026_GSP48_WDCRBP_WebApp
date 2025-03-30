@@ -12,6 +12,8 @@ import {
   TabPanels,
   Tabs,
   Text,
+  Spinner,
+  Center,
 } from "@chakra-ui/react";
 import ReviewSection from "./Tab/ReviewTab/ReviewSection.jsx";
 import StarRating from "../../../../components/Utility/StarRating.jsx";
@@ -21,8 +23,39 @@ import WoodworkerDesignsTab from "./Tab/DesignTab/WoodworkerDesignsTab.jsx";
 import AvailableService from "./Tab/ServiceTab/AvailableService.jsx";
 import PostTab from "./Tab/PostTab/PostTab.jsx";
 import PackageFrame from "../../../../components/Utility/PackageFrame.jsx";
+import { useParams } from "react-router-dom";
+import { useGetWoodworkerByIdQuery } from "../../../../services/woodworkerApi";
 
 export default function WoodworkerDetailPage() {
+  const { id } = useParams();
+  const { data: response, isLoading, error } = useGetWoodworkerByIdQuery(id);
+
+  if (isLoading) {
+    return (
+      <Center py={10}>
+        <Spinner size="xl" />
+      </Center>
+    );
+  }
+
+  if (error) {
+    return (
+      <Center py={10}>
+        <Text>Đã có lỗi xảy ra khi tải dữ liệu</Text>
+      </Center>
+    );
+  }
+
+  const woodworker = response?.data;
+
+  if (!woodworker) {
+    return (
+      <Center py={10}>
+        <Text>Không tìm thấy thông tin xưởng mộc</Text>
+      </Center>
+    );
+  }
+
   return (
     <>
       <Box mb={6}>
@@ -36,7 +69,7 @@ export default function WoodworkerDetailPage() {
         </Heading>
       </Box>
 
-      <PackageFrame packageType="Bronze">
+      <PackageFrame packageType={woodworker.servicePack?.name || "Bronze"}>
         <Box>
           <Flex
             flexDirection={{
@@ -51,8 +84,12 @@ export default function WoodworkerDetailPage() {
           >
             <Box flex={1}>
               <Image
-                src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
+                src={woodworker.imgUrl}
                 width="100%"
+                height="500px"
+                objectFit="cover"
+                objectPosition="center"
+                alt={woodworker.brandName}
               />
             </Box>
 
@@ -60,34 +97,46 @@ export default function WoodworkerDetailPage() {
               <Stack spacing={4}>
                 <Flex justifyContent="space-between" alignContent="center">
                   <Heading fontWeight="bold" fontSize="20px">
-                    Xưởng mộc Hòa Bình Quận 5
+                    {woodworker.brandName}
                   </Heading>
                   <Flex alignContent="center" gap={2}>
-                    {" "}
-                    <StarRating rating={3.5} />
-                    13 đánh giá
+                    <StarRating
+                      rating={
+                        woodworker.totalReviews
+                          ? woodworker.totalStar / woodworker.totalReviews
+                          : 0
+                      }
+                    />
+                    {woodworker.totalReviews
+                      ? `${woodworker.totalReviews} đánh giá`
+                      : "Chưa có đánh giá"}
                   </Flex>
                 </Flex>
 
                 <HStack>
-                  <Text fontWeight="bold">Địa chỉ xưởng:</Text>
-                  <Text>Chưa cập nhật</Text>
+                  <Text color="gray.500">
+                    {woodworker.address || "Chưa cập nhật"}
+                  </Text>
                 </HStack>
 
                 <HStack>
                   <Text fontWeight="bold">Loại hình kinh doanh:</Text>
-                  <Text>Chưa cập nhật</Text>
+                  <Text>{woodworker.businessType || "Chưa cập nhật"}</Text>
+                </HStack>
+
+                <HStack>
+                  <Text fontWeight="bold">Liên hệ:</Text>
+                  <Text>{woodworker.user?.phone || "Chưa cập nhật"}</Text>
+                </HStack>
+
+                <HStack>
+                  <Text fontWeight="bold">Email:</Text>
+                  <Text>{woodworker.user?.email || "Chưa cập nhật"}</Text>
                 </HStack>
 
                 <Box>
                   <Text fontWeight="bold">Giới thiệu:</Text>
-                  <Text>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Reiciendis harum, voluptates quas, laudantium inventore
-                    debitis aspernatur aperiam voluptate distinctio perspiciatis
-                    doloremque cupiditate cum facere iste reprehenderit totam
-                    tempora impedit non.
-                  </Text>
+                  <Text>{woodworker.bio || "Chưa cập nhật"}</Text>
                 </Box>
               </Stack>
             </Stack>
@@ -131,19 +180,19 @@ export default function WoodworkerDetailPage() {
 
           <TabPanels>
             <TabPanel p={0}>
-              <PostTab />
+              <PostTab woodworkerId={woodworker.woodworkerId} />
             </TabPanel>
             <TabPanel p={0}>
-              <AvailableService />
+              <AvailableService woodworkerId={woodworker.woodworkerId} />
             </TabPanel>
             <TabPanel p={0}>
-              <WoodworkerDesignsTab />
+              <WoodworkerDesignsTab woodworkerId={woodworker.woodworkerId} />
             </TabPanel>
             <TabPanel p={0}>
-              <WoodworkerProductTab />
+              <WoodworkerProductTab woodworkerId={woodworker.woodworkerId} />
             </TabPanel>
             <TabPanel p={0}>
-              <ReviewSection />
+              <ReviewSection woodworkerId={woodworker.woodworkerId} />
             </TabPanel>
           </TabPanels>
         </Tabs>
