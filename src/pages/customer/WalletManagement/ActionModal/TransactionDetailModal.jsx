@@ -18,7 +18,7 @@ import {
 import { useRef } from "react";
 import { FiEye } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
-import { convertTimeStampToDateTimeString } from "../../../../utils/utils";
+import { formatDateTimeString } from "../../../../utils/utils";
 
 export default function TransactionDetailModal({ transaction }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -52,13 +52,13 @@ export default function TransactionDetailModal({ transaction }) {
           <ModalHeader bgColor="app_grey.2">Chi tiết giao dịch</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
-            <Stack gap={6}>
+            <Stack gap={5}>
               {/* Thông tin cơ bản */}
               <Box>
                 <Heading size="md" mb={4}>
                   Thông tin giao dịch
                 </Heading>
-                <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
+                <Box bg="white" p={5} borderRadius="lg" boxShadow="md">
                   <Grid templateColumns="repeat(2, 1fr)" gap={5}>
                     <Box>
                       <Text fontWeight="bold">Mã giao dịch:</Text>
@@ -99,9 +99,7 @@ export default function TransactionDetailModal({ transaction }) {
                     <Box>
                       <Text fontWeight="bold">Ngày tạo:</Text>
                       <Text>
-                        {convertTimeStampToDateTimeString(
-                          transaction?.createdAt
-                        )}
+                        {formatDateTimeString(transaction?.createdAt)}
                       </Text>
                     </Box>
                     <Box>
@@ -127,7 +125,7 @@ export default function TransactionDetailModal({ transaction }) {
                 <Heading size="md" mb={4}>
                   Mô tả
                 </Heading>
-                <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
+                <Box bg="white" p={5} borderRadius="lg" boxShadow="md">
                   <Text>{transaction?.description}</Text>
                 </Box>
               </Box>

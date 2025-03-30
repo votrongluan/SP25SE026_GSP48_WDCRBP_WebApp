@@ -86,6 +86,7 @@ export const woodworkerApi = createApi({
 
 export const {
   useListWoodworkersQuery,
+  useGetWoodworkerByUserIdQuery,
   useGetWoodworkerByIdQuery,
   useGetInactiveWoodworkersQuery,
   useRegisterWoodworkerMutation,

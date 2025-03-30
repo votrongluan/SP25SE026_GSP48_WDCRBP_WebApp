@@ -23,7 +23,25 @@ export const userApi = createApi({
         method: "GET",
       }),
     }),
+    updateUserInformation: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/api/v1/user/updateUserInformation/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    changePassword: builder.mutation({
+      query: ({ userId, data }) => ({
+        url: `/api/v1/user/change-password/${userId}`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetUserInformationQuery } = userApi;
+export const {
+  useGetUserInformationQuery,
+  useUpdateUserInformationMutation,
+  useChangePasswordMutation,
+} = userApi;

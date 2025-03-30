@@ -57,6 +57,7 @@ import Logout from "./pages/general/Auth/Logout.jsx";
 import ProfileManagementPage from "./pages/woodworker/ProfileManagement/ProfilePage/ProfileManagementPage.jsx";
 import CustomerComplaintPage from "./pages/customer/ComplaintManagement/ComplaintList/CustomerComplaintPage.jsx";
 import CustomerWalletPage from "./pages/customer/WalletManagement/WalletList/CustomerWalletPage.jsx";
+import WoodworkerWelcomePage from "./pages/woodworker/Welcome/WoodworkerWelcomePage.jsx";
 
 function App() {
   useEffect(() => {
@@ -108,7 +109,7 @@ function App() {
 
         {/* Woodworker page route */}
         <Route path="ww" element={<WoodworkerLayout />}>
-          <Route index element={<NotFoundPage />} />
+          <Route index element={<WoodworkerWelcomePage />} />
           <Route path="dashboard" element={<NotFoundPage />} />
 
           <Route path="design" element={<DesignManagementListPage />} />

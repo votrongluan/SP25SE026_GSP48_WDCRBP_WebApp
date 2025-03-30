@@ -16,7 +16,7 @@ export default function DesignsPage() {
         </Heading>
       </Box>
 
-      <Grid templateColumns={{ base: "1fr", xl: "2fr 8fr" }} gap={6}>
+      <Grid templateColumns={{ base: "1fr", xl: "2fr 8fr" }} gap={5}>
         <Box>
           <FiltersComponent />
         </Box>

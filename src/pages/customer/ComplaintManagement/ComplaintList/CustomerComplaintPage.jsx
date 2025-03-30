@@ -5,7 +5,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useState, useMemo } from "react";
 import { appColorTheme } from "../../../../config/appconfig";
 import ComplaintDetailModal from "../ActionModal/ComplaintDetailModal";
-import { convertTimeStampToDateTimeString } from "../../../../utils/utils";
+import { formatDateTimeString } from "../../../../utils/utils";
 
 export default function CustomerComplaintPage() {
   const [rowData, setRowData] = useState([
@@ -32,8 +32,7 @@ export default function CustomerComplaintPage() {
     {
       headerName: "Ngày tạo",
       field: "createdAt",
-      valueFormatter: (params) =>
-        convertTimeStampToDateTimeString(params.value),
+      valueFormatter: (params) => formatDateTimeString(params.value),
     },
     {
       headerName: "Trạng thái",

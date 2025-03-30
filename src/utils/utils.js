@@ -13,7 +13,7 @@ export const convertDateStringToDate = (dateString) => {
   return date.toISOString();
 };
 
-export const convertTimeStampToDateString = (timestamp) => {
+export const formatDateString = (timestamp) => {
   const date = dayjs(timestamp).tz("Asia/Ho_Chi_Minh");
 
   const dateString = date.format("DD/MM/YYYY");
@@ -21,7 +21,17 @@ export const convertTimeStampToDateString = (timestamp) => {
   return dateString;
 };
 
-export const convertTimeStampToDateTimeString = (timestamp) => {
+export const formatDateToVietnamese = (dateString) => {
+  if (!dateString) return "Chưa đăng ký";
+  const date = new Date(dateString);
+  return date.toLocaleDateString("vi-VN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
+
+export const formatDateTimeString = (timestamp) => {
   const dateTime = dayjs(timestamp).tz("Asia/Ho_Chi_Minh");
   return dateTime.format("DD/MM/YYYY HH:mm");
 };
@@ -37,14 +47,6 @@ export const getDateNow = () => {
 export const generateBarcode = (type) => {
   const randomNum = Math.floor(100000 + Math.random() * 900000);
   return type.typeName.toUpperCase() + randomNum;
-};
-
-export const convertDateToDateString = (dateString) => {
-  const date = new Date(dateString);
-  const day = date.getUTCDate().toString().padStart(2, "0");
-  const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
-  const year = date.getUTCFullYear();
-  return `${day}/${month}/${year}`;
 };
 
 export const formatPrice = (price) => {

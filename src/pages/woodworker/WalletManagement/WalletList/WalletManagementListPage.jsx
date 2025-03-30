@@ -1,70 +1,70 @@
-import { Box, Flex, Heading, HStack, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  Stack,
+  Spinner,
+  Center,
+  Text,
+} from "@chakra-ui/react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useState, useMemo } from "react";
 import { appColorTheme } from "../../../../config/appconfig";
 import TransactionDetailModal from "../ActionModal/TransactionDetailModal";
-import { convertTimeStampToDateTimeString } from "../../../../utils/utils";
+import { formatDateTimeString, formatPrice } from "../../../../utils/utils";
 import WalletInformation from "../WalletInformation/WalletInformation";
+import { useGetUserTransactionsQuery } from "../../../../services/walletApi";
+import useAuth from "../../../../hooks/useAuth";
 
 export default function WalletManagementListPage() {
-  const [rowData, setRowData] = useState([
-    {
-      transactionId: "GD001",
-      type: "Nạp ví",
-      status: "Thành công",
-      createdAt: "2024-03-27T10:00:00",
-      description: "Nạp tiền qua ngân hàng",
-      amount: 1000000,
-    },
-  ]);
+  const { auth } = useAuth();
+  const {
+    data: response,
+    isLoading,
+    error,
+    refetch,
+  } = useGetUserTransactionsQuery(auth?.userId);
+
+  const transactions = response?.data;
 
   const [colDefs] = useState([
     { headerName: "Mã giao dịch", field: "transactionId" },
     {
       headerName: "Loại giao dịch",
-      field: "type",
+      field: "transactionType",
       cellStyle: (params) => {
         if (params.value === "Nạp ví") {
-          return { color: "#38A169" };
+          return { color: appColorTheme.green_0 };
         } else if (params.value === "Thanh toán") {
-          return { color: "#E53E3E" };
+          return { color: appColorTheme.red_0 };
         }
-        return { color: "#3182CE" };
+        return { color: appColorTheme.blue_0 };
       },
     },
     {
       headerName: "Số tiền",
       field: "amount",
-      valueFormatter: (params) => {
-        return new Intl.NumberFormat("vi-VN", {
-          style: "currency",
-          currency: "VND",
-        }).format(params.value);
+      valueFormatter: (params) => formatPrice(params.value),
+      cellStyle: () => {
+        return { color: appColorTheme.brown_2, fontWeight: "bold" };
       },
-    },
-    {
-      headerName: "Mô tả",
-      field: "description",
-      flex: 2,
     },
     {
       headerName: "Ngày tạo",
       field: "createdAt",
-      valueFormatter: (params) =>
-        convertTimeStampToDateTimeString(params.value),
+      valueFormatter: (params) => formatDateTimeString(params.value),
     },
     {
       headerName: "Trạng thái",
-      field: "status",
+      valueFormatter: (params) => (params.value ? "Thành công" : "Thất bại"),
       cellStyle: (params) => {
-        if (params.value === "Thành công") {
-          return { color: "#38A169" };
-        } else if (params.value === "Thất bại") {
-          return { color: "#E53E3E" };
+        if (params.value) {
+          return { color: appColorTheme.green_0 };
         }
-        return { color: "#718096" };
+        return { color: appColorTheme.red_0 };
       },
     },
     {
@@ -86,6 +86,22 @@ export default function WalletManagementListPage() {
       flex: 1,
     };
   }, []);
+
+  if (isLoading) {
+    return (
+      <Center h="200px">
+        <Spinner size="xl" color={appColorTheme.brown_2} />
+      </Center>
+    );
+  }
+
+  if (error) {
+    return (
+      <Center h="200px">
+        <Text>Đã có lỗi xảy ra khi tải danh sách giao dịch</Text>
+      </Center>
+    );
+  }
 
   return (
     <Stack spacing={6}>
@@ -123,7 +139,7 @@ export default function WalletManagementListPage() {
             paginationPageSize={20}
             paginationPageSizeSelector={[10, 20, 50, 100]}
             defaultColDef={defaultColDef}
-            rowData={rowData}
+            rowData={transactions || []}
             columnDefs={colDefs}
           />
         </div>

@@ -18,10 +18,7 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../config/appconfig.js";
-import {
-  convertTimeStampToDateTimeString,
-  formatPrice,
-} from "../../../../utils/utils.js";
+import { formatDateTimeString, formatPrice } from "../../../../utils/utils.js";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector.jsx";
 import { CheckBox } from "@mui/icons-material";
 
@@ -302,7 +299,7 @@ export default function GeneralInformationTab() {
 
           <HStack>
             <Text fontWeight="bold">Ngày đăng:</Text>
-            <Text>{convertTimeStampToDateTimeString(new Date())}</Text>
+            <Text>{formatDateTimeString(new Date())}</Text>
           </HStack>
 
           <HStack>

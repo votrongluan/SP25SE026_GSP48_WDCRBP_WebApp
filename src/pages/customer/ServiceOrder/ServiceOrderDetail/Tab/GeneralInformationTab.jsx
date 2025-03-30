@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../../config/appconfig.js";
 import {
-  convertTimeStampToDateTimeString,
+  formatDateTimeString,
   formatPrice,
 } from "../../../../../utils/utils.js";
 
@@ -266,7 +266,7 @@ export default function GeneralInformationTab() {
 
           <HStack>
             <Text fontWeight="bold">Ngày đăng:</Text>
-            <Text>{convertTimeStampToDateTimeString(new Date())}</Text>
+            <Text>{formatDateTimeString(new Date())}</Text>
           </HStack>
 
           <HStack>

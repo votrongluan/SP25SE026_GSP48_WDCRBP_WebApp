@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Stack, Checkbox, Text, Box } from "@chakra-ui/react";
+import { Stack, Checkbox, Text, Box, Heading } from "@chakra-ui/react";
 
 export default function CheckboxList({ items, setButtonDisabled }) {
   const [checkedItems, setCheckedItems] = useState(items.map(() => false));
@@ -22,6 +22,9 @@ export default function CheckboxList({ items, setButtonDisabled }) {
 
   return (
     <Stack spacing={3}>
+      <Heading as="h3" fontSize="18px" fontFamily="Montserrat">
+        Xác nhận thông tin
+      </Heading>
       {items.map((item, index) => (
         <Box key={index}>
           <Checkbox

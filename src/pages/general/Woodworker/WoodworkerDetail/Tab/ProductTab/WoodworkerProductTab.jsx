@@ -5,7 +5,7 @@ import ProductList from "./ProductList.jsx";
 export default function WoodworkerProductTab() {
   return (
     <>
-      <Grid mt={6} templateColumns={{ base: "1fr", xl: "2fr 8fr" }} gap={6}>
+      <Grid mt={6} templateColumns={{ base: "1fr", xl: "2fr 8fr" }} gap={5}>
         <Box>
           <FiltersComponent />
         </Box>

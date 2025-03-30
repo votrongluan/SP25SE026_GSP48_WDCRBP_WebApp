@@ -157,8 +157,8 @@ function ContactPage() {
           </FormControl>
           <Button
             _hover={{ backgroundColor: "app_brown.1", color: "white" }}
-            px="40px"
-            py="25px"
+            px="30px"
+            py="20px"
             bgColor={appColorTheme.brown_2}
             color="white"
             borderRadius="40px"

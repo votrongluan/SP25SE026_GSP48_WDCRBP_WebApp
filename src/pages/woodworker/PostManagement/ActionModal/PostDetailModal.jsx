@@ -52,7 +52,7 @@ export default function PostDetailModal({ post }) {
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <VStack spacing={6} align="stretch">
-              <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+              <Grid templateColumns="repeat(2, 1fr)" gap={5}>
                 <GridItem>
                   <VStack spacing={4} align="stretch">
                     <Text>

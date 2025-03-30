@@ -16,6 +16,13 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import Cart from "../Cart/Cart.jsx";
 import { AccountCircleRounded } from "@mui/icons-material";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import {
+  FiLogOut,
+  FiUserCheck,
+  FiUserPlus,
+  FiUsers,
+  FiUserX,
+} from "react-icons/fi";
 
 export default function AccountMenu() {
   const { auth, setAuth } = useAuth();
@@ -48,11 +55,17 @@ export default function AccountMenu() {
                     auth?.role == "Woodworker" ? "/ww/profile" : "/cus/profile"
                   }
                 >
-                  Tài khoản
+                  <HStack>
+                    <FiUsers />
+                    <Text>Tài khoản</Text>
+                  </HStack>
                 </MenuItem>
                 <MenuDivider />
                 <MenuItem bg="white" color="black" onClick={handleLogout}>
-                  Đăng xuất
+                  <HStack>
+                    <FiLogOut />
+                    <Text>Đăng xuất</Text>
+                  </HStack>
                 </MenuItem>
               </MenuList>
             </Menu>

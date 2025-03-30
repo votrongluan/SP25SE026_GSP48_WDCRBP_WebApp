@@ -21,7 +21,7 @@ import { useRef, useState } from "react";
 import { FiEye, FiStar } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { appColorTheme } from "../../../../config/appconfig";
-import { convertTimeStampToDateTimeString } from "../../../../utils/utils";
+import { formatDateTimeString } from "../../../../utils/utils";
 
 export default function ReviewDetailModal({ review, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -64,13 +64,13 @@ export default function ReviewDetailModal({ review, refetch }) {
           <ModalHeader bgColor="app_grey.2">Chi tiết đánh giá</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
-            <Stack gap={6}>
+            <Stack gap={5}>
               {/* Thông tin cơ bản */}
               <Box>
                 <Heading size="md" mb={4}>
                   Thông tin đánh giá
                 </Heading>
-                <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
+                <Box bg="white" p={5} borderRadius="lg" boxShadow="md">
                   <Grid templateColumns="repeat(2, 1fr)" gap={5}>
                     <Box>
                       <Text fontWeight="bold">Mã đánh giá:</Text>
@@ -86,9 +86,7 @@ export default function ReviewDetailModal({ review, refetch }) {
                     </Box>
                     <Box>
                       <Text fontWeight="bold">Ngày cập nhật:</Text>
-                      <Text>
-                        {convertTimeStampToDateTimeString(review?.updatedAt)}
-                      </Text>
+                      <Text>{formatDateTimeString(review?.updatedAt)}</Text>
                     </Box>
                     <Box>
                       <Text fontWeight="bold">Trạng thái:</Text>
@@ -113,7 +111,7 @@ export default function ReviewDetailModal({ review, refetch }) {
                 <Heading size="md" mb={4}>
                   Đánh giá và nội dung
                 </Heading>
-                <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
+                <Box bg="white" p={5} borderRadius="lg" boxShadow="md">
                   <VStack spacing={4} align="stretch">
                     <HStack spacing={1}>
                       {[...Array(5)].map((_, index) => (
@@ -138,7 +136,7 @@ export default function ReviewDetailModal({ review, refetch }) {
                 <Heading size="md" mb={4}>
                   Phản hồi
                 </Heading>
-                <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
+                <Box bg="white" p={5} borderRadius="lg" boxShadow="md">
                   <VStack spacing={4} align="stretch">
                     <Textarea
                       value={response}

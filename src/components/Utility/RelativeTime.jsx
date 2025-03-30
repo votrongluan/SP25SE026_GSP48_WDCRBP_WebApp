@@ -1,5 +1,5 @@
 import { Text, Tooltip } from "@chakra-ui/react";
-import { convertTimeStampToDateTimeString } from "../../utils/utils";
+import { formatDateTimeString } from "../../utils/utils";
 
 const getRelativeTime = (dateString) => {
   const now = new Date();
@@ -19,10 +19,7 @@ const getRelativeTime = (dateString) => {
 
 const RelativeTime = ({ dateString }) => {
   return (
-    <Tooltip
-      label={convertTimeStampToDateTimeString(new Date(dateString))}
-      hasArrow
-    >
+    <Tooltip label={formatDateTimeString(new Date(dateString))} hasArrow>
       <Text color="gray.500">Đăng vào: {getRelativeTime(dateString)}</Text>
     </Tooltip>
   );

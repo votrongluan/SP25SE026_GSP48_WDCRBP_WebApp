@@ -5,7 +5,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useState, useMemo } from "react";
 import { appColorTheme } from "../../../../config/appconfig";
 import ReviewDetailModal from "../ActionModal/ReviewDetailModal";
-import { convertTimeStampToDateTimeString } from "../../../../utils/utils";
+import { formatDateTimeString } from "../../../../utils/utils";
 import { FiStar } from "react-icons/fi";
 
 export default function ReviewManagementListPage() {
@@ -51,8 +51,7 @@ export default function ReviewManagementListPage() {
     {
       headerName: "Ngày cập nhật",
       field: "updatedAt",
-      valueFormatter: (params) =>
-        convertTimeStampToDateTimeString(params.value),
+      valueFormatter: (params) => formatDateTimeString(params.value),
     },
     {
       headerName: "Trạng thái",

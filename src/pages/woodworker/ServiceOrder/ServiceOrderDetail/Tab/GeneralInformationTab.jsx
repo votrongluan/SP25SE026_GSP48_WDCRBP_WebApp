@@ -11,7 +11,7 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../../config/appconfig.js";
-import { convertTimeStampToDateTimeString } from "../../../../../utils/utils.js";
+import { formatDateTimeString } from "../../../../../utils/utils.js";
 import CustomizationProductList from "./CustomizationProductList.jsx";
 import StarRating from "../../../../../components/Utility/StarRating.jsx";
 
@@ -161,7 +161,7 @@ export default function GeneralInformationTab() {
 
               <HStack>
                 <Text fontWeight="bold">Ngày đăng:</Text>
-                <Text>{convertTimeStampToDateTimeString(new Date())}</Text>
+                <Text>{formatDateTimeString(new Date())}</Text>
               </HStack>
 
               <HStack>

@@ -28,7 +28,7 @@ export default function WalletInformation() {
   const balance = 10000000; // TODO: Get from API
 
   return (
-    <Box bg="white" p={6} borderRadius="lg" boxShadow="sm">
+    <Box bg="white" p={5} borderRadius="lg" boxShadow="md">
       <Stack spacing={6}>
         {/* Account Balance */}
         <Box>

@@ -1,25 +1,3 @@
-export const stlModelLookup = {
-  ["Humpack Whale - Warhammer 40k"]: "nothing",
-};
-
-export function getProductById(id) {
-  return products.find((product) => product.id == id);
-}
-
-export const categoryMap = {
-  [-1]: "Tất cả sản phẩm",
-  [0]: "Anime",
-  [1]: "Decoration",
-  [2]: "Game",
-  [3]: "Movie",
-};
-
-export const roleMap = {
-  [1]: "Customer",
-  [2]: "Supplier",
-  [3]: "Admin",
-};
-
 export const orderStatusMap = {
   [0]: "Đang chờ",
   [1]: "Đã thanh toán",

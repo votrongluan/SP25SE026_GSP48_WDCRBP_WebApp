@@ -131,7 +131,7 @@ export default function ImageUpdateUploader({
           border="2px dashed"
           borderColor={isDragActive ? "blue.500" : "gray.300"}
           borderRadius="md"
-          p={6}
+          p={5}
           width="100%"
           textAlign="center"
           cursor="pointer"

@@ -1,28 +1,18 @@
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  IconButton,
-  Input,
-  InputGroup,
-  InputRightElement,
-} from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { Form } from "react-router-dom";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { appColorTheme } from "../../config/appconfig.js";
-import { useState } from "react";
 import useAuth from "../../hooks/useAuth.js";
 import { jwtDecode } from "jwt-decode";
 import { useNotify } from "../Utility/Notify.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useLoginWithPasswordMutation } from "../../services/authApi.js";
+import PasswordInput from "../Input/PasswordInput";
 
 export default function PasswordLogin() {
   const notify = useNotify();
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const [showPassword, setShowPassword] = useState(false);
   const [login, { isLoading }] = useLoginWithPasswordMutation();
 
   const from = location.state?.from?.pathname || "/";
@@ -73,27 +63,22 @@ export default function PasswordLogin() {
     <Form onSubmit={handleSubmit}>
       <FormControl isRequired mb="20px">
         <FormLabel>Email</FormLabel>
-        <Input bgColor="white" type="text" name="email" />
+        <Input
+          placeholder="Nhập email"
+          bgColor="white"
+          type="text"
+          name="email"
+        />
       </FormControl>
 
-      <FormControl isRequired mb="20px">
-        <FormLabel>Mật khẩu</FormLabel>
-        <InputGroup>
-          <Input
-            bgColor="white"
-            type={showPassword ? "text" : "password"}
-            name="password"
-          />
-          <InputRightElement>
-            <IconButton
-              aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
-              icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
-              onClick={() => setShowPassword(!showPassword)}
-              variant="ghost"
-            />
-          </InputRightElement>
-        </InputGroup>
-      </FormControl>
+      <PasswordInput
+        label="Mật khẩu"
+        name="password"
+        placeholder="Nhập mật khẩu"
+        isRequired
+        variant="outline"
+        mb="20px"
+      />
 
       <Button
         color="white"

@@ -15,7 +15,10 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { convertTimeStampToDateTimeString } from "../../../../utils/utils";
+import { formatDateTimeString } from "../../../../utils/utils";
+import { useServicePackPaymentMutation } from "../../../../services/walletApi";
+import { useNotify } from "../../../../components/Utility/Notify.jsx";
+import useAuth from "../../../../hooks/useAuth";
 
 const PACK_PRICES = {
   vàng: {
@@ -35,9 +38,12 @@ const PACK_PRICES = {
   },
 };
 
-export default function BuyPackModal({ isOpen, onClose }) {
+export default function BuyPackModal({ isOpen, onClose, onSuccess }) {
+  const { auth } = useAuth();
+  const notify = useNotify();
   const [packType, setPackType] = useState("");
   const [duration, setDuration] = useState("");
+  const [servicePackPayment] = useServicePackPaymentMutation();
 
   const calculateEndDate = (duration) => {
     const currentDate = new Date();
@@ -60,9 +66,31 @@ export default function BuyPackModal({ isOpen, onClose }) {
     return endDate.toISOString().split("T")[0];
   };
 
-  const handleSubmit = () => {
-    // TODO: Implement buy pack logic
-    onClose();
+  const handleSubmit = async () => {
+    try {
+      await servicePackPayment({
+        userId: auth.userId,
+        data: {
+          packType,
+          duration,
+          amount: getPrice(),
+          startDate: new Date().toISOString(),
+          endDate: calculateEndDate(duration),
+        },
+      }).unwrap();
+
+      notify("Mua gói thành công", "Gói đã được kích hoạt", "success");
+      if (onSuccess) {
+        onSuccess();
+      }
+      onClose();
+    } catch (error) {
+      notify(
+        "Mua gói thất bại",
+        error.data?.message || "Vui lòng thử lại sau",
+        "error"
+      );
+    }
   };
 
   const getPrice = () => {
@@ -108,16 +136,12 @@ export default function BuyPackModal({ isOpen, onClose }) {
               <VStack spacing={4} align="stretch">
                 <Box>
                   <Text fontWeight="bold">Ngày bắt đầu:</Text>
-                  <Text fontSize="xl">
-                    {convertTimeStampToDateTimeString(new Date())}
-                  </Text>
+                  <Text fontSize="xl">{formatDateTimeString(new Date())}</Text>
                 </Box>
                 <Box>
                   <Text fontWeight="bold">Ngày kết thúc:</Text>
                   <Text fontSize="xl">
-                    {convertTimeStampToDateTimeString(
-                      new Date(calculateEndDate(duration))
-                    )}
+                    {formatDateTimeString(new Date(calculateEndDate(duration)))}
                   </Text>
                 </Box>
                 <Box>

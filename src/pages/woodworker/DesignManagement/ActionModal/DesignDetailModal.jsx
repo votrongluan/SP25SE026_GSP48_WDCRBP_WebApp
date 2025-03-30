@@ -61,13 +61,13 @@ export default function DesignDetailModal({ design, refetch }) {
           <ModalHeader bgColor="app_grey.2">Chi tiết thiết kế</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
-            <Stack gap={6}>
+            <Stack gap={5}>
               <SimpleGrid
                 columns={{
                   base: 1,
                   xl: 2,
                 }}
-                gap={6}
+                gap={5}
               >
                 {/* Phần hình ảnh */}
                 <Box>
@@ -82,7 +82,7 @@ export default function DesignDetailModal({ design, refetch }) {
                   <Heading size="md" mb={4}>
                     Thông tin cơ bản
                   </Heading>
-                  <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
+                  <Box bg="white" p={5} borderRadius="lg" boxShadow="md">
                     <VStack align="stretch" spacing={4}>
                       <Box>
                         <Text fontWeight="bold">Tên sản phẩm:</Text>
@@ -106,7 +106,7 @@ export default function DesignDetailModal({ design, refetch }) {
                 <Heading size="md" mb={4}>
                   Cấu hình sản phẩm
                 </Heading>
-                <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
+                <Box bg="white" p={5} borderRadius="lg" boxShadow="md">
                   <VStack align="stretch" spacing={4}>
                     {design?.configurations.map((config) => (
                       <Box key={config.id}>
@@ -144,7 +144,7 @@ export default function DesignDetailModal({ design, refetch }) {
                   bg="white"
                   p={5}
                   borderRadius="lg"
-                  boxShadow="sm"
+                  boxShadow="md"
                   overflowX="auto"
                 >
                   <Table variant="simple">

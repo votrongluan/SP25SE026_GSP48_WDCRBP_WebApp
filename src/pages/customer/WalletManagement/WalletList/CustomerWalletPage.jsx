@@ -5,7 +5,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useState, useMemo } from "react";
 import { appColorTheme } from "../../../../config/appconfig";
 import TransactionDetailModal from "../ActionModal/TransactionDetailModal";
-import { convertTimeStampToDateTimeString } from "../../../../utils/utils";
+import { formatDateTimeString } from "../../../../utils/utils";
 import WalletInformation from "../WalletInformation/WalletInformation";
 
 export default function CustomerWalletPage() {
@@ -52,8 +52,7 @@ export default function CustomerWalletPage() {
     {
       headerName: "Ngày tạo",
       field: "createdAt",
-      valueFormatter: (params) =>
-        convertTimeStampToDateTimeString(params.value),
+      valueFormatter: (params) => formatDateTimeString(params.value),
     },
     {
       headerName: "Trạng thái",

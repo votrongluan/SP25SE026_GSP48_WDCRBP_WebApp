@@ -20,6 +20,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { validateWoodworkerRegister } from "../../../validations/index.js";
 import useAuth from "../../../hooks/useAuth.js";
 import CheckboxList from "../../../components/Utility/CheckboxList.jsx";
+import { FiUserPlus } from "react-icons/fi";
 
 export default function WWRegister() {
   const { auth } = useAuth();
@@ -231,7 +232,7 @@ export default function WWRegister() {
             </SimpleGrid>
           </Box>
 
-          <Box mt={4}>
+          <Box mt={6}>
             <CheckboxList
               items={[
                 {
@@ -251,8 +252,8 @@ export default function WWRegister() {
 
           <Button
             _hover={{ backgroundColor: "app_brown.1", color: "white" }}
-            px="40px"
-            py="25px"
+            px="30px"
+            py="20px"
             bgColor={appColorTheme.brown_2}
             color="white"
             borderRadius="40px"
