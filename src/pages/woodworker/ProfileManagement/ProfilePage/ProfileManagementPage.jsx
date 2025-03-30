@@ -175,10 +175,10 @@ export default function ProfileManagementPage() {
             <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={10}>
               <GridItem colSpan={{ base: 2, xl: "none" }}>
                 <FormControl isRequired>
-                  <FormLabel>Tên thương hiệu</FormLabel>
+                  <FormLabel>Tên xưởng mộc</FormLabel>
                   <Input
                     variant="flushed"
-                    placeholder="Nhập tên thương hiệu"
+                    placeholder="Nhập Tên xưởng mộc"
                     name="brandName"
                     defaultValue={profileData.brandName}
                   />

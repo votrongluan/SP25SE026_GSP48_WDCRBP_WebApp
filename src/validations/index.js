@@ -65,9 +65,9 @@ export const validateWoodworkerRegister = (data) => {
 
   // Validate brandName
   if (!data.brandName) {
-    errors.push("Tên thương hiệu là bắt buộc");
+    errors.push("Tên xưởng mộc là bắt buộc");
   } else if (data.brandName.length < 3) {
-    errors.push("Tên thương hiệu phải có ít nhất 3 ký tự");
+    errors.push("Tên xưởng mộc phải có ít nhất 3 ký tự");
   }
 
   // Validate businessType

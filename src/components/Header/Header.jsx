@@ -63,19 +63,28 @@ function Header() {
               bgColor="app_grey.2"
               px="16px"
             >
-              {links.map((link, index) => (
-                <ChakraLink
-                  padding="15px 8px"
-                  key={index}
-                  as={RouterNavLink}
-                  to={link.path}
-                  _hover={{ color: "app_brown.2" }}
-                  transition="color 0.3s ease"
-                  style={navLinkStyle}
-                >
-                  {link.label}
-                </ChakraLink>
-              ))}
+              {links.map((link, index) => {
+                if (
+                  link.path == "/pricing" &&
+                  (auth?.role == "Woodworker" || auth?.role == "Customer")
+                ) {
+                  return null;
+                }
+
+                return (
+                  <ChakraLink
+                    padding="15px 8px"
+                    key={index}
+                    as={RouterNavLink}
+                    to={link.path}
+                    _hover={{ color: "app_brown.2" }}
+                    transition="color 0.3s ease"
+                    style={navLinkStyle}
+                  >
+                    {link.label}
+                  </ChakraLink>
+                );
+              })}
             </HStack>
 
             <Spacer />

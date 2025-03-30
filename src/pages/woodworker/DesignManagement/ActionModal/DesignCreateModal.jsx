@@ -30,6 +30,9 @@ import { FiPlus, FiTrash, FiXCircle } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import ImageUpload from "../../../../components/Utility/ImageUpload";
 import { formatPrice } from "../../../../utils/utils";
+import { useAddDesignIdeaMutation } from "../../../../services/designIdeaApi";
+import { useNotify } from "../../../../components/Utility/Notify";
+import CheckboxList from "../../../../components/Utility/CheckboxList";
 
 export default function DesignCreateModal({ refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,6 +40,10 @@ export default function DesignCreateModal({ refetch }) {
   const [configurations, setConfigurations] = useState([]);
   const [prices, setPrices] = useState([]);
   const [imgUrls, setImgUrls] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const notify = useNotify();
+
+  const [addDesignIdea, { isLoading }] = useAddDesignIdeaMutation();
 
   const handleAddConfig = () => {
     const newConfigId = configurations.length + 1;
@@ -170,17 +177,33 @@ export default function DesignCreateModal({ refetch }) {
     const formData = new FormData(e.target);
     const data = {
       name: formData.get("name"),
-      imgUrls: formData.get("imgUrls"),
-      category: formData.get("category"),
+      img: imgUrls,
+      categoryId: +formData.get("categoryId"),
       description: formData.get("description"),
       configurations,
       prices,
     };
-    setConfigurations([]);
-    setPrices([]);
-    setImgUrls([]);
-    console.log(data);
-    onClose();
+
+    console.log(JSON.stringify(data));
+
+    try {
+      const result = await addDesignIdea(data).unwrap();
+      notify("Thêm thiết kế thành công", result?.message);
+
+      // Reset form
+      setConfigurations([]);
+      setPrices([]);
+      setImgUrls([]);
+
+      refetch?.();
+      onClose();
+    } catch (error) {
+      notify(
+        "Thêm thiết kế thất bại",
+        error.data?.message || "Vui lòng thử lại sau",
+        "error"
+      );
+    }
   };
 
   return (
@@ -203,7 +226,7 @@ export default function DesignCreateModal({ refetch }) {
         isOpen={isOpen}
         closeOnOverlayClick={false}
         closeOnEsc={false}
-        onClose={onClose}
+        onClose={isLoading ? null : onClose}
       >
         <ModalOverlay />
         <ModalContent>
@@ -234,13 +257,13 @@ export default function DesignCreateModal({ refetch }) {
                 <FormControl isRequired>
                   <FormLabel>Danh mục</FormLabel>
                   <Select
-                    name="category"
+                    name="categoryId"
                     placeholder="Chọn danh mục"
                     bg="white"
                   >
-                    <option value="Bàn ăn">Bàn ăn</option>
-                    <option value="Tủ quần áo">Tủ quần áo</option>
-                    <option value="Giường ngủ">Giường ngủ</option>
+                    <option value="1">Bàn ăn</option>
+                    <option value="2">Tủ quần áo</option>
+                    <option value="3">Giường ngủ</option>
                   </Select>
                 </FormControl>
 
@@ -304,7 +327,7 @@ export default function DesignCreateModal({ refetch }) {
                         </HStack>
 
                         <VStack spacing={2} align="stretch">
-                          <FormLabel m={0} isRequired>
+                          <FormLabel m={0}>
                             Giá trị <span style={{ color: "red" }}>*</span>
                           </FormLabel>
                           {config.values.map((value) => (
@@ -412,9 +435,28 @@ export default function DesignCreateModal({ refetch }) {
                   </Box>
                 )}
 
+                <HStack mt={6}>
+                  <CheckboxList
+                    items={[
+                      {
+                        isOptional: false,
+                        description: "Xác nhận thao tác",
+                      },
+                    ]}
+                    setButtonDisabled={setButtonDisabled}
+                  />
+                </HStack>
+
                 <HStack justify="flex-end" mt={4}>
-                  <Button onClick={onClose}>Hủy</Button>
-                  <Button colorScheme="blue" type="submit">
+                  <Button isLoading={isLoading} onClick={onClose}>
+                    Đóng
+                  </Button>
+                  <Button
+                    colorScheme="blue"
+                    type="submit"
+                    isLoading={isLoading}
+                    isDisabled={buttonDisabled}
+                  >
                     Lưu
                   </Button>
                 </HStack>

@@ -20,19 +20,25 @@ export const woodworkerApi = createApi({
   endpoints: (builder) => ({
     // Get list of woodworkers
     listWoodworkers: builder.query({
-      query: () => "/api/v1/ww/listWW",
+      query: () => "/api/v1/ww",
       providesTags: ["WoodworkerProfile"],
     }),
 
     // Get woodworker by ID
     getWoodworkerById: builder.query({
-      query: (wwId) => `/api/v1/ww/listWW/${wwId}`,
+      query: (wwId) => `/api/v1/ww/${wwId}`,
+      providesTags: ["WoodworkerProfile"],
+    }),
+
+    // Get woodworker by userId
+    getWoodworkerByUserId: builder.query({
+      query: (userId) => `/api/v1/ww/user/${userId}`,
       providesTags: ["WoodworkerProfile"],
     }),
 
     // Get inactive woodworkers
     getInactiveWoodworkers: builder.query({
-      query: () => "/api/v1/ww/listWW/inactive",
+      query: () => "/api/v1/ww/inactive",
       providesTags: ["WoodworkerProfile"],
     }),
 

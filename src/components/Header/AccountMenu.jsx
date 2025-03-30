@@ -22,7 +22,6 @@ export default function AccountMenu() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear auth and redirect to login page
     setAuth(null);
     navigate("/auth");
   };
@@ -31,7 +30,7 @@ export default function AccountMenu() {
     <>
       {auth?.token ? (
         <Flex zIndex={999} alignItems="center" columnGap="20px">
-          <Cart />
+          {auth?.role == "Customer" && <Cart />}
           <Box bgColor="white" color="black">
             <Menu>
               <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
@@ -45,7 +44,9 @@ export default function AccountMenu() {
                   bg="white"
                   color="black"
                   as={RouterLink}
-                  to="/cus/profile"
+                  to={
+                    auth?.role == "Woodworker" ? "/ww/profile" : "/cus/profile"
+                  }
                 >
                   Tài khoản
                 </MenuItem>

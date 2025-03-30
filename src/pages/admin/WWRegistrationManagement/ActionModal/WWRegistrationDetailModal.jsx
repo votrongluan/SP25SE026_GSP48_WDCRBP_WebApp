@@ -18,7 +18,6 @@ import {
   Textarea,
   FormControl,
   FormLabel,
-  useToast,
   HStack,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
@@ -148,7 +147,7 @@ export default function WWRegistrationDetailModal({ registration, refetch }) {
                 <Box bg="white" p={5} borderRadius="lg" boxShadow="sm">
                   <Grid templateColumns="repeat(2, 1fr)" gap={5}>
                     <Box>
-                      <Text fontWeight="bold">Tên thương hiệu:</Text>
+                      <Text fontWeight="bold">Tên xưởng mộc:</Text>
                       <Text>{registration?.brandName}</Text>
                     </Box>
                     <Box>

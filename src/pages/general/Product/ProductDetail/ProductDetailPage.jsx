@@ -21,8 +21,10 @@ import { FiShoppingBag, FiShoppingCart } from "react-icons/fi";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector.jsx";
 import { formatPrice } from "../../../../utils/utils.js";
 import PackageFrame from "../../../../components/Utility/PackageFrame.jsx";
+import useAuth from "../../../../hooks/useAuth.js";
 
 export default function ProductDetailPage() {
+  const { auth } = useAuth();
   const product = {
     product_id: "111",
     product_name: "Giường 2 tầng Bubu",
@@ -136,35 +138,35 @@ export default function ProductDetailPage() {
                   {formatPrice(12000000)}
                 </Text>
               </Box>
-              {/* Nút "Mua ngay" và "Thêm vào giỏ" */}
-              <Flex gap={5} alignItems="center">
-                {/* Mua ngay */}
-                <Button
-                  bg={appColorTheme.brown_2}
-                  color="white"
-                  borderRadius="30px"
-                  px={8}
-                  py={6}
-                  leftIcon={<FiShoppingBag />}
-                  _hover={{ bg: appColorTheme.brown_1 }}
-                >
-                  MUA NGAY
-                </Button>
 
-                {/* Thêm vào giỏ */}
-                <Button
-                  variant="outline"
-                  borderColor={appColorTheme.brown_2}
-                  color={appColorTheme.brown_2}
-                  borderRadius="30px"
-                  px={4}
-                  py={6}
-                  leftIcon={<FiShoppingCart />}
-                  _hover={{ opacity: ".9" }}
-                >
-                  Thêm vào giỏ
-                </Button>
-              </Flex>
+              {auth?.role != "Woodworker" && (
+                <Flex gap={5} alignItems="center">
+                  <Button
+                    bg={appColorTheme.brown_2}
+                    color="white"
+                    borderRadius="30px"
+                    px={8}
+                    py={6}
+                    leftIcon={<FiShoppingBag />}
+                    _hover={{ bg: appColorTheme.brown_1 }}
+                  >
+                    MUA NGAY
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    borderColor={appColorTheme.brown_2}
+                    color={appColorTheme.brown_2}
+                    borderRadius="30px"
+                    px={4}
+                    py={6}
+                    leftIcon={<FiShoppingCart />}
+                    _hover={{ opacity: ".9" }}
+                  >
+                    Thêm vào giỏ
+                  </Button>
+                </Flex>
+              )}
             </Box>
           </Stack>
         </Grid>

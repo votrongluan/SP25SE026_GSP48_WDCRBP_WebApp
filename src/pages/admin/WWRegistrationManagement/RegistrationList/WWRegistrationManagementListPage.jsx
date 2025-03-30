@@ -30,7 +30,7 @@ export default function WWRegistrationManagementListPage() {
     { headerName: "Họ và tên", field: "fullName" },
     { headerName: "Email", field: "email" },
     { headerName: "Số điện thoại", field: "phone" },
-    { headerName: "Tên thương hiệu", field: "brandName" },
+    { headerName: "Tên xưởng mộc", field: "brandName" },
     { headerName: "Loại hình", field: "businessType" },
     {
       headerName: "Trạng thái",

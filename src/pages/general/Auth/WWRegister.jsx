@@ -31,14 +31,19 @@ export default function WWRegister() {
     fullName: "",
     email: "",
     phone: "",
-    address: "",
-    wardCode: "",
-    districtId: "",
-    cityId: "",
     businessType: "",
     taxCode: "",
     brandName: "",
     bio: "",
+  });
+  const [fullAddress, setFullAddress] = useState({
+    street: "",
+    cityId: "",
+    districtId: "",
+    wardCode: "",
+    cityName: "",
+    districtName: "",
+    wardName: "",
   });
   const [registerWoodworker, { isLoading }] = useRegisterWoodworkerMutation();
 
@@ -55,7 +60,14 @@ export default function WWRegister() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const errors = validateWoodworkerRegister({ ...formData, imgUrl });
+    const errors = validateWoodworkerRegister({
+      ...formData,
+      imgUrl,
+      address: fullAddress.street,
+      wardCode: fullAddress.wardCode,
+      districtId: fullAddress.districtId,
+      cityId: fullAddress.cityId,
+    });
     if (errors.length > 0) {
       notify("Đăng ký thất bại", errors.join(" [---] "), "error");
       return;
@@ -64,7 +76,10 @@ export default function WWRegister() {
     try {
       const registerData = {
         ...formData,
-        address: `${formData.address}, ${formData.wardCode}, ${formData.districtId}, ${formData.cityId}`,
+        address: `${fullAddress.street}, ${fullAddress.wardName}, ${fullAddress.districtName}, ${fullAddress.cityName}`,
+        wardCode: fullAddress.wardCode,
+        districtId: fullAddress.districtId,
+        cityId: fullAddress.cityId,
         imgUrl,
       };
 
@@ -153,9 +168,9 @@ export default function WWRegister() {
             <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={10}>
               <GridItem colSpan={{ base: 2, xl: "none" }}>
                 <FormControl isRequired>
-                  <FormLabel>Tên thương hiệu</FormLabel>
+                  <FormLabel>Tên xưởng mộc</FormLabel>
                   <Input
-                    placeholder="Nhập tên thương hiệu"
+                    placeholder="Nhập tên xưởng mộc"
                     name="brandName"
                     value={formData.brandName}
                     onChange={handleChange}
@@ -176,19 +191,8 @@ export default function WWRegister() {
                   </Select>
                 </FormControl>
               </GridItem>
-              <GridItem colSpan={{ base: 2, xl: "none" }}>
-                <FormControl isRequired>
-                  <FormLabel>Địa chỉ xưởng</FormLabel>
-                  <Input
-                    placeholder="Nhập tên đường, số nhà"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-              </GridItem>
-              <GridItem colSpan={{ base: 2, xl: "none" }}>
-                <AddressInput formData={formData} onChange={handleChange} />
+              <GridItem colSpan={2}>
+                <AddressInput value={fullAddress} onChange={setFullAddress} />
               </GridItem>
               <GridItem>
                 <FormControl isRequired>

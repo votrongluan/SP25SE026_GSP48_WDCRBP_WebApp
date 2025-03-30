@@ -7,85 +7,88 @@ import {
   SimpleGrid,
   Stack,
   Text,
+  Spinner,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { appColorTheme } from "../../../config/appconfig";
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useGetAllServicePacksQuery } from "../../../services/servicePackApi";
 
-const plans = [
-  {
-    name: "Gói Đồng",
-    prices: {
-      monthly: "200.000",
-      quarterly: "540.000", // Giảm 10%
-      annually: "2.160.000", // Giảm 10%
-    },
-    features: [
-      "Quản lý dịch vụ cung cấp (Tùy chỉnh, sửa chữa)",
-      "Quản lý tương thiết kế",
-      "Quản lý đơn hàng dịch vụ",
-      "Trang cá nhân (Profile) (Giới thiệu, thông tin, hình ảnh)",
-      "5 bài đăng trên trang cá nhân/tháng",
-      "Quản lý sản phẩm & bán sản phẩm có sẵn",
-      "Ưu tiên hiển thị trong kết quả tìm kiếm",
-      "Chức năng cung cấp dịch vụ cá nhân hóa",
-    ],
-    unavailableFeatures: [5, 6, 7],
-  },
-  {
-    name: "Gói Bạc",
-    prices: {
-      monthly: "350.000",
-      quarterly: "945.000", // Giảm 10%
-      annually: "3.780.000", // Giảm 10%
-    },
-    features: [
-      "Quản lý dịch vụ cung cấp (Tùy chỉnh, sửa chữa)",
-      "Quản lý tương thiết kế",
-      "Quản lý đơn hàng dịch vụ",
-      "Trang cá nhân (Profile) (Giới thiệu, thông tin, hình ảnh)",
-      "10 bài đăng trên trang cá nhân/tháng",
-      "Quản lý sản phẩm & bán sản phẩm có sẵn",
-      "Ưu tiên hiển thị trong kết quả tìm kiếm",
-      "Chức năng cung cấp dịch vụ cá nhân hóa",
-    ],
-    unavailableFeatures: [7],
-  },
-  {
-    name: "Gói Vàng",
-    prices: {
-      monthly: "500.000",
-      quarterly: "1.350.000", // Giảm 10%
-      annually: "5.400.000", // Giảm 10%
-    },
-    features: [
-      "Quản lý dịch vụ cung cấp (Tùy chỉnh, sửa chữa)",
-      "Quản lý tương thiết kế",
-      "Quản lý đơn hàng dịch vụ",
-      "Trang cá nhân (Profile) (Giới thiệu, thông tin, hình ảnh)",
-      "20 bài đăng trên trang cá nhân/tháng",
-      "Quản lý sản phẩm & bán sản phẩm có sẵn",
-      "Ưu tiên cao nhất trong kết quả tìm kiếm",
-      "Có chức năng cung cấp dịch vụ cá nhân hóa",
-    ],
-  },
+const baseFeatures = [
+  "Quản lý dịch vụ cung cấp (Tùy chỉnh, sửa chữa)",
+  "Quản lý tương thiết kế",
+  "Quản lý đơn hàng dịch vụ",
+  "Trang cá nhân (Profile) (Giới thiệu, thông tin, hình ảnh)",
 ];
 
 const periodLabels = {
-  monthly: "Hàng tháng",
-  quarterly: "Hàng quý",
-  annually: "Hàng năm",
+  1: "Hàng tháng",
+  3: "Hàng quý",
+  12: "Hàng năm",
 };
 
-export default function Pricing() {
-  const [selectedPeriod, setSelectedPeriod] = useState("monthly");
+export default function Pricing({
+  handleButtonClick,
+  label = "Đăng ký trở thành thợ mộc",
+}) {
+  const navigate = useNavigate();
+  const [selectedPeriod, setSelectedPeriod] = useState(1);
+  const { data: servicePacksResponse, isLoading } =
+    useGetAllServicePacksQuery();
 
-  const getPriceDisplay = (prices, period) => {
-    return `${prices[period]} đồng/${
-      period === "annually" ? "năm" : period === "quarterly" ? "quý" : "tháng"
-    }`;
-  };
+  const plans = useMemo(() => {
+    if (!servicePacksResponse?.data) return [];
+
+    const packsByName = {
+      Bronze: { name: "Gói Đồng" },
+      Silver: { name: "Gói Bạc" },
+      Gold: { name: "Gói Vàng" },
+    };
+
+    // Nhóm các gói theo tên
+    const groupedPacks = servicePacksResponse.data.reduce((acc, pack) => {
+      if (!acc[pack.name]) {
+        acc[pack.name] = {
+          ...packsByName[pack.name],
+          prices: {},
+          features: [
+            ...baseFeatures,
+            `${pack.postLimitPerMonth} bài đăng trên trang cá nhân/tháng`,
+            pack.productManagement
+              ? "Quản lý sản phẩm & bán sản phẩm có sẵn"
+              : "Quản lý sản phẩm & bán sản phẩm có sẵn",
+            pack.searchResultPriority === 100
+              ? "Ưu tiên cao nhất trong kết quả tìm kiếm"
+              : pack.searchResultPriority > 1
+              ? "Ưu tiên hiển thị trong kết quả tìm kiếm"
+              : "Ưu tiên hiển thị trong kết quả tìm kiếm",
+            pack.personalization
+              ? "Chức năng cung cấp dịch vụ cá nhân hóa"
+              : "Chức năng cung cấp dịch vụ cá nhân hóa",
+          ].filter(Boolean),
+          unavailableFeatures: [
+            !pack.productManagement && 5,
+            pack.searchResultPriority === 1 && 6,
+            !pack.personalization && 7,
+          ].filter(Boolean),
+        };
+      }
+      acc[pack.name].prices[pack.duration] = pack.price;
+      return acc;
+    }, {});
+
+    // Chuyển đổi object thành array và sắp xếp theo thứ tự Bronze, Silver, Gold
+    return ["Bronze", "Silver", "Gold"].map((name) => groupedPacks[name]);
+  }, [servicePacksResponse]);
+
+  if (isLoading) {
+    return (
+      <Flex justify="center" align="center" minH="400px">
+        <Spinner size="xl" color={appColorTheme.brown_2} />
+      </Flex>
+    );
+  }
 
   return (
     <Box>
@@ -114,14 +117,14 @@ export default function Pricing() {
         mx="auto"
         mb={6}
       >
-        {Object.entries(periodLabels).map(([period, label]) => (
+        {Object.entries(periodLabels).map(([duration, label]) => (
           <Button
-            key={period}
-            onClick={() => setSelectedPeriod(period)}
-            variant={selectedPeriod === period ? "solid" : "ghost"}
-            bg={selectedPeriod === period ? "white" : "transparent"}
+            key={duration}
+            onClick={() => setSelectedPeriod(Number(duration))}
+            variant={selectedPeriod === Number(duration) ? "solid" : "ghost"}
+            bg={selectedPeriod === Number(duration) ? "white" : "transparent"}
             color={
-              selectedPeriod === period
+              selectedPeriod === Number(duration)
                 ? appColorTheme.black_0
                 : appColorTheme.brown_1
             }
@@ -154,28 +157,34 @@ export default function Pricing() {
                   fontWeight="bold"
                   color={appColorTheme.brown_2}
                 >
-                  {plan.prices[selectedPeriod]}
+                  {plan.prices[selectedPeriod]?.toLocaleString()}
                 </Text>
                 <Text fontSize="xl" color={appColorTheme.brown_1} ml={2}>
                   đồng/
-                  {selectedPeriod === "annually"
+                  {selectedPeriod === 12
                     ? "năm"
-                    : selectedPeriod === "quarterly"
+                    : selectedPeriod === 3
                     ? "quý"
                     : "tháng"}
                 </Text>
               </Flex>
-              <Link to="/ww-register">
-                <Button
-                  bg={appColorTheme.brown_0}
-                  color="black"
-                  size="lg"
-                  w="full"
-                  _hover={{ bg: appColorTheme.brown_1, color: "white" }}
-                >
-                  Đăng ký trở thành thợ mộc
-                </Button>
-              </Link>
+
+              <Button
+                bg={appColorTheme.brown_0}
+                color="black"
+                size="lg"
+                onClick={
+                  handleButtonClick ||
+                  (() => {
+                    navigate("/ww-register");
+                  })
+                }
+                w="full"
+                _hover={{ bg: appColorTheme.brown_1, color: "white" }}
+              >
+                {label}
+              </Button>
+
               <Stack spacing={3}>
                 {plan.features.map((feature, featureIndex) => (
                   <Flex key={featureIndex} align="center">
