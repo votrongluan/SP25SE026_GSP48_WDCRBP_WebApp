@@ -70,7 +70,7 @@ export default function DepositModal({ isOpen, onClose, wallet }) {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Nạp tiền</ModalHeader>
-        <ModalCloseButton />
+        {!isLoading && <ModalCloseButton />}
         <ModalBody pb={6}>
           <Stack spacing={4}>
             <FormControl>

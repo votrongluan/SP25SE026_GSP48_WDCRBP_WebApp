@@ -88,6 +88,10 @@ export default function TransactionDetailModal({ transaction }) {
                 <Text>{formatDateTimeString(detail?.createdAt)}</Text>
               </Box>
               <Box>
+                <Text fontWeight="bold">Mô tả:</Text>
+                <Text>{detail?.description}</Text>
+              </Box>
+              <Box>
                 <Text fontWeight="bold">Trạng thái:</Text>
                 <Text color={detail?.status ? "green.500" : "red.500"}>
                   {detail?.status ? "Đã hoàn thành" : "Chưa hoàn thành"}

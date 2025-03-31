@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useUpdateWalletMutation } from "../../../services/walletApi";
 import { useUpdateTransactionStatusMutation } from "../../../services/transactionApi";
 import { useDecryptDataQuery } from "../../../services/decryptApi";
+import { useAddServicePackMutation } from "../../../services/woodworkerApi";
 import { useNotify } from "../../../components/Utility/Notify";
 import {
   Box,
@@ -26,88 +27,184 @@ export default function PaymentSuccessPage() {
   const notify = useNotify();
   const [updateWallet] = useUpdateWalletMutation();
   const [updateTransactionStatus] = useUpdateTransactionStatusMutation();
+  const [addServicePack] = useAddServicePackMutation();
   const [status, setStatus] = useState("Đang xử lý giao dịch...");
   const [isProcessing, setIsProcessing] = useState(true);
 
   const bgColor = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.200", "gray.700");
 
-  // Lấy các tham số từ URL
-  const encryptedWalletId = searchParams.get("WalletId");
+  // Common parameters
   const encryptedTransactionId = searchParams.get("TransactionId");
   const amount = searchParams.get("vnp_Amount");
 
-  // Sử dụng query hook để giải mã
+  // Wallet-specific parameters
+  const encryptedWalletId = searchParams.get("WalletId");
+
+  // Service Pack-specific parameters
+  const encryptedWoodworkerId = searchParams.get("WoodworkerId");
+  const encryptedServicePackId = searchParams.get("ServicePackId");
+
+  // Determine transaction type based on parameters
+  const isServicePackTransaction =
+    !!encryptedWoodworkerId && !!encryptedServicePackId;
+
+  // Decrypt wallet data
   const { data: walletIdData, isLoading: isWalletIdLoading } =
-    useDecryptDataQuery(encryptedWalletId, { skip: !encryptedWalletId });
+    useDecryptDataQuery(encryptedWalletId, {
+      skip: !encryptedWalletId || isServicePackTransaction,
+    });
+
+  // Decrypt transaction ID
   const { data: transactionIdData, isLoading: isTransactionIdLoading } =
     useDecryptDataQuery(encryptedTransactionId, {
       skip: !encryptedTransactionId,
     });
 
+  // Decrypt service pack data
+  const { data: woodworkerIdData, isLoading: isWoodworkerIdLoading } =
+    useDecryptDataQuery(encryptedWoodworkerId, {
+      skip: !encryptedWoodworkerId || !isServicePackTransaction,
+    });
+
+  const { data: servicePackIdData, isLoading: isServicePackIdLoading } =
+    useDecryptDataQuery(encryptedServicePackId, {
+      skip: !encryptedServicePackId || !isServicePackTransaction,
+    });
+
   useEffect(() => {
-    const handlePaymentSuccess = async () => {
-      if (!encryptedWalletId || !encryptedTransactionId || !amount) {
-        setStatus("Thông tin giao dịch không hợp lệ");
-        setIsProcessing(false);
-        setTimeout(() => {
-          navigate(`/${auth?.role == "Woodworker" ? "ww" : "cus"}/wallet`);
-        }, 1000);
-        return;
-      }
-
-      if (isWalletIdLoading || isTransactionIdLoading) {
-        setStatus("Đang giải mã thông tin giao dịch...");
-        return;
-      }
-
-      try {
-        setStatus("Đang cập nhật số dư ví...");
-        // Cập nhật số dư ví
-        await updateWallet({
-          walletId: parseInt(walletIdData?.data),
-          amount: Math.floor(parseInt(amount) / 100),
-        }).unwrap();
-
-        setStatus("Đang cập nhật trạng thái giao dịch...");
-        // Cập nhật trạng thái giao dịch
-        await updateTransactionStatus({
-          transactionId: parseInt(transactionIdData?.data),
-          status: true,
-          canceledAt: null,
-        }).unwrap();
-
-        setStatus("Giao dịch hoàn tất!");
-        setIsProcessing(false);
-
-        setTimeout(() => {
-          navigate(
-            `/success?title=Thanh toán thành công&desc=Giao dịch đã được thực hiện thành công&path=/${
-              auth?.role == "Woodworker" ? "ww" : "cus"
-            }/wallet&buttonText=Xem ví`
-          );
-        }, 1000);
-      } catch (error) {
-        setStatus("Có lỗi xảy ra, vui lòng thử lại sau");
-        setIsProcessing(false);
-        notify(
-          "Cập nhật thất bại",
-          error?.data?.message || "Có lỗi xảy ra, vui lòng thử lại sau",
-          "error"
-        );
-        setTimeout(() => {
-          navigate(`/${auth?.role == "Woodworker" ? "ww" : "cus"}/wallet`);
-        }, 1000);
-      }
-    };
-
-    handlePaymentSuccess();
+    if (isServicePackTransaction) {
+      handleServicePackPaymentSuccess();
+    } else {
+      handleWalletPaymentSuccess();
+    }
   }, [
+    isServicePackTransaction,
     walletIdData,
     transactionIdData,
+    woodworkerIdData,
+    servicePackIdData,
     isWalletIdLoading,
     isTransactionIdLoading,
+    isWoodworkerIdLoading,
+    isServicePackIdLoading,
   ]);
+
+  const handleServicePackPaymentSuccess = async () => {
+    if (
+      !encryptedWoodworkerId ||
+      !encryptedServicePackId ||
+      !encryptedTransactionId
+    ) {
+      setStatus("Thông tin giao dịch không hợp lệ");
+      setIsProcessing(false);
+      setTimeout(() => {
+        navigate(`/ww/profile`);
+      }, 1000);
+      return;
+    }
+
+    if (
+      isWoodworkerIdLoading ||
+      isServicePackIdLoading ||
+      isTransactionIdLoading
+    ) {
+      setStatus("Đang giải mã thông tin giao dịch...");
+      return;
+    }
+
+    try {
+      setStatus("Đang cập nhật gói dịch vụ...");
+      // Call addServicePack to update the service pack
+      await addServicePack({
+        woodworkerId: parseInt(woodworkerIdData?.data),
+        servicePackId: parseInt(servicePackIdData?.data),
+      }).unwrap();
+
+      setStatus("Đang cập nhật trạng thái giao dịch...");
+      // Update transaction status
+      await updateTransactionStatus({
+        transactionId: parseInt(transactionIdData?.data),
+        status: true,
+        canceledAt: null,
+      }).unwrap();
+
+      setStatus("Giao dịch hoàn tất!");
+      setIsProcessing(false);
+
+      setTimeout(() => {
+        navigate(
+          `/success?title=Thanh toán thành công&desc=Đăng ký gói dịch vụ đã được thực hiện thành công&path=/ww/profile&buttonText=Xem hồ sơ`
+        );
+      }, 1000);
+    } catch (error) {
+      setStatus("Có lỗi xảy ra, vui lòng thử lại sau");
+      setIsProcessing(false);
+      notify(
+        "Cập nhật thất bại",
+        error?.data?.message || "Có lỗi xảy ra, vui lòng thử lại sau",
+        "error"
+      );
+      setTimeout(() => {
+        navigate(`/ww/profile`);
+      }, 1000);
+    }
+  };
+
+  const handleWalletPaymentSuccess = async () => {
+    if (!encryptedWalletId || !encryptedTransactionId || !amount) {
+      setStatus("Thông tin giao dịch không hợp lệ");
+      setIsProcessing(false);
+      setTimeout(() => {
+        navigate(`/${auth?.role == "Woodworker" ? "ww" : "cus"}/wallet`);
+      }, 1000);
+      return;
+    }
+
+    if (isWalletIdLoading || isTransactionIdLoading) {
+      setStatus("Đang giải mã thông tin giao dịch...");
+      return;
+    }
+
+    try {
+      setStatus("Đang cập nhật số dư ví...");
+      // Cập nhật số dư ví
+      await updateWallet({
+        walletId: parseInt(walletIdData?.data),
+        amount: Math.floor(parseInt(amount) / 100),
+      }).unwrap();
+
+      setStatus("Đang cập nhật trạng thái giao dịch...");
+      // Cập nhật trạng thái giao dịch
+      await updateTransactionStatus({
+        transactionId: parseInt(transactionIdData?.data),
+        status: true,
+        canceledAt: null,
+      }).unwrap();
+
+      setStatus("Giao dịch hoàn tất!");
+      setIsProcessing(false);
+
+      setTimeout(() => {
+        navigate(
+          `/success?title=Thanh toán thành công&desc=Giao dịch đã được thực hiện thành công&path=/${
+            auth?.role == "Woodworker" ? "ww" : "cus"
+          }/wallet&buttonText=Xem ví`
+        );
+      }, 1000);
+    } catch (error) {
+      setStatus("Có lỗi xảy ra, vui lòng thử lại sau");
+      setIsProcessing(false);
+      notify(
+        "Cập nhật thất bại",
+        error?.data?.message || "Có lỗi xảy ra, vui lòng thử lại sau",
+        "error"
+      );
+      setTimeout(() => {
+        navigate(`/${auth?.role == "Woodworker" ? "ww" : "cus"}/wallet`);
+      }, 1000);
+    }
+  };
 
   return (
     <RequireAuth allowedRoles={["Customer", "Woodworker"]}>

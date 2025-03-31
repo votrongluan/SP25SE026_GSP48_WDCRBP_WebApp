@@ -2,17 +2,20 @@ import {
   Box,
   Button,
   Heading,
+  HStack,
   SimpleGrid,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import PackageFrame from "../../../../components/Utility/PackageFrame.jsx";
-import BuyPackModal from "../ActionModal/BuyPackModal.jsx";
+import BuyPackByWalletModal from "../ActionModal/BuyPackByWalletModal.jsx";
 import { formatDateTimeString } from "../../../../utils/utils.js";
+import BuyPackByPaymentGateway from "../ActionModal/BuyPackByPaymentGateway.jsx";
 
 export default function PackManagement({ woodworker }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const walletModalDisclosure = useDisclosure();
+  const paymentGatewayModalDisclosure = useDisclosure();
 
   const getPackColor = (type) => {
     switch (type?.toLowerCase()) {
@@ -55,28 +58,47 @@ export default function PackManagement({ woodworker }) {
             <Box>
               <Text fontWeight="bold">Ngày bắt đầu:</Text>
               <Text fontSize="xl">
-                {formatDateTimeString(woodworker.servicePackStartDate)}
+                {woodworker.servicePackStartDate
+                  ? formatDateTimeString(woodworker.servicePackStartDate)
+                  : "Chưa đăng ký"}
               </Text>
             </Box>
             <Box>
               <Text fontWeight="bold">Ngày kết thúc:</Text>
               <Text fontSize="xl">
-                {formatDateTimeString(woodworker.servicePackEndDate)}
+                {woodworker.servicePackStartDate
+                  ? formatDateTimeString(woodworker.servicePackEndDate)
+                  : "Chưa đăng ký"}
               </Text>
             </Box>
           </SimpleGrid>
-          <Button
-            colorScheme="green"
-            mt={4}
-            onClick={onOpen}
-            leftIcon={<Text>+</Text>}
-          >
-            Mua gói mới
-          </Button>
+          <HStack spacing={4} mt={4}>
+            <Button
+              colorScheme="green"
+              onClick={walletModalDisclosure.onOpen}
+              leftIcon={<Text>+</Text>}
+            >
+              Mua bằng ví
+            </Button>
+            <Button
+              colorScheme="blue"
+              onClick={paymentGatewayModalDisclosure.onOpen}
+              leftIcon={<Text>+</Text>}
+            >
+              Mua qua cổng thanh toán
+            </Button>
+          </HStack>
         </Box>
       </PackageFrame>
 
-      <BuyPackModal isOpen={isOpen} onClose={onClose} />
+      <BuyPackByWalletModal
+        isOpen={walletModalDisclosure.isOpen}
+        onClose={walletModalDisclosure.onClose}
+      />
+      <BuyPackByPaymentGateway
+        isOpen={paymentGatewayModalDisclosure.isOpen}
+        onClose={paymentGatewayModalDisclosure.onClose}
+      />
     </>
   );
 }

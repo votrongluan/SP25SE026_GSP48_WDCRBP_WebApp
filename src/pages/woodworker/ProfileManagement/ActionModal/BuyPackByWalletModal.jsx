@@ -17,7 +17,7 @@ import Pricing from "../../../general/Pricing/Pricing.jsx";
 import { FiXCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
-export default function BuyPackModal({ isOpen, onClose }) {
+export default function BuyPackByWalletModal({ isOpen, onClose }) {
   const { auth } = useAuth();
   const navigate = useNavigate();
   const notify = useNotify();

@@ -69,31 +69,6 @@ export default function WalletInformation() {
           </Text>
         </Box>
 
-        {/* Bank Information */}
-        <Box>
-          <Heading size="md" mb={4}>
-            Thông tin ngân hàng
-          </Heading>
-          <Grid templateColumns="repeat(2, 1fr)" gap={5}>
-            <Box>
-              <Text fontWeight="bold">Ngân hàng:</Text>
-              <Text>Vietcombank</Text>
-            </Box>
-            <Box>
-              <Text fontWeight="bold">Số tài khoản:</Text>
-              <Text>123456789</Text>
-            </Box>
-            <Box>
-              <Text fontWeight="bold">Chủ tài khoản:</Text>
-              <Text>NGUYEN VAN A</Text>
-            </Box>
-            <Box>
-              <Text fontWeight="bold">Chi nhánh:</Text>
-              <Text>Ho Chi Minh City</Text>
-            </Box>
-          </Grid>
-        </Box>
-
         {/* Action Buttons */}
         <HStack spacing={4}>
           <Button

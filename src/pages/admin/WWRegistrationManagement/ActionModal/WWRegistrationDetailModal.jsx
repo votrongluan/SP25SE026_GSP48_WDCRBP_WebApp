@@ -21,7 +21,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { FiEye } from "react-icons/fi";
+import { FiEye, FiX, FiCheck, FiSlash } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector";
 import { useUpdateWoodworkerStatusMutation } from "../../../../services/woodworkerApi";
@@ -92,7 +92,7 @@ export default function WWRegistrationDetailModal({ registration, refetch }) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Chi tiết đăng ký thợ mộc</ModalHeader>
-          <ModalCloseButton />
+          {!isLoading && <ModalCloseButton />}
           <ModalBody bgColor="app_grey.1" pb={6}>
             <Stack gap={5}>
               <SimpleGrid
@@ -198,7 +198,11 @@ export default function WWRegistrationDetailModal({ registration, refetch }) {
             </HStack>
 
             <Stack direction="row" justify="flex-end" mt={6} spacing={4}>
-              <Button isLoading={isLoading} onClick={onClose}>
+              <Button
+                isLoading={isLoading}
+                onClick={onClose}
+                leftIcon={<FiX />}
+              >
                 Đóng
               </Button>
               <Button
@@ -206,6 +210,7 @@ export default function WWRegistrationDetailModal({ registration, refetch }) {
                 onClick={() => handleStatusUpdate(false)}
                 isLoading={isLoading}
                 isDisabled={buttonDisabled}
+                leftIcon={<FiSlash />}
               >
                 Từ chối
               </Button>
@@ -214,6 +219,7 @@ export default function WWRegistrationDetailModal({ registration, refetch }) {
                 onClick={() => handleStatusUpdate(true)}
                 isLoading={isLoading}
                 isDisabled={buttonDisabled}
+                leftIcon={<FiCheck />}
               >
                 Duyệt
               </Button>
