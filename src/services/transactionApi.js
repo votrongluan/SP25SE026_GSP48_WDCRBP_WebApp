@@ -19,31 +19,31 @@ export const transactionApi = createApi({
   endpoints: (builder) => ({
     getAllTransactions: builder.query({
       query: () => ({
-        url: "/api/transaction/all",
+        url: "/api/v1/transaction/all",
         method: "GET",
       }),
     }),
     getTransactionById: builder.query({
       query: (transactionId) => ({
-        url: `/api/transaction/${transactionId}`,
+        url: `/api/v1/transaction/${transactionId}`,
         method: "GET",
       }),
     }),
     getUserTransactions: builder.query({
       query: (userId) => ({
-        url: `/api/transaction/user/${userId}`,
+        url: `/api/v1/transaction/user/${userId}`,
         method: "GET",
       }),
     }),
     getTransactionStatus: builder.query({
       query: () => ({
-        url: "/api/transaction/status",
+        url: "/api/v1/transaction/status",
         method: "GET",
       }),
     }),
     updateTransactionStatus: builder.mutation({
       query: (data) => ({
-        url: "/api/transaction/update-status",
+        url: "/api/v1/transaction/update-status",
         method: "PUT",
         body: data,
       }),

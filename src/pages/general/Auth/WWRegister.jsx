@@ -188,7 +188,7 @@ export default function WWRegister() {
                     onChange={handleChange}
                   >
                     <option value="Cá nhân">Cá nhân</option>
-                    <option value="Hộ gia đình">Hộ gia đình</option>
+                    <option value="Hộ kinh doanh">Hộ kinh doanh</option>
                   </Select>
                 </FormControl>
               </GridItem>
@@ -235,11 +235,6 @@ export default function WWRegister() {
           <Box mt={6}>
             <CheckboxList
               items={[
-                {
-                  isOptional: false,
-                  description:
-                    "Tôi đã đọc và đồng ý với điều khoản và điều kiện của nền tảng",
-                },
                 {
                   isOptional: false,
                   description:

@@ -97,7 +97,7 @@ export default function WoodworkerProfileManagement({
                   defaultValue={woodworker.businessType}
                 >
                   <option value="Cá nhân">Cá nhân</option>
-                  <option value="Hộ gia đình">Hộ gia đình</option>
+                  <option value="Hộ kinh doanh">Hộ kinh doanh</option>
                 </Select>
               </FormControl>
             </GridItem>

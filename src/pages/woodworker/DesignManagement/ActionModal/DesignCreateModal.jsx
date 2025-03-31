@@ -26,13 +26,14 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { FiPlus, FiTrash, FiXCircle } from "react-icons/fi";
+import { FiPlus, FiTrash, FiX, FiXCircle } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import ImageUpload from "../../../../components/Utility/ImageUpload";
 import { formatPrice } from "../../../../utils/utils";
 import { useAddDesignIdeaMutation } from "../../../../services/designIdeaApi";
 import { useNotify } from "../../../../components/Utility/Notify";
 import CheckboxList from "../../../../components/Utility/CheckboxList";
+import useAuth from "../../../../hooks/useAuth";
 
 export default function DesignCreateModal({ refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -42,6 +43,7 @@ export default function DesignCreateModal({ refetch }) {
   const [imgUrls, setImgUrls] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const notify = useNotify();
+  const { auth } = useAuth();
 
   const [addDesignIdea, { isLoading }] = useAddDesignIdeaMutation();
 
@@ -176,6 +178,7 @@ export default function DesignCreateModal({ refetch }) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = {
+      woodworkerId: auth?.wwId,
       name: formData.get("name"),
       img: imgUrls,
       categoryId: +formData.get("categoryId"),
@@ -183,8 +186,6 @@ export default function DesignCreateModal({ refetch }) {
       configurations,
       prices,
     };
-
-    console.log(JSON.stringify(data));
 
     try {
       const result = await addDesignIdea(data).unwrap();
@@ -231,7 +232,7 @@ export default function DesignCreateModal({ refetch }) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Thêm thiết kế mới</ModalHeader>
-          <ModalCloseButton />
+          {!isLoading && <ModalCloseButton />}
           <ModalBody bgColor="app_grey.1" pb={6}>
             <form onSubmit={handleSubmit}>
               <Stack spacing={4}>
@@ -448,7 +449,11 @@ export default function DesignCreateModal({ refetch }) {
                 </HStack>
 
                 <HStack justify="flex-end" mt={4}>
-                  <Button isLoading={isLoading} onClick={onClose}>
+                  <Button
+                    leftIcon={<FiX />}
+                    isLoading={isLoading}
+                    onClick={onClose}
+                  >
                     Đóng
                   </Button>
                   <Button
@@ -456,6 +461,7 @@ export default function DesignCreateModal({ refetch }) {
                     type="submit"
                     isLoading={isLoading}
                     isDisabled={buttonDisabled}
+                    leftIcon={<FiPlus />}
                   >
                     Lưu
                   </Button>

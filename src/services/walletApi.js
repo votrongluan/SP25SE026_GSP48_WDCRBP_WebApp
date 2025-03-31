@@ -19,27 +19,27 @@ export const walletApi = createApi({
   endpoints: (builder) => ({
     getUserWallet: builder.query({
       query: (userId) => ({
-        url: `/api/wallet/user/${userId}`,
+        url: `/api/v1/wallet/user/${userId}`,
         method: "GET",
       }),
     }),
     updateWallet: builder.mutation({
       query: (data) => ({
-        url: "/api/wallet/update",
+        url: "/api/v1/wallet/update",
         method: "PUT",
         body: data,
       }),
     }),
     servicePackPayment: builder.mutation({
       query: (data) => ({
-        url: "/api/wallet/service/pack/payment",
+        url: "/api/v1/wallet/service/pack/payment",
         method: "POST",
         body: data,
       }),
     }),
     orderPayment: builder.mutation({
       query: (data) => ({
-        url: "/api/wallet/order/payment",
+        url: "/api/v1/wallet/order/payment",
         method: "POST",
         body: data,
       }),

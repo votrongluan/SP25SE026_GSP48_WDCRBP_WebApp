@@ -19,7 +19,7 @@ export const meetApi = createApi({
   endpoints: (builder) => ({
     createMeet: builder.mutation({
       query: (data) => ({
-        url: "/api/meet/create",
+        url: "/api/v1/meet/create",
         method: "POST",
         body: data,
       }),

@@ -1,4 +1,13 @@
-import { Box, Flex, Heading, HStack, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  Stack,
+  Spinner,
+  Text,
+  Center,
+} from "@chakra-ui/react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
@@ -8,57 +17,40 @@ import DesignCreateModal from "../ActionModal/DesignCreateModal.jsx";
 import DesignDetailModal from "../ActionModal/DesignDetailModal.jsx";
 import DesignUpdateModal from "../ActionModal/DesignUpdateModal.jsx";
 import DesignDeleteModal from "../ActionModal/DesignDeleteModal.jsx";
+import { useGetAllDesignIdeasByWoodworkerQuery } from "../../../../services/designIdeaApi";
+import useAuth from "../../../../hooks/useAuth.js";
 
 export default function DesignManagementListPage() {
-  const [rowData, setRowData] = useState([
-    {
-      designId: "TK001",
-      name: "Bàn gỗ thủ công",
-      imgUrls:
-        "https://i.pinimg.com/1200x/aa/b0/ad/aab0ad2b357f91c06718f4177fd4932f.jpg;https://i.pinimg.com/1200x/17/99/2a/17992af2512a41db6b739c546a95944e.jpg",
-      category: "Bàn",
-      description: "Không có gì",
+  const { auth } = useAuth();
+  const woodworkerId = auth?.wwId;
 
-      configurations: [
-        {
-          id: 1,
-          name: "Loại gỗ",
-          values: [
-            { id: 101, name: "Gỗ Sồi" },
-            { id: 102, name: "Gỗ Óc Chó" },
-          ],
-        },
-        {
-          id: 2,
-          name: "Bề mặt hoàn thiện",
-          values: [
-            { id: 201, name: "Tự nhiên" },
-            { id: 202, name: "Sơn bóng" },
-          ],
-        },
-      ],
-      prices: [
-        { config: [1, 2], configValue: [101, 201], price: 12000000 },
-        { config: [1, 2], configValue: [101, 202], price: 14000000 },
-        { config: [1, 2], configValue: [102, 201], price: 15000000 },
-        { config: [1, 2], configValue: [102, 202], price: 17000000 },
-      ],
-    },
-  ]);
+  const {
+    data: apiData,
+    isLoading,
+    error,
+    refetch,
+  } = useGetAllDesignIdeasByWoodworkerQuery(woodworkerId);
 
-  const [colDefs, setColDefs] = useState([
-    { headerName: "Mã thiết kế", field: "designId" },
+  const rowData = useMemo(() => {
+    return apiData?.data || [];
+  }, [apiData]);
+
+  const [colDefs] = useState([
+    { headerName: "Mã thiết kế", field: "designIdeaId" },
     { headerName: "Tên thiết kế", field: "name" },
     { headerName: "Mô tả", field: "description" },
-    { headerName: "Danh mục", field: "category" },
+    {
+      headerName: "Danh mục",
+      valueGetter: (params) => params.data?.category?.categoryName || "N/A",
+    },
     {
       headerName: "Thao tác",
       cellRenderer: ({ data }) => {
         return (
           <HStack spacing={1}>
-            <DesignDetailModal design={data} refetch={null} />
-            <DesignUpdateModal design={data} refetch={null} />
-            <DesignDeleteModal design={data} refetch={null} />
+            <DesignDetailModal data={data} refetch={refetch} />
+            <DesignUpdateModal design={data} refetch={refetch} />
+            <DesignDeleteModal design={data} refetch={refetch} />
           </HStack>
         );
       },
@@ -73,6 +65,24 @@ export default function DesignManagementListPage() {
     };
   }, []);
 
+  if (isLoading) {
+    return (
+      <Center h="500px">
+        <Spinner size="xl" color={appColorTheme.brown_2} />
+      </Center>
+    );
+  }
+
+  if (error) {
+    return (
+      <Center h="500px">
+        <Text color="red.500">
+          Error loading designs: {error.message || "Unknown error"}
+        </Text>
+      </Center>
+    );
+  }
+
   return (
     <Stack spacing={6}>
       <Flex justify="space-between" align="center">
@@ -84,7 +94,7 @@ export default function DesignManagementListPage() {
         >
           Quản lý Ý tưởng thiết kế
         </Heading>
-        <DesignCreateModal refetch={null} />
+        <DesignCreateModal refetch={refetch} />
       </Flex>
 
       <Box>

@@ -3,6 +3,8 @@ import { Box } from "@chakra-ui/react";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 
 export default function StarRating({ rating }) {
+  rating = !rating ? 0 : rating > 5 ? 5 : rating < 0 ? 0 : rating;
+
   // Số sao đầy đủ
   const fullStars = Math.floor(rating);
   // Nếu phần thập phân >= 0.5 thì hiển thị 1 sao bán, nếu không thì 0

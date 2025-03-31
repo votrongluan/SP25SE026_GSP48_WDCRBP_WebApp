@@ -19,21 +19,21 @@ export const paymentApi = createApi({
   endpoints: (builder) => ({
     topUpWallet: builder.mutation({
       query: (data) => ({
-        url: "/api/payment/top-up-wallet",
+        url: "/api/v1/payment/top-up-wallet",
         method: "POST",
         body: data,
       }),
     }),
     payServicePack: builder.mutation({
       query: (data) => ({
-        url: "/api/payment/pay-service-pack",
+        url: "/api/v1/payment/pay-service-pack",
         method: "POST",
         body: data,
       }),
     }),
     createPayment: builder.mutation({
       query: (data) => ({
-        url: "/api/payment/create-payment",
+        url: "/api/v1/payment/create-payment",
         method: "POST",
         body: data,
       }),
@@ -45,4 +45,4 @@ export const {
   useTopUpWalletMutation,
   usePayServicePackMutation,
   useCreatePaymentMutation,
-} = paymentApi; 
+} = paymentApi;
