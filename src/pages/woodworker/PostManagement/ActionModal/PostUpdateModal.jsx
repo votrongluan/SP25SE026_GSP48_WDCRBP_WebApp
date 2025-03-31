@@ -64,7 +64,7 @@ export default function PostUpdateModal({ post, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">Chỉnh sửa bài viết</ModalHeader>
+          <ModalHeader>Chỉnh sửa bài viết</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <form onSubmit={handleSubmit}>

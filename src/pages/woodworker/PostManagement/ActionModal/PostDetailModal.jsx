@@ -48,7 +48,7 @@ export default function PostDetailModal({ post }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">Chi tiết bài viết</ModalHeader>
+          <ModalHeader>Chi tiết bài viết</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <VStack spacing={6} align="stretch">

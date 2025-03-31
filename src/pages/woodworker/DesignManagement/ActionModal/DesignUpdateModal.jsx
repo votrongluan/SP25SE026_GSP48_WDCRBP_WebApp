@@ -228,7 +228,7 @@ export default function DesignUpdateModal({ design, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">Chỉnh sửa thiết kế</ModalHeader>
+          <ModalHeader>Chỉnh sửa thiết kế</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <form onSubmit={handleSubmit}>

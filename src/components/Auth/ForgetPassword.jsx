@@ -17,6 +17,7 @@ import {
 } from "../../services/authApi";
 import { useNotify } from "../Utility/Notify";
 import PasswordInput from "../Input/PasswordInput";
+import { FiLock } from "react-icons/fi";
 
 export default function ForgetPassword({ changeTab }) {
   const notify = useNotify();
@@ -152,6 +153,7 @@ export default function ForgetPassword({ changeTab }) {
           width="100%"
           type="submit"
           mt="30px"
+          leftIcon={<FiLock />}
         >
           Xác nhận
         </Button>

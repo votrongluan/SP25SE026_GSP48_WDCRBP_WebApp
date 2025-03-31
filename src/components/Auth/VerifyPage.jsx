@@ -14,8 +14,9 @@ import { useState, useEffect } from "react";
 import {
   useVerifyOTPMutation,
   useSendOTPMutation,
-} from "../../../services/authApi";
-import { useNotify } from "../../../components/Utility/Notify";
+} from "../../services/authApi.js";
+import { useNotify } from "../Utility/Notify.jsx";
+import { FiCheck } from "react-icons/fi";
 
 export default function VerifyPage({ changeTab, registerEmail }) {
   const notify = useNotify();
@@ -146,6 +147,7 @@ export default function VerifyPage({ changeTab, registerEmail }) {
           width="100%"
           type="submit"
           isLoading={isVerifying}
+          leftIcon={<FiCheck />}
         >
           Xác nhận
         </Button>

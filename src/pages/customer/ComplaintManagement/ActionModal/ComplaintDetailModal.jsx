@@ -61,7 +61,7 @@ export default function ComplaintDetailModal({ complaint, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">Chi tiết khiếu nại</ModalHeader>
+          <ModalHeader>Chi tiết khiếu nại</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <Stack gap={5}>

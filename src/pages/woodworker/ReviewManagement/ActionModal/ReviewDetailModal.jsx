@@ -61,7 +61,7 @@ export default function ReviewDetailModal({ review, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">Chi tiết đánh giá</ModalHeader>
+          <ModalHeader>Chi tiết đánh giá</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <Stack gap={5}>

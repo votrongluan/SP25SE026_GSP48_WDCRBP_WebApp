@@ -1,4 +1,4 @@
-import { Outlet, ScrollRestoration, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, ScrollRestoration } from "react-router-dom";
 import Header from "../components/Header/Header.jsx";
 import { Box, Container } from "@chakra-ui/react";
 import Footer from "../components/Footer/Footer.jsx";
@@ -6,14 +6,17 @@ import useAuth from "../hooks/useAuth.js";
 
 export default function RootLayout() {
   const { auth } = useAuth();
-  const navigate = useNavigate();
 
-  if (auth?.Role == 2) {
-    navigate("/supplier");
+  if (auth?.role == "Admin") {
+    return <Navigate to="/ad" />;
   }
 
-  if (auth?.Role == 3) {
-    navigate("/admin");
+  if (auth?.role == "Staff") {
+    return <Navigate to="/staff" />;
+  }
+
+  if (auth?.role == "Moderator") {
+    return <Navigate to="/mod" />;
   }
 
   return (

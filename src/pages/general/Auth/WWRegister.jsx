@@ -262,6 +262,7 @@ export default function WWRegister() {
             isDisabled={buttonDisabled}
             type="submit"
             isLoading={isLoading}
+            leftIcon={<FiUserPlus />}
           >
             Đăng ký
           </Button>

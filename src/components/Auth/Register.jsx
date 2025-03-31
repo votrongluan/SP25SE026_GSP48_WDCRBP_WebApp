@@ -15,6 +15,7 @@ import { useNotify } from "../Utility/Notify";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useRegisterMutation } from "../../services/authApi";
 import { validateRegister } from "../../validations";
+import { FiUserPlus } from "react-icons/fi";
 
 export default function Register({ setRegisterEmail, changeTab }) {
   const [register, { isLoading: isRegisterLoading }] = useRegisterMutation();
@@ -134,6 +135,7 @@ export default function Register({ setRegisterEmail, changeTab }) {
           type="submit"
           mt="30px"
           isLoading={isRegisterLoading}
+          leftIcon={<FiUserPlus />}
         >
           Đăng ký
         </Button>

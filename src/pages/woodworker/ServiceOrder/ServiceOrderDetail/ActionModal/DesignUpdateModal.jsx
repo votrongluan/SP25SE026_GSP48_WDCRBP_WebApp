@@ -54,9 +54,7 @@ export default function DesignUpdateModal({ order, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">
-            Tạo, điều chỉnh thiết kế sản phẩm
-          </ModalHeader>
+          <ModalHeader>Tạo, điều chỉnh thiết kế sản phẩm</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <form

@@ -21,6 +21,7 @@ import { useTopUpWalletMutation } from "../../../../services/paymentApi";
 import { useNotify } from "../../../../components/Utility/Notify";
 import useAuth from "../../../../hooks/useAuth";
 import { formatPrice } from "../../../../utils/utils";
+import { FiPlusSquare, FiXCircle } from "react-icons/fi";
 
 export default function DepositModal({ isOpen, onClose, wallet }) {
   const notify = useNotify();
@@ -102,6 +103,7 @@ export default function DepositModal({ isOpen, onClose, wallet }) {
             variant="ghost"
             mr={3}
             onClick={onClose}
+            leftIcon={<FiXCircle />}
           >
             Đóng
           </Button>
@@ -110,6 +112,7 @@ export default function DepositModal({ isOpen, onClose, wallet }) {
             onClick={handleSubmit}
             isLoading={isLoading}
             isDisabled={!amount || parseInt(amount) <= 0}
+            leftIcon={<FiPlusSquare />}
           >
             Nạp tiền
           </Button>

@@ -58,7 +58,7 @@ export default function DesignDetailModal({ design, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">Chi tiết thiết kế</ModalHeader>
+          <ModalHeader>Chi tiết thiết kế</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <Stack gap={5}>

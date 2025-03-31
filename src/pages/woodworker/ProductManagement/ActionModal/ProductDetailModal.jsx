@@ -52,7 +52,7 @@ export default function ProductDetailModal({ product, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">Chi tiết sản phẩm</ModalHeader>
+          <ModalHeader>Chi tiết sản phẩm</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <Stack gap={5}>

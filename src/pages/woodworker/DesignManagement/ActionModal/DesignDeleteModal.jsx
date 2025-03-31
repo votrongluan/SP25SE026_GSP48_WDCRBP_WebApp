@@ -57,7 +57,7 @@ export default function DesignDeleteModal({ design, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">Xác nhận xóa</ModalHeader>
+          <ModalHeader>Xác nhận xóa</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <VStack spacing={4} align="stretch">

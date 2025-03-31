@@ -63,7 +63,7 @@ export default function PostCreateModal({ refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">Thêm bài viết mới</ModalHeader>
+          <ModalHeader>Thêm bài viết mới</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <form onSubmit={handleSubmit}>

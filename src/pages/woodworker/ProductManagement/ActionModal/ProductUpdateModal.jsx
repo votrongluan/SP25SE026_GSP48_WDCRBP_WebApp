@@ -69,7 +69,7 @@ export default function ProductUpdateModal({ product, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">Chỉnh sửa sản phẩm</ModalHeader>
+          <ModalHeader>Chỉnh sửa sản phẩm</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <form onSubmit={handleSubmit}>

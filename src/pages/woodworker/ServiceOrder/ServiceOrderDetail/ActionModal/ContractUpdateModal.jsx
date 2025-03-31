@@ -48,7 +48,7 @@ export default function ContractUpdateModal({ order, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">
+          <ModalHeader>
             Tạo, điều chỉnh hợp đồng và sản phẩm yêu cầu
           </ModalHeader>
           <ModalCloseButton />

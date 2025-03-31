@@ -75,9 +75,7 @@ export default function AppointmentUpdateModal({ order, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">
-            Tạo, điều chỉnh lịch hẹn
-          </ModalHeader>
+          <ModalHeader>Tạo, điều chỉnh lịch hẹn</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <form

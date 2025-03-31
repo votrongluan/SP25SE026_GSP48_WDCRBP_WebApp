@@ -19,9 +19,12 @@ import {
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import { FiEye } from "react-icons/fi";
-import { appColorTheme } from "../../../../config/appconfig";
+import {
+  appColorTheme,
+  transactionTypeColorMap,
+} from "../../../../config/appconfig";
 import { formatDateTimeString, formatPrice } from "../../../../utils/utils";
-import { useGetTransactionByIdQuery } from "../../../../services/walletApi";
+import { useGetTransactionByIdQuery } from "../../../../services/transactionApi";
 
 export default function TransactionDetailModal({ transaction }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -70,15 +73,7 @@ export default function TransactionDetailModal({ transaction }) {
               </Box>
               <Box>
                 <Text fontWeight="bold">Loại giao dịch:</Text>
-                <Text
-                  color={
-                    detail?.transactionType === "Nạp ví"
-                      ? "green.500"
-                      : detail?.transactionType === "Thanh toán"
-                      ? "red.500"
-                      : "blue.500"
-                  }
-                >
+                <Text color={transactionTypeColorMap[detail?.transactionType]}>
                   {detail?.transactionType}
                 </Text>
               </Box>
@@ -95,7 +90,7 @@ export default function TransactionDetailModal({ transaction }) {
               <Box>
                 <Text fontWeight="bold">Trạng thái:</Text>
                 <Text color={detail?.status ? "green.500" : "red.500"}>
-                  {detail?.status ? "Thành công" : "Thất bại"}
+                  {detail?.status ? "Đã hoàn thành" : "Chưa hoàn thành"}
                 </Text>
               </Box>
               {detail?.canceledAt && (
@@ -161,7 +156,7 @@ export default function TransactionDetailModal({ transaction }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">Chi tiết giao dịch</ModalHeader>
+          <ModalHeader>Chi tiết giao dịch</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             {renderContent()}

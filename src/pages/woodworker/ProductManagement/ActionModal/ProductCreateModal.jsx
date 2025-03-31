@@ -70,7 +70,7 @@ export default function ProductCreateModal({ refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">Thêm sản phẩm mới</ModalHeader>
+          <ModalHeader>Thêm sản phẩm mới</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <form onSubmit={handleSubmit}>

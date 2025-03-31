@@ -6,7 +6,9 @@ import { jwtDecode } from "jwt-decode";
 import { useNotify } from "../Utility/Notify.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useLoginWithPasswordMutation } from "../../services/authApi.js";
+import { API_URL } from "../../config";
 import PasswordInput from "../Input/PasswordInput";
+import { FiLogIn } from "react-icons/fi";
 
 export default function PasswordLogin() {
   const notify = useNotify();
@@ -35,6 +37,18 @@ export default function PasswordLogin() {
         ...decodedToken,
         refreshToken: user.refresh_token,
       };
+
+      // Lấy thông tin ví của user
+      const walletRes = await fetch(
+        `${API_URL}/api/wallet/user/${decodedToken.userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.access_token}`,
+          },
+        }
+      ).then((res) => res.json());
+
+      auth.wallet = walletRes.data;
 
       switch (auth.role) {
         case "Customer":
@@ -87,6 +101,7 @@ export default function PasswordLogin() {
         type="submit"
         mt="30px"
         isLoading={isLoading}
+        leftIcon={<FiLogIn />}
       >
         Đăng nhập
       </Button>

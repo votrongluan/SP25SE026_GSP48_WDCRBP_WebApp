@@ -230,7 +230,7 @@ export default function DesignCreateModal({ refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">Thêm thiết kế mới</ModalHeader>
+          <ModalHeader>Thêm thiết kế mới</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <form onSubmit={handleSubmit}>

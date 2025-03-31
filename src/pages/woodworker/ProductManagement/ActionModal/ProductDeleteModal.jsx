@@ -49,7 +49,7 @@ export default function ProductDeleteModal({ product, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">Xác nhận xóa sản phẩm</ModalHeader>
+          <ModalHeader>Xác nhận xóa sản phẩm</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" py={6}>
             Bạn có chắc chắn muốn xóa sản phẩm &ldquo;{product?.name}&rdquo;

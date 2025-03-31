@@ -12,11 +12,15 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useState, useMemo } from "react";
-import { appColorTheme } from "../../../../config/appconfig";
+import {
+  appColorTheme,
+  transactionTypeColorMap,
+  transactionTypeConstants,
+} from "../../../../config/appconfig";
 import TransactionDetailModal from "../ActionModal/TransactionDetailModal";
 import { formatDateTimeString, formatPrice } from "../../../../utils/utils";
 import WalletInformation from "../WalletInformation/WalletInformation";
-import { useGetUserTransactionsQuery } from "../../../../services/walletApi";
+import { useGetUserTransactionsQuery } from "../../../../services/transactionApi";
 import useAuth from "../../../../hooks/useAuth";
 
 export default function CustomerWalletPage() {
@@ -25,7 +29,6 @@ export default function CustomerWalletPage() {
     data: response,
     isLoading,
     error,
-    refetch,
   } = useGetUserTransactionsQuery(auth?.userId);
 
   const transactions = response?.data?.map((transaction) => {
@@ -41,37 +44,57 @@ export default function CustomerWalletPage() {
       headerName: "Loại giao dịch",
       field: "transactionType",
       cellStyle: (params) => {
-        if (params.value === "Nạp ví") {
-          return { color: appColorTheme.green_0 };
-        } else if (params.value === "Thanh toán") {
-          return { color: appColorTheme.red_0 };
-        }
-        return { color: appColorTheme.blue_0 };
+        return { color: transactionTypeColorMap[params.value] };
       },
     },
     {
       headerName: "Số tiền",
       field: "amount",
-      valueFormatter: (params) => formatPrice(params.value),
-      cellStyle: () => {
-        return { color: appColorTheme.brown_2, fontWeight: "bold" };
+      valueFormatter: (params) => {
+        if (
+          (params.data?.transactionType == transactionTypeConstants.NAP_VI ||
+            params.data?.transactionType ==
+              transactionTypeConstants.NHAN_TIEN) &&
+          params.data?.status == true
+        ) {
+          return `+ ${formatPrice(params.value)}`;
+        }
+
+        if (params.data?.status == true) {
+          return `- ${formatPrice(params.value)}`;
+        }
+
+        return `* ${formatPrice(params.value)}`;
+      },
+      cellStyle: (params) => {
+        if (
+          params.data?.status == true &&
+          (params.data?.transactionType == transactionTypeConstants.NAP_VI ||
+            params.data?.transactionType == transactionTypeConstants.NHAN_TIEN)
+        ) {
+          return { color: appColorTheme.brown_2, fontWeight: "bold" };
+        } else if (params.data?.status == true) {
+          return { color: appColorTheme.red_0, fontWeight: "bold" };
+        } else {
+          return { color: "grey", fontWeight: "bold" };
+        }
       },
     },
     {
       headerName: "Ngày tạo",
       field: "createdAt",
       valueFormatter: (params) => formatDateTimeString(params.value),
+      sort: "desc",
     },
     {
       headerName: "Trạng thái",
-      valueFormatter: (params) =>
-        params?.data?.status ? "Đã thanh toán" : "Chưa thanh toán",
-      cellStyle: (params) => {
-        if (params?.data?.status) {
-          return { color: appColorTheme.green_0 };
-        }
-        return { color: appColorTheme.red_0 };
-      },
+      field: "status",
+      // valueFormatter: (params) =>
+      //   params.value ? "Đã hoàn thành" : "Chưa hoàn thành",
+      // cellStyle: (params) =>
+      //   params.value
+      //     ? { color: appColorTheme.green_0 }
+      //     : { color: appColorTheme.red_0 },
     },
     {
       headerName: "Thao tác",
@@ -121,7 +144,6 @@ export default function CustomerWalletPage() {
         </Heading>
       </Flex>
 
-      {/* Wallet Information */}
       <WalletInformation />
 
       <Box>
@@ -134,7 +156,6 @@ export default function CustomerWalletPage() {
         </Heading>
       </Box>
 
-      {/* Transaction List */}
       <Box>
         <div
           className="ag-theme-quartz"

@@ -23,18 +23,6 @@ export const walletApi = createApi({
         method: "GET",
       }),
     }),
-    getUserTransactions: builder.query({
-      query: (userId) => ({
-        url: `/api/transaction/user/${userId}`,
-        method: "GET",
-      }),
-    }),
-    getTransactionById: builder.query({
-      query: (transactionId) => ({
-        url: `/api/transaction/${transactionId}`,
-        method: "GET",
-      }),
-    }),
     updateWallet: builder.mutation({
       query: (data) => ({
         url: "/api/wallet/update",
@@ -61,8 +49,6 @@ export const walletApi = createApi({
 
 export const {
   useGetUserWalletQuery,
-  useGetUserTransactionsQuery,
-  useGetTransactionByIdQuery,
   useUpdateWalletMutation,
   useServicePackPaymentMutation,
   useOrderPaymentMutation,

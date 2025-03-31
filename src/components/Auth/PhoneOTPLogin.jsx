@@ -12,6 +12,7 @@ import useAuth from "../../hooks/useAuth.js";
 import { jwtDecode } from "jwt-decode";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useNotify } from "../Utility/Notify.jsx";
+import { FiLogIn } from "react-icons/fi";
 
 export default function PhoneOTPLogin({ onSuccess }) {
   const notify = useNotify();
@@ -142,6 +143,7 @@ export default function PhoneOTPLogin({ onSuccess }) {
         type="submit"
         mt="30px"
         isLoading={isLoading}
+        leftIcon={<FiLogIn />}
       >
         Đăng nhập
       </Button>

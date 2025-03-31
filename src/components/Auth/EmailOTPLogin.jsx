@@ -16,6 +16,7 @@ import {
   useSendOTPMutation,
 } from "../../services/authApi";
 import { useNotify } from "../Utility/Notify";
+import { FiLogIn } from "react-icons/fi";
 
 export default function EmailOTPLogin() {
   const notify = useNotify();
@@ -154,6 +155,7 @@ export default function EmailOTPLogin() {
         type="submit"
         mt="30px"
         isLoading={isLoggingIn}
+        leftIcon={<FiLogIn />}
       >
         Đăng nhập
       </Button>

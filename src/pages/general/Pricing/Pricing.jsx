@@ -74,7 +74,10 @@ export default function Pricing({
           ].filter(Boolean),
         };
       }
-      acc[pack.name].prices[pack.duration] = pack.price;
+      acc[pack.name].prices[pack.duration] = {
+        price: pack.price,
+        servicePackId: pack.servicePackId,
+      };
       return acc;
     }, {});
 
@@ -137,7 +140,7 @@ export default function Pricing({
       </Flex>
 
       {/* Plans */}
-      <SimpleGrid columns={{ base: 1, xl: 3 }} spacing={8}>
+      <SimpleGrid columns={{ base: 1, lg: 2, xl: 3 }} spacing={8}>
         {plans.map((plan, index) => (
           <Box
             key={index}
@@ -157,7 +160,7 @@ export default function Pricing({
                   fontWeight="bold"
                   color={appColorTheme.brown_2}
                 >
-                  {plan.prices[selectedPeriod]?.toLocaleString()}
+                  {plan.prices[selectedPeriod]?.price?.toLocaleString()}
                 </Text>
                 <Text fontSize="xl" color={appColorTheme.brown_1} ml={2}>
                   đồng/
@@ -173,12 +176,13 @@ export default function Pricing({
                 bg={appColorTheme.brown_0}
                 color="black"
                 size="lg"
-                onClick={
-                  handleButtonClick ||
-                  (() => {
-                    navigate("/ww-register");
-                  })
-                }
+                onClick={(e) => {
+                  e.preventDefault();
+
+                  handleButtonClick
+                    ? handleButtonClick(plan.prices[selectedPeriod])
+                    : navigate("/ww-register");
+                }}
                 w="full"
                 _hover={{ bg: appColorTheme.brown_1, color: "white" }}
               >

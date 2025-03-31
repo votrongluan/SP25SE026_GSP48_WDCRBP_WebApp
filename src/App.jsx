@@ -98,6 +98,8 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route>
+        <Route path="logout" element={<Logout />} />
+
         {/* Admin page route */}
         <Route path="ad" element={<AdminLayout />}>
           <Route index element={<NotFoundPage />} />
@@ -161,7 +163,6 @@ function App() {
           <Route path="ww-register" element={<WWRegister />} />
           <Route path="pricing" element={<Pricing />} />
           <Route path="success" element={<SuccessPage />} />
-          <Route path="logout" element={<Logout />} />
 
           <Route path="test" element={<TestPage />} />
 

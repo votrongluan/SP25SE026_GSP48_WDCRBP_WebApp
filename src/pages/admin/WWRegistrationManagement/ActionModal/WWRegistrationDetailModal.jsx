@@ -91,9 +91,7 @@ export default function WWRegistrationDetailModal({ registration, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">
-            Chi tiết đăng ký thợ mộc
-          </ModalHeader>
+          <ModalHeader>Chi tiết đăng ký thợ mộc</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <Stack gap={5}>

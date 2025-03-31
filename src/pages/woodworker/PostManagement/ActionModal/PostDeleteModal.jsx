@@ -54,7 +54,7 @@ export default function PostDeleteModal({ post, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="app_grey.2">Xác nhận xóa bài viết</ModalHeader>
+          <ModalHeader>Xác nhận xóa bài viết</ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1">
             <p>Bạn có chắc chắn muốn xóa bài viết &quot;{post?.title}&quot;?</p>

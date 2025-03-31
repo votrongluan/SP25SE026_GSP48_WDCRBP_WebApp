@@ -66,7 +66,7 @@ export default function PaymentSuccessPage() {
         // Cập nhật số dư ví
         await updateWallet({
           walletId: parseInt(walletIdData?.data),
-          amount: parseInt(amount),
+          amount: Math.floor(parseInt(amount) / 100),
         }).unwrap();
 
         setStatus("Đang cập nhật trạng thái giao dịch...");
@@ -80,7 +80,6 @@ export default function PaymentSuccessPage() {
         setStatus("Giao dịch hoàn tất!");
         setIsProcessing(false);
 
-        // Đợi 2 giây để người dùng thấy thông báo thành công
         setTimeout(() => {
           navigate(
             `/success?title=Thanh toán thành công&desc=Giao dịch đã được thực hiện thành công&path=/${
@@ -125,8 +124,8 @@ export default function PaymentSuccessPage() {
             w="full"
           >
             <Box
-              w="100px"
-              h="100px"
+              w="80px"
+              h="80px"
               borderRadius="full"
               bg={appColorTheme.brown_2}
               display="flex"
