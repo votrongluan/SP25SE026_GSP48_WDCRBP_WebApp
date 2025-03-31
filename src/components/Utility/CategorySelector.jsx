@@ -1,70 +1,84 @@
 import {
   Box,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
   SimpleGrid,
   Button,
   Text,
-  Heading,
   Spinner,
   Alert,
   AlertIcon,
-  Radio,
-  RadioGroup,
   Badge,
+  Flex,
+  VStack,
+  Divider,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { useGetAllCategoryQuery } from "../../services/categoryApi";
+import { useGetAllNestedCategoryQuery } from "../../services/categoryApi";
 import { appColorTheme } from "../../config/appconfig";
 
 const CategorySelector = ({
   setCategoryId,
   initialCategoryId,
   allowLevel1Selection = true,
-  title = "Chọn danh mục",
 }) => {
-  const { data, isLoading, error } = useGetAllCategoryQuery();
-  const [selectedParentIndex, setSelectedParentIndex] = useState(0);
+  const { data, isLoading, error } = useGetAllNestedCategoryQuery();
+  const [selectedCategoryPath, setSelectedCategoryPath] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(
     initialCategoryId || null
   );
 
   const categories = data?.data || [];
 
-  // Find initial tab index based on initialCategoryId
+  // Find initial category path based on initialCategoryId
   useEffect(() => {
     if (initialCategoryId && categories.length > 0) {
       // Check if initialCategoryId is a level 1 category
-      const parentIndex = categories.findIndex(
+      const topLevelCategory = categories.find(
         (cat) => cat.id === initialCategoryId
       );
-
-      if (parentIndex !== -1) {
-        setSelectedParentIndex(parentIndex);
+      if (topLevelCategory) {
+        setSelectedCategoryPath([topLevelCategory]);
         return;
       }
 
-      // Check if initialCategoryId is a level 2 category
-      for (let i = 0; i < categories.length; i++) {
-        const childIndex = categories[i].children?.findIndex(
-          (child) => child.id === initialCategoryId
-        );
+      // Check in nested categories
+      const findCategoryPath = (cats, targetId, currentPath = []) => {
+        for (const cat of cats) {
+          // Check if this is the target
+          if (cat.id === targetId) {
+            return [...currentPath, cat];
+          }
 
-        if (childIndex !== -1) {
-          setSelectedParentIndex(i);
-          break;
+          // Check children if they exist
+          if (cat.children && cat.children.length > 0) {
+            const foundPath = findCategoryPath(cat.children, targetId, [
+              ...currentPath,
+              cat,
+            ]);
+            if (foundPath) return foundPath;
+          }
         }
+        return null;
+      };
+
+      const path = findCategoryPath(categories, initialCategoryId);
+      if (path) {
+        setSelectedCategoryPath(path);
       }
     }
   }, [initialCategoryId, categories]);
 
   // Handle category selection
-  const handleCategorySelect = (categoryId) => {
-    setSelectedCategoryId(categoryId);
-    setCategoryId(categoryId);
+  const handleCategorySelect = (category, level) => {
+    // Trim path to the selected level and add the new category
+    const newPath = [...selectedCategoryPath.slice(0, level), category];
+    setSelectedCategoryPath(newPath);
+
+    // If it's a leaf category or allowLevel1Selection is true, update the selected ID
+    const isLeaf = !category.children || category.children.length === 0;
+    if (isLeaf || (level === 0 && allowLevel1Selection)) {
+      setSelectedCategoryId(category.id);
+      setCategoryId(category.id);
+    }
   };
 
   if (isLoading) {
@@ -84,107 +98,91 @@ const CategorySelector = ({
     );
   }
 
+  // Render a level of categories
+  const renderCategoryLevel = (cats, level) => {
+    return (
+      <VStack align="stretch" spacing={2} width="100%">
+        {cats.map((category) => (
+          <Button
+            key={category.id}
+            size="md"
+            variant="outline"
+            colorScheme={selectedCategoryId === category.id ? "green" : "gray"}
+            justifyContent="flex-start"
+            onClick={() => handleCategorySelect(category, level)}
+            position="relative"
+          >
+            {category.categoryName}
+            {selectedCategoryId === category.id && (
+              <Badge position="absolute" right={2} colorScheme="blue">
+                ✓
+              </Badge>
+            )}
+          </Button>
+        ))}
+      </VStack>
+    );
+  };
+
   return (
-    <Box borderRadius="md" overflow="hidden" bg="white" boxShadow="sm">
-      {title && (
-        <Heading size="md" mb={4} p={4} pb={0}>
-          {title}
-        </Heading>
-      )}
+    <Box borderRadius="md" overflow="hidden" bg="white" boxShadow="sm" p={4}>
+      <Flex direction={{ base: "column", md: "row" }} gap={4}>
+        {/* Level 1 categories (always visible) */}
+        <Box width={{ base: "100%", md: "30%" }}>
+          <Text fontWeight="bold" mb={2}>
+            Danh mục chính
+          </Text>
+          {renderCategoryLevel(categories, 0)}
+        </Box>
 
-      <Tabs
-        index={selectedParentIndex}
-        onChange={setSelectedParentIndex}
-        colorScheme="brown"
-        variant="enclosed"
-      >
-        <TabList overflowX="auto" overflowY="hidden" whiteSpace="nowrap">
-          {categories.map((category) => (
-            <Tab
-              key={category.id}
-              _selected={{
-                color: appColorTheme.brown_2,
-                borderColor: "currentColor",
-                borderBottomColor: "transparent",
-                fontWeight: "bold",
-              }}
-            >
-              {category.categoryName}
-              {category.id === selectedCategoryId && (
-                <Badge ml={2} colorScheme="green">
-                  ✓
-                </Badge>
-              )}
-            </Tab>
-          ))}
-        </TabList>
+        {/* Divider */}
+        <Divider
+          orientation="vertical"
+          display={{ base: "none", md: "block" }}
+        />
 
-        <TabPanels>
-          {categories.map((parentCategory) => (
-            <TabPanel key={parentCategory.id}>
-              <Box mb={4}>
-                <Text fontSize="sm" color="gray.600" mb={2}>
-                  {parentCategory.description}
-                </Text>
+        {/* Subcategories (if a parent is selected) */}
+        <Box width={{ base: "100%", md: "65%" }}>
+          {selectedCategoryPath.length > 0 &&
+            selectedCategoryPath[0]?.children?.length > 0 && (
+              <>
+                <Text mb={2}>Loại sản phẩm cụ thể</Text>
+                <SimpleGrid columns={{ base: 1, md: 2 }} spacing={3}>
+                  {renderCategoryLevel(
+                    selectedCategoryPath[0]?.children || [],
+                    1
+                  )}
+                </SimpleGrid>
 
-                {allowLevel1Selection && (
-                  <RadioGroup
-                    onChange={handleCategorySelect}
-                    value={selectedCategoryId?.toString()}
-                    mb={4}
-                  >
-                    <Radio
-                      value={parentCategory.id.toString()}
-                      colorScheme="brown"
-                    >
-                      <Text
-                        fontWeight={
-                          selectedCategoryId === parentCategory.id
-                            ? "bold"
-                            : "normal"
-                        }
-                      >
-                        Chọn tất cả {parentCategory.categoryName}
-                      </Text>
-                    </Radio>
-                  </RadioGroup>
-                )}
-
-                {parentCategory.children &&
-                  parentCategory.children.length > 0 && (
-                    <>
-                      <Text fontWeight="medium" mb={2}>
-                        {allowLevel1Selection
-                          ? "Hoặc chọn danh mục con:"
-                          : "Chọn danh mục:"}
+                {/* Additional levels if needed */}
+                {selectedCategoryPath.length > 1 &&
+                  selectedCategoryPath[1]?.children?.length > 0 && (
+                    <Box mt={4}>
+                      <Text fontWeight="bold" mb={2}>
+                        Danh mục con cấp 3
                       </Text>
                       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={3}>
-                        {parentCategory.children.map((childCategory) => (
-                          <Button
-                            key={childCategory.id}
-                            size="md"
-                            variant={
-                              selectedCategoryId === childCategory.id
-                                ? "solid"
-                                : "outline"
-                            }
-                            colorScheme="brown"
-                            justifyContent="flex-start"
-                            onClick={() =>
-                              handleCategorySelect(childCategory.id)
-                            }
-                          >
-                            {childCategory.categoryName}
-                          </Button>
-                        ))}
+                        {renderCategoryLevel(
+                          selectedCategoryPath[1]?.children || [],
+                          2
+                        )}
                       </SimpleGrid>
-                    </>
+                    </Box>
                   )}
-              </Box>
-            </TabPanel>
-          ))}
-        </TabPanels>
-      </Tabs>
+              </>
+            )}
+
+          {/* Message when no subcategories or nothing selected */}
+          {(!selectedCategoryPath.length ||
+            !selectedCategoryPath[0]?.children?.length) && (
+            <Text color="gray.500" textAlign="center" py={4}>
+              {selectedCategoryPath.length
+                ? "Danh mục này không có danh mục con"
+                : "Vui lòng chọn một danh mục từ bên trái"}
+            </Text>
+          )}
+        </Box>
+      </Flex>
     </Box>
   );
 };

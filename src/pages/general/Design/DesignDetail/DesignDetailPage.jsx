@@ -11,6 +11,7 @@ import {
   Text,
   VStack,
   Link as ChakraLink,
+  Spinner,
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import ReviewSection from "./ReviewSection.jsx";
@@ -20,15 +21,50 @@ import ImageListSelector from "../../../../components/Utility/ImageListSelector.
 import DesignVariantConfig from "./DesignVariantConfig.jsx";
 import PackageFrame from "../../../../components/Utility/PackageFrame.jsx";
 import useAuth from "../../../../hooks/useAuth.js";
+import { useParams } from "react-router-dom";
+import {
+  useGetDesignByIdQuery,
+  useGetDesignIdeaVariantQuery,
+} from "../../../../services/designIdeaApi.js";
 
 export default function DesignDetailPage() {
-  const product = {
-    product_id: "111",
-    product_name: "Giường 2 tầng Bubu",
-    media_urls:
-      "https://noithatthaibinh.com/wp-content/uploads/2023/10/Giuong-2-tang-tre-em-1m2-MS-3014-1.jpg;https://www.noithatkaya.com/wp-content/uploads/2020/10/Cong-trinh-BIUBIU-STAR-14.webp",
-  };
+  const { id: designId } = useParams();
   const { auth } = useAuth();
+
+  // Fetch design details and variants
+  const {
+    data: designData,
+    isLoading: isDesignLoading,
+    error: designError,
+  } = useGetDesignByIdQuery(designId);
+
+  const {
+    data: variantData,
+    isLoading: isVariantLoading,
+    error: variantError,
+  } = useGetDesignIdeaVariantQuery(designId);
+
+  // Extract design details from API response
+  const designDetail = designData?.data;
+  const designVariants = variantData?.data;
+
+  if (isDesignLoading || isVariantLoading) {
+    return (
+      <Flex justify="center" align="center" h="400px">
+        <Spinner size="xl" color={appColorTheme.brown_2} />
+      </Flex>
+    );
+  }
+
+  if (designError || variantError) {
+    return (
+      <Box textAlign="center" p={10}>
+        <Text fontSize="xl" color="red.500">
+          Có lỗi xảy ra khi tải thông tin thiết kế. Vui lòng thử lại sau.
+        </Text>
+      </Box>
+    );
+  }
 
   return (
     <>
@@ -46,30 +82,31 @@ export default function DesignDetailPage() {
       <Box>
         <Grid templateColumns={{ base: "1fr", xl: "1fr 1fr" }} gap={5}>
           <Box borderRadius="10px" p={5} bgColor="white" boxShadow="md">
-            <ImageListSelector imgUrls={product.media_urls} />
+            <ImageListSelector imgUrls={designDetail?.img_urls || ""} />
           </Box>
 
           <Stack borderRadius="10px" p={5} bgColor="white" boxShadow="md">
             <Stack spacing={4}>
-              <Flex justifyContent="space-between" alignContent="center">
+              <Flex flexDirection="column" gap={10}>
                 <Heading fontWeight="bold" fontSize="20px">
-                  {product.product_name || "Tên sản phẩm"}
+                  {designDetail?.name || "Tên sản phẩm"}
                 </Heading>
-                <Flex alignContent="center" gap={2}>
-                  {" "}
-                  <StarRating rating={3.5} />
-                  13 đánh giá
+                <Flex alignItems="center" gap={2}>
+                  <StarRating rating={designDetail?.totalStar || 0} />
+                  <Text>{designDetail?.totalReviews || 0} đánh giá</Text>
                 </Flex>
               </Flex>
 
               <HStack>
                 <Text fontWeight="bold">Loại sản phẩm:</Text>
-                <Text>Chưa cập nhật</Text>
+                <Text>
+                  {designDetail?.category?.categoryName || "Chưa cập nhật"}
+                </Text>
               </HStack>
 
               <HStack>
                 <Text fontWeight="bold">Mô tả:</Text>
-                <Text>Chưa cập nhật</Text>
+                <Text>{designDetail?.description || "Chưa cập nhật"}</Text>
               </HStack>
             </Stack>
 
@@ -77,9 +114,9 @@ export default function DesignDetailPage() {
 
             <Box>
               <Box>
-                <DesignVariantConfig />
+                <DesignVariantConfig designVariants={designVariants} />
               </Box>
-              {auth?.role != "Woodworker" && (
+              {auth?.role !== "Woodworker" && (
                 <Flex mt={4} gap={5} alignItems="center">
                   <Button
                     bg={appColorTheme.brown_2}
@@ -112,7 +149,11 @@ export default function DesignDetailPage() {
         </Grid>
 
         <Box mt={6}>
-          <PackageFrame packageType="Silver">
+          <PackageFrame
+            packageType={
+              designDetail?.woodworkerProfile?.servicePack?.name || "Silver"
+            }
+          >
             <Flex
               flexDirection={{
                 base: "column",
@@ -126,7 +167,10 @@ export default function DesignDetailPage() {
             >
               <Box>
                 <Image
-                  src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
+                  src={
+                    designDetail?.woodworkerProfile?.imgUrl ||
+                    "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
+                  }
                   width="150px"
                   height="150px"
                   objectFit="cover"
@@ -139,29 +183,39 @@ export default function DesignDetailPage() {
                 <Stack spacing={4}>
                   <Flex justifyContent="space-between" alignContent="center">
                     <Heading fontWeight="bold" fontSize="20px">
-                      Xưởng mộc Hòa Bình Quận 5
+                      {designDetail?.woodworkerProfile?.brandName ||
+                        "Xưởng mộc"}
                     </Heading>
                     <Flex alignContent="center" gap={2}>
-                      {" "}
-                      <StarRating rating={3.5} />
-                      13 đánh giá
+                      <StarRating
+                        rating={designDetail?.woodworkerProfile?.totalStar || 0}
+                      />
+                      {designDetail?.woodworkerProfile?.totalReviews || 0} đánh
+                      giá
                     </Flex>
                   </Flex>
 
                   <HStack>
                     <Text fontWeight="bold">Địa chỉ xưởng:</Text>
-                    <Text>Chưa cập nhật</Text>
+                    <Text>
+                      {designDetail?.woodworkerProfile?.address ||
+                        "Chưa cập nhật"}
+                    </Text>
                   </HStack>
 
                   <HStack>
                     <Text fontWeight="bold">Loại hình kinh doanh:</Text>
-                    <Text>Chưa cập nhật</Text>
+                    <Text>
+                      {designDetail?.woodworkerProfile?.businessType ||
+                        "Chưa cập nhật"}
+                    </Text>
                   </HStack>
 
                   <HStack>
                     <Spacer />
                     <Text>
                       <ChakraLink
+                        href={`/woodworker/${designDetail?.woodworkerProfile?.woodworkerId}`}
                         target="_blank"
                         textDecoration="underline"
                         color={appColorTheme.brown_2}
@@ -176,7 +230,7 @@ export default function DesignDetailPage() {
           </PackageFrame>
         </Box>
 
-        <ReviewSection />
+        <ReviewSection designId={designId} />
       </Box>
     </>
   );

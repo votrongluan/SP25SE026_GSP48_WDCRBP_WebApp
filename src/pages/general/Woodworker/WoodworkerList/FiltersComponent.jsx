@@ -58,7 +58,7 @@ export default function FiltersComponent({ onFilterChange }) {
         Bộ lọc
       </Heading>
 
-      <Accordion defaultIndex={[0, 1, 2]} allowMultiple>
+      <Accordion allowMultiple>
         {/* Bộ lọc Tỉnh thành */}
         <AccordionItem>
           <AccordionButton>

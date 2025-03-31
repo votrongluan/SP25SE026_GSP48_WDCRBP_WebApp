@@ -1,7 +1,19 @@
-import { Box, Grid, Image, Stack, Text, Center } from "@chakra-ui/react";
+import {
+  Box,
+  Grid,
+  Image,
+  Stack,
+  Text,
+  Center,
+  Flex,
+  Icon,
+  HStack,
+} from "@chakra-ui/react";
 import Pagination from "../../../../components/Utility/Pagination.jsx";
 import PackageFrame from "../../../../components/Utility/PackageFrame.jsx";
 import { Link } from "react-router-dom";
+import { MdLocationOn } from "react-icons/md";
+import StarRating from "../../../../components/Utility/StarRating.jsx";
 
 export default function WoodworkerList({ woodworkers = [] }) {
   if (!woodworkers.length) {
@@ -43,25 +55,35 @@ export default function WoodworkerList({ woodworkers = [] }) {
                     />
 
                     <Stack p={2} gap={2}>
-                      <Text height="50px" noOfLines={2} fontWeight="bold">
+                      <Text noOfLines={2} fontWeight="bold">
                         {woodworker.brandName}
                       </Text>
 
-                      <Text height="50px" noOfLines={2}>
-                        {woodworker.address}
-                      </Text>
+                      <Flex alignItems="center">
+                        <Icon as={MdLocationOn} mr={1} color="gray.500" />
+                        <Text noOfLines={2} fontSize="xs" color="gray.500">
+                          {woodworker.address}
+                        </Text>
+                      </Flex>
 
-                      <Text>
-                        ⭐{" "}
-                        {woodworker.totalReviews
-                          ? (
-                              woodworker.totalStar / woodworker.totalReviews
-                            ).toFixed(1)
-                          : "Chưa có đánh giá"}
-                        {woodworker.totalReviews
-                          ? ` (${woodworker.totalReviews} lượt đánh giá)`
-                          : ""}
-                      </Text>
+                      <Flex alignItems="center" mt={1}>
+                        <HStack ml="auto" fontSize="sm">
+                          {woodworker.totalReviews ? (
+                            <StarRating
+                              rating={(
+                                woodworker.totalStar / woodworker.totalReviews
+                              ).toFixed(1)}
+                            />
+                          ) : (
+                            <Text>Chưa có đánh giá</Text>
+                          )}
+                          {woodworker.totalReviews ? (
+                            <Text fontSize="xs" color="gray.500">
+                              ({woodworker.totalReviews})
+                            </Text>
+                          ) : null}
+                        </HStack>
+                      </Flex>
                     </Stack>
                   </Box>
                 </PackageFrame>

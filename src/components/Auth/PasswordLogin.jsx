@@ -40,7 +40,7 @@ export default function PasswordLogin() {
 
       // Lấy thông tin ví của user
       const walletRes = await fetch(
-        `${API_URL}/api/wallet/user/${decodedToken.userId}`,
+        `${API_URL}/api/v1/wallet/user/${decodedToken.userId}`,
         {
           headers: {
             Authorization: `Bearer ${user.access_token}`,

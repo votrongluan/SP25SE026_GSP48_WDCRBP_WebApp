@@ -39,7 +39,7 @@ export default function CustomerWalletPage() {
   });
 
   const [colDefs] = useState([
-    { headerName: "Mã giao dịch", field: "transactionId" },
+    { headerName: "Mã giao dịch", field: "transactionId", sort: "desc" },
     {
       headerName: "Loại giao dịch",
       field: "transactionType",
@@ -84,7 +84,6 @@ export default function CustomerWalletPage() {
       headerName: "Ngày tạo",
       field: "createdAt",
       valueFormatter: (params) => formatDateTimeString(params.value),
-      sort: "desc",
     },
     {
       headerName: "Trạng thái",

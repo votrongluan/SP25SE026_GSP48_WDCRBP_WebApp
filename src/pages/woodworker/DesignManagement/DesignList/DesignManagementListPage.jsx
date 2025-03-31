@@ -36,7 +36,7 @@ export default function DesignManagementListPage() {
   }, [apiData]);
 
   const [colDefs] = useState([
-    { headerName: "Mã thiết kế", field: "designIdeaId" },
+    { headerName: "Mã thiết kế", field: "designIdeaId", sort: "desc" },
     { headerName: "Tên thiết kế", field: "name" },
     { headerName: "Mô tả", field: "description" },
     {

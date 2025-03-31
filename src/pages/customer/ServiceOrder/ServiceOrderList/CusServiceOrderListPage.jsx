@@ -59,7 +59,7 @@ export default function CusServiceOrderListPage() {
   ]);
 
   const [colDefs, setColDefs] = useState([
-    { headerName: "Mã đơn hàng", field: "orderId" },
+    { headerName: "Mã đơn hàng", field: "orderId", sort: "desc" },
     { headerName: "Loại dịch vụ", field: "serviceType" },
     {
       headerName: "Ngày đặt",

@@ -32,7 +32,7 @@ export default function PostManagementListPage() {
   ]);
 
   const [colDefs] = useState([
-    { headerName: "Mã bài viết", field: "id" },
+    { headerName: "Mã bài viết", field: "id", sort: "desc" },
     { headerName: "Tiêu đề", field: "title" },
     {
       headerName: "Ngày tạo",

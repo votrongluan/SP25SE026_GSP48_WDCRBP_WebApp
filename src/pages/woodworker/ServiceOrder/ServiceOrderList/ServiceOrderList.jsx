@@ -6,7 +6,6 @@ import { useMemo, useState } from "react";
 import { appColorTheme } from "../../../../config/appconfig";
 import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import AppointmentList from "./AppointmentList.jsx";
 
 const ActionButton = () => {
   const navigate = useNavigate();
@@ -58,7 +57,7 @@ export default function ServiceOrderList() {
   ]);
 
   const [colDefs, setColDefs] = useState([
-    { headerName: "Mã đơn hàng", field: "orderId" },
+    { headerName: "Mã đơn hàng", field: "orderId", sort: "desc" },
     { headerName: "Loại dịch vụ", field: "serviceType" },
     {
       headerName: "Ngày đặt",

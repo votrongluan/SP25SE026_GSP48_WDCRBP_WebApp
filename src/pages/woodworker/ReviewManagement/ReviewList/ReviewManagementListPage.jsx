@@ -23,7 +23,7 @@ export default function ReviewManagementListPage() {
   ]);
 
   const [colDefs] = useState([
-    { headerName: "Mã đánh giá", field: "reviewId" },
+    { headerName: "Mã đánh giá", field: "reviewId", sort: "desc" },
     { headerName: "Mã đơn hàng", field: "orderId" },
     { headerName: "Mã khách hàng", field: "userId" },
     {

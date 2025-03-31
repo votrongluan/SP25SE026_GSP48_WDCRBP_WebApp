@@ -70,7 +70,7 @@ export default function DesignList() {
   ]);
 
   const [colDefs] = useState([
-    { field: "designId", headerName: "Mã thiết kế" },
+    { field: "designId", headerName: "Mã thiết kế", sort: "desc" },
     { field: "orderId", headerName: "Mã đơn hàng" },
     { field: "status", headerName: "Trạng thái" },
     { field: "action", headerName: "Thao tác", cellRenderer: ActionButton },

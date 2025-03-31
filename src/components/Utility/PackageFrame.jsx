@@ -52,6 +52,7 @@ export default function PackageFrame({ children, packageType }) {
       >
         <Text
           position="absolute"
+          zIndex={2}
           top={-2}
           left={-2}
           borderRadius={"full"}

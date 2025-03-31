@@ -26,7 +26,7 @@ export default function WWRegistrationManagementListPage() {
   } = useGetInactiveWoodworkersQuery();
 
   const [colDefs] = useState([
-    { headerName: "Mã đăng ký", field: "woodworkerId" },
+    { headerName: "Mã đăng ký", field: "woodworkerId", sort: "desc" },
     { headerName: "Họ và tên", field: "fullName" },
     { headerName: "Email", field: "email" },
     { headerName: "Số điện thoại", field: "phone" },

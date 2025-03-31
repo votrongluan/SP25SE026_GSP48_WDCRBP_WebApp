@@ -79,7 +79,7 @@ export default function AppointmentList() {
   ]);
 
   const [colDefs] = useState([
-    { field: "appointmentId", headerName: "Mã lịch hẹn" },
+    { field: "appointmentId", headerName: "Mã lịch hẹn", sort: "desc" },
     { field: "orderId", headerName: "Mã đơn hàng" },
     { field: "datetime", headerName: "Thời gian" },
     { field: "form", headerName: "Hình thức" },

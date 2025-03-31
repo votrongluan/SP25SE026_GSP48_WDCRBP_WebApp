@@ -79,7 +79,7 @@ export default function ContractList() {
   ]);
 
   const [colDefs] = useState([
-    { field: "contractId", headerName: "Mã hợp đồng" },
+    { field: "contractId", headerName: "Mã hợp đồng", sort: "desc" },
     { field: "orderId", headerName: "Mã đơn hàng" },
     { field: "contractTotalAmount", headerName: "Tổng tiền" },
     { field: "cusPhone", headerName: "Số điện thoại KH" },

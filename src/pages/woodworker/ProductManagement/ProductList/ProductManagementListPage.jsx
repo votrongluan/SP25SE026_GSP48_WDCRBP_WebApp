@@ -49,7 +49,7 @@ export default function ProductManagementListPage() {
   ]);
 
   const [colDefs] = useState([
-    { headerName: "Mã SP", field: "id" },
+    { headerName: "Mã SP", field: "id", sort: "desc" },
     { headerName: "Danh mục", field: "category" },
     { headerName: "Tên sản phẩm", field: "name" },
     {

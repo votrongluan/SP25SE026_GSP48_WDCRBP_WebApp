@@ -21,7 +21,7 @@ export default function ComplaintManagementListPage() {
   ]);
 
   const [colDefs] = useState([
-    { headerName: "Mã khiếu nại", field: "complaintId" },
+    { headerName: "Mã khiếu nại", field: "complaintId", sort: "desc" },
     { headerName: "Mã đơn hàng", field: "orderId" },
     { headerName: "Mã khách hàng", field: "userId" },
     {

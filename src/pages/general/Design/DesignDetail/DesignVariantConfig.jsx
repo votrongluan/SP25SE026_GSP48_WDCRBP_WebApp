@@ -1,56 +1,117 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box, Text, VStack, Flex, Stack } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import { formatPrice } from "../../../../utils/utils.js";
 
-export default function DesignVariantConfig() {
-  // Sản phẩm, cấu hình, giá
-  const woodworkProduct = {
-    name: "Bàn gỗ thủ công",
-    img: "https://via.placeholder.com/300", // Ảnh tạm
-    configurations: [
-      {
-        id: 1,
-        name: "Loại gỗ",
-        values: [
-          { id: 101, name: "Gỗ Sồi" },
-          { id: 102, name: "Gỗ Óc Chó" },
-        ],
-      },
-      {
-        id: 2,
-        name: "Bề mặt hoàn thiện",
-        values: [
-          { id: 201, name: "Tự nhiên" },
-          { id: 202, name: "Sơn bóng" },
-        ],
-      },
-    ],
-    prices: [
-      { config: [1, 2], configValue: [101, 201], price: 12000000 },
-      { config: [1, 2], configValue: [101, 202], price: 14000000 },
-      { config: [1, 2], configValue: [102, 201], price: 15000000 },
-      { config: [1, 2], configValue: [102, 202], price: 17000000 },
-    ],
+export default function DesignVariantConfig({ designVariants }) {
+  // Transform the API data to structured format
+  const getConfigurationsFromVariants = (variants) => {
+    if (!variants || variants.length === 0) return [];
+
+    // Extract unique config specifications
+    const configMap = new Map();
+
+    variants.forEach((variant) => {
+      variant.designIdeaVariantConfig.forEach((config) => {
+        const configValue = config.designVariantValues[0];
+        const configSpec = configValue.designIdeaConfig;
+
+        if (!configMap.has(configSpec.designIdeaConfigId)) {
+          configMap.set(configSpec.designIdeaConfigId, {
+            id: configSpec.designIdeaConfigId,
+            name: configSpec.specifications,
+            values: new Map(),
+          });
+        }
+
+        const configEntry = configMap.get(configSpec.designIdeaConfigId);
+        if (!configEntry.values.has(configValue.designIdeaConfigValueId)) {
+          configEntry.values.set(configValue.designIdeaConfigValueId, {
+            id: configValue.designIdeaConfigValueId,
+            name: configValue.value,
+          });
+        }
+      });
+    });
+
+    // Convert Maps to Arrays for easier rendering
+    return Array.from(configMap.values()).map((config) => ({
+      ...config,
+      values: Array.from(config.values.values()),
+    }));
   };
 
-  // State lưu lựa chọn của người dùng
-  const [selectedValues, setSelectedValues] = useState([
-    woodworkProduct.configurations[0].values[0].id, // Mặc định: Gỗ Sồi
-    woodworkProduct.configurations[1].values[0].id, // Mặc định: Tự nhiên
-  ]);
+  // Transform price data from variants
+  const getPricesFromVariants = (variants) => {
+    if (!variants || variants.length === 0) return [];
 
-  // Tìm giá dựa trên cấu hình được chọn (so sánh sau khi sắp xếp)
-  const selectedPrice = woodworkProduct.prices.find(
+    return variants.map((variant) => {
+      const configValues = variant.designIdeaVariantConfig.map(
+        (config) => config.designVariantValues[0].designIdeaConfigValueId
+      );
+
+      // Extract config IDs from the first variant to maintain consistency
+      const configIds = variant.designIdeaVariantConfig.map(
+        (config) =>
+          config.designVariantValues[0].designIdeaConfig.designIdeaConfigId
+      );
+
+      return {
+        config: configIds,
+        configValue: configValues,
+        price: variant.price,
+      };
+    });
+  };
+
+  // Create structured data from API response
+  const configurations = getConfigurationsFromVariants(designVariants);
+  const prices = getPricesFromVariants(designVariants);
+
+  // State for selected values (initialize with first values if available)
+  const [selectedValues, setSelectedValues] = useState(() => {
+    if (configurations.length > 0) {
+      return configurations
+        .map((config) =>
+          config.values.length > 0 ? config.values[0].id : null
+        )
+        .filter(Boolean);
+    }
+    return [];
+  });
+
+  // Update selected values if configurations change
+  useEffect(() => {
+    if (configurations.length > 0) {
+      setSelectedValues(
+        configurations
+          .map((config) =>
+            config.values.length > 0 ? config.values[0].id : null
+          )
+          .filter(Boolean)
+      );
+    }
+  }, [designVariants]);
+
+  // Find price based on selected configuration
+  const selectedPrice = prices.find(
     (p) =>
-      JSON.stringify([...selectedValues].sort()) ===
-      JSON.stringify([...p.configValue].sort())
+      p.configValue.length === selectedValues.length &&
+      p.configValue.every((value) => selectedValues.includes(value))
   )?.price;
+
+  if (!configurations.length) {
+    return (
+      <Box p={4}>
+        <Text>Không có thông tin cấu hình cho thiết kế này</Text>
+      </Box>
+    );
+  }
 
   return (
     <>
       <Stack spacing={4}>
-        {woodworkProduct.configurations.map((config, configIndex) => (
+        {configurations.map((config, configIndex) => (
           <Flex gap={5} justifyContent="space-between" key={config.id}>
             <Text width="200px" fontWeight="bold">
               {config.name}
@@ -76,7 +137,23 @@ export default function DesignVariantConfig() {
                     }
                     onClick={() => {
                       const updatedValues = [...selectedValues];
-                      updatedValues[configIndex] = value.id;
+                      // Find if there's already a selection for this config type
+                      const currentIndex = configurations.findIndex(
+                        (c) => c.id === config.id
+                      );
+                      if (currentIndex !== -1) {
+                        // Replace the old value with the new one
+                        const oldValueIndex = updatedValues.findIndex((v) =>
+                          configurations[currentIndex].values.some(
+                            (val) => val.id === v
+                          )
+                        );
+                        if (oldValueIndex !== -1) {
+                          updatedValues[oldValueIndex] = value.id;
+                        } else {
+                          updatedValues.push(value.id);
+                        }
+                      }
                       setSelectedValues(updatedValues);
                     }}
                   >

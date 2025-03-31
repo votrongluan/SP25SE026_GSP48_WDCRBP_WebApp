@@ -1,9 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import SignatureCanvas from "react-signature-canvas";
-import {
-  useGetAllProvinceQuery,
-  useGetDistrictByProvinceIdQuery,
-} from "../services/ghnApi";
+import { useEffect } from "react";
+import { useGetDistrictByProvinceIdQuery } from "../services/ghnApi";
+import CategorySearchCombobox from "../components/Utility/CategorySearchCombobox";
 
 const TestPage = () => {
   const data = useGetDistrictByProvinceIdQuery();
@@ -12,7 +9,11 @@ const TestPage = () => {
     console.log(data);
   }, [data]);
 
-  return <></>;
+  return (
+    <>
+      <CategorySearchCombobox />
+    </>
+  );
 };
 
 export default TestPage;

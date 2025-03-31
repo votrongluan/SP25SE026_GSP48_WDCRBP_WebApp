@@ -34,6 +34,7 @@ import { useAddDesignIdeaMutation } from "../../../../services/designIdeaApi";
 import { useNotify } from "../../../../components/Utility/Notify";
 import CheckboxList from "../../../../components/Utility/CheckboxList";
 import useAuth from "../../../../hooks/useAuth";
+import CategorySelector from "../../../../components/Utility/CategorySelector";
 
 export default function DesignCreateModal({ refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -42,6 +43,7 @@ export default function DesignCreateModal({ refetch }) {
   const [prices, setPrices] = useState([]);
   const [imgUrls, setImgUrls] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [categoryId, setCategoryId] = useState(null);
   const notify = useNotify();
   const { auth } = useAuth();
 
@@ -181,7 +183,7 @@ export default function DesignCreateModal({ refetch }) {
       woodworkerId: auth?.wwId,
       name: formData.get("name"),
       img: imgUrls,
-      categoryId: +formData.get("categoryId"),
+      categoryId: +categoryId,
       description: formData.get("description"),
       configurations,
       prices,
@@ -257,15 +259,10 @@ export default function DesignCreateModal({ refetch }) {
 
                 <FormControl isRequired>
                   <FormLabel>Danh mục</FormLabel>
-                  <Select
-                    name="categoryId"
-                    placeholder="Chọn danh mục"
-                    bg="white"
-                  >
-                    <option value="1">Bàn ăn</option>
-                    <option value="2">Tủ quần áo</option>
-                    <option value="3">Giường ngủ</option>
-                  </Select>
+                  <CategorySelector
+                    initialCategoryId={1}
+                    setCategoryId={setCategoryId}
+                  />
                 </FormControl>
 
                 <FormControl isRequired>

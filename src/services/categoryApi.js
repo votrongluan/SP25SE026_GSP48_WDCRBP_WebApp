@@ -17,13 +17,20 @@ export const categoryApi = createApi({
     },
   }),
   endpoints: (builder) => ({
+    getAllNestedCategory: builder.query({
+      query: () => ({
+        url: "/api/v1/Category/nested",
+        method: "GET",
+      }),
+    }),
     getAllCategory: builder.query({
       query: () => ({
-        url: "/api/v1/Category/getAllCategory",
+        url: "/api/v1/Category",
         method: "GET",
       }),
     }),
   }),
 });
 
-export const { useGetAllCategoryQuery } = categoryApi;
+export const { useGetAllNestedCategoryQuery, useGetAllCategoryQuery } =
+  categoryApi;
