@@ -214,7 +214,7 @@ export default function WoodworkerWelcomePage() {
         direction={{ base: "column", md: "row" }}
         justify="space-between"
         align="center"
-        mb={8}
+        mb={6}
       >
         <VStack align="start" spacing={2}>
           <Heading size="lg">

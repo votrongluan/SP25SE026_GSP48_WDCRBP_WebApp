@@ -78,8 +78,6 @@ export default function AddressInput({ value, onChange }) {
 
   return (
     <Box>
-      <Text mb={2}>Cập nhật địa chỉ</Text>
-
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
         <Stack spacing={10}>
           <FormControl isRequired>

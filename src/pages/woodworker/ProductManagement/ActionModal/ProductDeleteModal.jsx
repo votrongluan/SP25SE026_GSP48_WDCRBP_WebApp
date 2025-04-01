@@ -19,7 +19,6 @@ export default function ProductDeleteModal({ product, refetch }) {
   const initialRef = useRef(null);
 
   const handleDelete = async () => {
-    console.log("Xóa sản phẩm:", product);
     onClose();
     refetch?.();
   };

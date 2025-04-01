@@ -5,31 +5,40 @@ import {
   Grid,
   Heading,
   HStack,
-  Image,
   Spacer,
   Stack,
   Text,
-  VStack,
-  Link as ChakraLink,
   Spinner,
+  Alert,
+  AlertIcon,
+  useToast,
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import ReviewSection from "./ReviewSection.jsx";
-import StarRating from "../../../../components/Utility/StarRating.jsx";
 import { FiShoppingBag, FiShoppingCart } from "react-icons/fi";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector.jsx";
 import DesignVariantConfig from "./DesignVariantConfig.jsx";
-import PackageFrame from "../../../../components/Utility/PackageFrame.jsx";
 import useAuth from "../../../../hooks/useAuth.js";
 import { useParams } from "react-router-dom";
 import {
   useGetDesignByIdQuery,
   useGetDesignIdeaVariantQuery,
 } from "../../../../services/designIdeaApi.js";
+import { useGetAvailableServiceByWwIdQuery } from "../../../../services/availableServiceApi.js";
+import StarReview from "../../../../components/Utility/StarReview.jsx";
+import WoodworkerBox from "./WoodworkerBox.jsx";
+import useCart from "../../../../hooks/useCart.js";
+import { useState } from "react";
+import { useNotify } from "../../../../components/Utility/Notify.jsx";
 
 export default function DesignDetailPage() {
   const { id: designId } = useParams();
   const { auth } = useAuth();
+  const { addDesignToCart } = useCart();
+  const notify = useNotify();
+
+  // State to track selected variant
+  const [selectedVariant, setSelectedVariant] = useState(null);
 
   // Fetch design details and variants
   const {
@@ -48,7 +57,28 @@ export default function DesignDetailPage() {
   const designDetail = designData?.data;
   const designVariants = variantData?.data;
 
-  if (isDesignLoading || isVariantLoading) {
+  // Fetch woodworker service status
+  const woodworkerId = designDetail?.woodworkerProfile?.woodworkerId;
+  const { data: serviceData, isLoading: isServiceLoading } =
+    useGetAvailableServiceByWwIdQuery(woodworkerId, {
+      skip: !woodworkerId,
+    });
+
+  // Check if customization service is operating
+  const availableServices = serviceData?.data || [];
+
+  const customizationService = availableServices.find(
+    (service) => service?.service?.serviceName === "Customization"
+  );
+
+  const isCustomizationAvailable =
+    customizationService?.operatingStatus !== false;
+
+  if (
+    isDesignLoading ||
+    isVariantLoading ||
+    (woodworkerId && isServiceLoading)
+  ) {
     return (
       <Flex justify="center" align="center" h="400px">
         <Spinner size="xl" color={appColorTheme.brown_2} />
@@ -65,6 +95,27 @@ export default function DesignDetailPage() {
       </Box>
     );
   }
+
+  // Handler for adding item to cart
+  const handleAddToCart = () => {
+    if (!selectedVariant) {
+      return;
+    }
+
+    const cartItem = {
+      ...selectedVariant,
+      name: designDetail?.name,
+      img_urls: designDetail?.img_urls,
+      woodworkerId: designDetail?.woodworkerProfile?.woodworkerId,
+      woodworkerName: designDetail?.woodworkerProfile?.brandName,
+      quantity: 1,
+      availableServiceId: customizationService?.availableServiceId,
+    };
+
+    addDesignToCart(cartItem);
+
+    notify("Đã thêm vào giỏ hàng", "", "success");
+  };
 
   return (
     <>
@@ -87,14 +138,20 @@ export default function DesignDetailPage() {
 
           <Stack borderRadius="10px" p={5} bgColor="white" boxShadow="md">
             <Stack spacing={4}>
-              <Flex flexDirection="column" gap={10}>
+              <Flex flexDirection="column" gap={2}>
                 <Heading fontWeight="bold" fontSize="20px">
                   {designDetail?.name || "Tên sản phẩm"}
                 </Heading>
-                <Flex alignItems="center" gap={2}>
-                  <StarRating rating={designDetail?.totalStar || 0} />
-                  <Text>{designDetail?.totalReviews || 0} đánh giá</Text>
-                </Flex>
+                {!isCustomizationAvailable && (
+                  <Alert borderRadius="md" status="info">
+                    <AlertIcon />
+                    Tạm ngừng kinh doanh
+                  </Alert>
+                )}
+                <StarReview
+                  totalReviews={designDetail?.totalReviews}
+                  totalStar={designDetail?.totalStar}
+                />
               </Flex>
 
               <HStack>
@@ -104,132 +161,62 @@ export default function DesignDetailPage() {
                 </Text>
               </HStack>
 
-              <HStack>
+              <Box>
                 <Text fontWeight="bold">Mô tả:</Text>
-                <Text>{designDetail?.description || "Chưa cập nhật"}</Text>
-              </HStack>
+                <Text whiteSpace="pre-wrap">
+                  {designDetail?.description || "Chưa cập nhật"}
+                </Text>
+              </Box>
             </Stack>
 
             <Spacer />
 
             <Box>
               <Box>
-                <DesignVariantConfig designVariants={designVariants} />
+                <DesignVariantConfig
+                  design={designDetail}
+                  designVariants={designVariants}
+                  onVariantSelect={setSelectedVariant}
+                />
               </Box>
               {auth?.role !== "Woodworker" && (
-                <Flex mt={4} gap={5} alignItems="center">
-                  <Button
-                    bg={appColorTheme.brown_2}
-                    color="white"
-                    borderRadius="30px"
-                    px={8}
-                    py={6}
-                    leftIcon={<FiShoppingBag />}
-                    _hover={{ bg: appColorTheme.brown_1 }}
-                  >
-                    ĐẶT NGAY
-                  </Button>
+                <Flex mt={4} gap={5} flexDirection="column">
+                  {isCustomizationAvailable && (
+                    <Flex gap={5} alignItems="center">
+                      <Button
+                        bg={appColorTheme.brown_2}
+                        color="white"
+                        borderRadius="30px"
+                        px={8}
+                        py={6}
+                        leftIcon={<FiShoppingBag />}
+                        _hover={{ bg: appColorTheme.brown_1 }}
+                      >
+                        ĐẶT NGAY
+                      </Button>
 
-                  <Button
-                    variant="outline"
-                    borderColor={appColorTheme.brown_2}
-                    color={appColorTheme.brown_2}
-                    borderRadius="30px"
-                    px={4}
-                    py={6}
-                    leftIcon={<FiShoppingCart />}
-                    _hover={{ opacity: ".9" }}
-                  >
-                    Thêm vào giỏ
-                  </Button>
+                      <Button
+                        variant="outline"
+                        borderColor={appColorTheme.brown_2}
+                        color={appColorTheme.brown_2}
+                        borderRadius="30px"
+                        px={4}
+                        py={6}
+                        leftIcon={<FiShoppingCart />}
+                        _hover={{ opacity: ".9" }}
+                        onClick={handleAddToCart}
+                      >
+                        Thêm vào giỏ
+                      </Button>
+                    </Flex>
+                  )}
                 </Flex>
               )}
             </Box>
           </Stack>
         </Grid>
 
-        <Box mt={6}>
-          <PackageFrame
-            packageType={
-              designDetail?.woodworkerProfile?.servicePack?.name || "Silver"
-            }
-          >
-            <Flex
-              flexDirection={{
-                base: "column",
-                xl: "row",
-              }}
-              borderRadius="10px"
-              p={5}
-              bgColor="white"
-              boxShadow="md"
-              gap={5}
-            >
-              <Box>
-                <Image
-                  src={
-                    designDetail?.woodworkerProfile?.imgUrl ||
-                    "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
-                  }
-                  width="150px"
-                  height="150px"
-                  objectFit="cover"
-                  objectPosition="center"
-                  borderRadius="50%"
-                />
-              </Box>
-
-              <Stack flex={1}>
-                <Stack spacing={4}>
-                  <Flex justifyContent="space-between" alignContent="center">
-                    <Heading fontWeight="bold" fontSize="20px">
-                      {designDetail?.woodworkerProfile?.brandName ||
-                        "Xưởng mộc"}
-                    </Heading>
-                    <Flex alignContent="center" gap={2}>
-                      <StarRating
-                        rating={designDetail?.woodworkerProfile?.totalStar || 0}
-                      />
-                      {designDetail?.woodworkerProfile?.totalReviews || 0} đánh
-                      giá
-                    </Flex>
-                  </Flex>
-
-                  <HStack>
-                    <Text fontWeight="bold">Địa chỉ xưởng:</Text>
-                    <Text>
-                      {designDetail?.woodworkerProfile?.address ||
-                        "Chưa cập nhật"}
-                    </Text>
-                  </HStack>
-
-                  <HStack>
-                    <Text fontWeight="bold">Loại hình kinh doanh:</Text>
-                    <Text>
-                      {designDetail?.woodworkerProfile?.businessType ||
-                        "Chưa cập nhật"}
-                    </Text>
-                  </HStack>
-
-                  <HStack>
-                    <Spacer />
-                    <Text>
-                      <ChakraLink
-                        href={`/woodworker/${designDetail?.woodworkerProfile?.woodworkerId}`}
-                        target="_blank"
-                        textDecoration="underline"
-                        color={appColorTheme.brown_2}
-                      >
-                        Xem xưởng
-                      </ChakraLink>
-                    </Text>
-                  </HStack>
-                </Stack>
-              </Stack>
-            </Flex>
-          </PackageFrame>
-        </Box>
-
+        <WoodworkerBox designDetail={designDetail} />
         <ReviewSection designId={designId} />
       </Box>
     </>

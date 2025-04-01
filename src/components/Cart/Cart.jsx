@@ -10,16 +10,22 @@ import {
   VStack,
   useDisclosure,
   Button,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Box,
+  Divider,
 } from "@chakra-ui/react";
 import { ShoppingCart } from "@mui/icons-material";
 import { NavLink as RouterNavLink } from "react-router-dom";
-import CartItem from "./CartItem.jsx";
+import DesignCartItem from "./DesignCartItem.jsx";
 import useCart from "../../hooks/useCart.js";
 
 export default function Cart() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { getCartLength, getCart, getNameById } = useCart();
-  const cart = getCart(); // Fetch the cart data with employeeId and products array
+  const { cart, getCartItemCount } = useCart();
 
   return (
     <>
@@ -41,11 +47,11 @@ export default function Cart() {
           right="-10px"
           position="absolute"
         >
-          {getCartLength()}
+          {getCartItemCount()}
         </Text>
       </Flex>
 
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="md">
         <DrawerOverlay />
         <DrawerContent
           fontFamily="Nunito Sans"
@@ -58,24 +64,70 @@ export default function Cart() {
             Giỏ hàng
           </DrawerHeader>
 
-          <DrawerBody p="20px">
-            {/* Loop through the cart array */}
-            {cart.map((employeeCart, index) => (
-              <VStack
-                key={employeeCart.employeeId || index}
-                alignItems="flex-start"
-                spacing="20px"
-              >
-                <Text fontWeight="bold" fontSize="18px">
-                  Nhà cung cấp: {getNameById(employeeCart.employeeId)}
-                </Text>
+          <DrawerBody p={0}>
+            <Tabs>
+              <TabList mb="1em">
+                <Tab
+                  _selected={{
+                    color: "app_brown.2",
+                    borderColor: "app_brown.2",
+                  }}
+                >
+                  Thiết kế
+                </Tab>
+                <Tab
+                  _selected={{
+                    color: "app_brown.2",
+                    borderColor: "app_brown.2",
+                  }}
+                >
+                  Sản phẩm
+                </Tab>
+              </TabList>
 
-                {/* Display the products for this employeeId */}
-                {employeeCart.products.map((product) => (
-                  <CartItem product={product} key={product.productId} />
-                ))}
-              </VStack>
-            ))}
+              <TabPanels px={4}>
+                {/* Designs Tab */}
+                <TabPanel p={0}>
+                  {Object.keys(cart.designs).length === 0 ? (
+                    <Box textAlign="center" py={10}>
+                      <Text>Không có thiết kế trong giỏ hàng</Text>
+                    </Box>
+                  ) : (
+                    Object.entries(cart.designs).map(
+                      ([woodworkerId, designs]) => (
+                        <VStack
+                          key={woodworkerId}
+                          alignItems="flex-start"
+                          spacing="20px"
+                          mb={6}
+                        >
+                          <Text fontWeight="bold" fontSize="18px">
+                            Xưởng mộc: {designs?.[0]?.woodworkerName}
+                          </Text>
+
+                          {designs.map((design) => (
+                            <DesignCartItem
+                              key={design.designIdeaVariantId}
+                              item={design}
+                              type="design"
+                              woodworkerId={woodworkerId}
+                            />
+                          ))}
+                          <Divider />
+                        </VStack>
+                      )
+                    )
+                  )}
+                </TabPanel>
+
+                {/* Products Tab */}
+                <TabPanel p={0}>
+                  <Box textAlign="center" py={10}>
+                    <Text>Không có sản phẩm trong giỏ hàng</Text>
+                  </Box>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
 
             <Button
               _hover={{

@@ -7,11 +7,11 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../config/appconfig.js";
-import PackageFrame from "../../../../components/Utility/PackageFrame.jsx";
-import BuyPackByWalletModal from "../ActionModal/BuyPackByWalletModal.jsx";
-import { formatDateTimeString } from "../../../../utils/utils.js";
-import BuyPackByPaymentGateway from "../ActionModal/BuyPackByPaymentGateway.jsx";
+import { appColorTheme } from "../../../../../config/appconfig.js";
+import PackageFrame from "../../../../../components/Utility/PackageFrame.jsx";
+import BuyPackByWalletModal from "../../ActionModal/BuyPackByWalletModal.jsx";
+import { formatDateTimeString } from "../../../../../utils/utils.js";
+import BuyPackByPaymentGateway from "../../ActionModal/BuyPackByPaymentGateway.jsx";
 
 export default function PackManagement({ woodworker }) {
   const walletModalDisclosure = useDisclosure();

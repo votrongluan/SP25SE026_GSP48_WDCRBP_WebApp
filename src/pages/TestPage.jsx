@@ -6,7 +6,6 @@ const TestPage = () => {
   const data = useGetDistrictByProvinceIdQuery();
 
   useEffect(() => {
-    console.log(data);
   }, [data]);
 
   return (

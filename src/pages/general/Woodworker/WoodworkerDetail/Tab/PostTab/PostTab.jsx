@@ -60,19 +60,17 @@ export default function PostTab() {
             boxShadow="md"
             borderRadius="10px"
           >
+            <Text fontSize="20px" fontWeight="bold">
+              {post.title}
+            </Text>
+
             <HStack>
-              <Text fontSize="20px" fontWeight="bold">
-                {post.title}
-              </Text>
-
-              <Spacer />
-
-              <Box>
+              <Box ml="auto">
                 <RelativeTime dateString={post.createdAt} />
               </Box>
             </HStack>
 
-            <Text mt={4} mb={2}>
+            <Text whiteSpace="pre-wrap" mt={4} mb={2}>
               {post.description}
             </Text>
 

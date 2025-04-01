@@ -38,8 +38,8 @@ const ScrollToTopAndBottom = () => {
       <Flex
         direction="column"
         position="fixed"
-        bottom="4"
-        right="4"
+        bottom="1"
+        right="1"
         zIndex="1000"
         gap="2"
       >
@@ -51,7 +51,7 @@ const ScrollToTopAndBottom = () => {
               bg="black"
               color="white"
               _hover={{ opacity: 0.5 }}
-              size="lg"
+              size="md"
               borderRadius="full"
             />
 
@@ -61,7 +61,7 @@ const ScrollToTopAndBottom = () => {
               bg="black"
               color="white"
               _hover={{ opacity: "0.5" }}
-              size="lg"
+              size="md"
               borderRadius="full"
             />
           </>

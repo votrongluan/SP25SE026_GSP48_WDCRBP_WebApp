@@ -199,7 +199,6 @@ export default function DesignUpdateModal({ design, refetch }) {
       configurations,
       prices,
     };
-    console.log(data);
     onClose();
   };
 

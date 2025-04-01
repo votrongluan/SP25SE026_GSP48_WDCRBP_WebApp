@@ -35,7 +35,7 @@ import {
   useGetDesignByIdQuery,
   useGetDesignIdeaVariantQuery,
 } from "../../../../services/designIdeaApi";
-import StarRating from "../../../../components/Utility/StarRating";
+import StarReview from "../../../../components/Utility/StarReview";
 
 export default function DesignDetailModal({ data }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -171,15 +171,10 @@ export default function DesignDetailModal({ data }) {
                         <Box>
                           <Text fontWeight="bold">Điểm đánh giá:</Text>
                           <Text>
-                            {design?.totalReviews ? (
-                              <StarRating
-                                rating={(
-                                  design?.totalStar / design?.totalReviews
-                                ).toFixed(1)}
-                              />
-                            ) : (
-                              <StarRating rating={0} />
-                            )}
+                            <StarReview
+                              totalReviews={design?.totalReviews}
+                              totalStar={design?.totalStar}
+                            />
                           </Text>
                         </Box>
                         <Box>

@@ -74,7 +74,6 @@ export default function ImageUpload({ onUploadComplete, maxFiles = 5 }) {
       setResults(imgUrls);
       setIsUploadComplete(true);
     } catch (err) {
-      console.log(err);
       notify(
         "Upload thất bại",
         error || "Có lỗi xảy ra khi upload ảnh",

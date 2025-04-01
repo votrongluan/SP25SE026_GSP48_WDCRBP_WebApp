@@ -21,6 +21,7 @@ import { validateWoodworkerRegister } from "../../../validations/index.js";
 import useAuth from "../../../hooks/useAuth.js";
 import CheckboxList from "../../../components/Utility/CheckboxList.jsx";
 import { FiUserPlus } from "react-icons/fi";
+import { Text } from "recharts";
 
 export default function WWRegister() {
   const { auth } = useAuth();
@@ -118,7 +119,7 @@ export default function WWRegister() {
         width={{ base: "100%", xl: "80%" }}
       >
         <form onSubmit={handleSubmit}>
-          <Box mb={8}>
+          <Box mb={6}>
             <Heading as="h3" fontSize="18px" fontFamily="Montserrat" mb={6}>
               Thông tin người đại diện
             </Heading>
@@ -193,6 +194,7 @@ export default function WWRegister() {
                 </FormControl>
               </GridItem>
               <GridItem colSpan={2}>
+                <FormLabel>Địa chỉ</FormLabel>
                 <AddressInput value={fullAddress} onChange={setFullAddress} />
               </GridItem>
               <GridItem>

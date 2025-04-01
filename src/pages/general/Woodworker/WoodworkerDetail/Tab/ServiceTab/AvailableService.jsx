@@ -65,6 +65,9 @@ export default function AvailableService({ woodworkerId, onServiceAction }) {
     <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
       <Stack spacing={6}>
         {services.map((availableService) => {
+          if (!availableService.operatingStatus || !availableService.status)
+            return null;
+
           const serviceType = availableService.service.serviceName;
           const serviceInfo = service[serviceType] || {};
 

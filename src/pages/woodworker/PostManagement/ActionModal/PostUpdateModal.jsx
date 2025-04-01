@@ -19,9 +19,10 @@ import { FiEdit2, FiSave, FiX } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import ImageUpdateUploader from "../../../../components/Utility/ImageUpdateUploader";
 import { useUpdatePostMutation } from "../../../../services/postApi";
-import Cookies from "js-cookie";
 import { useNotify } from "../../../../components/Utility/Notify";
 import useAuth from "../../../../hooks/useAuth";
+import CheckboxList from "../../../../components/Utility/CheckboxList";
+import { validatePostData } from "../../../../validations";
 
 export default function PostUpdateModal({ post, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -29,6 +30,7 @@ export default function PostUpdateModal({ post, refetch }) {
   const [imgUrls, setImgUrls] = useState(post?.imgUrls || "");
   const notify = useNotify();
   const { auth } = useAuth();
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const [updatePost, { isLoading }] = useUpdatePostMutation();
 
@@ -36,15 +38,27 @@ export default function PostUpdateModal({ post, refetch }) {
     e.preventDefault();
     const formData = new FormData(e.target);
 
-    try {
-      const data = {
-        id: post.postId,
-        title: formData.get("title"),
-        description: formData.get("description"),
-        imgUrls: imgUrls,
-        woodworkerId: post.woodworkerId || auth?.wwId || 0,
-      };
+    const data = {
+      id: post.postId,
+      title: formData.get("title"),
+      description: formData.get("description"),
+      imgUrls: imgUrls,
+      woodworkerId: post.woodworkerId || auth?.wwId || 0,
+    };
 
+    // Validate post data
+    const errors = validatePostData(data);
+    if (errors.length > 0) {
+      notify(
+        "Lỗi khi cập nhật bài viết",
+        errors.join(" [---] "),
+        "error",
+        3000
+      );
+      return;
+    }
+
+    try {
       await updatePost(data).unwrap();
 
       notify("Bài viết đã được cập nhật thành công", "", "success", 3000);
@@ -134,6 +148,16 @@ export default function PostUpdateModal({ post, refetch }) {
                   />
                 </FormControl>
 
+                <CheckboxList
+                  items={[
+                    {
+                      isOptional: false,
+                      description: "Xác nhận thao tác",
+                    },
+                  ]}
+                  setButtonDisabled={setButtonDisabled}
+                />
+
                 <Stack direction="row" justify="flex-end" spacing={4}>
                   <Button
                     onClick={onClose}
@@ -146,6 +170,7 @@ export default function PostUpdateModal({ post, refetch }) {
                     colorScheme="blue"
                     type="submit"
                     isLoading={isLoading}
+                    isDisabled={buttonDisabled}
                     leftIcon={<FiSave />}
                   >
                     Cập nhật

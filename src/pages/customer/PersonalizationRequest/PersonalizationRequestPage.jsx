@@ -64,7 +64,6 @@ export default function PersonalizationRequestPage() {
     axios
       .post("/PrintOrder/AddPrintOrder", formData)
       .then((response) => {
-        console.log(response.data);
         navigate(`/printorder/${response.data.data[0].printOrderId}`);
       })
       .catch((error) => {

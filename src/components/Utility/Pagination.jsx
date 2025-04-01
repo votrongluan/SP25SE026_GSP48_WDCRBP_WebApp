@@ -19,29 +19,34 @@ export default function Pagination({
     (currentPage + 1) * itemsPerPage
   );
 
+  // Calculate page count
+  const pageCount = Math.ceil(dataList.length / itemsPerPage);
+
   return (
     <Box>
       <Text mb={4}>Tìm thấy {dataList.length} kết quả</Text>
 
       <DisplayComponent data={paginatedItems} />
 
-      <Flex justifyContent="center" mt={10}>
-        <ReactPaginate
-          pageCount={Math.ceil(dataList.length / itemsPerPage)}
-          onPageChange={handlePageChange}
-          previousLabel={"<"}
-          nextLabel={">"}
-          breakLabel={"..."}
-          marginPagesDisplayed={1}
-          pageRangeDisplayed={2}
-          containerClassName={"pagination"}
-          activeClassName={"active"}
-          pageLinkClassName={"page-link"}
-          previousLinkClassName={"page-link"}
-          nextLinkClassName={"page-link"}
-          breakClassName={"page-item"}
-        />
-      </Flex>
+      {pageCount > 1 && (
+        <Flex justifyContent="center" mt={10}>
+          <ReactPaginate
+            pageCount={pageCount}
+            onPageChange={handlePageChange}
+            previousLabel={"<"}
+            nextLabel={">"}
+            breakLabel={"..."}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={2}
+            containerClassName={"pagination"}
+            activeClassName={"active"}
+            pageLinkClassName={"page-link"}
+            previousLinkClassName={"page-link"}
+            nextLinkClassName={"page-link"}
+            breakClassName={"page-item"}
+          />
+        </Flex>
+      )}
 
       <style>
         {`

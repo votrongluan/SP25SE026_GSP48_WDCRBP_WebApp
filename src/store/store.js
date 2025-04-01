@@ -16,6 +16,8 @@ import { categoryApi } from "../services/categoryApi";
 import { availableServiceApi } from "../services/availableServiceApi";
 import { reviewApi } from "../services/reviewApi";
 import { postApi } from "../services/postApi";
+import { userAddressApi } from "../services/userAddressApi";
+import { serviceOrderApi } from "../services/serviceOrderApi";
 
 export const store = configureStore({
   reducer: {
@@ -35,6 +37,8 @@ export const store = configureStore({
     [availableServiceApi.reducerPath]: availableServiceApi.reducer,
     [reviewApi.reducerPath]: reviewApi.reducer,
     [postApi.reducerPath]: postApi.reducer,
+    [userAddressApi.reducerPath]: userAddressApi.reducer,
+    [serviceOrderApi.reducerPath]: serviceOrderApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -53,7 +57,9 @@ export const store = configureStore({
       categoryApi.middleware,
       availableServiceApi.middleware,
       reviewApi.middleware,
-      postApi.middleware
+      postApi.middleware,
+      userAddressApi.middleware,
+      serviceOrderApi.middleware
     ),
 });
 

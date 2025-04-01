@@ -104,3 +104,39 @@ export const validateWoodworkerRegister = (data) => {
 
   return errors;
 };
+
+export const validatePostData = (data) => {
+  const errors = [];
+
+  // Validate title
+  if (!data.title) {
+    errors.push("Tiêu đề là bắt buộc");
+  } else if (data.title.length < 5) {
+    errors.push("Tiêu đề phải có ít nhất 5 ký tự");
+  }
+
+  // Validate description
+  if (!data.description) {
+    errors.push("Mô tả là bắt buộc");
+  } else if (data.description.length < 10) {
+    errors.push("Mô tả phải có ít nhất 10 ký tự");
+  }
+
+  // Validate image URLs
+  if (!validateImageUrls(data.imgUrls)) {
+    errors.push("Vui lòng tải lên ít nhất một hình ảnh");
+  }
+
+  return errors;
+};
+
+export const validateImageUrls = (imgUrls) => {
+  if (
+    !imgUrls ||
+    imgUrls === "" ||
+    (Array.isArray(imgUrls) && imgUrls.length === 0)
+  ) {
+    return false;
+  }
+  return true;
+};

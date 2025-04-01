@@ -11,15 +11,15 @@ import {
   Select,
   Spinner,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../config/appconfig.js";
-import ImageUpdateUploader from "../../../../components/Utility/ImageUpdateUploader.jsx";
+import { appColorTheme } from "../../../../../config/appconfig.js";
+import ImageUpdateUploader from "../../../../../components/Utility/ImageUpdateUploader.jsx";
 import { useState } from "react";
-import AddressInput from "../../../../components/Utility/AddressInput.jsx";
-import CheckboxList from "../../../../components/Utility/CheckboxList.jsx";
-import { useNotify } from "../../../../components/Utility/Notify.jsx";
+import AddressInput from "../../../../../components/Utility/AddressInput.jsx";
+import CheckboxList from "../../../../../components/Utility/CheckboxList.jsx";
+import { useNotify } from "../../../../../components/Utility/Notify.jsx";
 import { FiCheckCircle } from "react-icons/fi";
 
-export default function WoodworkerProfileManagement({
+export default function WoodworkerInformationManagement({
   woodworker,
   address,
   setAddress,
@@ -143,6 +143,7 @@ export default function WoodworkerProfileManagement({
               <FormControl isRequired>
                 <FormLabel>Giới thiệu</FormLabel>
                 <Textarea
+                  whiteSpace="pre-wrap"
                   placeholder="Giới thiệu về xưởng mộc của bạn"
                   name="bio"
                   rows={4}
@@ -164,7 +165,7 @@ export default function WoodworkerProfileManagement({
             </GridItem>
           </SimpleGrid>
 
-          <Box mt={8}>
+          <Box mt={6}>
             {isLoading ? (
               <Spinner />
             ) : (

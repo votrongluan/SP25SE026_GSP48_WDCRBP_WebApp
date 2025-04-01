@@ -8,12 +8,13 @@ import {
   Flex,
   Icon,
   HStack,
+  Spacer,
 } from "@chakra-ui/react";
 import Pagination from "../../../../components/Utility/Pagination.jsx";
 import PackageFrame from "../../../../components/Utility/PackageFrame.jsx";
 import { Link } from "react-router-dom";
 import { MdLocationOn } from "react-icons/md";
-import StarRating from "../../../../components/Utility/StarRating.jsx";
+import StarReview from "../../../../components/Utility/StarReview.jsx";
 
 export default function WoodworkerList({ woodworkers = [] }) {
   if (!woodworkers.length) {
@@ -54,34 +55,28 @@ export default function WoodworkerList({ woodworkers = [] }) {
                       fallbackSrc="https://via.placeholder.com/200x150?text=No+Image"
                     />
 
-                    <Stack p={2} gap={2}>
-                      <Text noOfLines={2} fontWeight="bold">
-                        {woodworker.brandName}
-                      </Text>
-
-                      <Flex alignItems="center">
-                        <Icon as={MdLocationOn} mr={1} color="gray.500" />
-                        <Text noOfLines={2} fontSize="xs" color="gray.500">
-                          {woodworker.address}
+                    <Stack height="100px" p={1} gap={1}>
+                      <Box>
+                        <Text noOfLines={1} fontWeight="bold">
+                          {woodworker.brandName}
                         </Text>
-                      </Flex>
+
+                        <Flex alignItems="center">
+                          <Icon as={MdLocationOn} mr={1} color="gray.500" />
+                          <Text noOfLines={2} fontSize="xs" color="gray.500">
+                            {woodworker.address}
+                          </Text>
+                        </Flex>
+                      </Box>
+
+                      <Spacer />
 
                       <Flex alignItems="center" mt={1}>
                         <HStack ml="auto" fontSize="sm">
-                          {woodworker.totalReviews ? (
-                            <StarRating
-                              rating={(
-                                woodworker.totalStar / woodworker.totalReviews
-                              ).toFixed(1)}
-                            />
-                          ) : (
-                            <Text>Chưa có đánh giá</Text>
-                          )}
-                          {woodworker.totalReviews ? (
-                            <Text fontSize="xs" color="gray.500">
-                              ({woodworker.totalReviews})
-                            </Text>
-                          ) : null}
+                          <StarReview
+                            totalStar={woodworker.totalStar}
+                            totalReviews={woodworker.totalReviews}
+                          />
                         </HStack>
                       </Flex>
                     </Stack>

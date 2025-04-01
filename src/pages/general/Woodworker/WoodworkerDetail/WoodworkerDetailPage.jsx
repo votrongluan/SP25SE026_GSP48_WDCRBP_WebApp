@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import ReviewSection from "./Tab/ReviewTab/ReviewSection.jsx";
-import StarRating from "../../../../components/Utility/StarRating.jsx";
+import StarReview from "../../../../components/Utility/StarReview.jsx";
 import { FiBox, FiPenTool, FiStar, FiTool, FiUserCheck } from "react-icons/fi";
 import WoodworkerProductTab from "./Tab/ProductTab/WoodworkerProductTab.jsx";
 import WoodworkerDesignsTab from "./Tab/DesignTab/WoodworkerDesignsTab.jsx";
@@ -116,16 +116,10 @@ export default function WoodworkerDetailPage() {
                     {woodworker.brandName}
                   </Heading>
                   <Flex alignContent="center" gap={2}>
-                    <StarRating
-                      rating={
-                        woodworker.totalReviews
-                          ? woodworker.totalStar / woodworker.totalReviews
-                          : 0
-                      }
+                    <StarReview
+                      totalStar={woodworker.totalStar}
+                      totalReviews={woodworker.totalReviews}
                     />
-                    {woodworker.totalReviews
-                      ? `${woodworker.totalReviews} đánh giá`
-                      : "Chưa có đánh giá"}
                   </Flex>
                 </Flex>
 
@@ -152,7 +146,9 @@ export default function WoodworkerDetailPage() {
 
                 <Box>
                   <Text fontWeight="bold">Giới thiệu:</Text>
-                  <Text>{woodworker.bio || "Chưa cập nhật"}</Text>
+                  <Text whiteSpace="pre-wrap">
+                    {woodworker.bio || "Chưa cập nhật"}
+                  </Text>
                 </Box>
               </Stack>
             </Stack>

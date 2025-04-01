@@ -40,6 +40,7 @@ export const transactionTypeColorMap = {
 export const service = {
   ["Personalization"]: {
     serviceName: "Dịch vụ thiết kế và gia công theo ý tưởng khách hàng",
+    serviceAlterName: "Dịch vụ Cá nhân hóa",
     serviceType: "Personalization",
     description:
       "Dịch vụ thiết kế và gia công theo ý tưởng khách hàng, giúp bạn biến ý tưởng thành hiện thực.",
@@ -49,6 +50,7 @@ export const service = {
   },
   ["Customization"]: {
     serviceName: "Dịch vụ gia công theo ý tưởng thiết kế của xưởng",
+    serviceAlterName: "Dịch vụ Tùy chỉnh",
     serviceType: "Customization",
     description:
       "Dịch vụ gia công theo ý tưởng thiết kế của xưởng, đảm bảo chất lượng và độ chính xác.",
@@ -60,6 +62,7 @@ export const service = {
   ["Guarantee"]: {
     serviceName: "Dịch vụ sửa chữa và bảo hành sản phẩm của xưởng",
     serviceType: "Guarantee",
+    serviceAlterName: "Dịch vụ Sửa chữa",
     description:
       "Dịch vụ sửa chữa và bảo hành sản phẩm của xưởng, đảm bảo sự hài lòng của khách hàng.",
     path: "guarantee",
@@ -69,6 +72,7 @@ export const service = {
   ["Sale"]: {
     serviceName: "Dịch vụ bán sản phẩm có sẵn",
     serviceType: "Sale",
+    serviceAlterName: "Dịch vụ Bán hàng",
     description:
       "Dịch vụ bán sản phẩm có sẵn, giúp bạn dễ dàng lựa chọn sản phẩm phù hợp.",
     path: "products",

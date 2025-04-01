@@ -190,8 +190,8 @@ export default function DesignCreateModal({ refetch }) {
     };
 
     try {
-      const result = await addDesignIdea(data).unwrap();
-      notify("Thêm thiết kế thành công", result?.message);
+      await addDesignIdea(data).unwrap();
+      notify("Thêm thiết kế thành công");
 
       // Reset form
       setConfigurations([]);

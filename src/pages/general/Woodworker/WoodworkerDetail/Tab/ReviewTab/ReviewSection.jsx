@@ -2,61 +2,17 @@ import { useState } from "react";
 import { Box, Flex, Text, HStack } from "@chakra-ui/react";
 import StarRating from "../../../../../../components/Utility/StarRating.jsx";
 import FilterPill from "../../../../../../components/Utility/FilterPill.jsx";
+import Pagination from "../../../../../../components/Utility/Pagination.jsx";
 import { FiBook, FiClock } from "react-icons/fi";
 import { useGetWoodworkerReviewsQuery } from "../../../../../../services/reviewApi.js";
 import { useParams } from "react-router-dom";
 
-export default function ReviewSection() {
-  const [filterStar, setFilterStar] = useState(null);
-  const { id } = useParams();
-  const { data, isLoading, isError } = useGetWoodworkerReviewsQuery(id);
-
-  const reviews = data?.data || [];
-
-  // Lọc review theo số sao (nếu filterStar=null => hiển thị tất cả)
-  const filteredReviews = filterStar
-    ? reviews.filter((r) => r.rating === filterStar)
-    : reviews;
-
-  const handleFilterAll = () => {
-    setFilterStar(null);
-  };
-
-  const handleStarFilter = (star) => {
-    setFilterStar(star);
-  };
-
-  if (isLoading) return <Box>Đang tải đánh giá...</Box>;
-  if (isError) return <Box>Có lỗi khi tải đánh giá</Box>;
-
+// Component to render review items (will be passed to Pagination)
+const ReviewList = ({ data }) => {
   return (
-    <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-      {/* Thanh lọc ở trên: Tất cả, rồi 5 sao -> 1 sao */}
-      <Box mb={4}>
-        <Text fontWeight="bold" mb={2}>
-          Lọc theo
-        </Text>
-        <Flex gap={2} flexWrap="wrap">
-          {/* Tất cả */}
-          <FilterPill
-            label="Tất cả"
-            isActive={!filterStar}
-            onClick={handleFilterAll}
-          />
-          {[5, 4, 3, 2, 1].map((star) => (
-            <FilterPill
-              key={star}
-              label={`${star} Sao`}
-              isActive={filterStar === star}
-              onClick={() => handleStarFilter(star)}
-            />
-          ))}
-        </Flex>
-      </Box>
-
-      {/* Danh sách đánh giá */}
-      {filteredReviews.length > 0 ? (
-        filteredReviews.map((review) => (
+    <>
+      {data.length > 0 ? (
+        data.map((review) => (
           <Box
             key={review.reviewId}
             mb={6}
@@ -114,6 +70,64 @@ export default function ReviewSection() {
       ) : (
         <Text>Không có đánh giá phù hợp</Text>
       )}
+    </>
+  );
+};
+
+export default function ReviewSection() {
+  const [filterStar, setFilterStar] = useState(null);
+  const { id } = useParams();
+  const { data, isLoading, isError } = useGetWoodworkerReviewsQuery(id);
+
+  const reviews = data?.data || [];
+
+  // Lọc review theo số sao (nếu filterStar=null => hiển thị tất cả)
+  const filteredReviews = filterStar
+    ? reviews.filter((r) => r.rating === filterStar)
+    : reviews;
+
+  const handleFilterAll = () => {
+    setFilterStar(null);
+  };
+
+  const handleStarFilter = (star) => {
+    setFilterStar(star);
+  };
+
+  if (isLoading) return <Box>Đang tải đánh giá...</Box>;
+  if (isError) return <Box>Có lỗi khi tải đánh giá</Box>;
+
+  return (
+    <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
+      {/* Thanh lọc ở trên: Tất cả, rồi 5 sao -> 1 sao */}
+      <Box mb={4}>
+        <Text fontWeight="bold" mb={2}>
+          Lọc theo
+        </Text>
+        <Flex gap={2} flexWrap="wrap">
+          {/* Tất cả */}
+          <FilterPill
+            label="Tất cả"
+            isActive={!filterStar}
+            onClick={handleFilterAll}
+          />
+          {[5, 4, 3, 2, 1].map((star) => (
+            <FilterPill
+              key={star}
+              label={`${star} Sao`}
+              isActive={filterStar === star}
+              onClick={() => handleStarFilter(star)}
+            />
+          ))}
+        </Flex>
+      </Box>
+
+      {/* Danh sách đánh giá với phân trang */}
+      <Pagination
+        dataList={filteredReviews}
+        DisplayComponent={ReviewList}
+        itemsPerPage={5}
+      />
     </Box>
   );
 }

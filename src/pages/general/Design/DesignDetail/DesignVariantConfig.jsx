@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
-import { Box, Text, VStack, Flex, Stack } from "@chakra-ui/react";
+import { Box, Text, Flex, Stack } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import { formatPrice } from "../../../../utils/utils.js";
 
-export default function DesignVariantConfig({ designVariants }) {
+export default function DesignVariantConfig({
+  designVariants,
+  design,
+  onVariantSelect,
+}) {
+
   // Transform the API data to structured format
   const getConfigurationsFromVariants = (variants) => {
     if (!variants || variants.length === 0) return [];
@@ -41,7 +46,7 @@ export default function DesignVariantConfig({ designVariants }) {
     }));
   };
 
-  // Transform price data from variants
+  // Transform price data from variants - updated to include variantId
   const getPricesFromVariants = (variants) => {
     if (!variants || variants.length === 0) return [];
 
@@ -60,6 +65,7 @@ export default function DesignVariantConfig({ designVariants }) {
         config: configIds,
         configValue: configValues,
         price: variant.price,
+        variantId: variant.designIdeaVariantId, // Add variant ID
       };
     });
   };
@@ -93,12 +99,29 @@ export default function DesignVariantConfig({ designVariants }) {
     }
   }, [designVariants]);
 
-  // Find price based on selected configuration
-  const selectedPrice = prices.find(
+  // Find price and variant based on selected configuration
+  const selectedVariantInfo = prices.find(
     (p) =>
       p.configValue.length === selectedValues.length &&
       p.configValue.every((value) => selectedValues.includes(value))
-  )?.price;
+  );
+
+  const selectedPrice = selectedVariantInfo?.price;
+
+  // Find full variant object when selection changes
+  useEffect(() => {
+    if (selectedVariantInfo && designVariants) {
+      // Find the full variant object that matches our selection
+      const fullVariant = designVariants.find(
+        (variant) =>
+          variant.designIdeaVariantId === selectedVariantInfo.variantId
+      );
+
+      if (fullVariant && onVariantSelect) {
+        onVariantSelect(fullVariant);
+      }
+    }
+  }, [selectedValues, designVariants, selectedVariantInfo, onVariantSelect]);
 
   if (!configurations.length) {
     return (
@@ -111,7 +134,7 @@ export default function DesignVariantConfig({ designVariants }) {
   return (
     <>
       <Stack spacing={4}>
-        {configurations.map((config, configIndex) => (
+        {configurations.map((config) => (
           <Flex gap={5} justifyContent="space-between" key={config.id}>
             <Text width="200px" fontWeight="bold">
               {config.name}

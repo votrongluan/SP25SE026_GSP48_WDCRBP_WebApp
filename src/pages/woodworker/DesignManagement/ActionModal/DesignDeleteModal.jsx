@@ -23,7 +23,6 @@ export default function DesignDeleteModal({ design, refetch }) {
   const handleDelete = async () => {
     try {
       // TODO: Gọi API xóa thiết kế
-      console.log("Xóa thiết kế:", design);
       onClose();
       refetch?.();
     } catch (error) {

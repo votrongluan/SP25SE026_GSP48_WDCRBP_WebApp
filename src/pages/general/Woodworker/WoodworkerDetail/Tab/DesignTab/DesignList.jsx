@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import PackageFrame from "../../../../../../components/Utility/PackageFrame.jsx";
 import { MdCollections, MdStorefront, MdLocationOn } from "react-icons/md";
 import StarRating from "../../../../../../components/Utility/StarRating.jsx";
+import StarReview from "../../../../../../components/Utility/StarReview.jsx";
 
 export default function DesignList({ designs = [] }) {
   if (!designs.length) {
@@ -37,7 +38,10 @@ export default function DesignList({ designs = [] }) {
             gap={5}
           >
             {data.map((design) => (
-              <Link key={design.designIdeaId} to={`${design.designIdeaId}`}>
+              <Link
+                key={design.designIdeaId}
+                to={`/design/${design.designIdeaId}`}
+              >
                 <PackageFrame
                   packageType={
                     design.woodworkerProfile?.servicePack?.name || "Bronze"
@@ -111,20 +115,10 @@ export default function DesignList({ designs = [] }) {
 
                       <Flex alignItems="center" mt={1}>
                         <HStack ml="auto" fontSize="sm">
-                          {design.totalReviews ? (
-                            <StarRating
-                              rating={(
-                                design.totalStar / design.totalReviews
-                              ).toFixed(1)}
-                            />
-                          ) : (
-                            <Text>Chưa có đánh giá</Text>
-                          )}
-                          {design.totalReviews ? (
-                            <Text fontSize="xs" color="gray.500">
-                              ({design.totalReviews})
-                            </Text>
-                          ) : null}
+                          <StarReview
+                            totalStar={design.woodworkerProfile.totalStar}
+                            totalReviews={design.woodworkerProfile.totalReviews}
+                          />
                         </HStack>
                       </Flex>
                     </Stack>

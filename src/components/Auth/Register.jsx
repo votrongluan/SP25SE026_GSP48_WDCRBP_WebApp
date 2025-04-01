@@ -50,8 +50,6 @@ export default function Register({ setRegisterEmail, changeTab }) {
       setRegisterEmail(data.email);
       changeTab("verify");
     } catch (err) {
-      console.log(err);
-
       notify(
         "Đăng ký thất bại",
         err?.data?.message || "Có lỗi xảy ra, vui lòng thử lại sau",

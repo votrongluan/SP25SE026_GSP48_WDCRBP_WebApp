@@ -20,6 +20,8 @@ import ImageUpload from "../../../../components/Utility/ImageUpload";
 import { useCreatePostMutation } from "../../../../services/postApi";
 import useAuth from "../../../../hooks/useAuth";
 import { useNotify } from "../../../../components/Utility/Notify";
+import CheckboxList from "../../../../components/Utility/CheckboxList";
+import { validatePostData } from "../../../../validations";
 
 export default function PostCreateModal({ refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -27,6 +29,7 @@ export default function PostCreateModal({ refetch }) {
   const [imgUrls, setImgUrls] = useState("");
   const notify = useNotify();
   const { auth } = useAuth();
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const [createPost, { isLoading }] = useCreatePostMutation();
 
@@ -34,14 +37,21 @@ export default function PostCreateModal({ refetch }) {
     e.preventDefault();
     const formData = new FormData(e.target);
 
-    try {
-      const data = {
-        title: formData.get("title"),
-        description: formData.get("description"),
-        imgUrls: imgUrls,
-        woodworkerId: auth?.wwId,
-      };
+    const data = {
+      title: formData.get("title"),
+      description: formData.get("description"),
+      imgUrls: imgUrls,
+      woodworkerId: auth?.wwId,
+    };
 
+    // Validate post data
+    const errors = validatePostData(data);
+    if (errors.length > 0) {
+      notify("Lỗi khi tạo bài viết", errors.join(" [---] "), "error", 3000);
+      return;
+    }
+
+    try {
       await createPost(data).unwrap();
 
       notify("Bài viết đã được tạo thành công", "", "success", 3000);
@@ -117,6 +127,16 @@ export default function PostCreateModal({ refetch }) {
                   />
                 </FormControl>
 
+                <CheckboxList
+                  items={[
+                    {
+                      isOptional: false,
+                      description: "Xác nhận thao tác",
+                    },
+                  ]}
+                  setButtonDisabled={setButtonDisabled}
+                />
+
                 <Stack direction="row" justify="flex-end" spacing={4}>
                   <Button
                     onClick={onClose}
@@ -129,6 +149,7 @@ export default function PostCreateModal({ refetch }) {
                     colorScheme="green"
                     type="submit"
                     isLoading={isLoading}
+                    isDisabled={buttonDisabled}
                     leftIcon={<FiSave />}
                   >
                     Lưu

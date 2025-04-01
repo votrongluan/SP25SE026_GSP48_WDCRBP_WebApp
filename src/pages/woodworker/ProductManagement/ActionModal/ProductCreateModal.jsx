@@ -41,7 +41,6 @@ export default function ProductCreateModal({ refetch }) {
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
 
-    console.log(data);
     setImgUrls([]);
     onClose();
   };

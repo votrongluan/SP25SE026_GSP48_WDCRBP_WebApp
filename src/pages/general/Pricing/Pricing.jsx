@@ -106,7 +106,7 @@ export default function Pricing({
           Các gói dịch vụ dành cho xưởng mộc
         </Heading>
         <Text fontSize="lg" color={appColorTheme.brown_1} textAlign="center">
-          Tham gia cùng hàng nghìn nhà cung cấp dịch vụ khác
+          Tham gia cùng hàng nghìn Xưởng mộc dịch vụ khác
         </Text>
       </Stack>
 

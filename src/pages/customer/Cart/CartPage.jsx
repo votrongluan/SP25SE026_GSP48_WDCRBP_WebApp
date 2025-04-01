@@ -1,229 +1,77 @@
 import {
   Box,
   Button,
-  Container,
-  Grid,
-  GridItem,
-  HStack,
-  Input,
-  Spacer,
-  Stack,
+  Heading,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Text,
-  Textarea,
 } from "@chakra-ui/react";
-import CartItemDetail from "../../../components/Cart/CartItemDetail.jsx";
-import useCart from "../../../hooks/useCart.js"; // Using custom hook for cart
-import axios, { appURL } from "../../../api/axios.js";
-import useAuth from "../../../hooks/useAuth.js";
-import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GlobalContext } from "../../../context/GlobalContext.jsx";
+import DesignCartTab from "./components/DesignCartTab.jsx";
+import { appColorTheme } from "../../../config/appconfig.js";
 
 export default function CartPage() {
-  const { getCart, calculateTotalPrice, getNameById, clearCart } = useCart();
-  const { orderId, incrementOrderId } = useContext(GlobalContext);
-  const { auth } = useAuth();
   const navigate = useNavigate();
-  const [note, setNote] = useState({}); // State for the notes (per employeeId)
-  const [shipAddress, setShipAddress] = useState({}); // State for shipping addresses (per employeeId)
-
-  const productsByEmployee = getCart().reduce((acc, curr) => {
-    const { employeeId, products } = curr;
-    if (!acc[employeeId]) {
-      acc[employeeId] = { employeeId, products: [] };
-    }
-    acc[employeeId].products.push(...products);
-    return acc;
-  }, {});
-
-  const handleNoteChange = (employeeId, value) => {
-    setNote((prev) => ({ ...prev, [employeeId]: value }));
-  };
-
-  const handleAddressChange = (employeeId, value) => {
-    setShipAddress((prev) => ({ ...prev, [employeeId]: value }));
-  };
-
-  const handleOrder = (employeeId) => {
-    const orderDetail = productsByEmployee[employeeId].products.map((item) => {
-      return {
-        quantity: item.quantity,
-        productId: item.productId,
-      };
-    });
-
-    const postData = {
-      note: note[employeeId] || "", // Specific note for employeeId
-      shipAddress: shipAddress[employeeId] || auth?.Address, // Specific shipping address for employeeId
-      orderDetail,
-      paymentId: 2,
-      employeeId: auth.EmployeeId,
-      supplierId: employeeId, // EmployeeId acts as the supplierId in this case
-      totalPrice: calculateTotalPrice(employeeId) + 0,
-    };
-
-    axios
-      .post("/Order/AddNewSelling", postData)
-      .then((response) => {
-        clearCart(employeeId);
-
-        const appOrderId = response.data[0].orderId;
-
-        const paymentData = {
-          orderId: orderId.toString(),
-          description: `3dcreatify ma gd ${orderId}`,
-          priceTotal: calculateTotalPrice(employeeId) + 0,
-          returnUrl: `${appURL}/order/${appOrderId}?payStatus=true&orderId=${orderId}`,
-          cancelUrl: `${appURL}/order/${appOrderId}`,
-          items: [
-            {
-              productName: `Ma don ${appOrderId}`,
-              quantity: 1,
-              priceSingle: calculateTotalPrice(employeeId),
-            },
-          ],
-        };
-
-        axios
-          .post("/Payment/CreatePayment", paymentData, {
-            headers: {
-              "Content-Type": "application/json", // Explicitly set the content type
-            },
-          })
-          .then((response) => {
-            axios
-              .put(`/Order/UpdatePayOsOrderId?orderId=${appOrderId}`, {
-                payOsOrderId: orderId,
-                url: response.data,
-              })
-              .then((response) => {
-                incrementOrderId();
-                navigate(`/order/${appOrderId}`);
-              })
-              .catch((error) => {
-                console.error("Error placing order", error);
-              });
-          })
-          .catch((error) => {
-            console.error("Error placing order", error);
-          });
-      })
-      .catch((error) => {
-        console.error("Error placing order", error);
-      });
-  };
 
   return (
     <>
-      {Object.keys(productsByEmployee).map((employeeId) => (
-        <Grid
-          key={employeeId}
-          columnGap="60px"
-          px="5%"
-          templateColumns="repeat(3, 1fr)"
+      <Box mb={6}>
+        <Heading
+          color={appColorTheme.brown_2}
+          fontSize="2xl"
+          fontFamily="Montserrat"
         >
-          <GridItem colSpan={{ base: 3, xl: 2 }} pb="20px">
-            <Text
-              pb="20px"
-              borderBottom="1px solid rgba(256,256,256,0.4)"
-              fontSize="20px"
+          Giỏ hàng
+        </Heading>
+      </Box>
+
+      <Tabs>
+        <TabList mb={2}>
+          <Tab
+            _selected={{
+              color: "app_brown.2",
+              borderColor: "app_brown.2",
+            }}
+          >
+            Thiết kế
+          </Tab>
+          <Tab
+            _selected={{
+              color: "app_brown.2",
+              borderColor: "app_brown.2",
+            }}
+          >
+            Sản phẩm
+          </Tab>
+        </TabList>
+
+        <TabPanels>
+          {/* Designs Tab */}
+          <TabPanel p={0}>
+            <DesignCartTab />
+          </TabPanel>
+
+          {/* Products Tab */}
+          <TabPanel p={0}>
+            <Box
+              bg="white"
+              p={6}
+              borderRadius="md"
+              boxShadow="sm"
+              textAlign="center"
+              py={10}
             >
-              Giỏ hàng - Nhà cung cấp: {getNameById(employeeId)}
-            </Text>
-
-            <Stack>
-              {productsByEmployee[employeeId].products.map((product) => (
-                <CartItemDetail key={product.productId} product={product} />
-              ))}
-            </Stack>
-          </GridItem>
-
-          <GridItem colSpan={{ base: 3, xl: 1 }} pb="20px">
-            <Box mt="20px">
-              <Text fontSize="20px" pb="20px">
-                Thêm ghi chú
-              </Text>
-              <Textarea
-                h="150px"
-                fontSize="16px"
-                color="black"
-                placeholder="Hướng dẫn? Yêu cầu đặc biệt? Hãy thêm chúng tại đây"
-                value={note[employeeId] || ""}
-                onChange={(e) => handleNoteChange(employeeId, e.target.value)} // Handle note input per employeeId
-              />
-            </Box>
-
-            <Box mt="20px">
-              <Text fontSize="20px" pb="20px">
-                Địa chỉ giao hàng
-              </Text>
-              <Input
-                fontSize="16px"
-                color="black"
-                placeholder="Nhập địa chỉ giao hàng"
-                value={shipAddress[employeeId] || auth?.Address}
-                onChange={(e) =>
-                  handleAddressChange(employeeId, e.target.value)
-                } // Handle shipping address input per employeeId
-              />
-            </Box>
-
-            <Box>
-              <Text
-                pb="20px"
-                borderBottom="1px solid rgba(256,256,256,0.4)"
-                fontSize="20px"
-                mt="40px"
-              >
-                Tóm tắt đơn hàng
-              </Text>
-
-              <Stack
-                borderBottom="1px solid rgba(256,256,256,0.4)"
-                spacing="20px"
-                py="20px"
-                fontSize="16px"
-              >
-                <HStack>
-                  <Text>Sản phẩm</Text>
-                  <Spacer />
-                  <Text>
-                    {calculateTotalPrice(employeeId).toLocaleString()}đ
-                  </Text>{" "}
-                  {/* Dynamic total price */}
-                </HStack>
-
-                <HStack>
-                  <Text>Giao hàng</Text>
-                  <Spacer />
-                  <Text>30.000đ</Text>
-                </HStack>
-              </Stack>
-
-              <HStack fontSize="20px" py="20px">
-                <Text>Tổng</Text>
-                <Spacer />
-                <Text>
-                  {(calculateTotalPrice(employeeId) + 0).toLocaleString()}đ
-                </Text>{" "}
-                {/* Dynamic grand total */}
-              </HStack>
-
-              <Button
-                _hover={{ opacity: ".8" }}
-                w="100%"
-                bgColor="app_brown.0"
-                color="black"
-                borderRadius="0"
-                mt="40px"
-                onClick={() => handleOrder(employeeId)} // Handle order for specific employeeId
-              >
-                Đặt hàng
+              <Text fontSize="lg">Không có sản phẩm trong giỏ hàng</Text>
+              <Button mt={4} onClick={() => navigate("/")}>
+                Tiếp tục mua sắm
               </Button>
             </Box>
-          </GridItem>
-        </Grid>
-      ))}
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </>
   );
 }

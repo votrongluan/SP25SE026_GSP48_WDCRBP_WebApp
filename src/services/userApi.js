@@ -24,9 +24,9 @@ export const userApi = createApi({
       }),
     }),
     updateUserInformation: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `/api/v1/user/updateUserInformation/${id}`,
-        method: "PUT",
+      query: (data) => ({
+        url: `/api/v1/user/update-profile`,
+        method: "POST",
         body: data,
       }),
     }),

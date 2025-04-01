@@ -9,17 +9,20 @@ import {
   ModalOverlay,
   useDisclosure,
   Tooltip,
+  Box,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { FiTrash2, FiX } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import { useDeletePostMutation } from "../../../../services/postApi";
 import { useNotify } from "../../../../components/Utility/Notify";
+import CheckboxList from "../../../../components/Utility/CheckboxList";
 
 export default function PostDeleteModal({ post, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const notify = useNotify();
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const [deletePost, { isLoading }] = useDeletePostMutation();
 
@@ -71,6 +74,18 @@ export default function PostDeleteModal({ post, refetch }) {
           <ModalBody bgColor="app_grey.1">
             <p>Bạn có chắc chắn muốn xóa bài viết &quot;{post?.title}&quot;?</p>
             <p>Hành động này không thể hoàn tác.</p>
+
+            <Box mt={4}>
+              <CheckboxList
+                items={[
+                  {
+                    isOptional: false,
+                    description: "Tôi xác nhận muốn xóa bài viết này",
+                  },
+                ]}
+                setButtonDisabled={setButtonDisabled}
+              />
+            </Box>
           </ModalBody>
           <ModalFooter bgColor="app_grey.1" gap={2}>
             <Button leftIcon={<FiX />} onClick={onClose} isDisabled={isLoading}>
@@ -80,6 +95,7 @@ export default function PostDeleteModal({ post, refetch }) {
               colorScheme="red"
               onClick={handleDelete}
               isLoading={isLoading}
+              isDisabled={buttonDisabled}
               leftIcon={<FiTrash2 />}
             >
               Xóa

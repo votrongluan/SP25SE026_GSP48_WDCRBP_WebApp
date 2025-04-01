@@ -16,8 +16,6 @@ export default function WoodworkersPage() {
 
     // Chỉ áp dụng filter nếu checkbox được chọn
     if (newFilters?.applyFilters) {
-      console.log(newFilters);
-
       // Lọc theo tỉnh thành
       if (newFilters.province) {
         result = result.filter((ww) => {

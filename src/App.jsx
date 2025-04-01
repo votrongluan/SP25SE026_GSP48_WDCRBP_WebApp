@@ -43,7 +43,7 @@ import WWGuaranteeOrderListPage from "./pages/woodworker/GuaranteeOrder/Guarante
 import WWGuaranteeOrderDetailPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderDetail/WWGuaranteeOrderDetailPage.jsx";
 import WWRegister from "./pages/general/Auth/WWRegister.jsx";
 import Pricing from "./pages/general/Pricing/Pricing.jsx";
-import CustomerProfile from "./pages/customer/Profile/CustomerProfile.jsx";
+import CustomerProfilePage from "./pages/customer/Profile/ManagePage/CustomerProfilePage.jsx";
 import DesignManagementListPage from "./pages/woodworker/DesignManagement/DesignList/DesignManagementListPage.jsx";
 import ProductManagementListPage from "./pages/woodworker/ProductManagement/ProductList/ProductManagementListPage.jsx";
 import PostManagementListPage from "./pages/woodworker/PostManagement/PostList/PostManagementListPage.jsx";
@@ -54,7 +54,7 @@ import ComplaintManagementListPage from "./pages/woodworker/ComplaintManagement/
 import ReviewManagementListPage from "./pages/woodworker/ReviewManagement/ReviewList/ReviewManagementListPage.jsx";
 import WalletManagementListPage from "./pages/woodworker/WalletManagement/WalletList/WalletManagementListPage.jsx";
 import Logout from "./pages/general/Auth/Logout.jsx";
-import ProfileManagementPage from "./pages/woodworker/ProfileManagement/ProfilePage/ProfileManagementPage.jsx";
+import WoodworkerProfileManagementPage from "./pages/woodworker/ProfileManagement/ProfilePage/ManagePage/WoodworkerProfileManagementPage.jsx";
 import CustomerComplaintPage from "./pages/customer/ComplaintManagement/ComplaintList/CustomerComplaintPage.jsx";
 import CustomerWalletPage from "./pages/customer/WalletManagement/WalletList/CustomerWalletPage.jsx";
 import WoodworkerWelcomePage from "./pages/woodworker/Welcome/WoodworkerWelcomePage.jsx";
@@ -122,7 +122,7 @@ function App() {
           <Route path="complaint" element={<ComplaintManagementListPage />} />
           <Route path="review" element={<ReviewManagementListPage />} />
           <Route path="wallet" element={<WalletManagementListPage />} />
-          <Route path="profile" element={<ProfileManagementPage />} />
+          <Route path="profile" element={<WoodworkerProfileManagementPage />} />
 
           <Route path="service-order">
             <Route index element={<WWServiceOrderListPage />} />
@@ -138,7 +138,7 @@ function App() {
         <Route path="cus" element={<CustomerLayout />}>
           <Route index element={<NotFoundPage />} />
           <Route path="dashboard" element={<NotFoundPage />} />
-          <Route path="profile" element={<CustomerProfile />} />
+          <Route path="profile" element={<CustomerProfilePage />} />
           <Route path="complaint" element={<CustomerComplaintPage />} />
           <Route path="wallet" element={<CustomerWalletPage />} />
           <Route path="service-order">

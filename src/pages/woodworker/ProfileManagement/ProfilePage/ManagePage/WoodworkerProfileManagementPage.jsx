@@ -1,13 +1,13 @@
 import { Stack, Spinner, Center, Text } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../config/appconfig.js";
+import { appColorTheme } from "../../../../../config/appconfig.js";
 import { useState, useEffect } from "react";
-import { useGetWoodworkerByUserIdQuery } from "../../../../services/woodworkerApi";
-import useAuth from "../../../../hooks/useAuth";
-import PackManagement from "./PackManagement";
-import PersonalInformationManagement from "./PersonalInformationManagement";
-import WoodworkerProfileManagement from "./WoodworkerProfileManagement";
+import { useGetWoodworkerByUserIdQuery } from "../../../../../services/woodworkerApi.js";
+import useAuth from "../../../../../hooks/useAuth.js";
+import PackManagement from "../Pack/PackManagement.jsx";
+import PersonalInformationManagement from "../PersonalInformation/PersonalInformationManagement.jsx";
+import WoodworkerInformationManagement from "../WoodworkerInformation/WoodworkerInformationManagement.jsx";
 
-export default function ProfileManagementPage() {
+export default function WoodworkerProfileManagementPage() {
   const { auth } = useAuth();
   const {
     data: response,
@@ -71,7 +71,7 @@ export default function ProfileManagementPage() {
         refetch={refetch}
         woodworker={woodworker}
       />
-      <WoodworkerProfileManagement
+      <WoodworkerInformationManagement
         refetch={refetch}
         woodworker={woodworker}
         address={address}
