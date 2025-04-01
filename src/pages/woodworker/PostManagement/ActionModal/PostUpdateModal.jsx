@@ -15,28 +15,50 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { FiEdit2 } from "react-icons/fi";
+import { FiEdit2, FiSave, FiX } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import ImageUpdateUploader from "../../../../components/Utility/ImageUpdateUploader";
+import { useUpdatePostMutation } from "../../../../services/postApi";
+import Cookies from "js-cookie";
+import { useNotify } from "../../../../components/Utility/Notify";
+import useAuth from "../../../../hooks/useAuth";
 
 export default function PostUpdateModal({ post, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const [imgUrls, setImgUrls] = useState(post?.imgUrls || "");
+  const notify = useNotify();
+  const { auth } = useAuth();
+
+  const [updatePost, { isLoading }] = useUpdatePostMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const data = {
-      id: formData.get("id"),
-      title: formData.get("title"),
-      description: formData.get("description"),
-      imgUrls: imgUrls,
-      createdAt: post.createdAt,
-    };
-    console.log(data);
-    onClose();
-    refetch?.();
+
+    try {
+      const data = {
+        id: post.postId,
+        title: formData.get("title"),
+        description: formData.get("description"),
+        imgUrls: imgUrls,
+        woodworkerId: post.woodworkerId || auth?.wwId || 0,
+      };
+
+      await updatePost(data).unwrap();
+
+      notify("Bài viết đã được cập nhật thành công", "", "success", 3000);
+
+      onClose();
+      refetch?.();
+    } catch (error) {
+      notify(
+        "Lỗi khi cập nhật bài viết",
+        error.data?.message || "Vui lòng thử lại sau",
+        "error",
+        3000
+      );
+    }
   };
 
   return (
@@ -65,17 +87,18 @@ export default function PostUpdateModal({ post, refetch }) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Chỉnh sửa bài viết</ModalHeader>
-          <ModalCloseButton />
+          {!isLoading && <ModalCloseButton />}
           <ModalBody bgColor="app_grey.1" pb={6}>
             <form onSubmit={handleSubmit}>
               <Stack spacing={4}>
                 <FormControl isRequired>
                   <FormLabel>Mã bài viết</FormLabel>
                   <Input
-                    name="id"
-                    placeholder="Nhập mã bài viết"
+                    name="postId"
                     bg="white"
-                    defaultValue={post?.id}
+                    value={post?.postId}
+                    bgColor={"app_grey.2"}
+                    isReadOnly
                   />
                 </FormControl>
 
@@ -112,8 +135,19 @@ export default function PostUpdateModal({ post, refetch }) {
                 </FormControl>
 
                 <Stack direction="row" justify="flex-end" spacing={4}>
-                  <Button onClick={onClose}>Hủy</Button>
-                  <Button colorScheme="blue" type="submit">
+                  <Button
+                    onClick={onClose}
+                    leftIcon={<FiX />}
+                    isDisabled={isLoading}
+                  >
+                    Hủy
+                  </Button>
+                  <Button
+                    colorScheme="blue"
+                    type="submit"
+                    isLoading={isLoading}
+                    leftIcon={<FiSave />}
+                  >
                     Cập nhật
                   </Button>
                 </Stack>

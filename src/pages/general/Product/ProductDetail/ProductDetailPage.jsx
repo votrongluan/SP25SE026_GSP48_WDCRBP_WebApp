@@ -51,9 +51,9 @@ export default function ProductDetailPage() {
     <>
       <Box mb={6}>
         <Heading
-          fontWeight="normal"
+          color={appColorTheme.brown_2}
           as="h2"
-          fontSize="22px"
+          fontSize="2xl"
           fontFamily="Montserrat"
         >
           Chi tiết sản phẩm

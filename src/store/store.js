@@ -14,6 +14,8 @@ import { userApi } from "../services/userApi";
 import { decryptApi } from "../services/decryptApi";
 import { categoryApi } from "../services/categoryApi";
 import { availableServiceApi } from "../services/availableServiceApi";
+import { reviewApi } from "../services/reviewApi";
+import { postApi } from "../services/postApi";
 
 export const store = configureStore({
   reducer: {
@@ -31,6 +33,8 @@ export const store = configureStore({
     [decryptApi.reducerPath]: decryptApi.reducer,
     [categoryApi.reducerPath]: categoryApi.reducer,
     [availableServiceApi.reducerPath]: availableServiceApi.reducer,
+    [reviewApi.reducerPath]: reviewApi.reducer,
+    [postApi.reducerPath]: postApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -47,7 +51,9 @@ export const store = configureStore({
       userApi.middleware,
       decryptApi.middleware,
       categoryApi.middleware,
-      availableServiceApi.middleware
+      availableServiceApi.middleware,
+      reviewApi.middleware,
+      postApi.middleware
     ),
 });
 

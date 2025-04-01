@@ -2,8 +2,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_URL } from "../config";
 import Cookies from "js-cookie";
 
-export const availableServiceApi = createApi({
-  reducerPath: "availableServiceApi",
+export const reviewApi = createApi({
+  reducerPath: "reviewApi",
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
     prepareHeaders: (headers) => {
@@ -17,23 +17,29 @@ export const availableServiceApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getAvailableServiceByWwId: builder.query({
-      query: (wwId) => ({
-        url: `/api/v1/AvailableService/woodworker/${wwId}`,
+    getWoodworkerReviews: builder.query({
+      query: (id) => ({
+        url: `/api/v1/reviews/woodworker/${id}`,
         method: "GET",
       }),
     }),
-    updateAvailableServiceByWwId: builder.mutation({
-      query: (data) => ({
-        url: `/api/v1/AvailableService/update`,
-        method: "PUT",
-        body: data,
+    getProductReviews: builder.query({
+      query: (id) => ({
+        url: `/api/v1/reviews/product/${id}`,
+        method: "GET",
+      }),
+    }),
+    getDesignReviews: builder.query({
+      query: (id) => ({
+        url: `/api/v1/reviews/design/${id}`,
+        method: "GET",
       }),
     }),
   }),
 });
 
 export const {
-  useGetAvailableServiceByWwIdQuery,
-  useUpdateAvailableServiceByWwIdMutation,
-} = availableServiceApi;
+  useGetWoodworkerReviewsQuery,
+  useGetProductReviewsQuery,
+  useGetDesignReviewsQuery,
+} = reviewApi;

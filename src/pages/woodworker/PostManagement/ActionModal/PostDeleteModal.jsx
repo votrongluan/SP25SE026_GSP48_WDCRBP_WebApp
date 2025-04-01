@@ -11,21 +11,33 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { useRef } from "react";
-import { FiTrash2 } from "react-icons/fi";
+import { FiTrash2, FiX } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
+import { useDeletePostMutation } from "../../../../services/postApi";
+import { useNotify } from "../../../../components/Utility/Notify";
 
 export default function PostDeleteModal({ post, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
+  const notify = useNotify();
+
+  const [deletePost, { isLoading }] = useDeletePostMutation();
 
   const handleDelete = async () => {
     try {
-      // TODO: Gọi API xóa bài viết
-      console.log("Xóa bài viết:", post);
+      await deletePost(post.postId).unwrap();
+
+      notify("Bài viết đã được xóa thành công", "", "success", 3000);
+
       onClose();
       refetch?.();
     } catch (error) {
-      console.error("Lỗi khi xóa bài viết:", error);
+      notify(
+        "Lỗi khi xóa bài viết",
+        error.data?.message || "Vui lòng thử lại sau",
+        "error",
+        3000
+      );
     }
   };
 
@@ -55,14 +67,21 @@ export default function PostDeleteModal({ post, refetch }) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Xác nhận xóa bài viết</ModalHeader>
-          <ModalCloseButton />
+          {!isLoading && <ModalCloseButton />}
           <ModalBody bgColor="app_grey.1">
             <p>Bạn có chắc chắn muốn xóa bài viết &quot;{post?.title}&quot;?</p>
             <p>Hành động này không thể hoàn tác.</p>
           </ModalBody>
           <ModalFooter bgColor="app_grey.1" gap={2}>
-            <Button onClick={onClose}>Hủy</Button>
-            <Button colorScheme="red" onClick={handleDelete}>
+            <Button leftIcon={<FiX />} onClick={onClose} isDisabled={isLoading}>
+              Hủy
+            </Button>
+            <Button
+              colorScheme="red"
+              onClick={handleDelete}
+              isLoading={isLoading}
+              leftIcon={<FiTrash2 />}
+            >
               Xóa
             </Button>
           </ModalFooter>

@@ -14,29 +14,49 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus, FiSave, FiX } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
-import ImageUpdateUploader from "../../../../components/Utility/ImageUpdateUploader";
 import ImageUpload from "../../../../components/Utility/ImageUpload";
+import { useCreatePostMutation } from "../../../../services/postApi";
+import useAuth from "../../../../hooks/useAuth";
+import { useNotify } from "../../../../components/Utility/Notify";
 
 export default function PostCreateModal({ refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const [imgUrls, setImgUrls] = useState("");
+  const notify = useNotify();
+  const { auth } = useAuth();
+
+  const [createPost, { isLoading }] = useCreatePostMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const data = {
-      id: formData.get("id"),
-      title: formData.get("title"),
-      description: formData.get("description"),
-      imgUrls: imgUrls,
-      createdAt: new Date().toISOString(),
-    };
-    console.log(data);
-    setImgUrls("");
-    onClose();
+
+    try {
+      const data = {
+        title: formData.get("title"),
+        description: formData.get("description"),
+        imgUrls: imgUrls,
+        woodworkerId: auth?.wwId,
+      };
+
+      await createPost(data).unwrap();
+
+      notify("Bài viết đã được tạo thành công", "", "success", 3000);
+
+      setImgUrls("");
+      onClose();
+      refetch?.();
+    } catch (error) {
+      notify(
+        "Lỗi khi tạo bài viết",
+        error.data?.message || "Vui lòng thử lại sau",
+        "error",
+        3000
+      );
+    }
   };
 
   return (
@@ -64,15 +84,10 @@ export default function PostCreateModal({ refetch }) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Thêm bài viết mới</ModalHeader>
-          <ModalCloseButton />
+          {!isLoading && <ModalCloseButton />}
           <ModalBody bgColor="app_grey.1" pb={6}>
             <form onSubmit={handleSubmit}>
               <Stack spacing={4}>
-                <FormControl isRequired>
-                  <FormLabel>Mã bài viết</FormLabel>
-                  <Input name="id" placeholder="Nhập mã bài viết" bg="white" />
-                </FormControl>
-
                 <FormControl isRequired>
                   <FormLabel>Tiêu đề</FormLabel>
                   <Input
@@ -93,7 +108,7 @@ export default function PostCreateModal({ refetch }) {
                 </FormControl>
 
                 <FormControl isRequired>
-                  <FormLabel>Hình ảnh (tối đa 4 ảnh)</FormLabel>
+                  <FormLabel>Hình ảnh</FormLabel>
                   <ImageUpload
                     maxFiles={4}
                     onUploadComplete={(result) => {
@@ -103,8 +118,19 @@ export default function PostCreateModal({ refetch }) {
                 </FormControl>
 
                 <Stack direction="row" justify="flex-end" spacing={4}>
-                  <Button onClick={onClose}>Hủy</Button>
-                  <Button colorScheme="blue" type="submit">
+                  <Button
+                    onClick={onClose}
+                    leftIcon={<FiX />}
+                    isDisabled={isLoading}
+                  >
+                    Đóng
+                  </Button>
+                  <Button
+                    colorScheme="green"
+                    type="submit"
+                    isLoading={isLoading}
+                    leftIcon={<FiSave />}
+                  >
                     Lưu
                   </Button>
                 </Stack>

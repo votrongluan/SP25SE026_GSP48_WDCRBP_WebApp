@@ -15,6 +15,7 @@ import {
   Spinner,
   Center,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import ReviewSection from "./Tab/ReviewTab/ReviewSection.jsx";
 import StarRating from "../../../../components/Utility/StarRating.jsx";
 import { FiBox, FiPenTool, FiStar, FiTool, FiUserCheck } from "react-icons/fi";
@@ -23,12 +24,27 @@ import WoodworkerDesignsTab from "./Tab/DesignTab/WoodworkerDesignsTab.jsx";
 import AvailableService from "./Tab/ServiceTab/AvailableService.jsx";
 import PostTab from "./Tab/PostTab/PostTab.jsx";
 import PackageFrame from "../../../../components/Utility/PackageFrame.jsx";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useGetWoodworkerByIdQuery } from "../../../../services/woodworkerApi";
+import { appColorTheme } from "../../../../config/appconfig.js";
 
 export default function WoodworkerDetailPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const [tabIndex, setTabIndex] = useState(0);
   const { data: response, isLoading, error } = useGetWoodworkerByIdQuery(id);
+
+  const changeTab = (index) => {
+    setTabIndex(index);
+  };
+
+  const handleServiceAction = (serviceType, path, action, tabIndex) => {
+    if (action === "navigate") {
+      navigate(`/${path}/${id}`);
+    } else if (action === "changeTab" && tabIndex !== undefined) {
+      changeTab(tabIndex);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -60,9 +76,9 @@ export default function WoodworkerDetailPage() {
     <>
       <Box mb={6}>
         <Heading
-          fontWeight="normal"
+          color={appColorTheme.brown_2}
           as="h2"
-          fontSize="22px"
+          fontSize="2xl"
           fontFamily="Montserrat"
         >
           Chi tiết xưởng mộc
@@ -145,7 +161,11 @@ export default function WoodworkerDetailPage() {
       </PackageFrame>
 
       <Box mt={6} color="black">
-        <Tabs variant="unstyled">
+        <Tabs
+          variant="unstyled"
+          index={tabIndex}
+          onChange={(index) => setTabIndex(index)}
+        >
           <TabList
             overflowX="auto"
             display="flex"
@@ -183,7 +203,10 @@ export default function WoodworkerDetailPage() {
               <PostTab woodworkerId={woodworker.woodworkerId} />
             </TabPanel>
             <TabPanel p={0}>
-              <AvailableService woodworkerId={woodworker.woodworkerId} />
+              <AvailableService
+                woodworkerId={woodworker.woodworkerId}
+                onServiceAction={handleServiceAction}
+              />
             </TabPanel>
             <TabPanel p={0}>
               <WoodworkerDesignsTab woodworkerId={woodworker.woodworkerId} />

@@ -1,4 +1,13 @@
-import { Box, Flex, Heading, HStack, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  Stack,
+  Spinner,
+  Text,
+  Center,
+} from "@chakra-ui/react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
@@ -8,38 +17,31 @@ import PostDetailModal from "../ActionModal/PostDetailModal";
 import PostUpdateModal from "../ActionModal/PostUpdateModal";
 import PostDeleteModal from "../ActionModal/PostDeleteModal";
 import { appColorTheme } from "../../../../config/appconfig";
+import { useGetWoodworkerPostsQuery } from "../../../../services/postApi";
+import useAuth from "../../../../hooks/useAuth";
+import { formatDateTimeString } from "../../../../utils/utils";
 
 export default function PostManagementListPage() {
-  const [rowData, setRowData] = useState([
-    {
-      id: "BV001",
-      title: "Cách chọn gỗ tốt cho nội thất",
-      description:
-        "Hướng dẫn chi tiết cách chọn gỗ phù hợp cho từng loại nội thất...",
-      imgUrls:
-        "https://i.pinimg.com/1200x/17/99/2a/17992af2512a41db6b739c546a95944e.jpg;https://i.pinimg.com/1200x/aa/b0/ad/aab0ad2b357f91c06718f4177fd4932f.jpg",
-      createdAt: "2024-03-25T10:00:00Z",
-    },
-    {
-      id: "BV002",
-      title: "Xu hướng thiết kế nội thất 2024",
-      description:
-        "Tổng hợp các xu hướng thiết kế nội thất mới nhất trong năm 2024...",
-      imgUrls:
-        "https://i.pinimg.com/1200x/17/99/2a/17992af2512a41db6b739c546a95944e.jpg;https://i.pinimg.com/1200x/aa/b0/ad/aab0ad2b357f91c06718f4177fd4932f.jpg",
-      createdAt: "2024-03-24T15:30:00Z",
-    },
-  ]);
+  const { auth } = useAuth();
+
+  const { data, isLoading, isError, refetch } = useGetWoodworkerPostsQuery(
+    auth?.wwId
+  );
+
+  const posts = data?.data?.map((post) => {
+    return {
+      ...post,
+      createdAt: new Date(post.createdAt),
+    };
+  });
 
   const [colDefs] = useState([
-    { headerName: "Mã bài viết", field: "id", sort: "desc" },
+    { headerName: "Mã bài viết", field: "postId", sort: "desc" },
     { headerName: "Tiêu đề", field: "title" },
     {
       headerName: "Ngày tạo",
       field: "createdAt",
-      valueFormatter: (params) => {
-        return new Date(params.value).toLocaleDateString("vi-VN");
-      },
+      valueFormatter: (params) => formatDateTimeString(params.value),
     },
     {
       headerName: "Thao tác",
@@ -47,8 +49,8 @@ export default function PostManagementListPage() {
         return (
           <HStack spacing={2}>
             <PostDetailModal post={data} />
-            <PostUpdateModal post={data} refetch={() => {}} />
-            <PostDeleteModal post={data} refetch={() => {}} />
+            <PostUpdateModal post={data} refetch={refetch} />
+            <PostDeleteModal post={data} refetch={refetch} />
           </HStack>
         );
       },
@@ -63,6 +65,22 @@ export default function PostManagementListPage() {
     };
   }, []);
 
+  if (isLoading) {
+    return (
+      <Center h="500px">
+        <Spinner size="xl" />
+      </Center>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Center h="500px">
+        <Text>Đã xảy ra lỗi khi tải dữ liệu.</Text>
+      </Center>
+    );
+  }
+
   return (
     <Stack spacing={6}>
       <Flex justify="space-between" align="center">
@@ -73,7 +91,7 @@ export default function PostManagementListPage() {
         >
           Quản lý Bài viết
         </Heading>
-        <PostCreateModal />
+        <PostCreateModal refetch={refetch} />
       </Flex>
 
       <Box>
@@ -86,7 +104,7 @@ export default function PostManagementListPage() {
             paginationPageSize={20}
             paginationPageSizeSelector={[10, 20, 50, 100]}
             defaultColDef={defaultColDef}
-            rowData={rowData}
+            rowData={posts || []}
             columnDefs={colDefs}
           />
         </div>

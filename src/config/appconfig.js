@@ -36,3 +36,44 @@ export const transactionTypeColorMap = {
   [transactionTypeConstants.THANH_TOAN_QUA_CONG]: "#9f7aea",
   [transactionTypeConstants.NHAN_TIEN]: "#38a169",
 };
+
+export const service = {
+  ["Personalization"]: {
+    serviceName: "Dịch vụ thiết kế và gia công theo ý tưởng khách hàng",
+    serviceType: "Personalization",
+    description:
+      "Dịch vụ thiết kế và gia công theo ý tưởng khách hàng, giúp bạn biến ý tưởng thành hiện thực.",
+    path: "personalization",
+    buttonText: "Đặt dịch vụ",
+    action: "navigate",
+  },
+  ["Customization"]: {
+    serviceName: "Dịch vụ gia công theo ý tưởng thiết kế của xưởng",
+    serviceType: "Customization",
+    description:
+      "Dịch vụ gia công theo ý tưởng thiết kế của xưởng, đảm bảo chất lượng và độ chính xác.",
+    path: "design",
+    buttonText: "Xem thiết kế",
+    action: "changeTab",
+    tabIndex: 2,
+  },
+  ["Guarantee"]: {
+    serviceName: "Dịch vụ sửa chữa và bảo hành sản phẩm của xưởng",
+    serviceType: "Guarantee",
+    description:
+      "Dịch vụ sửa chữa và bảo hành sản phẩm của xưởng, đảm bảo sự hài lòng của khách hàng.",
+    path: "guarantee",
+    buttonText: "Đặt dịch vụ",
+    action: "navigate",
+  },
+  ["Sale"]: {
+    serviceName: "Dịch vụ bán sản phẩm có sẵn",
+    serviceType: "Sale",
+    description:
+      "Dịch vụ bán sản phẩm có sẵn, giúp bạn dễ dàng lựa chọn sản phẩm phù hợp.",
+    path: "products",
+    buttonText: "Xem sản phẩm",
+    action: "changeTab",
+    tabIndex: 3,
+  },
+};

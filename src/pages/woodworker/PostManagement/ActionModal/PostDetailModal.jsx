@@ -18,6 +18,7 @@ import { useRef } from "react";
 import { FiEye } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector";
+import { formatDateString } from "../../../../utils/utils";
 
 export default function PostDetailModal({ post }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -56,15 +57,20 @@ export default function PostDetailModal({ post }) {
                 <GridItem>
                   <VStack spacing={4} align="stretch">
                     <Text>
-                      <Text as="b">Mã bài viết:</Text> {post?.id}
+                      <Text as="b">Mã bài viết:</Text> {post?.postId}
                     </Text>
                     <Text>
                       <Text as="b">Tiêu đề:</Text> {post?.title}
                     </Text>
                     <Text>
                       <Text as="b">Ngày tạo:</Text>{" "}
-                      {new Date(post?.createdAt).toLocaleDateString("vi-VN")}
+                      {post?.createdAt ? formatDateString(post?.createdAt) : ""}
                     </Text>
+                    {post?.woodworkerName && (
+                      <Text>
+                        <Text as="b">Xưởng mộc:</Text> {post.woodworkerName}
+                      </Text>
+                    )}
                   </VStack>
                 </GridItem>
                 <GridItem>

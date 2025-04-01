@@ -1,44 +1,16 @@
 import { useState } from "react";
-import { Box, Flex, Heading, Text, Image, HStack } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, HStack } from "@chakra-ui/react";
 import StarRating from "../../../../components/Utility/StarRating.jsx";
 import FilterPill from "../../../../components/Utility/FilterPill.jsx";
 import { FiClock } from "react-icons/fi";
+import { useGetDesignReviewsQuery } from "../../../../services/reviewApi.js";
+import { useParams } from "react-router-dom";
 
 export default function ReviewSection() {
   const [filterStar, setFilterStar] = useState(null);
-
-  const reviews = [
-    {
-      id: 1,
-      user: "Nguyễn Văn A",
-      rating: 5,
-      date: "30/12/2024 13:39",
-      comment: "Tuyệt vời!",
-      imageUrl:
-        "https://www.noithatkaya.com/wp-content/uploads/2020/10/Cong-trinh-BIUBIU-STAR-14.webp",
-    },
-    {
-      id: 2,
-      user: "Trần Thị B",
-      rating: 3,
-      date: "20/4/2024 15:27",
-      comment: "Ổn, không có gì đặc biệt.",
-    },
-    {
-      id: 3,
-      user: "Lê Văn C",
-      rating: 1,
-      date: "09/03/2023 23:57",
-      comment: "Không hài lòng.",
-    },
-    {
-      id: 4,
-      user: "Hoàng Thị D",
-      rating: 4,
-      date: "31/12/2024 13:39",
-      comment: "Hài lòng với chất lượng, pin khá ổn. Giao hàng nhanh.",
-    },
-  ];
+  const { id } = useParams();
+  const { data, isLoading, isError } = useGetDesignReviewsQuery(id);
+  const reviews = data?.data || [];
 
   // Lọc review theo số sao (nếu filterStar=null => hiển thị tất cả)
   const filteredReviews = filterStar
@@ -52,6 +24,9 @@ export default function ReviewSection() {
   const handleStarFilter = (star) => {
     setFilterStar(star);
   };
+
+  if (isLoading) return <Box>Đang tải đánh giá...</Box>;
+  if (isError) return <Box>Có lỗi khi tải đánh giá</Box>;
 
   return (
     <Box mt={6} p={5} bgColor="white" boxShadow="md" borderRadius="10px">
@@ -85,15 +60,24 @@ export default function ReviewSection() {
       {/* Danh sách đánh giá */}
       {filteredReviews.length > 0 ? (
         filteredReviews.map((review) => (
-          <Box key={review.id} mb={6} borderBottom="1px solid #E2E8F0" pb={4}>
+          <Box
+            key={review.reviewId}
+            mb={6}
+            borderBottom="1px solid #E2E8F0"
+            pb={4}
+          >
             <Flex alignItems="center" mb={1}>
               <Text fontWeight="bold" mr={2}>
-                {review.user}
+                {review.username}
               </Text>
               <HStack spacing={1}>
                 <FiClock size={12} color="gray.600" />
                 <Text fontSize="sm" color="gray.600">
-                  {review.date}
+                  {new Date(review.createdAt).toLocaleDateString("vi-VN")}{" "}
+                  {new Date(review.createdAt).toLocaleTimeString("vi-VN", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
                 </Text>
               </HStack>
             </Flex>
@@ -106,14 +90,21 @@ export default function ReviewSection() {
             {/* Nội dung đánh giá */}
             <Text mb={2}>{review.comment}</Text>
 
-            {/* Ảnh đính kèm (nếu có) */}
-            {review.imageUrl && (
-              <Image
-                src={review.imageUrl}
-                alt="Ảnh đánh giá"
-                maxW="200px"
-                borderRadius="md"
-              />
+            {/* Phản hồi của woodworker nếu có */}
+            {review.woodworkerResponseStatus && (
+              <Box mt={2} pl={4} borderLeft="2px solid #E2E8F0">
+                <Text fontWeight="bold" fontSize="sm">
+                  Phản hồi:
+                </Text>
+                <Text fontSize="sm">{review.woodworkerResponse}</Text>
+                <Text fontSize="xs" color="gray.600">
+                  {new Date(review.responseAt).toLocaleDateString("vi-VN")}{" "}
+                  {new Date(review.responseAt).toLocaleTimeString("vi-VN", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </Text>
+              </Box>
             )}
           </Box>
         ))
