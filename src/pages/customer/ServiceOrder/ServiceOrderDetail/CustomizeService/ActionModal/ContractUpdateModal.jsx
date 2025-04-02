@@ -1,9 +1,6 @@
 import {
   Box,
   Button,
-  FormControl,
-  FormLabel,
-  Heading,
   HStack,
   Modal,
   ModalBody,
@@ -11,22 +8,17 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Select,
   SimpleGrid,
   Spacer,
   useDisclosure,
-  useToast,
 } from "@chakra-ui/react";
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { FiMessageCircle, FiRefreshCw, FiXCircle } from "react-icons/fi";
-import AutoResizeTextarea from "../../../../../components/Input/AutoResizeTextarea.jsx";
-import { appColorTheme } from "../../../../../config/appconfig.js";
+import { FiEdit2 } from "react-icons/fi";
+import ContractEditSection from "./ContractEditSection.jsx";
+import ProductEditSection from "./ProductEditSection.jsx";
+import { appColorTheme } from "../../../../../../config/appconfig.js";
 
-export default function FeedbackModal({ order, refetch }) {
-  const toast = useToast();
-  const navigate = useNavigate();
-
+export default function ContractUpdateModal({ order, refetch }) {
   // Modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
@@ -40,17 +32,24 @@ export default function FeedbackModal({ order, refetch }) {
         bg="none"
         border={`1px solid ${appColorTheme.blue_0}`}
         _hover={{ bg: appColorTheme.blue_0, color: "white" }}
-        leftIcon={<FiMessageCircle />}
+        leftIcon={<FiEdit2 />}
         onClick={onOpen}
       >
-        Phản hồi lịch hẹn
+        Soạn hợp đồng
       </Button>
 
-      <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
+      <Modal
+        size="6xl"
+        initialFocusRef={initialRef}
+        isOpen={isOpen}
+        closeOnOverlayClick={false}
+        closeOnEsc={false}
+        onClose={onClose}
+      >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader fontSize="20px" bgColor="app_grey.2">
-            Phản hồi của bạn
+          <ModalHeader>
+            Tạo, điều chỉnh hợp đồng và sản phẩm yêu cầu
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
@@ -63,16 +62,13 @@ export default function FeedbackModal({ order, refetch }) {
               }}
             >
               <Box>
-                <FormControl mt={4} isRequired>
-                  <FormLabel>Phản hồi</FormLabel>
-                  <AutoResizeTextarea />
-                </FormControl>
+                <ContractEditSection />
               </Box>
 
               <HStack mt={10}>
                 <Spacer />
                 <Button colorScheme="blue" mr={3} type="submit">
-                  Phản hồi
+                  Cập nhật
                 </Button>
                 <Button onClick={onClose}>Hủy</Button>
               </HStack>

@@ -16,7 +16,7 @@ import DesignCartItemDetail from "../../../../components/Cart/DesignCartItemDeta
 import { appColorTheme } from "../../../../config/appconfig.js";
 import { useGetUserAddressesByUserIdQuery } from "../../../../services/userAddressApi.js";
 import { Link } from "react-router-dom";
-import OrderSummary from "./OrderSummary.jsx";
+import DesignOrderSummary from "./DesignOrderSummary.jsx";
 import { FiCheckCircle } from "react-icons/fi";
 
 export default function DesignCartTab() {
@@ -142,7 +142,7 @@ export default function DesignCartTab() {
       {/* Order Summary */}
       {Object.keys(cart.designs).length > 0 && (
         <Box flex="1">
-          <OrderSummary
+          <DesignOrderSummary
             auth={auth}
             selectedWoodworker={selectedWoodworker}
             selectedAddress={selectedAddress}

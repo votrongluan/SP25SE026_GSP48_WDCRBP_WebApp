@@ -1,19 +1,13 @@
 import React from "react";
 import { Box, Text, HStack, Circle, Spacer, Stack } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../../config/appconfig.js";
+import { appColorTheme } from "../../../../../../config/appconfig.js";
 
 const processUpdates = [
   {
     id: 1,
     timestamp: "03/03/2025 - 04:00 PM",
     description: "Yêu cầu của bạn đã được gửi đến xưởng mộc",
-    status: "Đang chờ",
-  },
-  {
-    id: 2,
-    timestamp: "03/03/2025 - 04:00 PM",
-    description: "Yêu cầu của bạn đã được chấp nhận xử lý",
-    status: "Đã nhận",
+    status: "Đang chờ thợ xác nhận đơn hàng",
   },
   {
     id: 3,

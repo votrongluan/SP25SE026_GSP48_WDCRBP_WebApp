@@ -17,7 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useNotify } from "../../../../components/Utility/Notify.jsx";
 import { FiLogIn } from "react-icons/fi";
 
-export default function OrderSummary({
+export default function DesignOrderSummary({
   auth,
   selectedWoodworker,
   selectedAddress,
@@ -109,8 +109,10 @@ export default function OrderSummary({
           "Đơn hàng của bạn đã được tạo",
           "success"
         );
-        // Redirect to orders page or show success message
-        navigate("/cus/service-orders");
+
+        navigate(
+          "/success?title=Đặt hàng thành công&desc=Đơn hàng của bạn đã được tạo thành công, vui lòng đợi xưởng mộc xác nhận đơn hàng.&buttonText=Xem danh sách đơn hàng&path=/cus/service-order"
+        );
       } else {
         throw new Error(response.message || "Có lỗi xảy ra khi đặt hàng");
       }

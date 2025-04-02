@@ -20,11 +20,11 @@ import {
 } from "@chakra-ui/react";
 import { ShoppingCart } from "@mui/icons-material";
 import { NavLink as RouterNavLink } from "react-router-dom";
-import DesignCartItem from "./DesignCartItem.jsx";
-import ProductCartItem from "./ProductCartItem.jsx";
+import DesignCartItem from "../../pages/customer/Cart/Design/DesignCartItem.jsx";
+import ProductCartItem from "../../pages/customer/Cart/Product/ProductCartItem.jsx";
 import useCart from "../../hooks/useCart.js";
 
-export default function Cart() {
+export default function CartSidebar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { cart, getCartItemCount } = useCart();
 
