@@ -1,51 +1,100 @@
-import React, { useState } from "react";
 import {
   Box,
   Button,
-  Container,
   Flex,
   Grid,
   Heading,
-  HStack,
-  Image,
   Spacer,
   Stack,
   Text,
-  VStack,
-  Link as ChakraLink,
+  Spinner,
+  Center,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import ReviewSection from "./ReviewSection.jsx";
-import StarRating from "../../../../components/Utility/StarRating.jsx";
+import StarReview from "../../../../components/Utility/StarReview.jsx";
 import { FiShoppingBag, FiShoppingCart } from "react-icons/fi";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector.jsx";
 import { formatPrice } from "../../../../utils/utils.js";
-import PackageFrame from "../../../../components/Utility/PackageFrame.jsx";
 import useAuth from "../../../../hooks/useAuth.js";
+import { useParams } from "react-router-dom";
+import { useGetProductByIdQuery } from "../../../../services/productApi.js";
+import { useNotify } from "../../../../components/Utility/Notify.jsx";
+import ProductWoodworkerBox from "./ProductWoodworkerBox.jsx";
+import useCart from "../../../../hooks/useCart.js";
 
 export default function ProductDetailPage() {
+  const { id: productId } = useParams();
   const { auth } = useAuth();
-  const product = {
-    product_id: "111",
-    product_name: "Giường 2 tầng Bubu",
-    media_urls:
-      "https://noithatthaibinh.com/wp-content/uploads/2023/10/Giuong-2-tang-tre-em-1m2-MS-3014-1.jpg;https://www.noithatkaya.com/wp-content/uploads/2020/10/Cong-trinh-BIUBIU-STAR-14.webp",
-    description: "Giường 2 tầng xinh xắn, thiết kế tùy chỉnh phù hợp phòng nhỏ",
-    category_id: 1,
-    woodworker_profile_id: 456,
-    price: "3.500.000 VND",
-    stock: 10,
-    status: "Còn hàng",
-    weight: 15,
-    length: 200,
-    width: 160,
-    height: 180,
-    wood_type: "Gỗ sồi",
-    special_feature: "Tích hợp ngăn kéo",
-    style: "Hiện đại",
-    sculpture: "Không",
-    scent: "Gỗ tự nhiên",
+  const notify = useNotify();
+  const { addProductToCart } = useCart();
+
+  // Fetch product data from API
+  const {
+    data: response,
+    isLoading,
+    error,
+  } = useGetProductByIdQuery(productId);
+
+  const product = response?.data;
+
+  // Handle adding to cart
+  const handleAddToCart = () => {
+    if (!product) return;
+
+    const cartItem = {
+      productId: product.productId,
+      productName: product.productName,
+      price: product.price,
+      mediaUrls: product.mediaUrls,
+      woodworkerId: product.woodworkerId,
+      woodworkerName: product.woodworkerName,
+      quantity: 1,
+      woodType: product.woodType,
+      color: product.color,
+      length: product.length,
+      width: product.width,
+      height: product.height,
+    };
+
+    addProductToCart(cartItem);
+    notify("Thành công", "Sản phẩm đã được thêm vào giỏ hàng", "success");
   };
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <Center h="500px">
+        <Spinner size="xl" color={appColorTheme.brown_2} />
+      </Center>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <Box textAlign="center" p={10}>
+        <Alert status="error">
+          <AlertIcon />
+          Có lỗi xảy ra khi tải thông tin sản phẩm. Vui lòng thử lại sau.
+        </Alert>
+      </Box>
+    );
+  }
+
+  // Show not found state
+  if (!product) {
+    return (
+      <Box textAlign="center" p={10}>
+        <Alert status="warning">
+          <AlertIcon />
+          Không tìm thấy sản phẩm hoặc sản phẩm đã bị xóa.
+        </Alert>
+      </Box>
+    );
+  }
 
   return (
     <>
@@ -63,67 +112,67 @@ export default function ProductDetailPage() {
       <Box>
         <Grid templateColumns={{ base: "1fr", xl: "1fr 1fr" }} gap={5}>
           <Box borderRadius="10px" p={5} bgColor="white" boxShadow="md">
-            <ImageListSelector imgUrls={product.media_urls} />
+            <ImageListSelector imgUrls={product.mediaUrls} />
           </Box>
 
           <Stack borderRadius="10px" p={5} bgColor="white" boxShadow="md">
             <Stack spacing={4}>
               <Flex justifyContent="space-between" alignContent="center">
                 <Heading fontWeight="bold" fontSize="20px">
-                  {product.product_name || "Tên sản phẩm"}
+                  {product.productName}
                 </Heading>
                 <Flex alignContent="center" gap={2}>
-                  {" "}
-                  <StarRating rating={3.5} />
-                  13 đánh giá
+                  <StarReview
+                    totalStar={product.totalStar || 0}
+                    totalReviews={product.totalReviews || 0}
+                  />
                 </Flex>
               </Flex>
 
               <Text>
-                <strong>Số lượng trong kho:</strong>{" "}
-                {product.stock ?? "Đang cập nhật..."}
+                <strong>Số lượng trong kho:</strong> {product.stock}
               </Text>
 
               <Text>
-                <strong>Tình trạng:</strong> {status || "Đang cập nhật..."}
+                <strong>Tình trạng:</strong>{" "}
+                {product.stock > 0 ? "Còn hàng" : "Hết hàng"}
               </Text>
 
               <Text>
-                <strong>Kích thước (D x R x C):</strong>{" "}
-                {length && product.width && product.height
-                  ? `${length} x ${product.width} x ${product.height}`
-                  : "Đang cập nhật..."}
+                <strong>Kích thước (D x R x C):</strong> {product.length} x{" "}
+                {product.width} x {product.height} cm
               </Text>
 
               <Text>
-                <strong>Trọng lượng:</strong>{" "}
-                {product.weight ?? "Đang cập nhật..."} kg
+                <strong>Trọng lượng:</strong> {product.weight} kg
               </Text>
 
               <Text>
-                <strong>Loại gỗ:</strong>{" "}
-                {product.wood_type || "Đang cập nhật..."}
+                <strong>Loại gỗ:</strong> {product.woodType}
               </Text>
 
               <Text>
-                <strong>Tính năng đặc biệt:</strong>{" "}
-                {product.special_feature || "Đang cập nhật..."}
+                <strong>Tính năng đặc biệt:</strong> {product.specialFeature}
               </Text>
 
               <Text>
-                <strong>Kiểu dáng:</strong>{" "}
-                {product.style || "Đang cập nhật..."}
+                <strong>Kiểu dáng:</strong> {product.style}
               </Text>
 
               <Text>
-                <strong>Chạm khắc:</strong>{" "}
-                {product.sculpture || "Đang cập nhật..."}
+                <strong>Chạm khắc:</strong> {product.sculpture}
               </Text>
 
               <Text>
-                <strong>Hương thơm:</strong>{" "}
-                {product.scent || "Đang cập nhật..."}
+                <strong>Hương thơm:</strong> {product.scent}
               </Text>
+
+              <Box>
+                <Text fontWeight="bold" mb={2}>
+                  Mô tả:
+                </Text>
+                <Text whiteSpace="pre-wrap">{product.description}</Text>
+              </Box>
             </Stack>
 
             <Spacer />
@@ -135,11 +184,11 @@ export default function ProductDetailPage() {
                   color={appColorTheme.brown_2}
                   fontWeight="bold"
                 >
-                  {formatPrice(12000000)}
+                  {formatPrice(product.price)}
                 </Text>
               </Box>
 
-              {auth?.role != "Woodworker" && (
+              {auth?.role !== "Woodworker" && (
                 <Flex gap={5} alignItems="center">
                   <Button
                     bg={appColorTheme.brown_2}
@@ -149,6 +198,7 @@ export default function ProductDetailPage() {
                     py={6}
                     leftIcon={<FiShoppingBag />}
                     _hover={{ bg: appColorTheme.brown_1 }}
+                    onClick={() => handleAddToCart()}
                   >
                     MUA NGAY
                   </Button>
@@ -162,6 +212,7 @@ export default function ProductDetailPage() {
                     py={6}
                     leftIcon={<FiShoppingCart />}
                     _hover={{ opacity: ".9" }}
+                    onClick={handleAddToCart}
                   >
                     Thêm vào giỏ
                   </Button>
@@ -172,71 +223,10 @@ export default function ProductDetailPage() {
         </Grid>
 
         <Box mt={6}>
-          <PackageFrame packageType="Gold">
-            <Flex
-              flexDirection={{
-                base: "column",
-                xl: "row",
-              }}
-              borderRadius="10px"
-              p={5}
-              bgColor="white"
-              boxShadow="md"
-              gap={5}
-            >
-              <Box>
-                <Image
-                  src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
-                  width="150px"
-                  height="150px"
-                  objectFit="cover"
-                  objectPosition="center"
-                  borderRadius="50%"
-                />
-              </Box>
-
-              <Stack flex={1}>
-                <Stack spacing={4}>
-                  <Flex justifyContent="space-between" alignContent="center">
-                    <Heading fontWeight="bold" fontSize="20px">
-                      Xưởng mộc Hòa Bình Quận 5
-                    </Heading>
-                    <Flex alignContent="center" gap={2}>
-                      {" "}
-                      <StarRating rating={3.5} />
-                      13 đánh giá
-                    </Flex>
-                  </Flex>
-
-                  <HStack>
-                    <Text fontWeight="bold">Địa chỉ xưởng:</Text>
-                    <Text>Chưa cập nhật</Text>
-                  </HStack>
-
-                  <HStack>
-                    <Text fontWeight="bold">Loại hình kinh doanh:</Text>
-                    <Text>Chưa cập nhật</Text>
-                  </HStack>
-
-                  <HStack>
-                    <Spacer />
-                    <Text>
-                      <ChakraLink
-                        target="_blank"
-                        textDecoration="underline"
-                        color={appColorTheme.brown_2}
-                      >
-                        Xem xưởng
-                      </ChakraLink>
-                    </Text>
-                  </HStack>
-                </Stack>
-              </Stack>
-            </Flex>
-          </PackageFrame>
+          <ProductWoodworkerBox product={product} />
         </Box>
 
-        <ReviewSection />
+        <ReviewSection productId={productId} />
       </Box>
     </>
   );

@@ -1,8 +1,8 @@
-import { Box, Flex, Image, Text, IconButton } from "@chakra-ui/react";
+import { Box, Flex, Image, Text, Tooltip, IconButton } from "@chakra-ui/react";
+import { FiTrash } from "react-icons/fi";
 import { formatPrice } from "../../utils/utils.js";
 import useCart from "../../hooks/useCart.js";
 import { appColorTheme } from "../../config/appconfig.js";
-import { FiTrash } from "react-icons/fi";
 import ConfigDisplay from "../Utility/ConfigDisplay.jsx";
 
 export default function DesignCartItem({ item, type, woodworkerId }) {
@@ -26,40 +26,64 @@ export default function DesignCartItem({ item, type, woodworkerId }) {
   };
 
   return (
-    <Flex columnGap={5} width="100%" position="relative">
+    <Flex
+      bgColor="white"
+      boxShadow="sm"
+      borderRadius="4px"
+      padding={3}
+      width="full"
+      gap={3}
+    >
+      {/* Design image */}
       <Image
-        height="80px"
-        width="80px"
         src={getImageUrl(item.img_urls)}
+        alt={item.name}
+        height="100px"
+        width="100px"
         objectFit="cover"
-        objectPosition="center"
         borderRadius="4px"
       />
-      <Box flex="1">
-        <Flex justifyContent="space-between">
-          <Text noOfLines={1} fontSize="16px" fontWeight="medium">
-            {item.name}
-          </Text>
-          <IconButton
-            size="sm"
-            variant="ghost"
-            icon={<FiTrash />}
-            colorScheme="red"
-            onClick={handleRemove}
-            aria-label="Remove item"
+
+      {/* Design details */}
+      <Flex flex={1} direction="column" justify="space-between">
+        {/* Top row: Design name and delete button */}
+        <Flex justify="space-between" align="start">
+          <Box>
+            <Text fontWeight="medium" noOfLines={1}>
+              {item.name}
+            </Text>
+          </Box>
+
+          <Tooltip label="Xóa" placement="top" hasArrow>
+            <IconButton
+              aria-label="Remove item"
+              icon={<FiTrash />}
+              size="sm"
+              colorScheme="red"
+              variant="ghost"
+              onClick={handleRemove}
+            />
+          </Tooltip>
+        </Flex>
+
+        {/* Middle row: Design variant configuration */}
+        <Box>
+          <ConfigDisplay
+            config={item.designIdeaVariantConfig}
+            compact={true}
+            color="gray.600"
           />
-        </Flex>
+        </Box>
 
-        {/* Use the ConfigDisplay component with compact mode */}
-        <ConfigDisplay config={item.designIdeaVariantConfig} compact={true} />
+        {/* Bottom row: Price and quantity */}
+        <Flex justify="space-between" align="center" mt={2}>
+          <Text fontSize="sm">SL: {item.quantity}</Text>
 
-        <Flex justifyContent="space-between" mt={2}>
-          <Text fontSize="14px">SL: {item.quantity}</Text>
-          <Text color={appColorTheme.brown_2} fontSize="16px" fontWeight="bold">
-            {formatPrice(item.price * item.quantity)}
+          <Text fontWeight="bold" color={appColorTheme.brown_2}>
+            {formatPrice(item.price)}
           </Text>
         </Flex>
-      </Box>
+      </Flex>
     </Flex>
   );
 }

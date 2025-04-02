@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   FormControl,
   FormLabel,
@@ -10,10 +9,8 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Select,
   Stack,
   Text,
-  VStack,
   HStack,
   NumberInput,
   NumberInputField,
@@ -22,27 +19,81 @@ import {
   NumberDecrementStepper,
   useDisclosure,
   Textarea,
+  Box,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus, FiSave, FiX } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import ImageUpload from "../../../../components/Utility/ImageUpload";
 import { formatPrice } from "../../../../utils/utils";
+import { useCreateProductMutation } from "../../../../services/productApi";
+import useAuth from "../../../../hooks/useAuth";
+import { useNotify } from "../../../../components/Utility/Notify";
+import CheckboxList from "../../../../components/Utility/CheckboxList";
+import CategorySelector from "../../../../components/Utility/CategorySelector";
+import { validateProductData } from "../../../../validations";
 
 export default function ProductCreateModal({ refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
-  const [imgUrls, setImgUrls] = useState("");
+  const [mediaUrls, setMediaUrls] = useState("");
   const [price, setPrice] = useState(0);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const { auth } = useAuth();
+  const notify = useNotify();
+
+  // State for category
+  const [categoryId, setCategoryId] = useState(null);
+
+  // Mutation hook for creating products
+  const [createProduct, { isLoading }] = useCreateProductMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
 
-    setImgUrls([]);
-    onClose();
+    try {
+      // Create an object from form entries
+      const formEntries = Object.fromEntries(formData.entries());
+
+      // Build the product data with spread operator for cleaner code
+      const productData = {
+        ...formEntries,
+        // Convert string values to numbers
+        price: Number(formEntries.price),
+        stock: Number(formEntries.stock),
+        weight: Number(formEntries.weight),
+        length: Number(formEntries.length),
+        width: Number(formEntries.width),
+        height: Number(formEntries.height),
+        // Add additional properties
+        mediaUrls: mediaUrls,
+        status: true,
+        woodworkerId: auth?.wwId,
+        categoryId: Number(categoryId),
+      };
+
+      // Validate product data
+      const errors = validateProductData(productData);
+      if (errors.length > 0) {
+        notify("Lỗi khi tạo sản phẩm", errors.join(" [---] "), "error", 3000);
+        return;
+      }
+
+      // Send API request
+      await createProduct(productData).unwrap();
+
+      notify("Thành công", "Sản phẩm đã được tạo thành công", "success");
+      onClose();
+      refetch?.();
+    } catch (error) {
+      console.error("Error creating product:", error);
+      notify(
+        "Lỗi",
+        error.data?.message || "Không thể tạo sản phẩm. Vui lòng thử lại sau.",
+        "error"
+      );
+    }
   };
 
   return (
@@ -70,7 +121,7 @@ export default function ProductCreateModal({ refetch }) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Thêm sản phẩm mới</ModalHeader>
-          <ModalCloseButton />
+          {!isLoading && <ModalCloseButton />}
           <ModalBody bgColor="app_grey.1" pb={6}>
             <form onSubmit={handleSubmit}>
               <Stack spacing={4}>
@@ -79,28 +130,25 @@ export default function ProductCreateModal({ refetch }) {
                   <ImageUpload
                     maxFiles={4}
                     onUploadComplete={(result) => {
-                      setImgUrls(result);
+                      setMediaUrls(result);
                     }}
                   />
                 </FormControl>
 
                 <FormControl isRequired>
                   <FormLabel>Danh mục</FormLabel>
-                  <Select
-                    name="category"
-                    placeholder="Chọn danh mục"
-                    bg="white"
-                  >
-                    <option value="Bàn ăn">Bàn ăn</option>
-                    <option value="Tủ quần áo">Tủ quần áo</option>
-                    <option value="Giường ngủ">Giường ngủ</option>
-                  </Select>
+                  <Box bg="white" borderRadius="md" p={4}>
+                    <CategorySelector
+                      setCategoryId={setCategoryId}
+                      initialCategoryId={categoryId}
+                    />
+                  </Box>
                 </FormControl>
 
                 <FormControl isRequired>
                   <FormLabel>Tên sản phẩm</FormLabel>
                   <Input
-                    name="name"
+                    name="productName"
                     placeholder="Nhập tên sản phẩm"
                     bg="white"
                   />
@@ -204,15 +252,11 @@ export default function ProductCreateModal({ refetch }) {
 
                 <FormControl isRequired>
                   <FormLabel>Loại gỗ</FormLabel>
-                  <Select
-                    name="wood_type"
-                    placeholder="Chọn loại gỗ"
+                  <Input
+                    name="woodType"
+                    placeholder="Nhập loại gỗ (ví dụ: Gỗ công nghiệp, Gỗ tự nhiên, Gỗ ép)"
                     bg="white"
-                  >
-                    <option value="Gỗ công nghiệp">Gỗ công nghiệp</option>
-                    <option value="Gỗ tự nhiên">Gỗ tự nhiên</option>
-                    <option value="Gỗ ép">Gỗ ép</option>
-                  </Select>
+                  />
                 </FormControl>
 
                 <FormControl isRequired>
@@ -223,7 +267,7 @@ export default function ProductCreateModal({ refetch }) {
                 <FormControl isRequired>
                   <FormLabel>Tính năng đặc biệt</FormLabel>
                   <Input
-                    name="special_feature"
+                    name="specialFeature"
                     placeholder="Nhập tính năng đặc biệt"
                     bg="white"
                   />
@@ -231,40 +275,56 @@ export default function ProductCreateModal({ refetch }) {
 
                 <FormControl isRequired>
                   <FormLabel>Phong cách</FormLabel>
-                  <Select name="style" placeholder="Chọn phong cách" bg="white">
-                    <option value="Hiện đại">Hiện đại</option>
-                    <option value="Cổ điển">Cổ điển</option>
-                    <option value="Tối giản">Tối giản</option>
-                    <option value="Đương đại">Đương đại</option>
-                  </Select>
+                  <Input
+                    name="style"
+                    placeholder="Nhập phong cách (ví dụ: Hiện đại, Cổ điển, Tối giản, Đương đại)"
+                    bg="white"
+                  />
                 </FormControl>
 
                 <FormControl isRequired>
                   <FormLabel>Điêu khắc</FormLabel>
-                  <Select
+                  <Input
                     name="sculpture"
-                    placeholder="Chọn kiểu điêu khắc"
+                    placeholder="Nhập kiểu điêu khắc (ví dụ: Không, Đơn giản, Phức tạp)"
                     bg="white"
-                  >
-                    <option value="Không">Không</option>
-                    <option value="Đơn giản">Đơn giản</option>
-                    <option value="Phức tạp">Phức tạp</option>
-                  </Select>
+                  />
                 </FormControl>
 
                 <FormControl isRequired>
                   <FormLabel>Mùi hương</FormLabel>
-                  <Select name="scent" placeholder="Chọn mùi hương" bg="white">
-                    <option value="Không">Không</option>
-                    <option value="Gỗ thông">Gỗ thông</option>
-                    <option value="Gỗ sồi">Gỗ sồi</option>
-                    <option value="Gỗ trầm">Gỗ trầm</option>
-                  </Select>
+                  <Input
+                    name="scent"
+                    placeholder="Nhập mùi hương (ví dụ: Không, Gỗ thông, Gỗ sồi, Gỗ trầm)"
+                    bg="white"
+                  />
                 </FormControl>
 
+                <CheckboxList
+                  items={[
+                    {
+                      isOptional: false,
+                      description: "Xác nhận thông tin đã chính xác",
+                    },
+                  ]}
+                  setButtonDisabled={setButtonDisabled}
+                />
+
                 <HStack justify="flex-end" mt={4}>
-                  <Button onClick={onClose}>Hủy</Button>
-                  <Button colorScheme="blue" type="submit">
+                  <Button
+                    onClick={onClose}
+                    leftIcon={<FiX />}
+                    isDisabled={isLoading}
+                  >
+                    Hủy
+                  </Button>
+                  <Button
+                    colorScheme="green"
+                    type="submit"
+                    isLoading={isLoading}
+                    isDisabled={buttonDisabled || !categoryId}
+                    leftIcon={<FiSave />}
+                  >
                     Lưu
                   </Button>
                 </HStack>

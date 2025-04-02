@@ -1,4 +1,4 @@
-import { Box, Container, Heading, Grid } from "@chakra-ui/react";
+import { Box, Heading, Grid } from "@chakra-ui/react";
 import FiltersComponent from "./FiltersComponent.jsx";
 import DesignList from "./DesignList.jsx";
 import { appColorTheme } from "../../../../config/appconfig.js";

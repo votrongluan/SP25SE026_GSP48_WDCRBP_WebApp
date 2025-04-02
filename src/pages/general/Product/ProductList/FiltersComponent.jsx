@@ -7,7 +7,6 @@ import {
   Box,
   Button,
   Checkbox,
-  CheckboxGroup,
   Flex,
   Heading,
   Input,
@@ -19,42 +18,55 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { formatPrice } from "../../../../utils/utils.js";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import { FiFilter } from "react-icons/fi";
+import { useGetAllProvinceSelectQuery } from "../../../../services/ghnApi.js";
+import CategorySearchCombobox from "../../../../components/Utility/CategorySearchCombobox.jsx";
+import { formatPrice } from "../../../../utils/utils.js";
 
-export default function FiltersComponent() {
-  const [priceRange, setPriceRange] = useState([0, 20000000]);
-  const [ratingRange, setRatingRange] = useState([1, 5]);
+export default function FiltersComponent({ onFilterChange }) {
+  const { data: provinces, isLoading: isLoadingProvinces } =
+    useGetAllProvinceSelectQuery();
+
+  const [localFilters, setLocalFilters] = useState({
+    priceRange: [0, 50000000],
+    ratingRange: [0, 5],
+    province: "",
+    sortBy: "",
+    searchTerm: "",
+    categoryId: null,
+    workshopType: "",
+    applyFilters: true,
+    applySearch: true,
+  });
+
+  const handleLocalFilterChange = (key, value) => {
+    setLocalFilters((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const handleApplyFilters = () => {
+    onFilterChange?.(localFilters);
+  };
+
+  const setCategoryId = (categoryId) => {
+    handleLocalFilterChange("categoryId", categoryId);
+  };
 
   return (
     <Box p={5} boxShadow="md" bgColor="white">
       <Heading fontWeight="bold" fontSize="20px" mb={6}>
-        Bộ lọc
+        Bộ lọc sản phẩm
       </Heading>
 
-      <Accordion defaultIndex={[0, 1, 2, 3]} allowMultiple>
-        {/* Bộ lọc Danh mục */}
-        <AccordionItem>
-          <AccordionButton>
-            <Box flex="1" textAlign="left">
-              Danh mục
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
+      <Box borderTop="1px solid #ccc" mb={2} py={2} px={4}>
+        <Text>Danh mục</Text>
+        <CategorySearchCombobox setCategoryId={setCategoryId} />
+      </Box>
 
-          <AccordionPanel pb={4}>
-            <Select placeholder="Chọn loại sản phẩm" bgColor="white">
-              <option value="price-asc">Giá: Thấp đến cao</option>
-              <option value="price-desc">Giá: Cao đến thấp</option>
-              <option value="rating-asc">Số sao: Tăng dần</option>
-              <option value="rating-desc">Số sao: Giảm dần</option>
-              <option value="name-asc">Tên: A-Z</option>
-              <option value="name-desc">Tên: Z-A</option>
-            </Select>
-          </AccordionPanel>
-        </AccordionItem>
-
+      <Accordion allowMultiple>
         {/* Bộ lọc Tỉnh thành */}
         <AccordionItem>
           <AccordionButton>
@@ -65,13 +77,49 @@ export default function FiltersComponent() {
           </AccordionButton>
 
           <AccordionPanel pb={4}>
-            <Select placeholder="Chọn tỉnh, thành" bgColor="white">
-              <option value="price-asc">Giá: Thấp đến cao</option>
-              <option value="price-desc">Giá: Cao đến thấp</option>
-              <option value="rating-asc">Số sao: Tăng dần</option>
-              <option value="rating-desc">Số sao: Giảm dần</option>
-              <option value="name-asc">Tên: A-Z</option>
-              <option value="name-desc">Tên: Z-A</option>
+            <Select
+              placeholder="Chọn tỉnh, thành"
+              bgColor="white"
+              value={localFilters.province}
+              onChange={(e) =>
+                handleLocalFilterChange("province", e.target.value)
+              }
+              isDisabled={isLoadingProvinces}
+            >
+              {isLoadingProvinces ? (
+                <option value="">Đang tải...</option>
+              ) : (
+                provinces?.map((province) => (
+                  <option key={province.value} value={province.value}>
+                    {province.label}
+                  </option>
+                ))
+              )}
+            </Select>
+          </AccordionPanel>
+        </AccordionItem>
+
+        {/* Lọc theo gói xưởng */}
+        <AccordionItem>
+          <AccordionButton>
+            <Box flex="1" textAlign="left">
+              Loại xưởng
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+
+          <AccordionPanel pb={4}>
+            <Select
+              placeholder="Chọn loại xưởng"
+              bgColor="white"
+              value={localFilters.workshopType}
+              onChange={(e) =>
+                handleLocalFilterChange("workshopType", e.target.value)
+              }
+            >
+              <option value="Gold">Xưởng vàng</option>
+              <option value="Silver">Xưởng bạc</option>
+              <option value="Bronze">Xưởng đồng</option>
             </Select>
           </AccordionPanel>
         </AccordionItem>
@@ -88,11 +136,11 @@ export default function FiltersComponent() {
           <AccordionPanel pb={4}>
             <RangeSlider
               aria-label={["Minimum price", "Maximum price"]}
-              defaultValue={[0, 20000000]}
+              defaultValue={localFilters.priceRange}
               min={0}
-              max={20000000}
+              max={50000000}
               step={1000000}
-              onChange={(val) => setPriceRange(val)}
+              onChange={(val) => handleLocalFilterChange("priceRange", val)}
             >
               <RangeSliderTrack>
                 <RangeSliderFilledTrack />
@@ -101,7 +149,8 @@ export default function FiltersComponent() {
               <RangeSliderThumb index={1} />
             </RangeSlider>
             <Text mt={2}>
-              {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
+              {formatPrice(localFilters.priceRange[0])} -{" "}
+              {formatPrice(localFilters.priceRange[1])}
             </Text>
           </AccordionPanel>
         </AccordionItem>
@@ -118,11 +167,11 @@ export default function FiltersComponent() {
           <AccordionPanel pb={4}>
             <RangeSlider
               aria-label={["Minimum rating", "Maximum rating"]}
-              defaultValue={[1, 5]}
-              min={1}
+              defaultValue={localFilters.ratingRange}
+              min={0}
               max={5}
               step={0.1}
-              onChange={(val) => setRatingRange(val)}
+              onChange={(val) => handleLocalFilterChange("ratingRange", val)}
             >
               <RangeSliderTrack>
                 <RangeSliderFilledTrack />
@@ -131,17 +180,23 @@ export default function FiltersComponent() {
               <RangeSliderThumb index={1} />
             </RangeSlider>
             <Text mt={2}>
-              ⭐ {ratingRange[0].toFixed(1)} - {ratingRange[1].toFixed(1)}
+              ⭐ {localFilters.ratingRange[0].toFixed(1)} -{" "}
+              {localFilters.ratingRange[1].toFixed(1)}
             </Text>
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
 
-      {/* Thanh search */}
+      {/* Thanh search và sắp xếp */}
       <Flex flexDirection="column" mt={4} gap={5}>
-        {/* "Sắp xếp theo" select */}
         <Box>
-          <Select placeholder="Sắp xếp theo" bgColor="white">
+          <Select
+            placeholder="Sắp xếp theo"
+            bgColor="white"
+            value={localFilters.sortBy}
+            onChange={(e) => handleLocalFilterChange("sortBy", e.target.value)}
+          >
+            <option value="rating-desc">Đề xuất</option>
             <option value="price-asc">Giá: Thấp đến cao</option>
             <option value="price-desc">Giá: Cao đến thấp</option>
             <option value="rating-asc">Số sao: Tăng dần</option>
@@ -151,13 +206,29 @@ export default function FiltersComponent() {
           </Select>
         </Box>
 
-        <Input placeholder="Tên sản phẩm" />
+        <Input
+          placeholder="Tên sản phẩm"
+          value={localFilters.searchTerm}
+          onChange={(e) =>
+            handleLocalFilterChange("searchTerm", e.target.value)
+          }
+        />
 
-        <Checkbox defaultChecked value="danang">
+        <Checkbox
+          isChecked={localFilters.applyFilters}
+          onChange={(e) =>
+            handleLocalFilterChange("applyFilters", e.target.checked)
+          }
+        >
           Áp dụng bộ lọc
         </Checkbox>
 
-        <Checkbox defaultChecked value="danang">
+        <Checkbox
+          isChecked={localFilters.applySearch}
+          onChange={(e) =>
+            handleLocalFilterChange("applySearch", e.target.checked)
+          }
+        >
           Áp dụng từ khóa
         </Checkbox>
 
@@ -166,6 +237,7 @@ export default function FiltersComponent() {
           bg={appColorTheme.brown_2}
           color="white"
           leftIcon={<FiFilter />}
+          onClick={handleApplyFilters}
         >
           Lọc
         </Button>

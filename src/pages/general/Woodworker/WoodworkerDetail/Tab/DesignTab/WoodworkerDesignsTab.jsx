@@ -1,7 +1,6 @@
-import { Box, Heading, Grid } from "@chakra-ui/react";
+import { Box, Grid } from "@chakra-ui/react";
 import FiltersComponent from "./FiltersComponent.jsx";
 import DesignList from "./DesignList.jsx";
-import { appColorTheme } from "../../../../../../config/appconfig.js";
 import { useState, useMemo } from "react";
 import { useGetAllDesignIdeasByWoodworkerQuery } from "../../../../../../services/designIdeaApi.js";
 import { useParams } from "react-router-dom";
@@ -24,22 +23,6 @@ export default function WoodworkerDesignsTab() {
           (design) =>
             design.category?.categoryId === newFilters.categoryId ||
             design.category?.parentId === newFilters.categoryId
-        );
-      }
-
-      // Lọc theo tỉnh thành
-      if (newFilters.province) {
-        result = result.filter(
-          (design) => design.woodworkerProfile?.cityId == newFilters.province
-        );
-      }
-
-      // Lọc theo loại xưởng (gói dịch vụ)
-      if (newFilters.workshopType) {
-        result = result.filter(
-          (design) =>
-            design.woodworkerProfile?.servicePack?.name ===
-            newFilters.workshopType
         );
       }
 

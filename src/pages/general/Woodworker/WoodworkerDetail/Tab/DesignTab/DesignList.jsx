@@ -9,12 +9,12 @@ import {
   Flex,
   Icon,
   HStack,
+  Spacer,
 } from "@chakra-ui/react";
 import Pagination from "../../../../../../components/Utility/Pagination.jsx";
 import { Link } from "react-router-dom";
 import PackageFrame from "../../../../../../components/Utility/PackageFrame.jsx";
-import { MdCollections, MdStorefront, MdLocationOn } from "react-icons/md";
-import StarRating from "../../../../../../components/Utility/StarRating.jsx";
+import { MdCollections } from "react-icons/md";
 import StarReview from "../../../../../../components/Utility/StarReview.jsx";
 
 export default function DesignList({ designs = [] }) {
@@ -87,31 +87,20 @@ export default function DesignList({ designs = [] }) {
                       )}
                     </Box>
 
-                    <Stack gap={2} p={3}>
-                      <Text noOfLines={2} fontWeight="bold">
-                        {design.name}
-                      </Text>
-
-                      {design.description && (
-                        <Text fontSize="sm" color="gray.600" noOfLines={2}>
-                          {design.description}
+                    <Stack height="110px" gap={1} p={1}>
+                      <Box>
+                        <Text noOfLines={1} fontWeight="bold">
+                          {design.name}
                         </Text>
-                      )}
 
-                      <Flex alignItems="center">
-                        <Icon as={MdStorefront} mr={1} color="gray.600" />
-                        <Text noOfLines={2} fontWeight="medium" fontSize="sm">
-                          {design.woodworkerProfile?.brandName ||
-                            "Không có tên xưởng"}
-                        </Text>
-                      </Flex>
+                        {design.description && (
+                          <Text fontSize="sm" color="gray.600" noOfLines={2}>
+                            {design.description}
+                          </Text>
+                        )}
+                      </Box>
 
-                      <Flex alignItems="center">
-                        <Icon as={MdLocationOn} mr={1} color="gray.500" />
-                        <Text noOfLines={2} fontSize="xs" color="gray.500">
-                          {design.woodworkerProfile.address}
-                        </Text>
-                      </Flex>
+                      <Spacer />
 
                       <Flex alignItems="center" mt={1}>
                         <HStack ml="auto" fontSize="sm">

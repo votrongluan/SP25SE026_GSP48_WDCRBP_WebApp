@@ -100,7 +100,7 @@ const CategorySearchCombobox = ({ setCategoryId, defaultCategoryId }) => {
   }
 
   return (
-    <Box position="relative" ref={inputRef}>
+    <Box zIndex={"2"} position="relative" ref={inputRef}>
       <FormControl>
         <InputGroup>
           <Input

@@ -1,76 +1,49 @@
-import { Box, Flex, Grid, Image, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Grid,
+  Image,
+  Stack,
+  Text,
+  Center,
+  Badge,
+  Flex,
+  Icon,
+  HStack,
+  Spacer,
+  Spinner,
+} from "@chakra-ui/react";
 import Pagination from "../../../../../../components/Utility/Pagination.jsx";
 import { Link } from "react-router-dom";
+import PackageFrame from "../../../../../../components/Utility/PackageFrame.jsx";
+import { MdCollections } from "react-icons/md";
+import StarReview from "../../../../../../components/Utility/StarReview.jsx";
 import { formatPrice } from "../../../../../../utils/utils.js";
 import { appColorTheme } from "../../../../../../config/appconfig.js";
 
-export default function ProductList() {
-  const products = [
-    {
-      id: 1,
-      name: "Sản phẩm 1 1322222222222222222222222222222222222222222222",
-      price: "1.000.000 VND",
-      rating: 4,
-      image:
-        "https://product.hstatic.net/200000821277/product/1__2__ddeb0088f796420abf7ff54b29e64ac7_master.jpg",
-    },
-    {
-      id: 1,
-      name: "Sản phẩm 1",
-      price: "1.000.000 VND",
-      rating: 4,
-      image:
-        "https://product.hstatic.net/200000821277/product/1__2__ddeb0088f796420abf7ff54b29e64ac7_master.jpg",
-    },
-    {
-      id: 1,
-      name: "Sản phẩm 1 1322222222222222222222222222222222222222222222",
-      price: "1.000.000 VND",
-      rating: 4,
-      image:
-        "https://product.hstatic.net/200000821277/product/1__2__ddeb0088f796420abf7ff54b29e64ac7_master.jpg",
-    },
-    {
-      id: 1,
-      name: "Sản phẩm 1",
-      price: "1.000.000 VND",
-      rating: 4,
-      image:
-        "https://product.hstatic.net/200000821277/product/1__2__ddeb0088f796420abf7ff54b29e64ac7_master.jpg",
-    },
-    {
-      id: 1,
-      name: "Sản phẩm 1 1322222222222222222222222222222222222222222222",
-      price: "1.000.000 VND",
-      rating: 4,
-      image:
-        "https://product.hstatic.net/200000821277/product/1__2__ddeb0088f796420abf7ff54b29e64ac7_master.jpg",
-    },
-    {
-      id: 1,
-      name: "Sản phẩm 1",
-      price: "1.000.000 VND",
-      rating: 4,
-      image:
-        "https://product.hstatic.net/200000821277/product/1__2__ddeb0088f796420abf7ff54b29e64ac7_master.jpg",
-    },
-    {
-      id: 1,
-      name: "Sản phẩm 1 1322222222222222222222222222222222222222222222",
-      price: "1.000.000 VND",
-      rating: 4,
-      image:
-        "https://product.hstatic.net/200000821277/product/1__2__ddeb0088f796420abf7ff54b29e64ac7_master.jpg",
-    },
-    {
-      id: 1,
-      name: "Sản phẩm 1",
-      price: "1.000.000 VND",
-      rating: 4,
-      image:
-        "https://product.hstatic.net/200000821277/product/1__2__ddeb0088f796420abf7ff54b29e64ac7_master.jpg",
-    },
-  ];
+export default function ProductList({ products = [], isLoading, error }) {
+  if (isLoading) {
+    return (
+      <Center h="500px">
+        <Spinner size="xl" />
+      </Center>
+    );
+  }
+
+  if (error) {
+    return (
+      <Center h="500px">
+        <Text>Đã xảy ra lỗi khi tải dữ liệu.</Text>
+      </Center>
+    );
+  }
+
+  if (!products.length) {
+    return (
+      <Center py={10}>
+        <Text>Không tìm thấy sản phẩm nào</Text>
+      </Center>
+    );
+  }
 
   return (
     <Box>
@@ -84,21 +57,83 @@ export default function ProductList() {
             gap={5}
           >
             {data.map((product) => (
-              <Link key={product.id} to="/product/1">
-                <Box overflow="hidden" boxShadow="md" bgColor="white">
-                  <Image src={product.image} alt={product.name} />
-                  <Stack gap={2} p={2}>
-                    <Text height="50px" noOfLines={2} fontWeight="bold">
-                      {product.name}
-                    </Text>
+              <Link
+                key={product.productId}
+                to={`/product/${product.productId}`}
+              >
+                <PackageFrame packageType={product.packType || "Bronze"}>
+                  <Box overflow="hidden" bgColor="white" borderRadius="md">
+                    <Box position="relative">
+                      <Image
+                        src={
+                          product.mediaUrls
+                            ? product.mediaUrls.split(";")[0]
+                            : ""
+                        }
+                        alt={product.productName}
+                        objectFit="cover"
+                        objectPosition="center"
+                        w="100%"
+                        h="200px"
+                        fallbackSrc="https://via.placeholder.com/200x150?text=No+Image"
+                      />
+                      {/* Display number of images badge */}
+                      {product.mediaUrls && product.mediaUrls.includes(";") && (
+                        <Badge
+                          position="absolute"
+                          top="8px"
+                          right="8px"
+                          colorScheme="teal"
+                          display="flex"
+                          alignItems="center"
+                          px={2}
+                          py={1}
+                        >
+                          <Icon as={MdCollections} mr={1} />
+                          {product.mediaUrls.split(";").length}
+                        </Badge>
+                      )}
+                      {product.categoryName && (
+                        <Badge
+                          position="absolute"
+                          bottom="0"
+                          right="0"
+                          colorScheme="purple"
+                        >
+                          {product.categoryName}
+                        </Badge>
+                      )}
+                    </Box>
 
-                    <Text fontWeight="bold" color={appColorTheme.brown_2}>
-                      {formatPrice(product.price)}
-                    </Text>
+                    <Stack height="100px" gap={1} p={1}>
+                      <Box>
+                        <Text noOfLines={2} fontWeight="bold">
+                          {product.productName}
+                        </Text>
 
-                    <Text>⭐ {product.rating.toFixed(1)} (10 đánh giá)</Text>
-                  </Stack>
-                </Box>
+                        <Text
+                          mt={1}
+                          fontSize="xl"
+                          fontWeight="bold"
+                          color={appColorTheme.brown_2}
+                        >
+                          {formatPrice(product.price)}
+                        </Text>
+                      </Box>
+
+                      <Spacer />
+
+                      <Flex alignItems="center" mt={1}>
+                        <HStack ml="auto" fontSize="sm">
+                          <StarReview
+                            totalStar={product.totalStar || 0}
+                            totalReviews={product.totalReviews || 0}
+                          />
+                        </HStack>
+                      </Flex>
+                    </Stack>
+                  </Box>
+                </PackageFrame>
               </Link>
             ))}
           </Grid>

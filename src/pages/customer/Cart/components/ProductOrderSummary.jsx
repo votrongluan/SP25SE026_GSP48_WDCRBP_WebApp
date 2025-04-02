@@ -4,42 +4,40 @@ import {
   Text,
   Flex,
   Divider,
-  useToast,
   Alert,
   AlertIcon,
 } from "@chakra-ui/react";
 import { formatPrice } from "../../../../utils/utils.js";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import AddressSelection from "./AddressSelection.jsx";
-import { useCreateCustomizeOrderMutation } from "../../../../services/serviceOrderApi.js";
+import { useCreateProductOrderMutation } from "../../../../services/productOrderApi.js";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useNotify } from "../../../../components/Utility/Notify.jsx";
 import { FiLogIn } from "react-icons/fi";
 
-export default function OrderSummary({
+export default function ProductOrderSummary({
   auth,
   selectedWoodworker,
   selectedAddress,
   setSelectedAddress,
-  cartDesigns,
+  cartProducts,
   addresses,
   isLoadingAddresses,
   addressError,
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [createCustomizeOrder] = useCreateCustomizeOrderMutation();
+  const [createProductOrder] = useCreateProductOrderMutation();
   const navigate = useNavigate();
   const notify = useNotify();
-  const toast = useToast();
 
   // Helper function to get total price for the selected woodworker
-  const getSelectedDesignsTotal = () => {
+  const getSelectedProductsTotal = () => {
     if (!selectedWoodworker) return 0;
 
     let total = 0;
-    const designs = cartDesigns || [];
-    designs.forEach((item) => {
+    const products = cartProducts || [];
+    products.forEach((item) => {
       total += item.price * item.quantity;
     });
     return total;
@@ -47,14 +45,14 @@ export default function OrderSummary({
 
   // Get the total quantity of items in cart
   const getTotalQuantity = () => {
-    return cartDesigns?.reduce((total, item) => total + item.quantity, 0) || 0;
+    return cartProducts?.reduce((total, item) => total + item.quantity, 0) || 0;
   };
 
   // Check if both woodworker and address are selected
   const canProceed =
     selectedWoodworker !== null &&
     selectedAddress !== null &&
-    cartDesigns?.length > 0;
+    cartProducts?.length > 0;
 
   // Handle order submission
   const handlePlaceOrder = async () => {
@@ -62,46 +60,37 @@ export default function OrderSummary({
       // Validate total quantity
       const totalQuantity = getTotalQuantity();
       if (totalQuantity > 4) {
-        toast({
-          title: "Số lượng vượt quá giới hạn",
-          description: "Tổng số lượng sản phẩm không được vượt quá 4.",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
+        notify(
+          "Số lượng vượt quá giới hạn",
+          "Tổng số lượng sản phẩm không được vượt quá 4.",
+          "error"
+        );
         return;
       }
 
       // Prepare request data
-      const availableServiceId = cartDesigns[0].availableServiceId;
       const selectedAddressObj = addresses.find(
         (addr) => addr.userAddressId.toString() === selectedAddress
       );
 
       if (!selectedAddressObj) {
-        toast({
-          title: "Lỗi",
-          description: "Không tìm thấy thông tin địa chỉ.",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
+        notify("Lỗi", "Không tìm thấy thông tin địa chỉ.", "error");
         return;
       }
 
       const orderData = {
-        availableServiceId: availableServiceId,
         userId: auth.userId,
-        designIdeaVariantIds: cartDesigns.map((item) => ({
-          designIdeaVariantId: item.designIdeaVariantId,
+        productItems: cartProducts.map((item) => ({
+          productId: item.productId,
           quantity: item.quantity,
         })),
         address: selectedAddressObj.address,
+        woodworkerId: selectedWoodworker,
       };
 
       // Call the API
       setIsSubmitting(true);
-      const response = await createCustomizeOrder(orderData).unwrap();
+      const response = await createProductOrder(orderData).unwrap();
 
       if (response.code === 200) {
         notify(
@@ -110,7 +99,7 @@ export default function OrderSummary({
           "success"
         );
         // Redirect to orders page or show success message
-        navigate("/cus/service-orders");
+        navigate("/cus/product-orders");
       } else {
         throw new Error(response.message || "Có lỗi xảy ra khi đặt hàng");
       }
@@ -141,7 +130,7 @@ export default function OrderSummary({
           <Flex justify="space-between" mb={2}>
             <Text>Tổng tiền hàng:</Text>
             <Text fontWeight="bold">
-              {formatPrice(getSelectedDesignsTotal())}
+              {formatPrice(getSelectedProductsTotal())}
             </Text>
           </Flex>
 
@@ -172,7 +161,7 @@ export default function OrderSummary({
           <Flex justify="space-between" mb={4}>
             <Text fontSize="lg">Tổng thanh toán:</Text>
             <Text fontSize="lg" fontWeight="bold" color="app_brown.2">
-              {formatPrice(getSelectedDesignsTotal())}
+              {formatPrice(getSelectedProductsTotal())}
             </Text>
           </Flex>
         </>

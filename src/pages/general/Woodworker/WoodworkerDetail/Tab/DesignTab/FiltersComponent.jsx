@@ -20,19 +20,14 @@ import {
 import { useState } from "react";
 import { appColorTheme } from "../../../../../../config/appconfig.js";
 import { FiFilter } from "react-icons/fi";
-import { useGetAllProvinceSelectQuery } from "../../../../../../services/ghnApi.js";
 import CategorySearchCombobox from "../../../../../../components/Utility/CategorySearchCombobox.jsx";
 
 export default function FiltersComponent({ onFilterChange }) {
-  const { data: provinces, isLoading: isLoadingProvinces } =
-    useGetAllProvinceSelectQuery();
   const [localFilters, setLocalFilters] = useState({
     ratingRange: [0, 5],
-    province: "",
     sortBy: "",
     searchTerm: "",
     categoryId: null,
-    workshopType: "",
     applyFilters: true,
     applySearch: true,
   });
@@ -64,63 +59,6 @@ export default function FiltersComponent({ onFilterChange }) {
       </Box>
 
       <Accordion allowMultiple>
-        {/* Bộ lọc Tỉnh thành */}
-        <AccordionItem>
-          <AccordionButton>
-            <Box flex="1" textAlign="left">
-              Tỉnh thành
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-
-          <AccordionPanel pb={4}>
-            <Select
-              placeholder="Chọn tỉnh, thành"
-              bgColor="white"
-              value={localFilters.province}
-              onChange={(e) =>
-                handleLocalFilterChange("province", e.target.value)
-              }
-              isDisabled={isLoadingProvinces}
-            >
-              {isLoadingProvinces ? (
-                <option value="">Đang tải...</option>
-              ) : (
-                provinces?.map((province) => (
-                  <option key={province.value} value={province.value}>
-                    {province.label}
-                  </option>
-                ))
-              )}
-            </Select>
-          </AccordionPanel>
-        </AccordionItem>
-
-        {/* Bộ lọc Loại xưởng */}
-        <AccordionItem>
-          <AccordionButton>
-            <Box flex="1" textAlign="left">
-              Loại xưởng
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-
-          <AccordionPanel pb={4}>
-            <Select
-              placeholder="Chọn loại xưởng"
-              bgColor="white"
-              value={localFilters.workshopType}
-              onChange={(e) =>
-                handleLocalFilterChange("workshopType", e.target.value)
-              }
-            >
-              <option value="Gold">Xưởng vàng</option>
-              <option value="Silver">Xưởng bạc</option>
-              <option value="Bronze">Xưởng đồng</option>
-            </Select>
-          </AccordionPanel>
-        </AccordionItem>
-
         {/* Bộ lọc Số sao với RangeSlider 2 đầu */}
         <AccordionItem>
           <AccordionButton>

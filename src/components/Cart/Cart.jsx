@@ -21,6 +21,7 @@ import {
 import { ShoppingCart } from "@mui/icons-material";
 import { NavLink as RouterNavLink } from "react-router-dom";
 import DesignCartItem from "./DesignCartItem.jsx";
+import ProductCartItem from "./ProductCartItem.jsx";
 import useCart from "../../hooks/useCart.js";
 
 export default function Cart() {
@@ -122,9 +123,35 @@ export default function Cart() {
 
                 {/* Products Tab */}
                 <TabPanel p={0}>
-                  <Box textAlign="center" py={10}>
-                    <Text>Không có sản phẩm trong giỏ hàng</Text>
-                  </Box>
+                  {Object.keys(cart.products).length === 0 ? (
+                    <Box textAlign="center" py={10}>
+                      <Text>Không có sản phẩm trong giỏ hàng</Text>
+                    </Box>
+                  ) : (
+                    Object.entries(cart.products).map(
+                      ([woodworkerId, products]) => (
+                        <VStack
+                          key={woodworkerId}
+                          alignItems="flex-start"
+                          spacing="20px"
+                          mb={6}
+                        >
+                          <Text fontWeight="bold" fontSize="18px">
+                            Xưởng mộc: {products?.[0]?.woodworkerName}
+                          </Text>
+
+                          {products.map((product) => (
+                            <ProductCartItem
+                              key={product.productId}
+                              item={product}
+                              woodworkerId={woodworkerId}
+                            />
+                          ))}
+                          <Divider />
+                        </VStack>
+                      )
+                    )
+                  )}
                 </TabPanel>
               </TabPanels>
             </Tabs>

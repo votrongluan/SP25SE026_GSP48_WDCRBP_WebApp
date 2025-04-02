@@ -96,6 +96,88 @@ export const CartProvider = ({ children }) => {
     });
   };
 
+  // Add product to cart
+  const addProductToCart = (productItem) => {
+    setCart((prevCart) => {
+      const woodworkerId = productItem.woodworkerId;
+
+      // Deep clone the current cart to avoid mutation issues
+      const newCart = JSON.parse(JSON.stringify(prevCart));
+
+      if (!newCart.products[woodworkerId]) {
+        newCart.products[woodworkerId] = [];
+      }
+
+      // Check if the same product already exists in cart
+      const existingItemIndex = newCart.products[woodworkerId].findIndex(
+        (item) => item.productId === productItem.productId
+      );
+
+      if (existingItemIndex >= 0) {
+        // Increment quantity if item exists, but respect the maximum limit
+        const currentQuantity =
+          newCart.products[woodworkerId][existingItemIndex].quantity;
+        const newQuantity = Math.min(
+          currentQuantity + productItem.quantity,
+          MAX_QUANTITY
+        );
+        newCart.products[woodworkerId][existingItemIndex].quantity =
+          newQuantity;
+      } else {
+        // Add new item with quantity respecting the maximum limit
+        productItem.quantity = Math.min(
+          productItem.quantity || 1,
+          MAX_QUANTITY
+        );
+        newCart.products[woodworkerId].push(productItem);
+      }
+
+      return newCart;
+    });
+  };
+
+  // Remove product from cart
+  const removeProductFromCart = (woodworkerId, productId) => {
+    setCart((prevCart) => {
+      const newCart = JSON.parse(JSON.stringify(prevCart));
+
+      if (newCart.products[woodworkerId]) {
+        newCart.products[woodworkerId] = newCart.products[woodworkerId].filter(
+          (item) => item.productId !== productId
+        );
+
+        // Remove woodworker entry if no more items
+        if (newCart.products[woodworkerId].length === 0) {
+          delete newCart.products[woodworkerId];
+        }
+      }
+
+      return newCart;
+    });
+  };
+
+  // Change quantity of a product in cart
+  const changeProductQuantity = (woodworkerId, productId, newQuantity) => {
+    // Enforce maximum quantity limit
+    const limitedQuantity = Math.min(newQuantity, MAX_QUANTITY);
+
+    setCart((prevCart) => {
+      const newCart = JSON.parse(JSON.stringify(prevCart));
+
+      if (newCart.products[woodworkerId]) {
+        const itemIndex = newCart.products[woodworkerId].findIndex(
+          (item) => item.productId === productId
+        );
+
+        if (itemIndex >= 0) {
+          newCart.products[woodworkerId][itemIndex].quantity = limitedQuantity;
+        }
+      }
+
+      return newCart;
+    });
+  };
+
   // Get total number of items in cart (designs + products)
   const getCartItemCount = () => {
     let count = 0;
@@ -107,7 +189,7 @@ export const CartProvider = ({ children }) => {
       });
     });
 
-    // Count product items (future implementation)
+    // Count product items
     Object.values(cart.products).forEach((woodworkerItems) => {
       woodworkerItems.forEach((item) => {
         count += item.quantity;
@@ -124,8 +206,11 @@ export const CartProvider = ({ children }) => {
         addDesignToCart,
         removeDesignFromCart,
         changeDesignQuantity,
+        addProductToCart,
+        removeProductFromCart,
+        changeProductQuantity,
         getCartItemCount,
-        MAX_QUANTITY, // Expose the maximum quantity to consumers
+        MAX_QUANTITY,
       }}
     >
       {children}

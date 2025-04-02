@@ -105,7 +105,7 @@ export default function DesignDetailPage() {
     const cartItem = {
       ...selectedVariant,
       name: designDetail?.name,
-      img_urls: designDetail?.img_urls,
+      img_urls: designDetail?.img_urls?.split(";")[0],
       woodworkerId: designDetail?.woodworkerProfile?.woodworkerId,
       woodworkerName: designDetail?.woodworkerProfile?.brandName,
       quantity: 1,
@@ -114,7 +114,7 @@ export default function DesignDetailPage() {
 
     addDesignToCart(cartItem);
 
-    notify("Đã thêm vào giỏ hàng", "", "success");
+    notify("Thành công", "Sản phẩm đã được thêm vào giỏ hàng", "success");
   };
 
   return (

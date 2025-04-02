@@ -1,87 +1,84 @@
 import {
   Box,
-  Button,
-  Container,
   Flex,
   Heading,
   HStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Select,
   Stack,
-  useDisclosure,
+  Center,
+  Spinner,
+  Text,
 } from "@chakra-ui/react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useState, useMemo } from "react";
-import { FiSearch, FiPlus } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import ProductCreateModal from "../ActionModal/ProductCreateModal";
 import ProductDetailModal from "../ActionModal/ProductDetailModal";
 import ProductUpdateModal from "../ActionModal/ProductUpdateModal";
 import ProductDeleteModal from "../ActionModal/ProductDeleteModal";
 import { formatPrice } from "../../../../utils/utils";
+import { useGetProductsByWoodworkerIdQuery } from "../../../../services/productApi";
+import useAuth from "../../../../hooks/useAuth";
 
 export default function ProductManagementListPage() {
-  const [rowData, setRowData] = useState([
-    {
-      id: "SP001",
-      category: "Bàn ăn",
-      name: "Bàn ăn gỗ công nghiệp",
-      description: "Bàn ăn 6 người, gỗ công nghiệp MDF phủ melamine",
-      price: 12000000,
-      stock: 10,
-      weight: 25,
-      length: 160,
-      height: 75,
-      width: 90,
-      imgUrls:
-        "https://i.pinimg.com/1200x/17/99/2a/17992af2512a41db6b739c546a95944e.jpg;https://i.pinimg.com/1200x/aa/b0/ad/aab0ad2b357f91c06718f4177fd4932f.jpg",
-      wood_type: "Gỗ công nghiệp",
-      color: "Nâu đậm",
-      special_feature: "Chống nước",
-      style: "Hiện đại",
-      sculpture: "Không",
-      scent: "Không",
-    },
-  ]);
+  const { auth } = useAuth();
+
+  // Fetch products data from API
+  const { data, isLoading, isError, refetch } =
+    useGetProductsByWoodworkerIdQuery(auth?.wwId, {
+      skip: !auth?.wwId,
+    });
+
+  const products = data?.data || [];
 
   const [colDefs] = useState([
-    { headerName: "Mã SP", field: "id", sort: "desc" },
-    { headerName: "Danh mục", field: "category" },
-    { headerName: "Tên sản phẩm", field: "name" },
+    { headerName: "Mã SP", field: "productId", sort: "desc" },
+    { headerName: "Danh mục", field: "categoryName" },
+    { headerName: "Tên sản phẩm", field: "productName" },
     {
       headerName: "Giá",
       field: "price",
-      valueFormatter: (params) => {
-        return formatPrice(params.value);
-      },
+      valueFormatter: (params) => formatPrice(params.value),
     },
     { headerName: "Tồn kho", field: "stock" },
-    { headerName: "Loại gỗ", field: "wood_type" },
+    { headerName: "Loại gỗ", field: "woodType" },
     {
       headerName: "Thao tác",
-      cellRenderer: ({ data }) => {
-        return (
-          <HStack spacing={1}>
-            <ProductDetailModal product={data} refetch={null} />
-            <ProductUpdateModal product={data} refetch={null} />
-            <ProductDeleteModal product={data} refetch={null} />
-          </HStack>
-        );
-      },
+      cellRenderer: ({ data }) => (
+        <HStack spacing={1}>
+          <ProductDetailModal product={data} />
+          <ProductUpdateModal product={data} refetch={refetch} />
+          <ProductDeleteModal product={data} refetch={refetch} />
+        </HStack>
+      ),
     },
   ]);
 
-  const defaultColDef = useMemo(() => {
-    return {
+  const defaultColDef = useMemo(
+    () => ({
       filter: true,
       floatingFilter: true,
       flex: 1,
-    };
-  }, []);
+    }),
+    []
+  );
+
+  if (isLoading) {
+    return (
+      <Center h="500px">
+        <Spinner size="xl" />
+      </Center>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Center h="500px">
+        <Text>Đã xảy ra lỗi khi tải dữ liệu.</Text>
+      </Center>
+    );
+  }
 
   return (
     <Stack spacing={6}>
@@ -93,7 +90,7 @@ export default function ProductManagementListPage() {
         >
           Quản lý Sản phẩm
         </Heading>
-        <ProductCreateModal />
+        <ProductCreateModal refetch={refetch} />
       </Flex>
 
       <Box>
@@ -106,7 +103,7 @@ export default function ProductManagementListPage() {
             paginationPageSize={20}
             paginationPageSizeSelector={[10, 20, 50, 100]}
             defaultColDef={defaultColDef}
-            rowData={rowData}
+            rowData={products}
             columnDefs={colDefs}
           />
         </div>

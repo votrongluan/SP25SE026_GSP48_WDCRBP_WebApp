@@ -3,7 +3,6 @@ import {
   Button,
   Grid,
   Heading,
-  HStack,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -22,8 +21,9 @@ import { FiEye } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector";
 import { formatPrice } from "../../../../utils/utils";
+import StarReview from "../../../../components/Utility/StarReview";
 
-export default function ProductDetailModal({ product, refetch }) {
+export default function ProductDetailModal({ product }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
 
@@ -56,22 +56,16 @@ export default function ProductDetailModal({ product, refetch }) {
           <ModalCloseButton />
           <ModalBody bgColor="app_grey.1" pb={6}>
             <Stack gap={5}>
-              <SimpleGrid
-                columns={{
-                  base: 1,
-                  xl: 2,
-                }}
-                gap={5}
-              >
-                {/* Phần hình ảnh */}
+              <SimpleGrid columns={{ base: 1, xl: 2 }} gap={5}>
+                {/* Product images */}
                 <Box>
                   <Heading size="md" mb={4}>
                     Hình ảnh sản phẩm
                   </Heading>
-                  <ImageListSelector imgH={300} imgUrls={product?.imgUrls} />
+                  <ImageListSelector imgH={300} imgUrls={product?.mediaUrls} />
                 </Box>
 
-                {/* Phần thông tin cơ bản */}
+                {/* Basic information */}
                 <Box>
                   <Heading size="md" mb={4}>
                     Thông tin cơ bản
@@ -80,27 +74,29 @@ export default function ProductDetailModal({ product, refetch }) {
                     <VStack align="stretch" spacing={4}>
                       <Box>
                         <Text fontWeight="bold">Mã sản phẩm:</Text>
-                        <Text>{product?.id}</Text>
+                        <Text>{product?.productId}</Text>
                       </Box>
                       <Box>
                         <Text fontWeight="bold">Tên sản phẩm:</Text>
-                        <Text>{product?.name}</Text>
+                        <Text>{product?.productName}</Text>
                       </Box>
                       <Box>
                         <Text fontWeight="bold">Danh mục:</Text>
-                        <Text>{product?.category}</Text>
+                        <Text>{product?.categoryName}</Text>
                       </Box>
                       <Box>
                         <Text fontWeight="bold">Mô tả:</Text>
-                        <Text>{product?.description}</Text>
+                        <Text whiteSpace="pre-wrap">
+                          {product?.description}
+                        </Text>
                       </Box>
                     </VStack>
                   </Box>
                 </Box>
               </SimpleGrid>
 
-              {/* Phần thông tin kỹ thuật */}
-              <Box gridColumn="span 2">
+              {/* Technical details */}
+              <Box>
                 <Heading size="md" mb={4}>
                   Thông tin kỹ thuật
                 </Heading>
@@ -114,7 +110,7 @@ export default function ProductDetailModal({ product, refetch }) {
                     </Box>
                     <Box>
                       <Text fontWeight="bold">Tồn kho:</Text>
-                      <Text>{product?.stock}</Text>
+                      <Text>{product?.stock} sản phẩm</Text>
                     </Box>
                     <Box>
                       <Text fontWeight="bold">Cân nặng:</Text>
@@ -129,7 +125,7 @@ export default function ProductDetailModal({ product, refetch }) {
                     </Box>
                     <Box>
                       <Text fontWeight="bold">Loại gỗ:</Text>
-                      <Text>{product?.wood_type}</Text>
+                      <Text>{product?.woodType}</Text>
                     </Box>
                     <Box>
                       <Text fontWeight="bold">Màu sắc:</Text>
@@ -137,7 +133,7 @@ export default function ProductDetailModal({ product, refetch }) {
                     </Box>
                     <Box>
                       <Text fontWeight="bold">Tính năng đặc biệt:</Text>
-                      <Text>{product?.special_feature}</Text>
+                      <Text>{product?.specialFeature}</Text>
                     </Box>
                     <Box>
                       <Text fontWeight="bold">Phong cách:</Text>
@@ -151,14 +147,21 @@ export default function ProductDetailModal({ product, refetch }) {
                       <Text fontWeight="bold">Mùi hương:</Text>
                       <Text>{product?.scent}</Text>
                     </Box>
+                    <Box>
+                      <Text fontWeight="bold">Đánh giá:</Text>
+                      <StarReview
+                        totalReviews={product?.totalReviews || 0}
+                        totalStar={product?.totalStar || 0}
+                      />
+                    </Box>
                   </Grid>
                 </Box>
               </Box>
             </Stack>
 
-            <HStack justify="flex-end" mt={6}>
-              <Button onClick={onClose}>Đóng</Button>
-            </HStack>
+            <Button onClick={onClose} mt={6} float="right">
+              Đóng
+            </Button>
           </ModalBody>
         </ModalContent>
       </Modal>

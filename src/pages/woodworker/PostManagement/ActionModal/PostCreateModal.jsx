@@ -110,6 +110,7 @@ export default function PostCreateModal({ refetch }) {
                 <FormControl isRequired>
                   <FormLabel>Mô tả</FormLabel>
                   <Textarea
+                    whiteSpace={"pre-wrap"}
                     name="description"
                     placeholder="Nhập mô tả bài viết"
                     bg="white"

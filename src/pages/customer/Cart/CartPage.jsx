@@ -9,12 +9,17 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import DesignCartTab from "./components/DesignCartTab.jsx";
+import ProductCartTab from "./components/ProductCartTab.jsx";
 import { appColorTheme } from "../../../config/appconfig.js";
+import useAuth from "../../../hooks/useAuth.js";
 
 export default function CartPage() {
   const navigate = useNavigate();
+  const { auth } = useAuth();
+
+  if (auth?.role == "Woodworker") return <Navigate to="/ww/service-order" />;
 
   return (
     <>
@@ -56,19 +61,7 @@ export default function CartPage() {
 
           {/* Products Tab */}
           <TabPanel p={0}>
-            <Box
-              bg="white"
-              p={6}
-              borderRadius="md"
-              boxShadow="sm"
-              textAlign="center"
-              py={10}
-            >
-              <Text fontSize="lg">Không có sản phẩm trong giỏ hàng</Text>
-              <Button mt={4} onClick={() => navigate("/")}>
-                Tiếp tục mua sắm
-              </Button>
-            </Box>
+            <ProductCartTab />
           </TabPanel>
         </TabPanels>
       </Tabs>
