@@ -67,7 +67,7 @@ export default function PasswordLogin() {
     } catch (err) {
       notify(
         "Đăng nhập thất bại",
-        err.data?.message || "Vui lòng kiểm tra lại thông tin đăng nhập",
+        "Vui lòng kiểm tra lại thông tin đăng nhập",
         "error"
       );
     }

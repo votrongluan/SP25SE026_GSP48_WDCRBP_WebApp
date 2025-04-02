@@ -1,22 +1,19 @@
 import {
   Box,
-  Button,
   Heading,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
 } from "@chakra-ui/react";
-import { Navigate, useNavigate } from "react-router-dom";
-import DesignCartTab from "./components/DesignCartTab.jsx";
-import ProductCartTab from "./components/ProductCartTab.jsx";
-import { appColorTheme } from "../../../config/appconfig.js";
-import useAuth from "../../../hooks/useAuth.js";
+import { Navigate } from "react-router-dom";
+import DesignCartTab from "../Design/DesignCartTab.jsx";
+import ProductCartTab from "../Product/ProductCartTab.jsx";
+import { appColorTheme } from "../../../../config/appconfig.js";
+import useAuth from "../../../../hooks/useAuth.js";
 
 export default function CartPage() {
-  const navigate = useNavigate();
   const { auth } = useAuth();
 
   if (auth?.role == "Woodworker") return <Navigate to="/ww/service-order" />;

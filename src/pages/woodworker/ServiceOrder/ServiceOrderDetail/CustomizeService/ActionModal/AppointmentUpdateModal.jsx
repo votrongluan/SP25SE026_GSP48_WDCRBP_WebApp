@@ -18,8 +18,8 @@ import {
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FiCalendar } from "react-icons/fi";
-import { appColorTheme } from "../../../../../config/appconfig.js";
-import AutoResizeTextarea from "../../../../../components/Input/AutoResizeTextarea.jsx";
+import { appColorTheme } from "../../../../../../config/appconfig.js";
+import AutoResizeTextarea from "../../../../../../components/Input/AutoResizeTextarea.jsx";
 
 // Hàm lấy thời gian địa phương theo định dạng "YYYY-MM-DDTHH:mm"
 const getLocalDateTime = () => {

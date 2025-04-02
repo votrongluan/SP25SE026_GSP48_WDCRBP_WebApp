@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useCart from "../../../../hooks/useCart.js";
 import useAuth from "../../../../hooks/useAuth.js";
-import ProductCartItemDetail from "../../../../components/Cart/ProductCartItemDetail.jsx";
+import ProductCartItemDetail from "./ProductCartItemDetail.jsx";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import { useGetUserAddressesByUserIdQuery } from "../../../../services/userAddressApi.js";
 import { Link } from "react-router-dom";
@@ -57,7 +57,7 @@ export default function ProductCartTab() {
 
   return (
     <Flex direction={{ base: "column", lg: "row" }} gap={6}>
-      {/* Cart Items List */}
+      {/* CartSidebar Items List */}
       <Box flex="3" bg="white" borderRadius="md" boxShadow="md">
         {Object.keys(cart.products).length === 0 ? (
           <Box textAlign="center" py={10}>

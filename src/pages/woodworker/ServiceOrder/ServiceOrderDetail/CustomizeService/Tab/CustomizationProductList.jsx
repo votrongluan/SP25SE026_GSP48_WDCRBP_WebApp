@@ -14,9 +14,9 @@ import {
   Badge,
   Divider,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../../config/appconfig";
-import { formatPrice } from "../../../../../utils/utils";
-import ImageListSelector from "../../../../../components/Utility/ImageListSelector";
+import { appColorTheme } from "../../../../../../config/appconfig.js";
+import { formatPrice } from "../../../../../../utils/utils.js";
+import ImageListSelector from "../../../../../../components/Utility/ImageListSelector.jsx";
 
 const products = [
   {

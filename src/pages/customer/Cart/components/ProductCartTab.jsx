@@ -12,14 +12,14 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useCart from "../../../../hooks/useCart.js";
 import useAuth from "../../../../hooks/useAuth.js";
-import DesignCartItemDetail from "./DesignCartItemDetail.jsx";
+import ProductCartItemDetail from "../../../../components/Cart/ProductCartItemDetail.jsx";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import { useGetUserAddressesByUserIdQuery } from "../../../../services/userAddressApi.js";
 import { Link } from "react-router-dom";
-import DesignOrderSummary from "./DesignOrderSummary.jsx";
+import ProductOrderSummary from "./ProductOrderSummary.jsx";
 import { FiCheckCircle } from "react-icons/fi";
 
-export default function DesignCartTab() {
+export default function ProductCartTab() {
   const { cart } = useCart();
   const navigate = useNavigate();
   const { auth } = useAuth();
@@ -43,23 +43,23 @@ export default function DesignCartTab() {
   // Reset selection when cart changes
   useEffect(() => {
     setSelectedWoodworker(null);
-  }, [cart.designs]);
+  }, [cart.products]);
 
   // Handle woodworker selection
   const handleWoodworkerSelect = (woodworkerId) => {
     setSelectedWoodworker(woodworkerId);
   };
 
-  // Get the currently selected woodworker's designs
-  const selectedWoodworkerDesigns = selectedWoodworker
-    ? cart.designs[selectedWoodworker]
+  // Get the currently selected woodworker's products
+  const selectedWoodworkerProducts = selectedWoodworker
+    ? cart.products[selectedWoodworker]
     : [];
 
   return (
     <Flex direction={{ base: "column", lg: "row" }} gap={6}>
-      {/* CartSidebar Items List */}
+      {/* Cart Items List */}
       <Box flex="3" bg="white" borderRadius="md" boxShadow="md">
-        {Object.keys(cart.designs).length === 0 ? (
+        {Object.keys(cart.products).length === 0 ? (
           <Box textAlign="center" py={10}>
             <Text fontSize="lg">Giỏ hàng trống</Text>
             <Button mt={4} onClick={() => navigate("/")}>
@@ -68,7 +68,7 @@ export default function DesignCartTab() {
           </Box>
         ) : (
           <Stack spacing={6}>
-            {Object.entries(cart.designs).map(([woodworkerId, designs]) => (
+            {Object.entries(cart.products).map(([woodworkerId, products]) => (
               <Box
                 key={woodworkerId}
                 bg={selectedWoodworker === woodworkerId ? "gray.50" : "white"}
@@ -118,17 +118,16 @@ export default function DesignCartTab() {
                       fontSize="xl"
                       _hover={{ textDecoration: "underline" }}
                     >
-                      Xưởng mộc: {designs?.[0]?.woodworkerName}
+                      Xưởng mộc: {products?.[0]?.woodworkerName}
                     </Text>
                   </Link>
                 </Flex>
 
                 <VStack divider={<Divider />} spacing={4} align="stretch">
-                  {designs.map((design) => (
-                    <DesignCartItemDetail
-                      key={design.designIdeaVariantId}
-                      product={design}
-                      type="design"
+                  {products.map((product) => (
+                    <ProductCartItemDetail
+                      key={product.productId}
+                      product={product}
                       woodworkerId={woodworkerId}
                     />
                   ))}
@@ -140,14 +139,14 @@ export default function DesignCartTab() {
       </Box>
 
       {/* Order Summary */}
-      {Object.keys(cart.designs).length > 0 && (
+      {Object.keys(cart.products).length > 0 && (
         <Box flex="1">
-          <DesignOrderSummary
+          <ProductOrderSummary
             auth={auth}
             selectedWoodworker={selectedWoodworker}
             selectedAddress={selectedAddress}
             setSelectedAddress={setSelectedAddress}
-            cartDesigns={selectedWoodworkerDesigns}
+            cartProducts={selectedWoodworkerProducts}
             addresses={addresses}
             isLoadingAddresses={isLoadingAddresses}
             addressError={addressError}

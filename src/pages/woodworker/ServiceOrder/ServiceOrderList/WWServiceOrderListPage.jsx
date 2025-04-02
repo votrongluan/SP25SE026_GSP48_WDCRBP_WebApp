@@ -17,7 +17,7 @@ export default function WWServiceOrderListPage() {
 
   return (
     <Box>
-      <HStack fontSize="20px" spacing={4} mb={6}>
+      <HStack fontSize="20px" spacing={4} mb={2}>
         <Text
           padding={2}
           color={currentTab === "orders" ? appColorTheme.brown_2 : "black"}
@@ -27,7 +27,7 @@ export default function WWServiceOrderListPage() {
         >
           Đơn hàng
         </Text>
-        <Text
+        {/* <Text
           padding={2}
           color={
             currentTab === "appointments" ? appColorTheme.brown_2 : "black"
@@ -55,7 +55,7 @@ export default function WWServiceOrderListPage() {
           onClick={() => changeTab("designs")}
         >
           Thiết kế
-        </Text>
+        </Text> */}
       </HStack>
 
       {currentTab === "orders" && <ServiceOrderList />}

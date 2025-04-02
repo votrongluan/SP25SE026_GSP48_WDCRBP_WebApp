@@ -4,18 +4,18 @@ import {
   Text,
   Flex,
   Divider,
-  useToast,
   Alert,
   AlertIcon,
 } from "@chakra-ui/react";
 import { formatPrice } from "../../../../utils/utils.js";
 import { appColorTheme } from "../../../../config/appconfig.js";
-import AddressSelection from "./AddressSelection.jsx";
+import AddressSelection from "../components/AddressSelection.jsx";
 import { useCreateCustomizeOrderMutation } from "../../../../services/serviceOrderApi.js";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useNotify } from "../../../../components/Utility/Notify.jsx";
 import { FiLogIn } from "react-icons/fi";
+import useCart from "../../../../hooks/useCart.js";
 
 export default function DesignOrderSummary({
   auth,
@@ -31,7 +31,7 @@ export default function DesignOrderSummary({
   const [createCustomizeOrder] = useCreateCustomizeOrderMutation();
   const navigate = useNavigate();
   const notify = useNotify();
-  const toast = useToast();
+  const { removeDesignFromCart } = useCart();
 
   // Helper function to get total price for the selected woodworker
   const getSelectedDesignsTotal = () => {
@@ -62,13 +62,11 @@ export default function DesignOrderSummary({
       // Validate total quantity
       const totalQuantity = getTotalQuantity();
       if (totalQuantity > 4) {
-        toast({
-          title: "Số lượng vượt quá giới hạn",
-          description: "Tổng số lượng sản phẩm không được vượt quá 4.",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
+        notify(
+          "Số lượng vượt quá giới hạn",
+          "Tổng số lượng sản phẩm không được vượt quá 4.",
+          "error"
+        );
         return;
       }
 
@@ -79,13 +77,7 @@ export default function DesignOrderSummary({
       );
 
       if (!selectedAddressObj) {
-        toast({
-          title: "Lỗi",
-          description: "Không tìm thấy thông tin địa chỉ.",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
+        notify("Lỗi", "Không tìm thấy thông tin địa chỉ.", "error");
         return;
       }
 
@@ -104,6 +96,11 @@ export default function DesignOrderSummary({
       const response = await createCustomizeOrder(orderData).unwrap();
 
       if (response.code === 200) {
+        // Clear cart items for this woodworker after successful order
+        cartDesigns.forEach((item) => {
+          removeDesignFromCart(selectedWoodworker, item.designIdeaVariantId);
+        });
+
         notify(
           "Đặt hàng thành công",
           "Đơn hàng của bạn đã được tạo",

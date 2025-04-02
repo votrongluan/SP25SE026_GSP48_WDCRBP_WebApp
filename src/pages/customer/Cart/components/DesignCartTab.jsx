@@ -12,11 +12,11 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useCart from "../../../../hooks/useCart.js";
 import useAuth from "../../../../hooks/useAuth.js";
-import DesignCartItemDetail from "./DesignCartItemDetail.jsx";
+import DesignCartItemDetail from "../../../../components/Cart/DesignCartItemDetail.jsx";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import { useGetUserAddressesByUserIdQuery } from "../../../../services/userAddressApi.js";
 import { Link } from "react-router-dom";
-import DesignOrderSummary from "./DesignOrderSummary.jsx";
+import OrderSummary from "./OrderSummary.jsx";
 import { FiCheckCircle } from "react-icons/fi";
 
 export default function DesignCartTab() {
@@ -57,7 +57,7 @@ export default function DesignCartTab() {
 
   return (
     <Flex direction={{ base: "column", lg: "row" }} gap={6}>
-      {/* CartSidebar Items List */}
+      {/* Cart Items List */}
       <Box flex="3" bg="white" borderRadius="md" boxShadow="md">
         {Object.keys(cart.designs).length === 0 ? (
           <Box textAlign="center" py={10}>
@@ -142,7 +142,7 @@ export default function DesignCartTab() {
       {/* Order Summary */}
       {Object.keys(cart.designs).length > 0 && (
         <Box flex="1">
-          <DesignOrderSummary
+          <OrderSummary
             auth={auth}
             selectedWoodworker={selectedWoodworker}
             selectedAddress={selectedAddress}

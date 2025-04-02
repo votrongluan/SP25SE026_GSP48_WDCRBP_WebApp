@@ -13,7 +13,7 @@ import {
   SimpleGrid,
   Box as ChakraBox,
 } from "@chakra-ui/react";
-import PriceDetailSection from "./PriceDetailSection";
+import PriceDetailSection from "./PriceDetailSection.jsx";
 
 // Dữ liệu lịch sử sản phẩm mẫu
 const products = [

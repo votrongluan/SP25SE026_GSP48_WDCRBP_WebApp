@@ -11,8 +11,8 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../../config/appconfig";
-import { formatPrice } from "../../../../../utils/utils";
+import { appColorTheme } from "../../../../../../config/appconfig.js";
+import { formatPrice } from "../../../../../../utils/utils.js";
 
 const products = [
   {

@@ -9,12 +9,13 @@ import {
 } from "@chakra-ui/react";
 import { formatPrice } from "../../../../utils/utils.js";
 import { appColorTheme } from "../../../../config/appconfig.js";
-import AddressSelection from "../components/AddressSelection.jsx";
+import AddressSelection from "./AddressSelection.jsx";
 import { useCreateProductOrderMutation } from "../../../../services/productOrderApi.js";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useNotify } from "../../../../components/Utility/Notify.jsx";
 import { FiLogIn } from "react-icons/fi";
+import useCart from "../../../../hooks/useCart.js";
 
 export default function ProductOrderSummary({
   auth,
@@ -30,6 +31,7 @@ export default function ProductOrderSummary({
   const [createProductOrder] = useCreateProductOrderMutation();
   const navigate = useNavigate();
   const notify = useNotify();
+  const { removeProductFromCart } = useCart();
 
   // Helper function to get total price for the selected woodworker
   const getSelectedProductsTotal = () => {
@@ -93,13 +95,21 @@ export default function ProductOrderSummary({
       const response = await createProductOrder(orderData).unwrap();
 
       if (response.code === 200) {
+        // Clear cart items for this woodworker after successful order
+        cartProducts.forEach((item) => {
+          removeProductFromCart(selectedWoodworker, item.productId);
+        });
+
         notify(
           "Đặt hàng thành công",
           "Đơn hàng của bạn đã được tạo",
           "success"
         );
-        // Redirect to orders page or show success message
-        navigate("/cus/product-orders");
+
+        // Redirect to success page with parameters
+        navigate(
+          "/success?title=Đặt hàng thành công&desc=Đơn hàng của bạn đã được tạo thành công, vui lòng đợi xưởng mộc xác nhận đơn hàng.&buttonText=Xem danh sách đơn hàng&path=/cus/product-orders"
+        );
       } else {
         throw new Error(response.message || "Có lỗi xảy ra khi đặt hàng");
       }

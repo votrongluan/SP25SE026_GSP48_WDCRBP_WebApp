@@ -8,7 +8,7 @@ import { appColorTheme } from "../../../../config/appconfig";
 import ContractList from "./ContractList.jsx";
 import DesignList from "./DesignList.jsx";
 
-export default function WWServiceOrderListPage() {
+export default function CusServiceOrderListPage() {
   const [currentTab, setCurrentTab] = useState("orders");
 
   const changeTab = (tab) => {

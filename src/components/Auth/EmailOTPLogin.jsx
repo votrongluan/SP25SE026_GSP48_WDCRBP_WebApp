@@ -104,7 +104,7 @@ export default function EmailOTPLogin() {
     } catch (error) {
       notify(
         "Đăng nhập thất bại",
-        error?.data?.message || "Có lỗi xảy ra, vui lòng thử lại sau",
+        "Có lỗi xảy ra, vui lòng thử lại sau",
         "error"
       );
     }

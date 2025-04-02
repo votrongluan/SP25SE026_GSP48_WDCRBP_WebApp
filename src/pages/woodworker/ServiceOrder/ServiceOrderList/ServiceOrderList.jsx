@@ -1,21 +1,36 @@
-import { Box, Button, Heading, HStack, Tooltip } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  Tooltip,
+  Spinner,
+  Text,
+  Select,
+} from "@chakra-ui/react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { useMemo, useState } from "react";
-import { appColorTheme } from "../../../../config/appconfig";
+import { useMemo, useState, useRef, useEffect } from "react";
+import {
+  appColorTheme,
+  serviceOrderStatusConstants,
+} from "../../../../config/appconfig";
 import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { useGetServiceOrdersQuery } from "../../../../services/serviceOrderApi";
+import useAuth from "../../../../hooks/useAuth";
+import { formatPrice } from "../../../../utils/utils";
 
-const ActionButton = () => {
+const ActionButton = (params) => {
   const navigate = useNavigate();
+  const orderId = params.data.orderId;
 
   return (
     <HStack columnGap="4px">
       <Tooltip label="Chi tiết" hasArrow>
         <Button
           p="1px"
-          onClick={() => navigate("1")}
+          onClick={() => navigate(`${orderId}`)}
           color={appColorTheme.brown_2}
           bg="none"
           border={`1px solid ${appColorTheme.brown_2}`}
@@ -28,69 +43,199 @@ const ActionButton = () => {
   );
 };
 
-export default function ServiceOrderList() {
-  const [rowData, setRowData] = useState([
-    {
-      orderId: "DH0001",
-      serviceType: "Cá nhân",
-      orderDate: "2025-03-19",
-      customerPhone: "0901234567",
-      customerAddress: "123 Lý Thường Kiệt, Q.10, TP.HCM",
-      status: "Chờ xác nhận",
-    },
-    {
-      orderId: "DH0002",
-      serviceType: "Tùy chỉnh",
-      orderDate: "2023-09-02",
-      customerPhone: "0987654321",
-      customerAddress: "456 Hai Bà Trưng, Q.3, TP.HCM",
-      status: "Đã xác nhận",
-    },
-    {
-      orderId: "DH0003",
-      serviceType: "Mua hàng",
-      orderDate: "2023-09-05",
-      customerPhone: "0912345678",
-      customerAddress: "789 Lê Duẩn, Q.1, TP.HCM",
-      status: "Hoàn thành",
-    },
-  ]);
+// Map between display values and API values for service types
+const serviceTypeMap = {
+  "Tùy chỉnh": "Customization",
+  "Cá nhân hóa": "Personalization",
+  "Mua hàng": "Sale",
+};
 
-  const [colDefs, setColDefs] = useState([
-    { headerName: "Mã đơn hàng", field: "orderId", sort: "desc" },
-    { headerName: "Loại dịch vụ", field: "serviceType" },
-    {
-      headerName: "Ngày đặt",
-      field: "orderDate",
-      valueFormatter: (p) => p.value + " l",
-    },
-    { headerName: "SĐT k.hang", field: "customerPhone" },
-    { headerName: "Địa chỉ khách", field: "customerAddress" },
-    { headerName: "Trạng thái", field: "status" },
-    { headerName: "Thao tác", cellRenderer: ActionButton },
-  ]);
+// Reverse lookup for display names
+const getServiceTypeDisplayName = (apiValue) => {
+  for (const [display, api] of Object.entries(serviceTypeMap)) {
+    if (api === apiValue) return display;
+  }
+  return apiValue;
+};
+
+export default function ServiceOrderList() {
+  const { auth } = useAuth();
+  const gridRef = useRef();
+  const [statusFilter, setStatusFilter] = useState("");
+  const [serviceTypeFilter, setServiceTypeFilter] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
+
+  // Get unique status values from the constants for the dropdown
+  const statusValues = useMemo(() => {
+    return Object.values(serviceOrderStatusConstants);
+  }, []);
+
+  const {
+    data: apiResponse,
+    error,
+    isLoading,
+  } = useGetServiceOrdersQuery({
+    id: auth?.wwId,
+    role: "Woodworker",
+  });
+
+  // Set initial filtered data when API data is loaded
+  useEffect(() => {
+    if (apiResponse?.data) {
+      setFilteredData(apiResponse.data);
+    }
+  }, [apiResponse]);
+
+  // Filter data when filters change
+  useEffect(() => {
+    if (!apiResponse?.data) return;
+
+    let filtered = apiResponse.data;
+
+    // Apply status filter if selected
+    if (statusFilter !== "") {
+      filtered = filtered.filter((item) => item.status === statusFilter);
+    }
+
+    // Apply service type filter if selected
+    if (serviceTypeFilter !== "") {
+      const apiServiceType = serviceTypeMap[serviceTypeFilter];
+      filtered = filtered.filter(
+        (item) => item.service?.service?.serviceName === apiServiceType
+      );
+    }
+
+    setFilteredData(filtered);
+  }, [statusFilter, serviceTypeFilter, apiResponse]);
+
+  const colDefs = useMemo(
+    () => [
+      {
+        headerName: "Mã đơn hàng",
+        field: "orderId",
+        sort: "desc",
+      },
+      {
+        headerName: "Loại dịch vụ",
+        valueGetter: (params) => {
+          const serviceName =
+            params.data.service?.service?.serviceName || "N/A";
+          return getServiceTypeDisplayName(serviceName);
+        },
+      },
+      {
+        headerName: "Tổng tiền",
+        field: "totalAmount",
+        valueFormatter: (p) => formatPrice(p.value),
+      },
+      {
+        headerName: "SĐT k.hàng",
+        valueGetter: (params) => params.data.user?.phone || "N/A",
+      },
+      {
+        headerName: "Trạng thái",
+        field: "status",
+      },
+      {
+        headerName: "Thao tác",
+        cellRenderer: ActionButton,
+      },
+    ],
+    []
+  );
 
   const defaultColDef = useMemo(() => {
     return {
       filter: true,
       floatingFilter: true,
-      // flex: 1,
     };
   }, []);
 
+  // Handle filter changes
+  const handleStatusFilterChange = (e) => {
+    setStatusFilter(e.target.value);
+  };
+
+  const handleServiceTypeFilterChange = (e) => {
+    setServiceTypeFilter(e.target.value);
+  };
+
+  if (isLoading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="500px"
+      >
+        <Spinner size="xl" color={appColorTheme.brown_2} />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="500px"
+      >
+        <Text color="red.500">
+          Có lỗi xảy ra khi tải dữ liệu. Vui lòng thử lại.
+        </Text>
+      </Box>
+    );
+  }
+
   return (
     <Box>
+      <HStack mb={4} spacing={4}>
+        <HStack>
+          <Text fontWeight="medium">Lọc theo loại dịch vụ:</Text>
+          <Select
+            width="200px"
+            bgColor="white"
+            value={serviceTypeFilter}
+            onChange={handleServiceTypeFilterChange}
+          >
+            <option value="">Tất cả dịch vụ</option>
+            <option value="Tùy chỉnh">Tùy chỉnh</option>
+            <option value="Cá nhân hóa">Cá nhân hóa</option>
+            <option value="Mua hàng">Mua hàng</option>
+          </Select>
+        </HStack>
+
+        <HStack>
+          <Text fontWeight="medium">Lọc theo trạng thái:</Text>
+          <Select
+            width="300px"
+            bgColor="white"
+            value={statusFilter}
+            onChange={handleStatusFilterChange}
+          >
+            <option value="">Tất cả trạng thái</option>
+            {statusValues.map((status) => (
+              <option key={status} value={status}>
+                {status}
+              </option>
+            ))}
+          </Select>
+        </HStack>
+      </HStack>
+
       <Box>
         <div
           className="ag-theme-quartz"
           style={{ height: 700, fontSize: "16px" }}
         >
           <AgGridReact
+            ref={gridRef}
             pagination
             paginationPageSize={20}
             paginationPageSizeSelector={[10, 20, 50, 100]}
             defaultColDef={defaultColDef}
-            rowData={rowData}
+            rowData={filteredData}
             columnDefs={colDefs}
           />
         </div>

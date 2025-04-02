@@ -28,7 +28,7 @@ export default function WoodworkerList({ woodworkers = [] }) {
   return (
     <Box>
       <Pagination
-        itemsPerPage={10}
+        itemsPerPage={16}
         dataList={woodworkers}
         DisplayComponent={({ data }) => (
           <Grid

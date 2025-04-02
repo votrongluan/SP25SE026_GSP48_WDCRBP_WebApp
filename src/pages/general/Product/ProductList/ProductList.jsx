@@ -48,7 +48,7 @@ export default function ProductList({ products = [], isLoading, error }) {
   return (
     <Box>
       <Pagination
-        itemsPerPage={8}
+        itemsPerPage={16}
         dataList={products}
         DisplayComponent={({ data }) => (
           <Grid

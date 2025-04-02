@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { FiDownload, FiUpload, FiPlus, FiTrash2, FiEdit } from "react-icons/fi";
 import * as XLSX from "xlsx";
-import { useNotify } from "../../../../../components/Utility/Notify";
+import { useNotify } from "../../../../../../components/Utility/Notify.jsx";
 
 const MIN_PRICE = 1000;
 const MAX_PRICE = 50000000;

@@ -16,7 +16,7 @@ import { useRef } from "react";
 import { FiEdit2 } from "react-icons/fi";
 import ContractEditSection from "./ContractEditSection.jsx";
 import ProductEditSection from "./ProductEditSection.jsx";
-import { appColorTheme } from "../../../../../config/appconfig.js";
+import { appColorTheme } from "../../../../../../config/appconfig.js";
 
 export default function ContractUpdateModal({ order, refetch }) {
   // Modal

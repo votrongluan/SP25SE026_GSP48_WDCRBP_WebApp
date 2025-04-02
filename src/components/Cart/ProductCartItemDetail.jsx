@@ -1,8 +1,8 @@
 import { Box, Flex, HStack, Image, Text, IconButton } from "@chakra-ui/react";
 import { FiTrash2 } from "react-icons/fi";
 import { Add, Remove } from "@mui/icons-material";
-import { formatPrice } from "../../../../utils/utils.js";
-import useCart from "../../../../hooks/useCart.js";
+import { formatPrice } from "../../utils/utils";
+import useCart from "../../hooks/useCart";
 import { Link } from "react-router-dom";
 
 export default function ProductCartItemDetail({ product, woodworkerId }) {

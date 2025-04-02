@@ -29,7 +29,7 @@ export default function DesignList({ designs = [] }) {
   return (
     <Box>
       <Pagination
-        itemsPerPage={8}
+        itemsPerPage={16}
         dataList={designs}
         DisplayComponent={({ data }) => (
           <Grid

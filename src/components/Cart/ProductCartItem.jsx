@@ -1,9 +1,9 @@
 import { Box, Flex, Image, Text, Tooltip, IconButton } from "@chakra-ui/react";
 import { FiTrash } from "react-icons/fi";
-import { formatPrice } from "../../../../utils/utils.js";
-import useCart from "../../../../hooks/useCart.js";
+import { formatPrice } from "../../utils/utils";
+import useCart from "../../hooks/useCart";
 import { Link } from "react-router-dom";
-import { appColorTheme } from "../../../../config/appconfig.js";
+import { appColorTheme } from "../../config/appconfig";
 
 export default function ProductCartItem({ item, woodworkerId }) {
   const { removeProductFromCart } = useCart();

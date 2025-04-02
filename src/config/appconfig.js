@@ -29,6 +29,20 @@ export const transactionTypeConstants = {
   NHAN_TIEN: "Nhận tiền",
 };
 
+export const serviceOrderStatusConstants = {
+  DANG_CHO_THO_DUYET: "Đang chờ thợ mộc xác nhận đơn hàng",
+  DANG_CHO_KHACH_DUYET_LICH_HEN: "Đang chờ khách hàng duyệt lịch hẹn",
+  DA_DUYET_LICH_HEN: "Đã duyệt lịch hẹn",
+  DANG_CHO_KHACH_DUYET_HOP_DONG: "Đang chờ khách hàng duyệt hợp đồng",
+  DA_DUYET_HOP_DONG: "Đã duyệt hợp đồng",
+  DANG_CHO_KHACH_DUYET_THIET_KE: "Đang chờ khách hàng duyệt thiết kế",
+  DA_DUYET_THIET_KE: "Đã duyệt thiết kế",
+  DANG_GIA_CONG: "Đang gia công",
+  DANG_GIAO_HANG_LAP_DAT: "Đang giao hàng lắp đặt",
+  DA_HOAN_TAT: "Đã hoàn tất",
+  DA_HUY: "Đã hủy",
+};
+
 export const transactionTypeColorMap = {
   [transactionTypeConstants.NAP_VI]: "#38a169",
   [transactionTypeConstants.RUT_VI]: "#9f7aea",

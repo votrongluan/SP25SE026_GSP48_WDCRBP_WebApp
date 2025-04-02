@@ -75,8 +75,8 @@ export default function ServiceOrderList() {
     error,
     isLoading,
   } = useGetServiceOrdersQuery({
-    id: auth?.wwId,
-    role: "Woodworker",
+    id: auth?.userId, // Using userId for customer instead of wwId
+    role: "Customer", // Set role to Customer
   });
 
   // Set initial filtered data when API data is loaded
@@ -129,8 +129,8 @@ export default function ServiceOrderList() {
         valueFormatter: (p) => formatPrice(p.value),
       },
       {
-        headerName: "SĐT k.hàng",
-        valueGetter: (params) => params.data.user?.phone || "N/A",
+        headerName: "Số lượng",
+        field: "quantity",
       },
       {
         headerName: "Trạng thái",

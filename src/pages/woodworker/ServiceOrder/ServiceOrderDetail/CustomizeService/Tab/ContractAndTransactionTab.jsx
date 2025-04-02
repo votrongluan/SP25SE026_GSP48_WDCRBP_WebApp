@@ -11,7 +11,7 @@ import {
   Spacer,
   Image,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../../config/appconfig.js";
+import { appColorTheme } from "../../../../../../config/appconfig.js";
 
 export default function ContractAndTransactionTab() {
   return (

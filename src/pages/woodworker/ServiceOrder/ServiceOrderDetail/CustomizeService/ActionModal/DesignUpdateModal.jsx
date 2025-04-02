@@ -22,7 +22,7 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiRefreshCw } from "react-icons/fi";
 import AppointmentTab from "../Tab/AppointmentTab.jsx";
-import AutoResizeTextarea from "../../../../../components/Input/AutoResizeTextarea.jsx";
+import AutoResizeTextarea from "../../../../../../components/Input/AutoResizeTextarea.jsx";
 import ProductTab from "../Tab/ProductTab.jsx";
 import LogTab from "../Tab/LogTab.jsx";
 import AppointmentEditSection from "./AppointmentEditSection.jsx";

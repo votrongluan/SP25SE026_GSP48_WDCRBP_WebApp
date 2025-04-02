@@ -18,7 +18,7 @@ import ContractAndTransactionTab from "../Tab/ContractAndTransactionTab.jsx";
 import ProcessTab from "../Tab/ProcessTab.jsx";
 import ActionBar from "../ActionModal/ActionBar.jsx";
 
-export default function WWServiceOrderDetailPage() {
+export default function CusServiceOrderDetailPage() {
   return (
     <Box>
       <HStack mb={6}>

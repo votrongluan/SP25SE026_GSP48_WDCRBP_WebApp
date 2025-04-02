@@ -1,8 +1,8 @@
 import { Flex, IconButton, Image, Stack, Text, HStack } from "@chakra-ui/react";
 import { Add, Delete, Remove } from "@mui/icons-material";
-import useCart from "../../hooks/useCart.js";
-import { formatPrice } from "../../utils/utils.js";
-import ConfigDisplay from "../Utility/ConfigDisplay.jsx";
+import useCart from "../../../../hooks/useCart.js";
+import { formatPrice } from "../../../../utils/utils.js";
+import ConfigDisplay from "../../../../components/Utility/ConfigDisplay.jsx";
 import { FiTrash2 } from "react-icons/fi";
 
 export default function DesignCartItemDetail({ product, type, woodworkerId }) {

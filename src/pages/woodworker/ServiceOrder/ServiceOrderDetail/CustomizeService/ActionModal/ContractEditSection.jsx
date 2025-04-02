@@ -17,7 +17,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import SignatureCanvas from "react-signature-canvas";
-import { appColorTheme } from "../../../../../config/appconfig";
+import { appColorTheme } from "../../../../../../config/appconfig.js";
 
 const initialContract = {
   contractId: "",

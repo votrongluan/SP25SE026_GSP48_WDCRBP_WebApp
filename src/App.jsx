@@ -15,13 +15,13 @@ import { AuthProvider } from "./context/AuthProvider.jsx";
 import UnauthorizedPage from "./pages/general/StatusPage/UnauthorizedPage.jsx";
 import { useEffect } from "react";
 import ContactPage from "./pages/general/Contact/ContactPage.jsx";
-import CartPage from "./pages/customer/Cart/CartPage.jsx";
+import CartPage from "./pages/customer/Cart/ManagePage/CartPage.jsx";
 import HomePage from "./pages/general/Home/HomePage.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
 import WoodworkerLayout from "./layouts/WoodworkerLayout.jsx";
 import CustomerLayout from "./layouts/CustomerLayout.jsx";
 import ScrollToTopAndBottom from "./components/Utility/ScrollToTopAndBottom.jsx";
-import CusServiceOrderDetailPage from "./pages/customer/ServiceOrder/ServiceOrderDetail/DetailPage/CusServiceOrderDetailPage.jsx";
+import CusServiceOrderDetailPage from "./pages/customer/ServiceOrder/ServiceOrderDetail/CustomizeService/DetailPage/CusServiceOrderDetailPage.jsx";
 import { appColorTheme } from "./config/appconfig.js";
 import ProductDetailPage from "./pages/general/Product/ProductDetail/ProductDetailPage.jsx";
 import WoodworkersPage from "./pages/general/Woodworker/WoodworkerList/WoodworkersPage.jsx";
@@ -34,11 +34,10 @@ import { store } from "./store/store.js";
 import ContractPage from "./pages/customer/Contract/ContractPage.jsx";
 import TestPage from "./pages/TestPage.jsx";
 import ProductsPage from "./pages/general/Product/ProductList/ProductsPage.jsx";
-import CusServiceOrderListPage from "./pages/customer/ServiceOrder/ServiceOrderList/CusServiceOrderListPage.jsx";
 import CusGuaranteeOrderListPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderList/CusGuaranteeOrderListPage.jsx";
 import CusGuaranteeOrderDetailPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderDetail/CusGuaranteeOrderDetailPage.jsx";
 import WWServiceOrderListPage from "./pages/woodworker/ServiceOrder/ServiceOrderList/WWServiceOrderListPage.jsx";
-import WWServiceOrderDetailPage from "./pages/woodworker/ServiceOrder/ServiceOrderDetail/DetailPage/WWServiceOrderDetailPage.jsx";
+import WWServiceOrderDetailPage from "./pages/woodworker/ServiceOrder/ServiceOrderDetail/CustomizeService/DetailPage/WWServiceOrderDetailPage.jsx";
 import WWGuaranteeOrderListPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderList/WWGuaranteeOrderListPage.jsx";
 import WWGuaranteeOrderDetailPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderDetail/WWGuaranteeOrderDetailPage.jsx";
 import WWRegister from "./pages/general/Auth/WWRegister.jsx";
@@ -59,6 +58,7 @@ import CustomerComplaintPage from "./pages/customer/ComplaintManagement/Complain
 import CustomerWalletPage from "./pages/customer/WalletManagement/WalletList/CustomerWalletPage.jsx";
 import WoodworkerWelcomePage from "./pages/woodworker/Welcome/WoodworkerWelcomePage.jsx";
 import PaymentSuccessPage from "./pages/general/PaymentSuccess/PaymentSuccessPage.jsx";
+import CusServiceOrderListPage from "./pages/customer/ServiceOrder/ServiceOrderList/CusServiceOrderListPage.jsx";
 
 function App() {
   useEffect(() => {

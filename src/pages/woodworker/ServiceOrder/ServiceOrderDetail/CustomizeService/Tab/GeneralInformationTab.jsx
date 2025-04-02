@@ -10,10 +10,10 @@ import {
   Image,
   Divider,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../../config/appconfig.js";
-import { formatDateTimeString } from "../../../../../utils/utils.js";
+import { appColorTheme } from "../../../../../../config/appconfig.js";
+import { formatDateTimeString } from "../../../../../../utils/utils.js";
 import CustomizationProductList from "./CustomizationProductList.jsx";
-import StarRating from "../../../../../components/Utility/StarRating.jsx";
+import StarRating from "../../../../../../components/Utility/StarRating.jsx";
 
 export default function GeneralInformationTab() {
   return (

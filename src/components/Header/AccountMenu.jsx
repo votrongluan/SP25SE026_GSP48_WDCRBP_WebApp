@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import useAuth from "../../hooks/useAuth.js";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import Cart from "../Cart/Cart.jsx";
+import CartSidebar from "../../pages/customer/Cart/ManagePage/CartSidebar.jsx";
 import { AccountCircleRounded } from "@mui/icons-material";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
@@ -37,7 +37,7 @@ export default function AccountMenu() {
     <>
       {auth?.token ? (
         <Flex zIndex={999} alignItems="center" columnGap="20px">
-          {auth?.role == "Customer" && <Cart />}
+          {auth?.role == "Customer" && <CartSidebar />}
           <Box bgColor="white" color="black">
             <Menu>
               <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
@@ -73,7 +73,7 @@ export default function AccountMenu() {
         </Flex>
       ) : (
         <Flex alignItems="center" columnGap="20px">
-          <Cart />
+          <CartSidebar />
           <RouterLink to="auth">
             <Flex fontSize="18px" alignItems="center" columnGap={3}>
               <AccountCircleRounded sx={{ fontSize: "30px" }} />
