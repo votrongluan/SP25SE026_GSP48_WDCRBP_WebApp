@@ -7,7 +7,6 @@ import {
   Stack,
   Spinner,
   GridItem,
-  SimpleGrid,
   Heading,
 } from "@chakra-ui/react";
 import { useState } from "react";
@@ -18,6 +17,7 @@ import useAuth from "../../../../hooks/useAuth.js";
 import { useNotify } from "../../../../components/Utility/Notify.jsx";
 import { FiCheckCircle } from "react-icons/fi";
 import PasswordInput from "../../../../components/Input/PasswordInput.jsx";
+import { validateCustomerPersonalInfo } from "../../../../validations/index.js";
 
 export default function CustomerPersonalInfoForm({ userData, refetch }) {
   const { auth } = useAuth();
@@ -42,7 +42,16 @@ export default function CustomerPersonalInfoForm({ userData, refetch }) {
       email: formData.get("email"),
       phone: formData.get("phone"),
       password: formData.get("password"),
+      isUpdating: !personalInfoDisabled,
     };
+
+    // Validate form data
+    const errors = validateCustomerPersonalInfo(data);
+    if (errors.length > 0) {
+      // Show the first error with notify
+      notify("Lỗi xác thực", errors[0], "error");
+      return;
+    }
 
     try {
       setIsLoading(true);
@@ -65,7 +74,7 @@ export default function CustomerPersonalInfoForm({ userData, refetch }) {
     <form onSubmit={handlePersonalInfoSubmit}>
       <Box mb={6}>
         <Heading as="h3" fontSize="18px" fontFamily="Montserrat" mb={6}>
-          Đổi mật khẩu
+          Thông tin cá nhân
         </Heading>
 
         <Stack spacing={6}>

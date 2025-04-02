@@ -59,6 +59,7 @@ import CustomerWalletPage from "./pages/customer/WalletManagement/WalletList/Cus
 import WoodworkerWelcomePage from "./pages/woodworker/Welcome/WoodworkerWelcomePage.jsx";
 import PaymentSuccessPage from "./pages/general/PaymentSuccess/PaymentSuccessPage.jsx";
 import CusServiceOrderListPage from "./pages/customer/ServiceOrder/ServiceOrderList/CusServiceOrderListPage.jsx";
+import AdminWelcomePage from "./pages/admin/Welcome/AdminWelcomePage.jsx";
 
 function App() {
   useEffect(() => {
@@ -102,7 +103,7 @@ function App() {
 
         {/* Admin page route */}
         <Route path="ad" element={<AdminLayout />}>
-          <Route index element={<NotFoundPage />} />
+          <Route index element={<AdminWelcomePage />} />
           <Route path="dashboard" element={<NotFoundPage />} />
           <Route
             path="ww-registration"
@@ -137,7 +138,6 @@ function App() {
         {/* Customer page route */}
         <Route path="cus" element={<CustomerLayout />}>
           <Route index element={<NotFoundPage />} />
-          <Route path="dashboard" element={<NotFoundPage />} />
           <Route path="profile" element={<CustomerProfilePage />} />
           <Route path="complaint" element={<CustomerComplaintPage />} />
           <Route path="wallet" element={<CustomerWalletPage />} />

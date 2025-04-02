@@ -166,7 +166,7 @@ export default function WWRegistrationDetailModal({ registration, refetch }) {
                     </Box>
                     <Box gridColumn="span 2">
                       <Text fontWeight="bold">Giới thiệu:</Text>
-                      <Text>{registration?.bio}</Text>
+                      <Text whiteSpace="pre-wrap">{registration?.bio}</Text>
                     </Box>
                   </Grid>
                 </Box>

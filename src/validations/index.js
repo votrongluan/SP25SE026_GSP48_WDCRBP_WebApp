@@ -242,3 +242,67 @@ export const validateImageUrls = (imgUrls) => {
   }
   return true;
 };
+
+export const validateCustomerPersonalInfo = (data) => {
+  const errors = [];
+
+  // Validate fullName
+  if (!data.fullName) {
+    errors.push("Họ và tên là bắt buộc");
+  } else if (data.fullName.length < 3) {
+    errors.push("Họ và tên phải có ít nhất 3 ký tự");
+  }
+
+  // Validate phone
+  if (!data.phone) {
+    errors.push("Số điện thoại là bắt buộc");
+  } else if (!/^0[0-9]{9}$/.test(data.phone)) {
+    errors.push(
+      "Số điện thoại không hợp lệ (phải bắt đầu bằng số 0 và có 10 chữ số)"
+    );
+  }
+
+  // Validate email if it's editable
+  if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+    errors.push("Email không hợp lệ");
+  }
+
+  // Validate password if the user is updating with password
+  if (data.isUpdating && !data.password) {
+    errors.push("Vui lòng nhập mật khẩu để xác nhận thay đổi");
+  }
+
+  return errors;
+};
+
+export const validateWoodworkerPersonalInfo = (data) => {
+  const errors = [];
+
+  // Validate fullName
+  if (!data.fullName) {
+    errors.push("Họ và tên là bắt buộc");
+  } else if (data.fullName.length < 3) {
+    errors.push("Họ và tên phải có ít nhất 3 ký tự");
+  }
+
+  // Validate phone
+  if (!data.phone) {
+    errors.push("Số điện thoại là bắt buộc");
+  } else if (!/^0[0-9]{9}$/.test(data.phone)) {
+    errors.push(
+      "Số điện thoại không hợp lệ (phải bắt đầu bằng số 0 và có 10 chữ số)"
+    );
+  }
+
+  // Validate email if it's editable
+  if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+    errors.push("Email không hợp lệ");
+  }
+
+  // Validate password if the user is updating with password
+  if (data.isUpdating && !data.password) {
+    errors.push("Vui lòng nhập mật khẩu để xác nhận thay đổi");
+  }
+
+  return errors;
+};

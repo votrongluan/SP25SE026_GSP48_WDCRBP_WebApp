@@ -76,9 +76,9 @@ export default function PasswordLogin() {
   return (
     <Form onSubmit={handleSubmit}>
       <FormControl isRequired mb="20px">
-        <FormLabel>Email</FormLabel>
+        <FormLabel>Email / Số điện thoại</FormLabel>
         <Input
-          placeholder="Nhập email"
+          placeholder="Nhập email hoặc số điện thoại"
           bgColor="white"
           type="text"
           name="email"

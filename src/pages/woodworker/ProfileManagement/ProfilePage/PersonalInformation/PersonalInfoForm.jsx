@@ -17,6 +17,7 @@ import useAuth from "../../../../../hooks/useAuth.js";
 import { useNotify } from "../../../../../components/Utility/Notify.jsx";
 import { FiCheckCircle } from "react-icons/fi";
 import PasswordInput from "../../../../../components/Input/PasswordInput.jsx";
+import { validateWoodworkerPersonalInfo } from "../../../../../validations/index.js";
 
 export default function PersonalInfoForm({ woodworker, refetch }) {
   const { auth } = useAuth();
@@ -41,7 +42,16 @@ export default function PersonalInfoForm({ woodworker, refetch }) {
       email: formData.get("email"),
       phone: formData.get("phone"),
       password: formData.get("password"),
+      isUpdating: !personalInfoDisabled,
     };
+
+    // Validate form data
+    const errors = validateWoodworkerPersonalInfo(data);
+    if (errors.length > 0) {
+      // Show the first error with notify
+      notify("Lỗi xác thực", errors[0], "error");
+      return;
+    }
 
     try {
       setIsLoading(true);
