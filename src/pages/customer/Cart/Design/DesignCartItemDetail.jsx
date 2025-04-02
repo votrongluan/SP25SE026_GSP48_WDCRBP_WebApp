@@ -4,8 +4,9 @@ import useCart from "../../../../hooks/useCart.js";
 import { formatPrice } from "../../../../utils/utils.js";
 import ConfigDisplay from "../../../../components/Utility/ConfigDisplay.jsx";
 import { FiTrash2 } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
-export default function DesignCartItemDetail({ product, type, woodworkerId }) {
+export default function DesignCartItemDetail({ design, type, woodworkerId }) {
   const { changeDesignQuantity, removeDesignFromCart, MAX_QUANTITY } =
     useCart();
 
@@ -21,37 +22,37 @@ export default function DesignCartItemDetail({ product, type, woodworkerId }) {
   };
 
   const handleIncrease = () => {
-    if (type === "design" && product.quantity < MAX_QUANTITY) {
+    if (type === "design" && design.quantity < MAX_QUANTITY) {
       changeDesignQuantity(
         woodworkerId,
-        product.designIdeaVariantId,
-        product.quantity + 1
+        design.designIdeaVariantId,
+        design.quantity + 1
       );
     }
   };
 
   const handleDecrease = () => {
-    if (product.quantity > 1 && type === "design") {
+    if (design.quantity > 1 && type === "design") {
       changeDesignQuantity(
         woodworkerId,
-        product.designIdeaVariantId,
-        product.quantity - 1
+        design.designIdeaVariantId,
+        design.quantity - 1
       );
     }
   };
 
   const handleRemove = () => {
     if (type === "design") {
-      removeDesignFromCart(woodworkerId, product.designIdeaVariantId);
+      removeDesignFromCart(woodworkerId, design.designIdeaVariantId);
     }
   };
 
   return (
     <Stack spacing={4} width="100%">
-      {/* Product Info Row */}
+      {/* design Info Row */}
       <Flex gap={5}>
         <Image
-          src={getImageUrl(product.img_urls)}
+          src={getImageUrl(design.img_urls)}
           alt="Image"
           boxSize="150px"
           objectFit="cover"
@@ -60,9 +61,11 @@ export default function DesignCartItemDetail({ product, type, woodworkerId }) {
 
         <Stack fontSize="16px" flex="1">
           <Flex justifyContent="space-between">
-            <Text fontSize="18px" fontWeight="bold">
-              {product.name}
-            </Text>
+            <Link to={`/design/${design.designId}`}>
+              <Text fontSize="lg" fontWeight="bold" noOfLines={2}>
+                {design.name}
+              </Text>
+            </Link>
             <IconButton
               size="sm"
               variant="ghost"
@@ -75,12 +78,12 @@ export default function DesignCartItemDetail({ product, type, woodworkerId }) {
 
           {/* Config information with more space */}
           <ConfigDisplay
-            config={product.designIdeaVariantConfig}
+            config={design.designIdeaVariantConfig}
             compact={false}
           />
 
           <Text fontSize="16px" fontWeight="semibold" mt={1}>
-            {formatPrice(product.price)}
+            {formatPrice(design.price)}
           </Text>
 
           {/* Quantity Controls Row */}
@@ -103,10 +106,10 @@ export default function DesignCartItemDetail({ product, type, woodworkerId }) {
                   bg="transparent"
                   _hover={{ color: "app_brown.0" }}
                   onClick={handleDecrease}
-                  isDisabled={product.quantity <= 1}
+                  isDisabled={design.quantity <= 1}
                   aria-label="Decrease quantity"
                 />
-                <Text px={3}>{product.quantity}</Text>
+                <Text px={3}>{design.quantity}</Text>
                 <IconButton
                   size="sm"
                   color="black"
@@ -114,14 +117,14 @@ export default function DesignCartItemDetail({ product, type, woodworkerId }) {
                   bg="transparent"
                   _hover={{ color: "app_brown.0" }}
                   onClick={handleIncrease}
-                  isDisabled={product.quantity >= MAX_QUANTITY}
+                  isDisabled={design.quantity >= MAX_QUANTITY}
                   aria-label="Increase quantity"
                 />
               </Flex>
             </HStack>
 
             <Text fontSize="18px" fontWeight="bold" color="app_brown.2">
-              {formatPrice(product.price * product.quantity)}
+              {formatPrice(design.price * design.quantity)}
             </Text>
           </Flex>
         </Stack>

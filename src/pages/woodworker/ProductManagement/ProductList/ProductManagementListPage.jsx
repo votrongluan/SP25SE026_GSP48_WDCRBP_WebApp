@@ -20,6 +20,7 @@ import ProductDeleteModal from "../ActionModal/ProductDeleteModal";
 import { formatPrice } from "../../../../utils/utils";
 import { useGetProductsByWoodworkerIdQuery } from "../../../../services/productApi";
 import useAuth from "../../../../hooks/useAuth";
+import RequireServicePack from "../../../../components/Utility/RequireServicePack";
 
 export default function ProductManagementListPage() {
   const { auth } = useAuth();
@@ -81,33 +82,35 @@ export default function ProductManagementListPage() {
   }
 
   return (
-    <Stack spacing={6}>
-      <Flex justify="space-between" align="center">
-        <Heading
-          color={appColorTheme.brown_2}
-          fontSize="2xl"
-          fontFamily="Montserrat"
-        >
-          Quản lý Sản phẩm
-        </Heading>
-        <ProductCreateModal refetch={refetch} />
-      </Flex>
+    <RequireServicePack>
+      <Stack spacing={6}>
+        <Flex justify="space-between" align="center">
+          <Heading
+            color={appColorTheme.brown_2}
+            fontSize="2xl"
+            fontFamily="Montserrat"
+          >
+            Quản lý Sản phẩm
+          </Heading>
+          <ProductCreateModal refetch={refetch} />
+        </Flex>
 
-      <Box>
-        <div
-          className="ag-theme-quartz"
-          style={{ height: 700, fontSize: "16px" }}
-        >
-          <AgGridReact
-            pagination
-            paginationPageSize={20}
-            paginationPageSizeSelector={[10, 20, 50, 100]}
-            defaultColDef={defaultColDef}
-            rowData={products}
-            columnDefs={colDefs}
-          />
-        </div>
-      </Box>
-    </Stack>
+        <Box>
+          <div
+            className="ag-theme-quartz"
+            style={{ height: 700, fontSize: "16px" }}
+          >
+            <AgGridReact
+              pagination
+              paginationPageSize={20}
+              paginationPageSizeSelector={[10, 20, 50, 100]}
+              defaultColDef={defaultColDef}
+              rowData={products}
+              columnDefs={colDefs}
+            />
+          </div>
+        </Box>
+      </Stack>
+    </RequireServicePack>
   );
 }

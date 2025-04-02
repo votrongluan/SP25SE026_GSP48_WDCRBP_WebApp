@@ -7,7 +7,8 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 import DesignCartTab from "../Design/DesignCartTab.jsx";
 import ProductCartTab from "../Product/ProductCartTab.jsx";
 import { appColorTheme } from "../../../../config/appconfig.js";
@@ -15,6 +16,21 @@ import useAuth from "../../../../hooks/useAuth.js";
 
 export default function CartPage() {
   const { auth } = useAuth();
+  const location = useLocation();
+  const [tabIndex, setTabIndex] = useState(0);
+
+  // Handle tab index based on query parameters
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tabParam = params.get("tab");
+
+    // Set tab index based on the 'tab' parameter
+    if (tabParam === "product") {
+      setTabIndex(1); // Product tab
+    } else if (tabParam === "design") {
+      setTabIndex(0); // Design tab (default)
+    }
+  }, [location.search]);
 
   if (auth?.role == "Woodworker") return <Navigate to="/ww/service-order" />;
 
@@ -30,7 +46,7 @@ export default function CartPage() {
         </Heading>
       </Box>
 
-      <Tabs>
+      <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)}>
         <TabList mb={2}>
           <Tab
             _selected={{

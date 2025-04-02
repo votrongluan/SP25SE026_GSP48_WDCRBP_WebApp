@@ -7,6 +7,7 @@ import ServiceOrderList from "./ServiceOrderList.jsx";
 import { appColorTheme } from "../../../../config/appconfig";
 import ContractList from "./ContractList.jsx";
 import DesignList from "./DesignList.jsx";
+import RequireServicePack from "../../../../components/Utility/RequireServicePack.jsx";
 
 export default function WWServiceOrderListPage() {
   const [currentTab, setCurrentTab] = useState("orders");
@@ -16,18 +17,19 @@ export default function WWServiceOrderListPage() {
   };
 
   return (
-    <Box>
-      <HStack fontSize="20px" spacing={4} mb={2}>
-        <Text
-          padding={2}
-          color={currentTab === "orders" ? appColorTheme.brown_2 : "black"}
-          textDecor={currentTab === "orders" ? "underline" : "none"}
-          cursor="pointer"
-          onClick={() => changeTab("orders")}
-        >
-          Đơn hàng
-        </Text>
-        {/* <Text
+    <RequireServicePack>
+      <Box>
+        <HStack fontSize="20px" spacing={4} mb={2}>
+          <Text
+            padding={2}
+            color={currentTab === "orders" ? appColorTheme.brown_2 : "black"}
+            textDecor={currentTab === "orders" ? "underline" : "none"}
+            cursor="pointer"
+            onClick={() => changeTab("orders")}
+          >
+            Đơn hàng
+          </Text>
+          {/* <Text
           padding={2}
           color={
             currentTab === "appointments" ? appColorTheme.brown_2 : "black"
@@ -56,12 +58,13 @@ export default function WWServiceOrderListPage() {
         >
           Thiết kế
         </Text> */}
-      </HStack>
+        </HStack>
 
-      {currentTab === "orders" && <ServiceOrderList />}
-      {currentTab === "appointments" && <AppointmentList />}
-      {currentTab === "contracts" && <ContractList />}
-      {currentTab === "designs" && <DesignList />}
-    </Box>
+        {currentTab === "orders" && <ServiceOrderList />}
+        {currentTab === "appointments" && <AppointmentList />}
+        {currentTab === "contracts" && <ContractList />}
+        {currentTab === "designs" && <DesignList />}
+      </Box>
+    </RequireServicePack>
   );
 }

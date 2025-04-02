@@ -19,6 +19,7 @@ import {
 } from "../../../services/availableServiceApi";
 import useAuth from "../../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import RequireServicePack from "../../../components/Utility/RequireServicePack";
 
 export default function ServiceConfiguration() {
   const notify = useNotify();
@@ -100,110 +101,114 @@ export default function ServiceConfiguration() {
   }
 
   return (
-    <Box>
-      <Text
-        fontSize="2xl"
-        color={appColorTheme.brown_2}
-        fontFamily="Montserrat"
-        fontWeight="bold"
-        mb={6}
-      >
-        Quản lý Dịch vụ
-      </Text>
+    <RequireServicePack>
+      <Box>
+        <Text
+          fontSize="2xl"
+          color={appColorTheme.brown_2}
+          fontFamily="Montserrat"
+          fontWeight="bold"
+          mb={6}
+        >
+          Quản lý Dịch vụ
+        </Text>
 
-      <VStack spacing={6} align="stretch">
-        {servicesData.data.map((serviceItem) => (
-          <Box
-            bg="white"
-            borderRadius="lg"
-            boxShadow="md"
-            key={serviceItem.availableServiceId}
-            p={5}
-            transition="all 0.2s"
-          >
-            <HStack justify="space-between" mb={3}>
-              <Text
-                color={
-                  serviceItem.operatingStatus ? appColorTheme.brown_2 : "black"
-                }
-                fontWeight="bold"
-                fontSize="lg"
-              >
-                {service[serviceItem.service.serviceName]?.serviceAlterName ||
-                  serviceItem.service.serviceName}
-              </Text>
+        <VStack spacing={6} align="stretch">
+          {servicesData.data.map((serviceItem) => (
+            <Box
+              bg="white"
+              borderRadius="lg"
+              boxShadow="md"
+              key={serviceItem.availableServiceId}
+              p={5}
+              transition="all 0.2s"
+            >
+              <HStack justify="space-between" mb={3}>
+                <Text
+                  color={
+                    serviceItem.operatingStatus
+                      ? appColorTheme.brown_2
+                      : "black"
+                  }
+                  fontWeight="bold"
+                  fontSize="lg"
+                >
+                  {service[serviceItem.service.serviceName]?.serviceAlterName ||
+                    serviceItem.service.serviceName}
+                </Text>
 
-              <Button
-                size="sm"
-                leftIcon={<FiEdit2 />}
-                variant="outline"
-                colorScheme="blue"
-                onClick={() => handleEdit(serviceItem)}
-                isDisabled={isUpdating}
-              >
-                Chỉnh sửa
-              </Button>
-            </HStack>
+                <Button
+                  size="sm"
+                  leftIcon={<FiEdit2 />}
+                  variant="outline"
+                  colorScheme="blue"
+                  onClick={() => handleEdit(serviceItem)}
+                  isDisabled={isUpdating}
+                >
+                  Chỉnh sửa
+                </Button>
+              </HStack>
 
-            {editingService === serviceItem.availableServiceId ? (
-              <VStack spacing={3} align="stretch">
-                <HStack spacing={4}>
-                  <Text>Kích hoạt</Text>
+              {editingService === serviceItem.availableServiceId ? (
+                <VStack spacing={3} align="stretch">
+                  <HStack spacing={4}>
+                    <Text>Kích hoạt</Text>
 
-                  <Switch
-                    size="sm"
-                    colorScheme="yellow"
-                    isChecked={editOperatingStatus}
-                    onChange={() => handleToggle(editOperatingStatus)}
+                    <Switch
+                      size="sm"
+                      colorScheme="yellow"
+                      isChecked={editOperatingStatus}
+                      onChange={() => handleToggle(editOperatingStatus)}
+                      isDisabled={isUpdating}
+                    />
+                  </HStack>
+
+                  <Textarea
+                    value={editDescription}
+                    onChange={(e) => setEditDescription(e.target.value)}
+                    rows={3}
+                    placeholder="Nhập mô tả dịch vụ..."
                     isDisabled={isUpdating}
                   />
-                </HStack>
 
-                <Textarea
-                  value={editDescription}
-                  onChange={(e) => setEditDescription(e.target.value)}
-                  rows={3}
-                  placeholder="Nhập mô tả dịch vụ..."
-                  isDisabled={isUpdating}
-                />
-
-                <HStack justify="flex-end">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    leftIcon={<FiX />}
-                    onClick={() => setEditingService(null)}
-                    isDisabled={isUpdating}
-                  >
-                    Hủy
-                  </Button>
-                  <Button
-                    colorScheme="blue"
-                    size="sm"
-                    leftIcon={<FiCheck />}
-                    onClick={() => handleUpdate(serviceItem)}
-                    isLoading={isUpdating}
-                  >
-                    Cập nhật
-                  </Button>
-                </HStack>
-              </VStack>
-            ) : (
-              <VStack align="stretch" spacing={2}>
-                <Text>{serviceItem.description}</Text>
-                <HStack spacing={4}>
-                  <Text>Trạng thái: </Text>
-                  {serviceItem.operatingStatus ? (
-                    <Text color="green.500">Đang cung cấp</Text>
-                  ) : (
-                    <Text color="red.500">Tạm dừng</Text>
-                  )}
-                </HStack>
-              </VStack>
-            )}
-          </Box>
-        ))}
-      </VStack>
-    </Box>
+                  <HStack justify="flex-end">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      leftIcon={<FiX />}
+                      onClick={() => setEditingService(null)}
+                      isDisabled={isUpdating}
+                    >
+                      Hủy
+                    </Button>
+                    <Button
+                      colorScheme="blue"
+                      size="sm"
+                      leftIcon={<FiCheck />}
+                      onClick={() => handleUpdate(serviceItem)}
+                      isLoading={isUpdating}
+                    >
+                      Cập nhật
+                    </Button>
+                  </HStack>
+                </VStack>
+              ) : (
+                <VStack align="stretch" spacing={2}>
+                  <Text>{serviceItem.description}</Text>
+                  <HStack spacing={4}>
+                    <Text>Trạng thái: </Text>
+                    {serviceItem.operatingStatus ? (
+                      <Text color="green.500">Đang cung cấp</Text>
+                    ) : (
+                      <Text color="red.500">Tạm dừng</Text>
+                    )}
+                  </HStack>
+                </VStack>
+              )}
+            </Box>
+          ))}
+        </VStack>
+      </Box>
+    </RequireServicePack>
   );
 }

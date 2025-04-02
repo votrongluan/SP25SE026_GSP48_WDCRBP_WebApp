@@ -90,7 +90,16 @@ export default function DesignsPage() {
   // Set initial data
   useMemo(() => {
     if (response?.data) {
-      setFilteredDesigns(response.data);
+      const data = response.data.filter((design) => {
+        const isServicePackValid =
+          design?.woodworkerProfile?.servicePackEndDate &&
+          Date.now() <=
+            new Date(design?.woodworkerProfile?.servicePackEndDate).getTime();
+
+        return isServicePackValid;
+      });
+
+      setFilteredDesigns(data);
     }
   }, [response?.data]);
 

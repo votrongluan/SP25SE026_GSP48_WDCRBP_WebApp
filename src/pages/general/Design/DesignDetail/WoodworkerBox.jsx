@@ -17,9 +17,7 @@ export default function WoodworkerBox({ designDetail }) {
   return (
     <Box mt={6}>
       <PackageFrame
-        packageType={
-          designDetail?.woodworkerProfile?.servicePack?.name || "Silver"
-        }
+        packageType={designDetail?.woodworkerProfile?.servicePack?.name}
       >
         <Flex
           flexDirection={{

@@ -31,6 +31,10 @@ export default function PackageFrame({ children, packageType }) {
     },
   };
 
+  if (!packageType) {
+    return <>{children}</>;
+  }
+
   return (
     <Box position="relative" p={1}>
       <Box

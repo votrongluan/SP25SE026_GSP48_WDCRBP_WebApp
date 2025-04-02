@@ -6,6 +6,7 @@ import {
   Divider,
   Alert,
   AlertIcon,
+  VStack,
 } from "@chakra-ui/react";
 import { formatPrice } from "../../../../utils/utils.js";
 import { appColorTheme } from "../../../../config/appconfig.js";
@@ -53,6 +54,15 @@ export default function ProductOrderSummary({
     selectedWoodworker !== null &&
     selectedAddress !== null &&
     cartProducts?.length > 0;
+
+  // Get woodworker information from the first cart item
+  const woodworkerInfo =
+    cartProducts?.length > 0
+      ? {
+          name: cartProducts[0].woodworkerName,
+          address: cartProducts[0].address,
+        }
+      : null;
 
   // Handle order submission
   const handlePlaceOrder = async () => {
@@ -127,13 +137,6 @@ export default function ProductOrderSummary({
         </Text>
       ) : (
         <>
-          <Flex justify="space-between" mb={2}>
-            <Text>Tổng tiền hàng:</Text>
-            <Text fontWeight="bold">
-              {formatPrice(getSelectedProductsTotal())}
-            </Text>
-          </Flex>
-
           {getTotalQuantity() > 4 && (
             <Alert status="warning" mt={2} mb={2} borderRadius="md">
               <AlertIcon />
@@ -142,6 +145,19 @@ export default function ProductOrderSummary({
           )}
 
           <Divider my={4} />
+
+          {/* Woodworker Information Section */}
+          {woodworkerInfo && (
+            <Box mb={4} p={3} bg="gray.50" borderRadius="md">
+              <VStack align="start" spacing={1}>
+                <Text fontWeight="bold">Thông tin xưởng mộc:</Text>
+                <Text>{woodworkerInfo.name}</Text>
+                <Text fontSize="sm" color="gray.600">
+                  {woodworkerInfo.address}
+                </Text>
+              </VStack>
+            </Box>
+          )}
 
           {/* Address Selection Section */}
           {auth && (

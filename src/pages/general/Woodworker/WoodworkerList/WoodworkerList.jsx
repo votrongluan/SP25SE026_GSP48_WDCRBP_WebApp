@@ -41,9 +41,7 @@ export default function WoodworkerList({ woodworkers = [] }) {
                 to={`${woodworker.woodworkerId}`}
                 key={woodworker.woodworkerId}
               >
-                <PackageFrame
-                  packageType={woodworker.servicePack?.name || "Bronze"}
-                >
+                <PackageFrame packageType={woodworker.servicePack?.name}>
                   <Box overflow="hidden" bgColor="white">
                     <Image
                       src={woodworker.imgUrl}

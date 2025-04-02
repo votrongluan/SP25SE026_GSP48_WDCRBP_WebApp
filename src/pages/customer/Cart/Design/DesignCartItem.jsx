@@ -4,6 +4,7 @@ import { formatPrice } from "../../../../utils/utils.js";
 import useCart from "../../../../hooks/useCart.js";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import ConfigDisplay from "../../../../components/Utility/ConfigDisplay.jsx";
+import { Link } from "react-router-dom";
 
 export default function DesignCartItem({ item, type, woodworkerId }) {
   const { removeDesignFromCart } = useCart();
@@ -48,10 +49,12 @@ export default function DesignCartItem({ item, type, woodworkerId }) {
       <Flex flex={1} direction="column" justify="space-between">
         {/* Top row: Design name and delete button */}
         <Flex justify="space-between" align="start">
-          <Box>
-            <Text fontWeight="medium" noOfLines={1}>
-              {item.name}
-            </Text>
+          <Box _hover={{ textDecoration: "underline" }}>
+            <Link to={`/design/${item.designId}`}>
+              <Text fontWeight="medium" noOfLines={1}>
+                {item.name}
+              </Text>
+            </Link>
           </Box>
 
           <Tooltip label="Xóa" placement="top" hasArrow>

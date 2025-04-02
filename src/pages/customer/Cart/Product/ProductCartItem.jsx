@@ -37,7 +37,7 @@ export default function ProductCartItem({ item, woodworkerId }) {
       <Flex flex={1} direction="column" justify="space-between">
         {/* Top row: Product name and delete button */}
         <Flex justify="space-between" align="start">
-          <Box>
+          <Box _hover={{ textDecoration: "underline" }}>
             <Link to={`/product/${item.productId}`}>
               <Text fontWeight="medium" noOfLines={1}>
                 {item.productName}

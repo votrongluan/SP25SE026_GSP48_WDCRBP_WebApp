@@ -1,7 +1,10 @@
 import { Box, Heading, Grid } from "@chakra-ui/react";
 import FiltersComponent from "./FiltersComponent.jsx";
 import ProductList from "./ProductList.jsx";
-import { appColorTheme } from "../../../../config/appconfig.js";
+import {
+  appColorTheme,
+  servicePackNameConstants,
+} from "../../../../config/appconfig.js";
 import { useState, useEffect } from "react";
 import { useGetAllProductsQuery } from "../../../../services/productApi";
 
@@ -12,7 +15,15 @@ export default function ProductsPage() {
   // Set initial data when API response changes
   useEffect(() => {
     if (response?.data) {
-      setFilteredProducts(response.data);
+      const data = response.data.filter((product) => {
+        const isServicePackValid =
+          product?.servicePackEndDate &&
+          Date.now() <= new Date(product.servicePackEndDate).getTime() &&
+          product?.packType !== servicePackNameConstants.BRONZE;
+
+        return isServicePackValid;
+      });
+      setFilteredProducts(data);
     }
   }, [response?.data]);
 

@@ -12,15 +12,19 @@ import {
   Alert,
   AlertIcon,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../config/appconfig.js";
+import {
+  appColorTheme,
+  servicePackNameConstants,
+} from "../../../../config/appconfig.js";
 import ReviewSection from "./ReviewSection.jsx";
 import StarReview from "../../../../components/Utility/StarReview.jsx";
 import { FiShoppingBag, FiShoppingCart } from "react-icons/fi";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector.jsx";
 import { formatPrice } from "../../../../utils/utils.js";
 import useAuth from "../../../../hooks/useAuth.js";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useGetProductByIdQuery } from "../../../../services/productApi.js";
+import { useGetAvailableServiceByWwIdQuery } from "../../../../services/availableServiceApi.js";
 import { useNotify } from "../../../../components/Utility/Notify.jsx";
 import ProductWoodworkerBox from "./ProductWoodworkerBox.jsx";
 import useCart from "../../../../hooks/useCart.js";
@@ -30,6 +34,7 @@ export default function ProductDetailPage() {
   const { auth } = useAuth();
   const notify = useNotify();
   const { addProductToCart } = useCart();
+  const navigate = useNavigate();
 
   // Fetch product data from API
   const {
@@ -39,6 +44,31 @@ export default function ProductDetailPage() {
   } = useGetProductByIdQuery(productId);
 
   const product = response?.data;
+
+  // Fetch woodworker service status
+  const woodworkerId = product?.woodworkerId;
+  const { data: serviceData, isLoading: isServiceLoading } =
+    useGetAvailableServiceByWwIdQuery(woodworkerId, {
+      skip: !woodworkerId,
+    });
+
+  // Check if sale service is operating
+  const availableServices = serviceData?.data || [];
+
+  const saleService = availableServices.find(
+    (service) => service?.service?.serviceName === "Sale"
+  );
+
+  const isSaleAvailable = saleService?.operatingStatus !== false;
+
+  // Check if service pack is valid (not expired, not BRONZE)
+  const isServicePackValid =  
+    product?.servicePackEndDate &&
+    Date.now() <= new Date(product.servicePackEndDate).getTime() &&
+    product?.packType !== servicePackNameConstants.BRONZE;
+
+  // Product is available if both service is operating and service pack is valid
+  const isProductAvailable = isSaleAvailable && isServicePackValid;
 
   // Handle adding to cart
   const handleAddToCart = () => {
@@ -57,14 +87,41 @@ export default function ProductDetailPage() {
       length: product.length,
       width: product.width,
       height: product.height,
+      address: product.address,
     };
 
     addProductToCart(cartItem);
     notify("Thành công", "Sản phẩm đã được thêm vào giỏ hàng", "success");
   };
 
+  // Handle buy now (add to cart and navigate to checkout)
+  const handleBuyNow = () => {
+    if (!product) return;
+
+    const cartItem = {
+      productId: product.productId,
+      productName: product.productName,
+      price: product.price,
+      mediaUrls: product.mediaUrls,
+      woodworkerId: product.woodworkerId,
+      woodworkerName: product.woodworkerName,
+      quantity: 1,
+      woodType: product.woodType,
+      color: product.color,
+      length: product.length,
+      width: product.width,
+      height: product.height,
+      address: product.address,
+    };
+
+    addProductToCart(cartItem);
+
+    // Navigate to cart page with selectedWoodworker parameter and tab parameter
+    navigate(`/cart?selectedWoodworker=${product.woodworkerId}&tab=product`);
+  };
+
   // Show loading state
-  if (isLoading) {
+  if (isLoading || (woodworkerId && isServiceLoading)) {
     return (
       <Center h="500px">
         <Spinner size="xl" color={appColorTheme.brown_2} />
@@ -129,6 +186,13 @@ export default function ProductDetailPage() {
                 </Flex>
               </Flex>
 
+              {!isProductAvailable && (
+                <Alert borderRadius="md" status="info">
+                  <AlertIcon />
+                  Sản phẩm tạm ngừng kinh doanh
+                </Alert>
+              )}
+
               <Text>
                 <strong>Số lượng trong kho:</strong> {product.stock}
               </Text>
@@ -188,7 +252,7 @@ export default function ProductDetailPage() {
                 </Text>
               </Box>
 
-              {auth?.role !== "Woodworker" && (
+              {auth?.role !== "Woodworker" && isProductAvailable && (
                 <Flex gap={5} alignItems="center">
                   <Button
                     bg={appColorTheme.brown_2}
@@ -198,7 +262,7 @@ export default function ProductDetailPage() {
                     py={6}
                     leftIcon={<FiShoppingBag />}
                     _hover={{ bg: appColorTheme.brown_1 }}
-                    onClick={() => handleAddToCart()}
+                    onClick={handleBuyNow}
                   >
                     MUA NGAY
                   </Button>

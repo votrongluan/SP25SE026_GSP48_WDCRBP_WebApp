@@ -8,7 +8,7 @@ import {
   VStack,
   Icon,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useCart from "../../../../hooks/useCart.js";
 import useAuth from "../../../../hooks/useAuth.js";
@@ -23,6 +23,7 @@ export default function ProductCartTab() {
   const { cart } = useCart();
   const navigate = useNavigate();
   const { auth } = useAuth();
+  const location = useLocation();
 
   // State to track which woodworker is selected for checkout (single selection)
   const [selectedWoodworker, setSelectedWoodworker] = useState(null);
@@ -44,6 +45,16 @@ export default function ProductCartTab() {
   useEffect(() => {
     setSelectedWoodworker(null);
   }, [cart.products]);
+
+  // Check for selectedWoodworker in URL query params
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const preSelectedWoodworker = queryParams.get("selectedWoodworker");
+
+    if (preSelectedWoodworker && cart.products[preSelectedWoodworker]) {
+      setSelectedWoodworker(preSelectedWoodworker);
+    }
+  }, [location.search, cart.products]);
 
   // Handle woodworker selection
   const handleWoodworkerSelect = (woodworkerId) => {

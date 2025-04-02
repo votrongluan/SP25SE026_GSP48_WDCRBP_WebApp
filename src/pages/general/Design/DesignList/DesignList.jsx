@@ -40,9 +40,7 @@ export default function DesignList({ designs = [] }) {
             {data.map((design) => (
               <Link key={design.designIdeaId} to={`${design.designIdeaId}`}>
                 <PackageFrame
-                  packageType={
-                    design.woodworkerProfile?.servicePack?.name || "Bronze"
-                  }
+                  packageType={design.woodworkerProfile?.servicePack?.name}
                 >
                   <Box overflow="hidden" bgColor="white" borderRadius="md">
                     <Box position="relative">

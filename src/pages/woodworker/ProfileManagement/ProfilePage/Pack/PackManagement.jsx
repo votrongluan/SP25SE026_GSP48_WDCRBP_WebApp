@@ -40,7 +40,7 @@ export default function PackManagement({ woodworker }) {
         Quản lý Gói dịch vụ
       </Heading>
 
-      <PackageFrame packageType={woodworker.servicePack?.name || "none"}>
+      <PackageFrame packageType={woodworker.servicePack?.name}>
         <Box bg="white" p={5} borderRadius="lg" boxShadow="md">
           <Heading size="md" mb={4}>
             Thông tin gói dịch vụ

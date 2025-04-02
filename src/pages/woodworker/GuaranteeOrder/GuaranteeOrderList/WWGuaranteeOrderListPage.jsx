@@ -24,6 +24,7 @@ import {
 import TaskFilter from "./TaskFilter";
 import TypeFilter from "./TypeFilter.jsx";
 import { useNavigate } from "react-router-dom";
+import RequireServicePack from "../../../../components/Utility/RequireServicePack.jsx";
 
 const ActionButton = () => {
   const navigate = useNavigate();
@@ -97,43 +98,45 @@ export default function WWGuaranteeOrderListPage() {
   }, []);
 
   return (
-    <Box>
-      <Box mb={6}>
-        <Heading
-          fontWeight="normal"
-          as="h2"
-          fontSize="22px"
-          fontFamily="Montserrat"
-        >
-          Danh sách đơn đặt dịch vụ
-        </Heading>
-      </Box>
-
-      <Box mb={6}></Box>
-
-      <Box mb={6}>
-        <TypeFilter />
-      </Box>
-
-      <Box mb={6}>
-        <TaskFilter />
-      </Box>
-
+    <RequireServicePack>
       <Box>
-        <div
-          className="ag-theme-quartz"
-          style={{ height: 700, fontSize: "16px" }}
-        >
-          <AgGridReact
-            pagination
-            paginationPageSize={20}
-            paginationPageSizeSelector={[10, 20, 50, 100]}
-            defaultColDef={defaultColDef}
-            rowData={rowData}
-            columnDefs={colDefs}
-          />
-        </div>
+        <Box mb={6}>
+          <Heading
+            fontWeight="normal"
+            as="h2"
+            fontSize="22px"
+            fontFamily="Montserrat"
+          >
+            Danh sách đơn đặt dịch vụ
+          </Heading>
+        </Box>
+
+        <Box mb={6}></Box>
+
+        <Box mb={6}>
+          <TypeFilter />
+        </Box>
+
+        <Box mb={6}>
+          <TaskFilter />
+        </Box>
+
+        <Box>
+          <div
+            className="ag-theme-quartz"
+            style={{ height: 700, fontSize: "16px" }}
+          >
+            <AgGridReact
+              pagination
+              paginationPageSize={20}
+              paginationPageSizeSelector={[10, 20, 50, 100]}
+              defaultColDef={defaultColDef}
+              rowData={rowData}
+              columnDefs={colDefs}
+            />
+          </div>
+        </Box>
       </Box>
-    </Box>
+    </RequireServicePack>
   );
 }

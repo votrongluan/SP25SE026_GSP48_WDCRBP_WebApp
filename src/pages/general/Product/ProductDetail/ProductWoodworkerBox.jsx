@@ -18,7 +18,7 @@ export default function ProductWoodworkerBox({ product }) {
   if (!product?.woodworkerId) return null;
 
   return (
-    <PackageFrame packageType={product?.packType || "Bronze"}>
+    <PackageFrame packageType={product?.packType}>
       <Flex
         flexDirection={{
           base: "column",

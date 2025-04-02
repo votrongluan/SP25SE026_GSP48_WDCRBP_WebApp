@@ -29,6 +29,12 @@ export const transactionTypeConstants = {
   NHAN_TIEN: "Nhận tiền",
 };
 
+export const servicePackNameConstants = {
+  GOLD: "Gold",
+  SILVER: "Silver",
+  BRONZE: "Bronze",
+};
+
 export const serviceOrderStatusConstants = {
   DANG_CHO_THO_DUYET: "Đang chờ thợ mộc xác nhận đơn hàng",
   DANG_CHO_KHACH_DUYET_LICH_HEN: "Đang chờ khách hàng duyệt lịch hẹn",

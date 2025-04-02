@@ -11,7 +11,6 @@ import {
   Spinner,
   Alert,
   AlertIcon,
-  useToast,
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import ReviewSection from "./ReviewSection.jsx";
@@ -19,7 +18,7 @@ import { FiShoppingBag, FiShoppingCart } from "react-icons/fi";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector.jsx";
 import DesignVariantConfig from "./DesignVariantConfig.jsx";
 import useAuth from "../../../../hooks/useAuth.js";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   useGetDesignByIdQuery,
   useGetDesignIdeaVariantQuery,
@@ -36,6 +35,7 @@ export default function DesignDetailPage() {
   const { auth } = useAuth();
   const { addDesignToCart } = useCart();
   const notify = useNotify();
+  const navigate = useNavigate();
 
   // State to track selected variant
   const [selectedVariant, setSelectedVariant] = useState(null);
@@ -74,6 +74,15 @@ export default function DesignDetailPage() {
   const isCustomizationAvailable =
     customizationService?.operatingStatus !== false;
 
+  // Check if service pack is valid (not expired)
+  const isServicePackValid =
+    designDetail?.woodworkerProfile?.servicePackEndDate &&
+    Date.now() <=
+      new Date(designDetail.woodworkerProfile.servicePackEndDate).getTime();
+
+  // Design is available if both service is operating and service pack is valid
+  const isDesignAvailable = isCustomizationAvailable && isServicePackValid;
+
   if (
     isDesignLoading ||
     isVariantLoading ||
@@ -104,17 +113,45 @@ export default function DesignDetailPage() {
 
     const cartItem = {
       ...selectedVariant,
+      designId,
       name: designDetail?.name,
       img_urls: designDetail?.img_urls?.split(";")[0],
       woodworkerId: designDetail?.woodworkerProfile?.woodworkerId,
       woodworkerName: designDetail?.woodworkerProfile?.brandName,
       quantity: 1,
+      address: designDetail?.woodworkerProfile?.address,
       availableServiceId: customizationService?.availableServiceId,
     };
 
     addDesignToCart(cartItem);
 
     notify("Thành công", "Sản phẩm đã được thêm vào giỏ hàng", "success");
+  };
+
+  // Handler for ordering now (add to cart and navigate to checkout)
+  const handleOrderNow = () => {
+    if (!selectedVariant) {
+      notify("Lỗi", "Vui lòng chọn biến thể sản phẩm", "error");
+      return;
+    }
+
+    const cartItem = {
+      ...selectedVariant,
+      name: designDetail?.name,
+      img_urls: designDetail?.img_urls?.split(";")[0],
+      woodworkerId: designDetail?.woodworkerProfile?.woodworkerId,
+      woodworkerName: designDetail?.woodworkerProfile?.brandName,
+      address: designDetail?.woodworkerProfile?.address,
+      quantity: 1,
+      availableServiceId: customizationService?.availableServiceId,
+    };
+
+    addDesignToCart(cartItem);
+
+    // Navigate to cart page with selectedWoodworker parameter and tab parameter
+    navigate(
+      `/cart?selectedWoodworker=${designDetail?.woodworkerProfile?.woodworkerId}&tab=design`
+    );
   };
 
   return (
@@ -142,7 +179,7 @@ export default function DesignDetailPage() {
                 <Heading fontWeight="bold" fontSize="20px">
                   {designDetail?.name || "Tên sản phẩm"}
                 </Heading>
-                {!isCustomizationAvailable && (
+                {!isDesignAvailable && (
                   <Alert borderRadius="md" status="info">
                     <AlertIcon />
                     Tạm ngừng kinh doanh
@@ -181,7 +218,7 @@ export default function DesignDetailPage() {
               </Box>
               {auth?.role !== "Woodworker" && (
                 <Flex mt={4} gap={5} flexDirection="column">
-                  {isCustomizationAvailable && (
+                  {isDesignAvailable && (
                     <Flex gap={5} alignItems="center">
                       <Button
                         bg={appColorTheme.brown_2}
@@ -191,6 +228,7 @@ export default function DesignDetailPage() {
                         py={6}
                         leftIcon={<FiShoppingBag />}
                         _hover={{ bg: appColorTheme.brown_1 }}
+                        onClick={handleOrderNow}
                       >
                         ĐẶT NGAY
                       </Button>

@@ -57,7 +57,7 @@ export default function AccountMenu() {
                 >
                   <HStack>
                     <FiUsers />
-                    <Text>Tài khoản</Text>
+                    <Text>Quản lý thông tin</Text>
                   </HStack>
                 </MenuItem>
                 <MenuDivider />

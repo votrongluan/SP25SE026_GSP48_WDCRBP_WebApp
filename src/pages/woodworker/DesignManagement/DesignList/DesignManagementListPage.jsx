@@ -19,6 +19,7 @@ import DesignUpdateModal from "../ActionModal/DesignUpdateModal.jsx";
 import DesignDeleteModal from "../ActionModal/DesignDeleteModal.jsx";
 import { useGetAllDesignIdeasByWoodworkerQuery } from "../../../../services/designIdeaApi";
 import useAuth from "../../../../hooks/useAuth.js";
+import RequireServicePack from "../../../../components/Utility/RequireServicePack.jsx";
 
 export default function DesignManagementListPage() {
   const { auth } = useAuth();
@@ -84,34 +85,36 @@ export default function DesignManagementListPage() {
   }
 
   return (
-    <Stack spacing={6}>
-      <Flex justify="space-between" align="center">
-        <Heading
-          color={appColorTheme.brown_2}
-          as="h2"
-          fontSize="2xl"
-          fontFamily="Montserrat"
-        >
-          Quản lý Ý tưởng thiết kế
-        </Heading>
-        <DesignCreateModal refetch={refetch} />
-      </Flex>
+    <RequireServicePack>
+      <Stack spacing={6}>
+        <Flex justify="space-between" align="center">
+          <Heading
+            color={appColorTheme.brown_2}
+            as="h2"
+            fontSize="2xl"
+            fontFamily="Montserrat"
+          >
+            Quản lý Ý tưởng thiết kế
+          </Heading>
+          <DesignCreateModal refetch={refetch} />
+        </Flex>
 
-      <Box>
-        <div
-          className="ag-theme-quartz"
-          style={{ height: 700, fontSize: "16px" }}
-        >
-          <AgGridReact
-            pagination
-            paginationPageSize={20}
-            paginationPageSizeSelector={[10, 20, 50, 100]}
-            defaultColDef={defaultColDef}
-            rowData={rowData}
-            columnDefs={colDefs}
-          />
-        </div>
-      </Box>
-    </Stack>
+        <Box>
+          <div
+            className="ag-theme-quartz"
+            style={{ height: 700, fontSize: "16px" }}
+          >
+            <AgGridReact
+              pagination
+              paginationPageSize={20}
+              paginationPageSizeSelector={[10, 20, 50, 100]}
+              defaultColDef={defaultColDef}
+              rowData={rowData}
+              columnDefs={colDefs}
+            />
+          </div>
+        </Box>
+      </Stack>
+    </RequireServicePack>
   );
 }

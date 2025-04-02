@@ -85,7 +85,7 @@ export default function WoodworkerDetailPage() {
         </Heading>
       </Box>
 
-      <PackageFrame packageType={woodworker.servicePack?.name || "Bronze"}>
+      <PackageFrame packageType={woodworker.servicePack?.name}>
         <Box>
           <Flex
             flexDirection={{

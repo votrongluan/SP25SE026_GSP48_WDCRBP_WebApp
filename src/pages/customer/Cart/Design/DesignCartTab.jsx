@@ -8,7 +8,7 @@ import {
   VStack,
   Icon,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useCart from "../../../../hooks/useCart.js";
 import useAuth from "../../../../hooks/useAuth.js";
@@ -23,6 +23,9 @@ export default function DesignCartTab() {
   const { cart } = useCart();
   const navigate = useNavigate();
   const { auth } = useAuth();
+  const location = useLocation();
+
+  console.log(cart);
 
   // State to track which woodworker is selected for checkout (single selection)
   const [selectedWoodworker, setSelectedWoodworker] = useState(null);
@@ -44,6 +47,16 @@ export default function DesignCartTab() {
   useEffect(() => {
     setSelectedWoodworker(null);
   }, [cart.designs]);
+
+  // Check for selectedWoodworker in URL query params
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const preSelectedWoodworker = queryParams.get("selectedWoodworker");
+
+    if (preSelectedWoodworker && cart.designs[preSelectedWoodworker]) {
+      setSelectedWoodworker(preSelectedWoodworker);
+    }
+  }, [location.search, cart.designs]);
 
   // Handle woodworker selection
   const handleWoodworkerSelect = (woodworkerId) => {
@@ -127,7 +140,7 @@ export default function DesignCartTab() {
                   {designs.map((design) => (
                     <DesignCartItemDetail
                       key={design.designIdeaVariantId}
-                      product={design}
+                      design={design}
                       type="design"
                       woodworkerId={woodworkerId}
                     />

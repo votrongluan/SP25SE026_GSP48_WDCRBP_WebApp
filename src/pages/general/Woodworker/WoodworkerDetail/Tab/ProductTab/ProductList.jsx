@@ -61,7 +61,7 @@ export default function ProductList({ products = [], isLoading, error }) {
                 key={product.productId}
                 to={`/product/${product.productId}`}
               >
-                <PackageFrame packageType={product.packType || "Bronze"}>
+                <PackageFrame packageType={product.packType}>
                   <Box overflow="hidden" bgColor="white" borderRadius="md">
                     <Box position="relative">
                       <Image
