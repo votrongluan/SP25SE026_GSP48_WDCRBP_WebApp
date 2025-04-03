@@ -83,7 +83,8 @@ export default function ProductDeleteModal({ product, refetch }) {
                 items={[
                   {
                     isOptional: false,
-                    description: "Tôi xác nhận muốn xóa sản phẩm này",
+                    description:
+                      "Tôi đã kiểm tra thông tin và xác nhận thao tác",
                   },
                 ]}
                 setButtonDisabled={setButtonDisabled}

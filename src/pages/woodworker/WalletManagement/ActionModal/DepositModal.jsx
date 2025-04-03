@@ -14,6 +14,7 @@ import {
   Spacer,
   Stack,
   Text,
+  Divider,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { appColorTheme } from "../../../../config/appconfig";
@@ -22,6 +23,7 @@ import { useNotify } from "../../../../components/Utility/Notify";
 import useAuth from "../../../../hooks/useAuth";
 import { formatPrice } from "../../../../utils/utils";
 import { FiPlusSquare, FiXCircle } from "react-icons/fi";
+import CheckboxList from "../../../../components/Utility/CheckboxList";
 
 export default function DepositModal({ isOpen, onClose, wallet }) {
   const notify = useNotify();
@@ -29,6 +31,22 @@ export default function DepositModal({ isOpen, onClose, wallet }) {
   const [topUpWallet, { isLoading }] = useTopUpWalletMutation();
   const initialRef = useRef(null);
   const [amount, setAmount] = useState("");
+  const [isCheckboxDisabled, setIsCheckboxDisabled] = useState(true);
+
+  const checkboxItems = [
+    {
+      description: "Tôi xác nhận số tiền nạp là chính xác",
+      isOptional: false,
+    },
+    {
+      description: "Tôi đã đọc và đồng ý với điều khoản nạp tiền",
+      isOptional: false,
+    },
+    {
+      description: "Gửi thông báo cho tôi khi giao dịch hoàn tất",
+      isOptional: true,
+    },
+  ];
 
   const handleAmountChange = (e) => {
     const value = e.target.value.replace(/[^0-9]/g, "");
@@ -95,6 +113,16 @@ export default function DepositModal({ isOpen, onClose, wallet }) {
                 </Text>
               </HStack>
             )}
+
+            {amount && parseInt(amount) > 0 && (
+              <>
+                <Divider my={2} />
+                <CheckboxList
+                  items={checkboxItems}
+                  setButtonDisabled={setIsCheckboxDisabled}
+                />
+              </>
+            )}
           </Stack>
         </ModalBody>
         <ModalFooter>
@@ -111,7 +139,7 @@ export default function DepositModal({ isOpen, onClose, wallet }) {
             colorScheme="green"
             onClick={handleSubmit}
             isLoading={isLoading}
-            isDisabled={!amount || parseInt(amount) <= 0}
+            isDisabled={!amount || parseInt(amount) <= 0 || isCheckboxDisabled}
             leftIcon={<FiPlusSquare />}
           >
             Nạp tiền

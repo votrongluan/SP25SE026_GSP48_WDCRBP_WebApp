@@ -98,7 +98,7 @@ export default function PasswordChangeForm({ refetch }) {
           <CheckboxList
             items={[
               {
-                description: "Tôi xác nhận muốn đổi mật khẩu",
+                description: "Tôi đã kiểm tra thông tin và xác nhận thao tác",
                 isOptional: false,
               },
             ]}

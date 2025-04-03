@@ -18,10 +18,9 @@ export const serviceOrderApi = createApi({
   }),
   endpoints: (builder) => ({
     sendServiceOrderFeedback: builder.mutation({
-      query: (data) => ({
-        url: "/api/v1/service-orders/feedback",
+      query: ({ serviceOrderId, feedback }) => ({
+        url: `/api/v1/service-orders/feedback?serviceOrderId=${serviceOrderId}&feedback=${feedback}`,
         method: "POST",
-        body: data,
       }),
     }),
 
@@ -43,11 +42,11 @@ export const serviceOrderApi = createApi({
 
     acceptServiceOrder: builder.mutation({
       query: ({
-        serviceOrderId = "a",
-        timeMeeting = "a",
-        linkMeeting = "a",
-        form = "",
-        desc = "",
+        serviceOrderId = "1",
+        timeMeeting = "2025-05-09T18:25",
+        linkMeeting = "1",
+        form = "1",
+        desc = "1",
       }) => ({
         url: `/api/v1/service-orders/accept?serviceOrderId=${serviceOrderId}&timeMeeting=${timeMeeting}&linkMeeting=${linkMeeting}&form=${form}&desc=${desc}`,
         method: "POST",

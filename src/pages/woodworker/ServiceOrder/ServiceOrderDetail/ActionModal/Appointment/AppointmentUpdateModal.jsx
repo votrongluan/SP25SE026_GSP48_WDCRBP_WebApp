@@ -20,10 +20,10 @@ import {
 import { useRef, useState } from "react";
 import { FiCalendar, FiCheck, FiX } from "react-icons/fi";
 import { appColorTheme } from "../../../../../../config/appconfig.js";
-import AutoResizeTextarea from "../../../../../../components/Input/AutoResizeTextarea.jsx";
 import { useAcceptServiceOrderMutation } from "../../../../../../services/serviceOrderApi.js";
 import CheckboxList from "../../../../../../components/Utility/CheckboxList.jsx";
 import { useNotify } from "../../../../../../components/Utility/Notify.jsx";
+import { validateAppointment } from "../../../../../../validations/index.js";
 
 export default function AppointmentUpdateModal({ order, refetch }) {
   // Modal
@@ -37,6 +37,15 @@ export default function AppointmentUpdateModal({ order, refetch }) {
   // Button disable state for checkboxes
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
+  // Format datetime for input field
+  const formatDateForInput = (dateString) => {
+    if (!dateString) return "";
+    // Create a date object and adjust it to local timezone for proper formatting
+    const date = new Date(dateString);
+    // Format to YYYY-MM-DDThh:mm
+    return date.toISOString().slice(0, 16);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -45,13 +54,20 @@ export default function AppointmentUpdateModal({ order, refetch }) {
       const formData = new FormData(e.target);
       const formDataObj = Object.fromEntries(formData);
 
-      // Add order ID to the form data
+      // Prepare data for validation and API
       const apiData = {
         serviceOrderId: order.orderId,
         ...formDataObj,
       };
 
-      // Call the API
+      // Validate form data
+      const errors = validateAppointment(formDataObj);
+      if (errors.length > 0) {
+        notify("Lỗi xác thực", errors[0], "error");
+        return;
+      }
+
+      // If validation passes, proceed with API call
       await acceptServiceOrder(apiData).unwrap();
 
       notify(
@@ -73,10 +89,13 @@ export default function AppointmentUpdateModal({ order, refetch }) {
 
   const confirmationItems = [
     {
-      description: "Tôi xác nhận cập nhật thông tin lịch hẹn",
+      description: "Tôi đã kiểm tra thông tin và xác nhận thao tác",
       isOptional: false,
     },
   ];
+
+  // Get appointment data from order if available
+  const appointment = order?.consultantAppointment || {};
 
   return (
     <>
@@ -90,7 +109,7 @@ export default function AppointmentUpdateModal({ order, refetch }) {
         leftIcon={<FiCalendar />}
         onClick={onOpen}
       >
-        Đặt lịch
+        {appointment.appointmentId ? "Cập nhật lịch" : "Đặt lịch"}
       </Button>
 
       <Modal
@@ -103,7 +122,11 @@ export default function AppointmentUpdateModal({ order, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Tạo, điều chỉnh lịch hẹn</ModalHeader>
+          <ModalHeader>
+            {appointment.appointmentId
+              ? "Cập nhật lịch hẹn"
+              : "Tạo lịch hẹn mới"}
+          </ModalHeader>
           {!isLoading && <ModalCloseButton />}
           <ModalBody bgColor="app_grey.1" pb={6}>
             <form onSubmit={handleSubmit}>
@@ -125,7 +148,12 @@ export default function AppointmentUpdateModal({ order, refetch }) {
                       </Text>
                     </GridItem>
                     <GridItem>
-                      <Input name="form" placeholder="Hình thức" required />
+                      <Input
+                        name="form"
+                        placeholder="Hình thức"
+                        defaultValue={appointment.form || ""}
+                        required
+                      />
                     </GridItem>
 
                     <GridItem>
@@ -137,6 +165,7 @@ export default function AppointmentUpdateModal({ order, refetch }) {
                       <Input
                         name="linkMeeting"
                         placeholder="Địa điểm"
+                        defaultValue={appointment.meetAddress || ""}
                         required
                       />
                     </GridItem>
@@ -151,6 +180,7 @@ export default function AppointmentUpdateModal({ order, refetch }) {
                         type="datetime-local"
                         name="timeMeeting"
                         placeholder="Ngày hẹn"
+                        defaultValue={formatDateForInput(appointment.dateTime)}
                         required
                       />
                     </GridItem>
@@ -161,7 +191,12 @@ export default function AppointmentUpdateModal({ order, refetch }) {
                       </Text>
                     </GridItem>
                     <GridItem>
-                      <Textarea name="desc" placeholder="Mô tả" required />
+                      <Textarea
+                        name="desc"
+                        placeholder="Mô tả"
+                        defaultValue={appointment.content || ""}
+                        required
+                      />
                     </GridItem>
                   </Grid>
                 </Box>

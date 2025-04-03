@@ -9,9 +9,9 @@ import {
   Spinner,
   Center,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../../../config/appconfig.js";
-import { useGetAllOrderProgressByOrderIdQuery } from "../../../../../../services/orderProgressApi.js";
-import { formatDateTimeString } from "../../../../../../utils/utils.js";
+import { appColorTheme } from "../../../../../config/appconfig.js";
+import { useGetAllOrderProgressByOrderIdQuery } from "../../../../../services/orderProgressApi.js";
+import { formatDateTimeString } from "../../../../../utils/utils.js";
 
 export default function ProgressTab() {
   const { id } = useParams();

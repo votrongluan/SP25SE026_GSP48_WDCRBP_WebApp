@@ -56,10 +56,10 @@ import CustomerComplaintPage from "./pages/customer/ComplaintManagement/Complain
 import CustomerWalletPage from "./pages/customer/WalletManagement/WalletList/CustomerWalletPage.jsx";
 import WoodworkerWelcomePage from "./pages/woodworker/Welcome/WoodworkerWelcomePage.jsx";
 import PaymentSuccessPage from "./pages/general/PaymentSuccess/PaymentSuccessPage.jsx";
-import CusServiceOrderListPage from "./pages/customer/ServiceOrder/ServiceOrderList/CusServiceOrderListPage.jsx";
 import AdminWelcomePage from "./pages/admin/Welcome/AdminWelcomePage.jsx";
-import CusServiceOrderDetailPage from "./pages/customer/ServiceOrder/ServiceOrderDetail/MainPage/CusServiceOrderDetailPage.jsx";
 import WWServiceOrderDetailPage from "./pages/woodworker/ServiceOrder/ServiceOrderDetail/MainPage/WWServiceOrderDetailPage.jsx";
+import CusServiceOrderListPage from "./pages/customer/ServiceOrder/ServiceOrderList/CusServiceOrderListPage.jsx";
+import CusServiceOrderDetailPage from "./pages/customer/ServiceOrder/ServiceOrderDetail/MainPage/CusServiceOrderDetailPage.jsx";
 
 function App() {
   useEffect(() => {

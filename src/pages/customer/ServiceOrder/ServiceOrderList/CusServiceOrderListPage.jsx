@@ -7,6 +7,7 @@ import ServiceOrderList from "./ServiceOrderList.jsx";
 import { appColorTheme } from "../../../../config/appconfig";
 import ContractList from "./ContractList.jsx";
 import DesignList from "./DesignList.jsx";
+import RequireServicePack from "../../../../components/Utility/RequireServicePack.jsx";
 
 export default function CusServiceOrderListPage() {
   const [currentTab, setCurrentTab] = useState("orders");

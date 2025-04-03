@@ -122,7 +122,7 @@ export default function PersonalInfoForm({ woodworker, refetch }) {
           <CheckboxList
             items={[
               {
-                description: "Tôi xác nhận muốn cập nhật thông tin cá nhân",
+                description: "Tôi đã kiểm tra thông tin và xác nhận thao tác",
                 isOptional: false,
               },
             ]}

@@ -14,7 +14,6 @@ import { useMemo, useState, useRef, useEffect } from "react";
 import {
   appColorTheme,
   serviceOrderStatusConstants,
-  serviceTypeMap,
 } from "../../../../config/appconfig";
 import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
@@ -44,6 +43,13 @@ const ActionButton = (params) => {
   );
 };
 
+// Map between display values and API values for service types
+const serviceTypeMap = {
+  "Tùy chỉnh": "Customization",
+  "Cá nhân hóa": "Personalization",
+  "Mua hàng": "Sale",
+};
+
 // Reverse lookup for display names
 const getServiceTypeDisplayName = (apiValue) => {
   for (const [display, api] of Object.entries(serviceTypeMap)) {
@@ -69,8 +75,8 @@ export default function ServiceOrderList() {
     error,
     isLoading,
   } = useGetServiceOrdersQuery({
-    id: auth?.userId, // Using userId for customer instead of wwId
-    role: "Customer", // Set role to Customer
+    id: auth?.userId,
+    role: "Customer",
   });
 
   // Set initial filtered data when API data is loaded
@@ -123,12 +129,31 @@ export default function ServiceOrderList() {
         valueFormatter: (p) => formatPrice(p.value),
       },
       {
-        headerName: "Số lượng",
-        field: "quantity",
+        headerName: "Xưởng mộc",
+        valueGetter: (params) => params.data.service?.wwDto?.brandName || "N/A",
       },
       {
         headerName: "Trạng thái",
         field: "status",
+      },
+      {
+        headerName: "Cần phản hồi?",
+        valueGetter: (params) => {
+          if (params?.data?.role == "Customer") {
+            return "Cần bạn phản hồi";
+          } else {
+            return "Chờ phản hồi từ thợ mộc";
+          }
+        },
+        cellRenderer: (params) => {
+          console.log(params.value);
+
+          return params.value === "Cần bạn phản hồi" ? (
+            <Text color="green.500">{params.value}</Text>
+          ) : (
+            <Text>{params.value}</Text>
+          );
+        },
       },
       {
         headerName: "Thao tác",

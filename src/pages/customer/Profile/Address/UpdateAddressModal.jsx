@@ -112,7 +112,7 @@ export default function UpdateAddressModal({
                   {
                     isOptional: false,
                     description:
-                      "Tôi đã kiểm tra và xác nhận thông tin địa chỉ chính xác",
+                      "Tôi đã kiểm tra thông tin và xác nhận thao tác",
                   },
                 ]}
                 setButtonDisabled={setButtonDisabled}

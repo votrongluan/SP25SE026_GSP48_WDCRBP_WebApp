@@ -306,3 +306,55 @@ export const validateWoodworkerPersonalInfo = (data) => {
 
   return errors;
 };
+
+export const validateFeedback = (data) => {
+  const errors = [];
+
+  // Validate feedback content
+  if (!data.feedback) {
+    errors.push("Nội dung phản hồi là bắt buộc");
+  } else if (data.feedback.trim().length < 3) {
+    errors.push("Nội dung phản hồi phải có ít nhất 3 ký tự");
+  }
+
+  return errors;
+};
+
+export const validateAppointment = (data) => {
+  const errors = [];
+
+  // Validate form (meeting type)
+  if (!data.form) {
+    errors.push("Hình thức cuộc họp là bắt buộc");
+  } else if (data.form.trim().length < 2) {
+    errors.push("Hình thức cuộc họp phải có ít nhất 2 ký tự");
+  }
+
+  // Validate location/link
+  if (!data.linkMeeting) {
+    errors.push("Địa điểm/Link họp là bắt buộc");
+  } else if (data.linkMeeting.trim().length < 3) {
+    errors.push("Địa điểm/Link họp phải có ít nhất 3 ký tự");
+  }
+
+  // Validate meeting time
+  if (!data.timeMeeting) {
+    errors.push("Thời gian họp là bắt buộc");
+  } else {
+    const currentTime = new Date();
+    const meetingTime = new Date(data.timeMeeting);
+
+    if (meetingTime <= currentTime) {
+      errors.push("Thời gian họp phải lớn hơn thời gian hiện tại");
+    }
+  }
+
+  // Validate description
+  if (!data.desc) {
+    errors.push("Mô tả cuộc họp là bắt buộc");
+  } else if (data.desc.trim().length < 3) {
+    errors.push("Mô tả cuộc họp phải có ít nhất 3 ký tự");
+  }
+
+  return errors;
+};

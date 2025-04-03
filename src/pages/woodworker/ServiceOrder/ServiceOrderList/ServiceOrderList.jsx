@@ -137,6 +137,25 @@ export default function ServiceOrderList() {
         field: "status",
       },
       {
+        headerName: "Cần phản hồi?",
+        valueGetter: (params) => {
+          if (params?.data?.role == "Woodworker") {
+            return "Cần bạn phản hồi";
+          } else {
+            return "Chờ phản hồi từ khách hàng";
+          }
+        },
+        cellRenderer: (params) => {
+          console.log(params.value);
+
+          return params.value === "Cần bạn phản hồi" ? (
+            <Text color="green.500">{params.value}</Text>
+          ) : (
+            <Text>{params.value}</Text>
+          );
+        },
+      },
+      {
         headerName: "Thao tác",
         cellRenderer: ActionButton,
       },

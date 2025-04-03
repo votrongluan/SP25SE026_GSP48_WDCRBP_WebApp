@@ -80,7 +80,8 @@ export default function PostDeleteModal({ post, refetch }) {
                 items={[
                   {
                     isOptional: false,
-                    description: "Tôi xác nhận muốn xóa bài viết này",
+                    description:
+                      "Tôi đã kiểm tra thông tin và xác nhận thao tác",
                   },
                 ]}
                 setButtonDisabled={setButtonDisabled}

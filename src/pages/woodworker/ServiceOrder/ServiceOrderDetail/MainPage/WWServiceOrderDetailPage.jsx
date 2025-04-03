@@ -61,14 +61,15 @@ export default function WWServiceOrderDetailPage() {
     <Box>
       <HStack mb={6}>
         <Box>
-          <Heading
-            color={appColorTheme.brown_2}
-            fontSize="2xl"
-            fontFamily="Montserrat"
-          >
-            Chi tiết đơn #{order.orderId}
-          </Heading>
-          <HStack mt={1}>
+          <HStack spacing={2}>
+            <Heading
+              color={appColorTheme.brown_2}
+              fontSize="2xl"
+              fontFamily="Montserrat"
+            >
+              Chi tiết đơn #{order.orderId}
+            </Heading>
+
             <Box
               top={5}
               right={5}
@@ -79,8 +80,15 @@ export default function WWServiceOrderDetailPage() {
             >
               {order?.status || "Đang xử lý"}
             </Box>
+          </HStack>
+          <HStack mt={1}>
             <Text fontSize="sm">Số lượng: {order.quantity} sản phẩm</Text>
           </HStack>
+          {order?.feedback && (
+            <Text whiteSpace="wrap" mt={2} fontSize="md">
+              <b>Phản hồi của khách hàng:</b> {order?.feedback}
+            </Text>
+          )}
         </Box>
 
         <Spacer />

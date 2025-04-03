@@ -14,8 +14,8 @@ import {
   Link as ChakraLink,
   Badge,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../../../config/appconfig.js";
-import { formatPrice } from "../../../../../../utils/utils.js";
+import { appColorTheme } from "../../../../../config/appconfig.js";
+import { formatPrice } from "../../../../../utils/utils.js";
 
 const ConfigurationItem = ({ name, value }) => (
   <HStack justify="space-between" w="100%">

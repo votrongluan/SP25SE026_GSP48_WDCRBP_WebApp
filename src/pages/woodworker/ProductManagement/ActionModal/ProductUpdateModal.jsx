@@ -365,7 +365,8 @@ export default function ProductUpdateModal({ product, refetch }) {
                   items={[
                     {
                       isOptional: false,
-                      description: "Xác nhận thông tin đã chính xác",
+                      description:
+                        "Tôi đã kiểm tra thông tin và xác nhận thao tác",
                     },
                   ]}
                   setButtonDisabled={setButtonDisabled}

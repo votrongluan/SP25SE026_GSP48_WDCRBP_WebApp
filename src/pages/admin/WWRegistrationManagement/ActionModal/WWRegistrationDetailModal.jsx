@@ -190,7 +190,8 @@ export default function WWRegistrationDetailModal({ registration, refetch }) {
                 items={[
                   {
                     isOptional: false,
-                    description: "Xác nhận đã kiểm tra thông tin đăng ký",
+                    description:
+                      "Tôi đã kiểm tra thông tin và xác nhận thao tác",
                   },
                 ]}
                 setButtonDisabled={setButtonDisabled}

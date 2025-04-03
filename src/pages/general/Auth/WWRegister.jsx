@@ -239,8 +239,7 @@ export default function WWRegister() {
               items={[
                 {
                   isOptional: false,
-                  description:
-                    "Tôi đã kiểm tra thông tin đã cung cấp và đảm bảo tất cả thông tin là chính xác",
+                  description: "Tôi đã kiểm tra thông tin và xác nhận thao tác",
                 },
               ]}
               setButtonDisabled={setButtonDisabled}

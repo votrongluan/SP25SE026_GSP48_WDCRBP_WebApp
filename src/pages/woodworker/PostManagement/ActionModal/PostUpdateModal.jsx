@@ -152,7 +152,8 @@ export default function PostUpdateModal({ post, refetch }) {
                   items={[
                     {
                       isOptional: false,
-                      description: "Xác nhận thao tác",
+                      description:
+                        "Tôi đã kiểm tra thông tin và xác nhận thao tác",
                     },
                   ]}
                   setButtonDisabled={setButtonDisabled}

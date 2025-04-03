@@ -173,7 +173,7 @@ export default function WoodworkerInformationManagement({
                 items={[
                   {
                     description:
-                      "Tôi xác nhận thông tin đã được cập nhật chính xác",
+                      "Tôi đã kiểm tra thông tin và xác nhận thao tác",
                     isOptional: false,
                   },
                 ]}
