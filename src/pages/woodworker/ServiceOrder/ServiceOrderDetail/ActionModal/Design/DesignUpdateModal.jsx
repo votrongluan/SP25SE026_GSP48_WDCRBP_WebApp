@@ -86,7 +86,7 @@ export default function DesignUpdateModal({ order, refetch }) {
                 <Button colorScheme="blue" mr={3} type="submit">
                   Cập nhật
                 </Button>
-                <Button onClick={onClose}>Hủy</Button>
+                <Button onClick={onClose}>Đóng</Button>
               </HStack>
             </form>
           </ModalBody>

@@ -312,7 +312,7 @@ export default function PriceDetailSection({
       {isEditing && (
         <ButtonGroup spacing={2} mt={4} width="100%" justifyContent="flex-end">
           <Button onClick={handleCancel} variant="outline">
-            Hủy
+            Đóng
           </Button>
           <Button onClick={handleSave} colorScheme="blue">
             Lưu

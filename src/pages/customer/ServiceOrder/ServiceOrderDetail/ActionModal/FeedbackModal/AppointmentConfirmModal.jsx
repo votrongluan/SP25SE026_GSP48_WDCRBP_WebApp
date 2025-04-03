@@ -11,16 +11,21 @@ import {
   Text,
   Divider,
   useDisclosure,
+  Box,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useAcceptServiceOrderMutation } from "../../../../../../services/serviceOrderApi";
 import { useNotify } from "../../../../../../components/Utility/Notify";
 import { FiCheck, FiCheckCircle, FiXCircle } from "react-icons/fi";
 import CheckboxList from "../../../../../../components/Utility/CheckboxList";
+import { appColorTheme } from "../../../../../../config/appconfig";
+import { formatDateTimeToVietnamese } from "../../../../../../utils/utils";
 
-export default function ConfirmModal({
+export default function AppointmentConfirmModal({
   serviceOrderId,
-  details,
+  appointment,
   buttonText = "Xác nhận",
   refetch,
 }) {
@@ -70,6 +75,7 @@ export default function ConfirmModal({
         onClose={isLoading ? null : onClose}
         closeOnOverlayClick={false}
         closeOnEsc={false}
+        size="2xl"
       >
         <ModalOverlay />
         <ModalContent>
@@ -77,6 +83,46 @@ export default function ConfirmModal({
           {!isLoading && <ModalCloseButton />}
           <ModalBody pb={6}>
             <Stack spacing={4}>
+              <Text fontSize="lg" fontWeight="bold">
+                Chi tiết lịch hẹn
+              </Text>
+
+              {appointment && (
+                <Box p={4} bg="gray.50" borderRadius="md" boxShadow="sm">
+                  <Grid templateColumns="120px 1fr" gap={3}>
+                    <GridItem>
+                      <Text fontWeight="semibold">Ngày hẹn:</Text>
+                    </GridItem>
+                    <GridItem>
+                      <Text>
+                        {formatDateTimeToVietnamese(appointment.dateTime)}
+                      </Text>
+                    </GridItem>
+
+                    <GridItem>
+                      <Text fontWeight="semibold">Hình thức:</Text>
+                    </GridItem>
+                    <GridItem>
+                      <Text>{appointment.form || "Không có"}</Text>
+                    </GridItem>
+
+                    <GridItem>
+                      <Text fontWeight="semibold">Địa điểm:</Text>
+                    </GridItem>
+                    <GridItem>
+                      <Text>{appointment.meetAddress || "Không có"}</Text>
+                    </GridItem>
+
+                    <GridItem>
+                      <Text fontWeight="semibold">Nội dung:</Text>
+                    </GridItem>
+                    <GridItem>
+                      <Text>{appointment.content || "Không có"}</Text>
+                    </GridItem>
+                  </Grid>
+                </Box>
+              )}
+
               <Divider my={2} />
               <CheckboxList
                 items={checkboxItems}

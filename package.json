@@ -19,6 +19,7 @@
     "@vercel/blob": "^0.27.3",
     "ag-grid-react": "^33.1.1",
     "axios": "^1.7.4",
+    "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "framer-motion": "^11.3.28",
     "html-to-doc-react": "^1.0.5",

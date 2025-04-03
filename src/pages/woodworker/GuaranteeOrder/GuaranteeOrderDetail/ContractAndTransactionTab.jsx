@@ -79,7 +79,7 @@ export default function ContractAndTransactionTab() {
             </HStack>
 
             <HStack>
-              <Text fontWeight="bold">Thời gian bảo hành:</Text>
+              <Text fontWeight="bold">Thời hạn bảo hành:</Text>
               <Text>Chưa cập nhật</Text>
             </HStack>
 
@@ -116,15 +116,6 @@ export default function ContractAndTransactionTab() {
             </HStack>
 
             <HStack>
-              <ChakraLink
-                target="_blank"
-                textDecoration="underline"
-                color={appColorTheme.brown_2}
-                href="/cus/contract"
-              >
-                Xem điều khoản hợp đồng
-              </ChakraLink>
-
               <Spacer />
 
               <ChakraLink

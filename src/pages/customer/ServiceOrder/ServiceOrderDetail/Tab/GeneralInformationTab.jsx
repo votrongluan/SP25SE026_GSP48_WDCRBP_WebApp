@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Heading,
@@ -11,7 +10,10 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../../config/appconfig.js";
-import { formatDateTimeString } from "../../../../../utils/utils.js";
+import {
+  formatDateTimeString,
+  formatDateTimeToVietnamese,
+} from "../../../../../utils/utils.js";
 import CustomizationProductList from "./CustomizationProductList.jsx";
 import StarRating from "../../../../../components/Utility/StarRating.jsx";
 import { Link } from "react-router-dom";
@@ -100,7 +102,7 @@ export default function GeneralInformationTab({ order }) {
                 <HStack>
                   <Text fontWeight="bold">Ngày giờ hẹn:</Text>
                   <Text>
-                    {formatDateTimeString(
+                    {formatDateTimeToVietnamese(
                       new Date(order.consultantAppointment.dateTime)
                     )}
                   </Text>

@@ -23,12 +23,21 @@ import { FiActivity, FiFile, FiFileText } from "react-icons/fi";
 import GeneralInformationTab from "../Tab/GeneralInformationTab.jsx";
 import ProcessTab from "../Tab/ProgressTab.jsx";
 import ContractAndTransactionTab from "../Tab/ContractAndTransactionTab.jsx";
+import { useState } from "react";
 
 export default function CusServiceOrderDetailPage() {
   const { id } = useParams();
   const { data, isLoading, error, refetch } = useGetServiceOrderByIdQuery(id);
   const order = data?.data;
   const { auth } = useAuth();
+
+  // Track active tab index
+  const [activeTabIndex, setActiveTabIndex] = useState(0);
+
+  // Handle tab change
+  const handleTabChange = (index) => {
+    setActiveTabIndex(index);
+  };
 
   if (isLoading) {
     return (
@@ -81,11 +90,9 @@ export default function CusServiceOrderDetailPage() {
               {order?.status || "Đang xử lý"}
             </Box>
           </HStack>
-          <HStack mt={1}>
-            <Text fontSize="sm">Số lượng: {order.quantity} sản phẩm</Text>
-          </HStack>
+
           {order?.feedback && (
-            <Text whiteSpace="wrap" mt={2} fontSize="md">
+            <Text mt={2} fontSize="md">
               <b>Phản hồi của bạn:</b> {order?.feedback}
             </Text>
           )}
@@ -112,7 +119,11 @@ export default function CusServiceOrderDetailPage() {
       </HStack>
 
       <Box color="black">
-        <Tabs variant="unstyled">
+        <Tabs
+          variant="unstyled"
+          onChange={handleTabChange}
+          index={activeTabIndex}
+        >
           <TabList
             overflowX="auto"
             display="flex"
@@ -145,13 +156,23 @@ export default function CusServiceOrderDetailPage() {
 
           <TabPanels>
             <TabPanel p={0}>
-              <GeneralInformationTab order={order} />
+              <GeneralInformationTab
+                order={order}
+                activeTabIndex={activeTabIndex}
+                isActive={activeTabIndex === 0}
+              />
             </TabPanel>
             <TabPanel p={0}>
-              <ProcessTab />
+              <ProcessTab
+                activeTabIndex={activeTabIndex}
+                isActive={activeTabIndex === 1}
+              />
             </TabPanel>
             <TabPanel p={0}>
-              <ContractAndTransactionTab />
+              <ContractAndTransactionTab
+                activeTabIndex={activeTabIndex}
+                isActive={activeTabIndex === 2}
+              />
             </TabPanel>
           </TabPanels>
         </Tabs>

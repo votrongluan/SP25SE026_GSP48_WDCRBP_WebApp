@@ -16,6 +16,7 @@ import {
   Text,
   Textarea,
   useDisclosure,
+  Select,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FiCalendar, FiCheck, FiX } from "react-icons/fi";
@@ -148,12 +149,15 @@ export default function AppointmentUpdateModal({ order, refetch }) {
                       </Text>
                     </GridItem>
                     <GridItem>
-                      <Input
+                      <Select
                         name="form"
-                        placeholder="Hình thức"
+                        placeholder="Chọn hình thức"
                         defaultValue={appointment.form || ""}
                         required
-                      />
+                      >
+                        <option value="Online">Online</option>
+                        <option value="Offline">Offline</option>
+                      </Select>
                     </GridItem>
 
                     <GridItem>
@@ -220,10 +224,10 @@ export default function AppointmentUpdateModal({ order, refetch }) {
                   leftIcon={<FiCheck />}
                   isDisabled={isButtonDisabled}
                 >
-                  Cập nhật
+                  {appointment.appointmentId ? "Cập nhật" : "Tạo lịch hẹn"}
                 </Button>
                 <Button onClick={onClose} leftIcon={<FiX />}>
-                  Hủy
+                  Đóng
                 </Button>
               </HStack>
             </form>

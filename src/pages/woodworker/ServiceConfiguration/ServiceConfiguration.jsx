@@ -179,7 +179,7 @@ export default function ServiceConfiguration() {
                       onClick={() => setEditingService(null)}
                       isDisabled={isUpdating}
                     >
-                      Hủy
+                      Đóng
                     </Button>
                     <Button
                       colorScheme="blue"

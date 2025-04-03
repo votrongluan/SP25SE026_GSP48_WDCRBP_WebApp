@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   Box,
@@ -22,7 +22,10 @@ import {
   formatDateTimeString,
 } from "../../../../../utils/utils.js";
 
-export default function ContractAndTransactionTab() {
+export default function ContractAndTransactionTab({
+  activeTabIndex,
+  isActive,
+}) {
   const { id } = useParams();
 
   // Fetch contract data
@@ -30,6 +33,7 @@ export default function ContractAndTransactionTab() {
     data: contractResponse,
     isLoading: isContractLoading,
     error: contractError,
+    refetch: refetchContract,
   } = useGetContractByServiceOrderIdQuery(id);
 
   // Fetch deposit data
@@ -37,7 +41,16 @@ export default function ContractAndTransactionTab() {
     data: depositsResponse,
     isLoading: isDepositsLoading,
     error: depositsError,
+    refetch: refetchDeposits,
   } = useGetAllOrderDepositByOrderIdQuery(id);
+
+  // Refetch data when tab becomes active
+  useEffect(() => {
+    if (isActive) {
+      refetchContract();
+      refetchDeposits();
+    }
+  }, [isActive, refetchContract, refetchDeposits]);
 
   const contract = contractResponse?.data;
   const deposits = depositsResponse?.data || [];
@@ -153,7 +166,7 @@ export default function ContractAndTransactionTab() {
             </HStack>
 
             <HStack>
-              <Text fontWeight="bold">Thời gian bảo hành:</Text>
+              <Text fontWeight="bold">Thời hạn bảo hành:</Text>
               <Text>
                 {contract.warrantyPeriod
                   ? formatDateTimeString(new Date(contract.warrantyPeriod))
@@ -220,22 +233,13 @@ export default function ContractAndTransactionTab() {
             </HStack>
 
             <HStack>
-              <ChakraLink
-                target="_blank"
-                textDecoration="underline"
-                color={appColorTheme.brown_2}
-                href="/cus/contract"
-              >
-                Xem điều khoản hợp đồng
-              </ChakraLink>
-
               <Spacer />
 
               <ChakraLink
                 target="_blank"
                 textDecoration="underline"
                 color={appColorTheme.brown_2}
-                href={`/cus/contract/${contract.contractId}`}
+                href={`/contract/${contract.contractId}`}
               >
                 Xem chi tiết
               </ChakraLink>

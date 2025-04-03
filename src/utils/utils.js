@@ -6,19 +6,17 @@ import unorm from "unorm";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export const convertDateStringToDate = (dateString) => {
-  const [day, month, year] = dateString.split("-");
-  const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0));
-  date.setUTCHours(date.getUTCHours() + 7);
-  return date.toISOString();
-};
-
 export const formatDateString = (timestamp) => {
   const date = dayjs(timestamp).tz("Asia/Ho_Chi_Minh");
 
   const dateString = date.format("DD/MM/YYYY");
 
   return dateString;
+};
+
+export const formatDateTimeString = (timestamp) => {
+  const dateTime = dayjs(timestamp).tz("Asia/Ho_Chi_Minh");
+  return dateTime.format("DD/MM/YYYY HH:mm");
 };
 
 export const formatDateToVietnamese = (dateString) => {
@@ -31,9 +29,16 @@ export const formatDateToVietnamese = (dateString) => {
   });
 };
 
-export const formatDateTimeString = (timestamp) => {
-  const dateTime = dayjs(timestamp).tz("Asia/Ho_Chi_Minh");
-  return dateTime.format("DD/MM/YYYY HH:mm");
+export const formatDateTimeToVietnamese = (dateString) => {
+  if (!dateString) return "Không có";
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+  return new Date(dateString).toLocaleDateString("vi-VN", options);
 };
 
 export const getDateNow = () => {
@@ -62,3 +67,15 @@ export function normalizeVietnamese(text) {
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase();
 }
+
+// Format date for datetime-local input (YYYY-MM-DD format)
+export const formatDateForInput = (date) => {
+  if (!date) return "";
+
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+};

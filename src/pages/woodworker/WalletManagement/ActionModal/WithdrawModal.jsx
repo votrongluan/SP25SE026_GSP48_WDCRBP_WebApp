@@ -75,7 +75,7 @@ export default function WithdrawModal({ isOpen, onClose, wallet }) {
         </ModalBody>
         <ModalFooter>
           <Button variant="ghost" mr={3} onClick={onClose}>
-            Hủy
+            Đóng
           </Button>
           <Button
             colorScheme="purple"

@@ -30,7 +30,6 @@ import DesignDetailPage from "./pages/general/Design/DesignDetail/DesignDetailPa
 import PersonalizationRequestPage from "./pages/customer/PersonalizationRequest/PersonalizationRequestPage.jsx";
 import { Provider } from "react-redux";
 import { store } from "./store/store.js";
-import ContractPage from "./pages/customer/Contract/ContractPage.jsx";
 import TestPage from "./pages/TestPage.jsx";
 import ProductsPage from "./pages/general/Product/ProductList/ProductsPage.jsx";
 import CusGuaranteeOrderListPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderList/CusGuaranteeOrderListPage.jsx";
@@ -60,6 +59,7 @@ import AdminWelcomePage from "./pages/admin/Welcome/AdminWelcomePage.jsx";
 import WWServiceOrderDetailPage from "./pages/woodworker/ServiceOrder/ServiceOrderDetail/MainPage/WWServiceOrderDetailPage.jsx";
 import CusServiceOrderListPage from "./pages/customer/ServiceOrder/ServiceOrderList/CusServiceOrderListPage.jsx";
 import CusServiceOrderDetailPage from "./pages/customer/ServiceOrder/ServiceOrderDetail/MainPage/CusServiceOrderDetailPage.jsx";
+import ContractPage from "./pages/general/Contract/ContractPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -145,10 +145,6 @@ function App() {
             <Route index element={<CusServiceOrderListPage />} />
             <Route path=":id" element={<CusServiceOrderDetailPage />} />
           </Route>
-          <Route path="contract">
-            <Route index element={<ContractPage />} />
-            <Route path=":id" element={<DesignDetailPage />} />
-          </Route>
           <Route path="guarantee-order">
             <Route index element={<CusGuaranteeOrderListPage />} />
             <Route path=":id" element={<CusGuaranteeOrderDetailPage />} />
@@ -159,16 +155,23 @@ function App() {
         <Route path="/" element={<RootLayout />} errorElement={<ErrorPage />}>
           {/* Index page route */}
           <Route index element={<HomePage />} />
+
+          {/* Guard route */}
+          <Route path="personalization">
+            <Route path=":id" element={<PersonalizationRequestPage />} />
+          </Route>
+
+          <Route path="contract">
+            <Route path=":id" element={<ContractPage />} />
+          </Route>
+
+          {/* Normal route */}
           <Route path="payment-success" element={<PaymentSuccessPage />} />
           <Route path="ww-register" element={<WWRegister />} />
           <Route path="pricing" element={<Pricing />} />
           <Route path="success" element={<SuccessPage />} />
 
           <Route path="test" element={<TestPage />} />
-
-          <Route path="personalization">
-            <Route path=":id" element={<PersonalizationRequestPage />} />
-          </Route>
 
           {/* Auth route */}
           <Route path="auth" element={<AuthPage />} />

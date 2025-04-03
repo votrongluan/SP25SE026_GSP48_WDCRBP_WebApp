@@ -73,10 +73,19 @@ export default function AvailableService({ woodworkerId, onServiceAction }) {
 
           return (
             <Box key={availableService.availableServiceId}>
-              <Text as="h3" fontSize="20px" mb={4}>
-                {serviceInfo.serviceName || getServiceTitle(availableService)}
+              <Text
+                fontFamily="Montserrat"
+                fontWeight="bold"
+                as="h3"
+                fontSize="20px"
+                mb={1}
+                color={appColorTheme.brown_2}
+              >
+                {serviceInfo.serviceName}
               </Text>
-              <Text mb={4}>{availableService.description}</Text>
+              <Text mb={2}>
+                <b>Mô tả dịch vụ của xưởng:</b> {availableService.description}
+              </Text>
               <Button
                 bg={appColorTheme.brown_2}
                 color="white"
@@ -95,16 +104,4 @@ export default function AvailableService({ woodworkerId, onServiceAction }) {
       </Stack>
     </Box>
   );
-}
-
-// Fallback function for legacy compatibility
-function getServiceTitle(service) {
-  const titles = {
-    Personalization: "Dịch vụ thiết kế và gia công theo ý tưởng khách hàng",
-    Customization: "Dịch vụ gia công theo ý tưởng thiết kế của xưởng",
-    Guarantee: "Dịch vụ sửa chữa và bảo hành sản phẩm của xưởng",
-    Sale: "Dịch vụ bán sản phẩm có sẵn",
-  };
-
-  return titles[service.service.serviceName] || service.service.serviceName;
 }

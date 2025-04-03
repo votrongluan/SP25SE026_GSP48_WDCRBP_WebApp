@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   Box,
@@ -21,15 +21,21 @@ import {
   formatPrice,
   formatDateTimeString,
 } from "../../../../../utils/utils.js";
+import useAuth from "../../../../../hooks/useAuth.js";
 
-export default function ContractAndTransactionTab() {
+export default function ContractAndTransactionTab({
+  activeTabIndex,
+  isActive,
+}) {
   const { id } = useParams();
+  const { auth } = useAuth();
 
   // Fetch contract data
   const {
     data: contractResponse,
     isLoading: isContractLoading,
     error: contractError,
+    refetch: refetchContract,
   } = useGetContractByServiceOrderIdQuery(id);
 
   // Fetch deposit data
@@ -37,7 +43,16 @@ export default function ContractAndTransactionTab() {
     data: depositsResponse,
     isLoading: isDepositsLoading,
     error: depositsError,
+    refetch: refetchDeposits,
   } = useGetAllOrderDepositByOrderIdQuery(id);
+
+  // Refetch data when tab becomes active
+  useEffect(() => {
+    if (isActive) {
+      refetchContract();
+      refetchDeposits();
+    }
+  }, [isActive, refetchContract, refetchDeposits]);
 
   const contract = contractResponse?.data;
   const deposits = depositsResponse?.data || [];
@@ -83,30 +98,30 @@ export default function ContractAndTransactionTab() {
           <Stack spacing={4}>
             <HStack>
               <Text fontWeight="bold">Họ tên thợ mộc:</Text>
-              <Text>{contract.wwFullName || "Chưa cập nhật"}</Text>
+              <Text>{contract?.woodworker?.username || "Chưa cập nhật"}</Text>
             </HStack>
             <HStack>
               <Text fontWeight="bold">SĐT thợ mộc:</Text>
-              <Text>{contract.wwPhone || "Chưa cập nhật"}</Text>
+              <Text>{contract?.woodworker?.phone || "Chưa cập nhật"}</Text>
             </HStack>
             <HStack>
-              <Text fontWeight="bold">Địa chỉ thợ mộc:</Text>
-              <Text>{contract.wwAddress || "Chưa cập nhật"}</Text>
+              <Text fontWeight="bold">Email thợ mộc:</Text>
+              <Text>{contract?.woodworker?.email || "Chưa cập nhật"}</Text>
             </HStack>
 
             <Box height="10px" />
 
             <HStack>
               <Text fontWeight="bold">Họ tên khách hàng:</Text>
-              <Text>{contract.cusFullName || "Chưa cập nhật"}</Text>
+              <Text>{contract?.customer?.username || "Chưa cập nhật"}</Text>
             </HStack>
             <HStack>
               <Text fontWeight="bold">SĐT khách hàng:</Text>
-              <Text>{contract.cusPhone || "Chưa cập nhật"}</Text>
+              <Text>{contract?.customer?.phone || "Chưa cập nhật"}</Text>
             </HStack>
             <HStack>
-              <Text fontWeight="bold">Địa chỉ khách hàng:</Text>
-              <Text>{contract.cusAddress || "Chưa cập nhật"}</Text>
+              <Text fontWeight="bold">Email khách hàng:</Text>
+              <Text>{contract?.customer?.email || "Chưa cập nhật"}</Text>
             </HStack>
 
             <Box height="10px" />
@@ -114,15 +129,6 @@ export default function ContractAndTransactionTab() {
             <HStack>
               <Text fontWeight="bold">Mã hợp đồng:</Text>
               <Text>{contract.contractId || "Chưa cập nhật"}</Text>
-            </HStack>
-
-            <HStack>
-              <Text fontWeight="bold">Ngày tạo:</Text>
-              <Text>
-                {contract.createdAt
-                  ? formatDateTimeString(new Date(contract.createdAt))
-                  : "Chưa cập nhật"}
-              </Text>
             </HStack>
 
             <HStack>
@@ -153,7 +159,7 @@ export default function ContractAndTransactionTab() {
             </HStack>
 
             <HStack>
-              <Text fontWeight="bold">Thời gian bảo hành:</Text>
+              <Text fontWeight="bold">Thời hạn bảo hành:</Text>
               <Text>
                 {contract.warrantyPeriod
                   ? formatDateTimeString(new Date(contract.warrantyPeriod))
@@ -163,7 +169,9 @@ export default function ContractAndTransactionTab() {
 
             <Box>
               <Text fontWeight="bold">Chính sách bảo hành:</Text>
-              <Text>{contract.warrantyPolicy || "Chưa cập nhật"}</Text>
+              <Text whiteSpace={"pre-wrap"}>
+                {contract.warrantyPolicy || "Chưa cập nhật"}
+              </Text>
             </Box>
 
             <HStack>
@@ -220,22 +228,13 @@ export default function ContractAndTransactionTab() {
             </HStack>
 
             <HStack>
-              <ChakraLink
-                target="_blank"
-                textDecoration="underline"
-                color={appColorTheme.brown_2}
-                href="/cus/contract"
-              >
-                Xem điều khoản hợp đồng
-              </ChakraLink>
-
               <Spacer />
 
               <ChakraLink
                 target="_blank"
                 textDecoration="underline"
                 color={appColorTheme.brown_2}
-                href={`/cus/contract/${contract.contractId}`}
+                href={`/contract/${contract.contractId}`}
               >
                 Xem chi tiết
               </ChakraLink>

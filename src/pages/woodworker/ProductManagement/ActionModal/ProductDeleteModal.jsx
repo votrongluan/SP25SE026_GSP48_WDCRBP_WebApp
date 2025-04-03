@@ -93,7 +93,7 @@ export default function ProductDeleteModal({ product, refetch }) {
           </ModalBody>
           <ModalFooter bgColor="app_grey.1" gap={2}>
             <Button leftIcon={<FiX />} onClick={onClose} isDisabled={isLoading}>
-              Hủy
+              Đóng
             </Button>
             <Button
               colorScheme="red"

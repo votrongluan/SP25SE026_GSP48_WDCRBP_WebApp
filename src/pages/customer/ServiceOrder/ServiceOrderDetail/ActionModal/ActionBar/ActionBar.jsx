@@ -1,8 +1,8 @@
 import { HStack } from "@chakra-ui/react";
 import { serviceOrderStatusConstants } from "../../../../../../config/appconfig.js";
 import FeedbackModal from "../FeedbackModal/FeedbackModal.jsx";
-import ConfirmModal from "../FeedbackModal/ConfirmModal.jsx";
 import CancelModal from "../FeedbackModal/CancelModal.jsx";
+import AppointmentConfirmModal from "../FeedbackModal/AppointmentConfirmModal.jsx";
 
 export default function ActionBar({ status, feedback, order, refetch }) {
   const renderActionButtons = () => {
@@ -11,7 +11,6 @@ export default function ActionBar({ status, feedback, order, refetch }) {
     let showConfirmButton = false;
     let showCancelButton = false;
     let confirmButtonText = "Xác nhận";
-    let confirmDetails = "";
 
     // Only show actions if the role is Customer
     if (order && order.role === "Customer") {
@@ -66,9 +65,9 @@ export default function ActionBar({ status, feedback, order, refetch }) {
         )}
 
         {showConfirmButton && (
-          <ConfirmModal
+          <AppointmentConfirmModal
             serviceOrderId={order?.orderId}
-            details={confirmDetails}
+            appointment={order?.consultantAppointment}
             buttonText={confirmButtonText}
             refetch={refetch}
           />

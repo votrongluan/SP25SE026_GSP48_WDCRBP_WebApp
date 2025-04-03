@@ -165,7 +165,7 @@ export default function PostUpdateModal({ post, refetch }) {
                     leftIcon={<FiX />}
                     isDisabled={isLoading}
                   >
-                    Hủy
+                    Đóng
                   </Button>
                   <Button
                     colorScheme="blue"

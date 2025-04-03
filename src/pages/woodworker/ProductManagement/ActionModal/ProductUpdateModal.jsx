@@ -378,7 +378,7 @@ export default function ProductUpdateModal({ product, refetch }) {
                     leftIcon={<FiX />}
                     isDisabled={isLoading}
                   >
-                    Hủy
+                    Đóng
                   </Button>
                   <Button
                     colorScheme="blue"

@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import {
   Box,
   Heading,
@@ -6,18 +6,32 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  Link as ChakraLink,
   Badge,
-  Spacer,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../../config/appconfig.js";
-import { formatDateTimeString } from "../../../../../utils/utils.js";
+import {
+  formatDateTimeString,
+  formatDateTimeToVietnamese,
+} from "../../../../../utils/utils.js";
 import CustomizationProductList from "./CustomizationProductList.jsx";
 import StarRating from "../../../../../components/Utility/StarRating.jsx";
-import { Link } from "react-router-dom";
+import { useGetShipmentsByServiceOrderIdQuery } from "../../../../../services/shipmentApi.js";
 
-export default function GeneralInformationTab({ order }) {
-  console.log("order", order);
+export default function GeneralInformationTab({
+  order,
+  activeTabIndex,
+  isActive,
+}) {
+  const { data: shipmentData, refetch: refetchShipment } =
+    useGetShipmentsByServiceOrderIdQuery(order?.orderId, {
+      skip: !order?.orderId,
+    });
+
+  // Refetch data when tab becomes active
+  useEffect(() => {
+    if (isActive && order?.orderId) {
+      refetchShipment();
+    }
+  }, [isActive, order?.orderId, refetchShipment]);
 
   return (
     <Box>
@@ -100,7 +114,7 @@ export default function GeneralInformationTab({ order }) {
                 <HStack>
                   <Text fontWeight="bold">Ngày giờ hẹn:</Text>
                   <Text>
-                    {formatDateTimeString(
+                    {formatDateTimeToVietnamese(
                       new Date(order.consultantAppointment.dateTime)
                     )}
                   </Text>
@@ -122,7 +136,7 @@ export default function GeneralInformationTab({ order }) {
 
       <Box bgColor="white" boxShadow="md" p={5} borderRadius="10px" mt={6}>
         <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
-          Thông tin xưởng mộc & Đánh giá
+          Thông tin khách hàng & Đánh giá
         </Heading>
 
         <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={10}>
@@ -130,26 +144,14 @@ export default function GeneralInformationTab({ order }) {
           <Box>
             <Stack spacing={3}>
               <Text>
-                <b>Tên xưởng mộc:</b>{" "}
-                {order?.service?.wwDto?.brandName || "Chưa cập nhật"}
+                <b>Tên khách hàng:</b>{" "}
+                {order?.user?.username || "Chưa cập nhật"}
               </Text>
 
               <Text>
-                <b>Địa chỉ:</b>{" "}
-                {order?.service?.wwDto?.address || "Chưa cập nhật"}
+                <b>Địa chỉ giao hàng:</b>{" "}
+                {shipmentData?.data[0]?.toAddress || "Chưa cập nhật"}
               </Text>
-
-              <HStack>
-                <Spacer />
-                <Link to={`/woodworker/${order?.service?.wwDto?.woodworkerId}`}>
-                  <Text
-                    color={appColorTheme.brown_2}
-                    _hover={{ textDecoration: "underline" }}
-                  >
-                    Xem xưởng
-                  </Text>
-                </Link>
-              </HStack>
             </Stack>
           </Box>
 
