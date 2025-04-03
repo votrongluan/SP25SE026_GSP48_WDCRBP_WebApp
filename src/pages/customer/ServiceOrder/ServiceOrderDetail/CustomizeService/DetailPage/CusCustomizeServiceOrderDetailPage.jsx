@@ -21,7 +21,7 @@ import ProcessTab from "../Tab/ProgressTab.jsx";
 import ActionBar from "../ActionModal/ActionBar.jsx";
 import { appColorTheme } from "../../../../../../config/appconfig.js";
 
-export default function CustomizeServiceOrderDetailPage({ order, refetch }) {
+export default function CusCustomizeServiceOrderDetailPage({ order }) {
   return (
     <Box>
       <HStack mb={6}>
@@ -52,17 +52,10 @@ export default function CustomizeServiceOrderDetailPage({ order, refetch }) {
 
         <Box>
           {order?.role == "Woodworker" ? (
-            <HStack spacing={4}>
-              <ActionBar
-                order={order}
-                refetch={refetch}
-                status={order?.status}
-                feedback={order?.feedback}
-              />
-            </HStack>
+            <ActionBar />
           ) : (
             <>
-              <Text>Chờ phản hồi từ khách hàng</Text>
+              <Text>Chờ phản hồi từ thợ mộc</Text>
             </>
           )}
         </Box>

@@ -10,13 +10,15 @@ import {
   Badge,
   Spacer,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../../../config/appconfig.js";
-import { formatDateTimeString } from "../../../../../../utils/utils.js";
+import { appColorTheme } from "../../../../../config/appconfig.js";
+import { formatDateTimeString } from "../../../../../utils/utils.js";
 import CustomizationProductList from "./CustomizationProductList.jsx";
-import StarRating from "../../../../../../components/Utility/StarRating.jsx";
+import StarRating from "../../../../../components/Utility/StarRating.jsx";
 import { Link } from "react-router-dom";
 
 export default function GeneralInformationTab({ order }) {
+  console.log("order", order);
+
   return (
     <Box>
       <CustomizationProductList
@@ -87,19 +89,19 @@ export default function GeneralInformationTab({ order }) {
               <>
                 <HStack>
                   <Text fontWeight="bold">Hình thức:</Text>
-                  <Text>{order.consultantAppointment.type}</Text>
+                  <Text>{order.consultantAppointment.form}</Text>
                 </HStack>
 
                 <HStack>
                   <Text fontWeight="bold">Địa điểm:</Text>
-                  <Text>{order.consultantAppointment.location}</Text>
+                  <Text>{order.consultantAppointment.meetAddress}</Text>
                 </HStack>
 
                 <HStack>
                   <Text fontWeight="bold">Ngày giờ hẹn:</Text>
                   <Text>
                     {formatDateTimeString(
-                      new Date(order.consultantAppointment.appointmentTime)
+                      new Date(order.consultantAppointment.dateTime)
                     )}
                   </Text>
                 </HStack>
@@ -107,8 +109,7 @@ export default function GeneralInformationTab({ order }) {
                 <HStack>
                   <Text fontWeight="bold">Mô tả:</Text>
                   <Text>
-                    {order.consultantAppointment.description ||
-                      "Không có mô tả"}
+                    {order.consultantAppointment.content || "Không có mô tả"}
                   </Text>
                 </HStack>
               </>

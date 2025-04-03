@@ -1,6 +1,6 @@
 import React from "react";
-import AppointmentUpdateModal from "./AppointmentUpdateModal.jsx";
-import ContractUpdateModal from "./ContractUpdateModal.jsx";
+import AppointmentUpdateModal from "../Appointment/AppointmentUpdateModal.jsx";
+import ContractUpdateModal from "../Contract/ContractUpdateModal.jsx";
 import { serviceOrderStatusConstants } from "../../../../../../config/appconfig.js";
 
 export default function ActionBar({ status, feedback, order, refetch }) {

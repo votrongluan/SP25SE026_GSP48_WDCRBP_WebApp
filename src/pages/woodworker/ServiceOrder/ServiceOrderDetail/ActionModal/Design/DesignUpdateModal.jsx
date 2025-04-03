@@ -26,8 +26,8 @@ import AutoResizeTextarea from "../../../../../../components/Input/AutoResizeTex
 import ProductTab from "../Tab/ProductTab.jsx";
 import LogTab from "../Tab/LogTab.jsx";
 import AppointmentEditSection from "./AppointmentEditSection.jsx";
-import ContractEditSection from "./ContractEditSection.jsx";
-import ProductEditSection from "./ProductEditSection.jsx";
+import ContractEditSection from "../Contract/ContractEditSection.jsx";
+import ProductEditSection from "../Contract/ProductEditSection.jsx";
 import DesignEditSection from "./DesignEditSection.jsx";
 
 export default function DesignUpdateModal({ order, refetch }) {

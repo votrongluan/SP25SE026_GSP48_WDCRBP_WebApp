@@ -14,13 +14,13 @@ import {
   Center,
   Spinner,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../../../config/appconfig.js";
-import { useGetContractByServiceOrderIdQuery } from "../../../../../../services/contractApi.js";
-import { useGetAllOrderDepositByOrderIdQuery } from "../../../../../../services/orderDepositApi.js";
+import { appColorTheme } from "../../../../../config/appconfig.js";
+import { useGetContractByServiceOrderIdQuery } from "../../../../../services/contractApi.js";
+import { useGetAllOrderDepositByOrderIdQuery } from "../../../../../services/orderDepositApi.js";
 import {
   formatPrice,
   formatDateTimeString,
-} from "../../../../../../utils/utils.js";
+} from "../../../../../utils/utils.js";
 
 export default function ContractAndTransactionTab() {
   const { id } = useParams();
