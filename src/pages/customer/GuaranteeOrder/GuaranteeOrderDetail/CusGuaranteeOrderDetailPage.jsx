@@ -17,15 +17,15 @@ import GeneralInformationTab from "./GeneralInformationTab.jsx";
 import ContractAndTransactionTab from "./ContractAndTransactionTab.jsx";
 import ProcessTab from "./ProcessTab.jsx";
 import ActionBar from "./ActionBar.jsx";
+import { appColorTheme } from "../../../../config/appconfig.js";
 
 export default function CusGuaranteeOrderDetailPage() {
   return (
     <Box>
       <HStack mb={6}>
         <Heading
-          fontWeight="normal"
-          as="h2"
-          fontSize="22px"
+          color={appColorTheme.brown_2}
+          fontSize="2xl"
           fontFamily="Montserrat"
         >
           Chi tiết đơn

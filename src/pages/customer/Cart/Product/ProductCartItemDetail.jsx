@@ -57,7 +57,14 @@ export default function ProductCartItemDetail({ product, woodworkerId }) {
         {/* First row: name and delete button */}
         <Flex justifyContent="space-between" alignItems="flex-start">
           <Link to={`/product/${product.productId}`}>
-            <Text fontSize="lg" fontWeight="bold" noOfLines={2}>
+            <Text
+              _hover={{
+                textDecoration: "underline",
+              }}
+              fontSize="lg"
+              fontWeight="bold"
+              noOfLines={2}
+            >
               {product.productName}
             </Text>
           </Link>

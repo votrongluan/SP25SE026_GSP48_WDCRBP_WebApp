@@ -20,6 +20,10 @@ import { userAddressApi } from "../services/userAddressApi";
 import { serviceOrderApi } from "../services/serviceOrderApi";
 import { productApi } from "../services/productApi";
 import { productOrderApi } from "../services/productOrderApi";
+import { techSpecApi } from "../services/techSpecApi";
+import { orderProgressApi } from "../services/orderProgressApi";
+import { orderDepositApi } from "../services/orderDepositApi";
+import { contractApi } from "../services/contractApi";
 
 export const store = configureStore({
   reducer: {
@@ -43,6 +47,10 @@ export const store = configureStore({
     [serviceOrderApi.reducerPath]: serviceOrderApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [productOrderApi.reducerPath]: productOrderApi.reducer,
+    [techSpecApi.reducerPath]: techSpecApi.reducer,
+    [orderProgressApi.reducerPath]: orderProgressApi.reducer,
+    [orderDepositApi.reducerPath]: orderDepositApi.reducer,
+    [contractApi.reducerPath]: contractApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -65,7 +73,11 @@ export const store = configureStore({
       userAddressApi.middleware,
       serviceOrderApi.middleware,
       productApi.middleware,
-      productOrderApi.middleware
+      productOrderApi.middleware,
+      techSpecApi.middleware,
+      orderProgressApi.middleware,
+      orderDepositApi.middleware,
+      contractApi.middleware
     ),
 });
 

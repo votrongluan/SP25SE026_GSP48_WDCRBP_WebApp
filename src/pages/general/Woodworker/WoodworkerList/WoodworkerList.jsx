@@ -50,7 +50,6 @@ export default function WoodworkerList({ woodworkers = [] }) {
                       objectPosition="center"
                       w="100%"
                       h="200px"
-                      fallbackSrc="https://via.placeholder.com/200x150?text=No+Image"
                     />
 
                     <Stack height="100px" p={1} gap={1}>

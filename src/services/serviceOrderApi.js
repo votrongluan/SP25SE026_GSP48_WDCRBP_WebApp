@@ -42,10 +42,15 @@ export const serviceOrderApi = createApi({
     }),
 
     acceptServiceOrder: builder.mutation({
-      query: (data) => ({
-        url: "/api/v1/service-orders/accept",
+      query: ({
+        serviceOrderId = "a",
+        timeMeeting = "a",
+        linkMeeting = "a",
+        form = "",
+        desc = "",
+      }) => ({
+        url: `/api/v1/service-orders/accept?serviceOrderId=${serviceOrderId}&timeMeeting=${timeMeeting}&linkMeeting=${linkMeeting}&form=${form}&desc=${desc}`,
         method: "POST",
-        body: data,
       }),
     }),
 
@@ -53,6 +58,12 @@ export const serviceOrderApi = createApi({
       query: ({ id, role }) => ({
         url: "/api/v1/service-orders/listOrder",
         params: { id, role },
+      }),
+    }),
+
+    getServiceOrderById: builder.query({
+      query: (id) => ({
+        url: `/api/v1/service-orders/${id}`,
       }),
     }),
   }),
@@ -64,4 +75,5 @@ export const {
   useCreateCustomizeOrderMutation,
   useAcceptServiceOrderMutation,
   useGetServiceOrdersQuery,
+  useGetServiceOrderByIdQuery,
 } = serviceOrderApi;

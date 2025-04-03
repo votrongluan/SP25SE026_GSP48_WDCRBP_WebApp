@@ -25,8 +25,6 @@ export default function DesignCartTab() {
   const { auth } = useAuth();
   const location = useLocation();
 
-  console.log(cart);
-
   // State to track which woodworker is selected for checkout (single selection)
   const [selectedWoodworker, setSelectedWoodworker] = useState(null);
   // State to track which address is selected
@@ -71,7 +69,7 @@ export default function DesignCartTab() {
   return (
     <Flex direction={{ base: "column", lg: "row" }} gap={6}>
       {/* CartSidebar Items List */}
-      <Box flex="3" bg="white" borderRadius="md" boxShadow="md">
+      <Box flex="2" bg="white" borderRadius="md" boxShadow="md">
         {Object.keys(cart.designs).length === 0 ? (
           <Box textAlign="center" py={10}>
             <Text fontSize="lg">Giỏ hàng trống</Text>

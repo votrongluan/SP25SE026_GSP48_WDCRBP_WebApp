@@ -7,6 +7,9 @@ import {
   Alert,
   AlertIcon,
   VStack,
+  Textarea,
+  FormControl,
+  FormLabel,
 } from "@chakra-ui/react";
 import { formatPrice } from "../../../../utils/utils.js";
 import { appColorTheme } from "../../../../config/appconfig.js";
@@ -15,7 +18,7 @@ import { useCreateProductOrderMutation } from "../../../../services/productOrder
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useNotify } from "../../../../components/Utility/Notify.jsx";
-import { FiLogIn } from "react-icons/fi";
+import { FiLogIn, FiShoppingCart } from "react-icons/fi";
 
 export default function ProductOrderSummary({
   auth,
@@ -28,6 +31,7 @@ export default function ProductOrderSummary({
   addressError,
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [description, setDescription] = useState("");
   const [createProductOrder] = useCreateProductOrderMutation();
   const navigate = useNavigate();
   const notify = useNotify();
@@ -96,6 +100,7 @@ export default function ProductOrderSummary({
         })),
         address: selectedAddressObj.address,
         woodworkerId: selectedWoodworker,
+        description: description.trim(), // Include the description in the API request
       };
 
       // Call the API
@@ -172,6 +177,19 @@ export default function ProductOrderSummary({
             </Box>
           )}
 
+          {/* Note Section */}
+          <FormControl mt={4}>
+            <FormLabel fontWeight="medium">Ghi chú đơn hàng</FormLabel>
+            <Textarea
+              placeholder="Nhập ghi chú hoặc yêu cầu đặc biệt cho đơn hàng này"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              size="md"
+              resize="vertical"
+              maxLength={500}
+            />
+          </FormControl>
+
           <Divider my={4} />
 
           <Flex justify="space-between" mb={4}>
@@ -196,6 +214,7 @@ export default function ProductOrderSummary({
           isDisabled={!canProceed || getTotalQuantity() > 4}
           onClick={handlePlaceOrder}
           isLoading={isSubmitting}
+          leftIcon={<FiShoppingCart />}
         >
           Tiến hành đặt hàng
         </Button>

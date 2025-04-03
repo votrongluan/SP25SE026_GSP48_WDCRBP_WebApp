@@ -14,6 +14,7 @@ import { useMemo, useState, useRef, useEffect } from "react";
 import {
   appColorTheme,
   serviceOrderStatusConstants,
+  serviceTypeMap,
 } from "../../../../config/appconfig";
 import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
@@ -41,13 +42,6 @@ const ActionButton = (params) => {
       </Tooltip>
     </HStack>
   );
-};
-
-// Map between display values and API values for service types
-const serviceTypeMap = {
-  "Tùy chỉnh": "Customization",
-  "Cá nhân hóa": "Personalization",
-  "Mua hàng": "Sale",
 };
 
 // Reverse lookup for display names

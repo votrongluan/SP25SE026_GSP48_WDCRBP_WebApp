@@ -56,7 +56,6 @@ export default function DesignList({ designs = [] }) {
                         objectPosition="center"
                         w="100%"
                         h="200px"
-                        fallbackSrc="https://via.placeholder.com/200x150?text=No+Image"
                       />
                       {design.img_urls && design.img_urls.includes(";") && (
                         <Badge

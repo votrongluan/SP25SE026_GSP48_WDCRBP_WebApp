@@ -1,5 +1,5 @@
 import { Flex, IconButton, Image, Stack, Text, HStack } from "@chakra-ui/react";
-import { Add, Delete, Remove } from "@mui/icons-material";
+import { Add, Remove } from "@mui/icons-material";
 import useCart from "../../../../hooks/useCart.js";
 import { formatPrice } from "../../../../utils/utils.js";
 import ConfigDisplay from "../../../../components/Utility/ConfigDisplay.jsx";
@@ -62,7 +62,14 @@ export default function DesignCartItemDetail({ design, type, woodworkerId }) {
         <Stack fontSize="16px" flex="1">
           <Flex justifyContent="space-between">
             <Link to={`/design/${design.designId}`}>
-              <Text fontSize="lg" fontWeight="bold" noOfLines={2}>
+              <Text
+                _hover={{
+                  textDecoration: "underline",
+                }}
+                fontSize="lg"
+                fontWeight="bold"
+                noOfLines={2}
+              >
                 {design.name}
               </Text>
             </Link>

@@ -69,7 +69,7 @@ export default function ProductCartTab() {
   return (
     <Flex direction={{ base: "column", lg: "row" }} gap={6}>
       {/* CartSidebar Items List */}
-      <Box flex="3" bg="white" borderRadius="md" boxShadow="md">
+      <Box flex="2" bg="white" borderRadius="md" boxShadow="md">
         {Object.keys(cart.products).length === 0 ? (
           <Box textAlign="center" py={10}>
             <Text fontSize="lg">Giỏ hàng trống</Text>

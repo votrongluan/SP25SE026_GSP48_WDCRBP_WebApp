@@ -14,41 +14,69 @@ import {
   ModalOverlay,
   Spacer,
   Text,
+  Textarea,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { FiCalendar } from "react-icons/fi";
+import { FiCalendar, FiCheck, FiX } from "react-icons/fi";
 import { appColorTheme } from "../../../../../../config/appconfig.js";
 import AutoResizeTextarea from "../../../../../../components/Input/AutoResizeTextarea.jsx";
-
-// Hàm lấy thời gian địa phương theo định dạng "YYYY-MM-DDTHH:mm"
-const getLocalDateTime = () => {
-  const now = new Date();
-  const offset = now.getTimezoneOffset() * 60000;
-  return new Date(now - offset).toISOString().slice(0, 16);
-};
-
-const appointmentData = {
-  type: "Online",
-  location: "https://google.com",
-  date: getLocalDateTime(),
-  description:
-    "Bàn bạc chi tiết mô tả và chỉnh sửa lại các yêu cầu để đảm báo tính khả thi",
-};
+import { useAcceptServiceOrderMutation } from "../../../../../../services/serviceOrderApi.js";
+import CheckboxList from "../../../../../../components/Utility/CheckboxList.jsx";
+import { useNotify } from "../../../../../../components/Utility/Notify.jsx";
 
 export default function AppointmentUpdateModal({ order, refetch }) {
   // Modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
+  const notify = useNotify();
 
-  const [formData, setFormData] = useState(appointmentData);
+  // API mutation
+  const [acceptServiceOrder, { isLoading }] = useAcceptServiceOrderMutation();
 
-  const handleChange = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+  // Button disable state for checkboxes
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Create FormData from form and convert to object
+      const formData = new FormData(e.target);
+      const formDataObj = Object.fromEntries(formData);
+
+      // Add order ID to the form data
+      const apiData = {
+        serviceOrderId: order.orderId,
+        ...formDataObj,
+      };
+
+      // Call the API
+      await acceptServiceOrder(apiData).unwrap();
+
+      notify(
+        "Lịch hẹn đã được cập nhật",
+        "Thông tin lịch hẹn đã được lưu thành công",
+        "success"
+      );
+      refetch();
+      onClose();
+    } catch (error) {
+      console.error("Appointment update error:", error);
+      notify(
+        "Đã xảy ra lỗi",
+        error.message || "Không thể cập nhật lịch hẹn, vui lòng thử lại sau",
+        "error"
+      );
+    }
   };
+
+  const confirmationItems = [
+    {
+      description: "Tôi xác nhận cập nhật thông tin lịch hẹn",
+      isOptional: false,
+    },
+  ];
 
   return (
     <>
@@ -66,7 +94,7 @@ export default function AppointmentUpdateModal({ order, refetch }) {
       </Button>
 
       <Modal
-        size="xl"
+        size="5xl"
         initialFocusRef={initialRef}
         isOpen={isOpen}
         closeOnOverlayClick={false}
@@ -76,16 +104,9 @@ export default function AppointmentUpdateModal({ order, refetch }) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Tạo, điều chỉnh lịch hẹn</ModalHeader>
-          <ModalCloseButton />
+          {!isLoading && <ModalCloseButton />}
           <ModalBody bgColor="app_grey.1" pb={6}>
-            <form
-              onSubmit={async (e) => {
-                e.preventDefault();
-                const formData = new FormData(e.target);
-                const putData = Object.fromEntries(formData);
-                putData.orderStatus = +putData.orderStatus;
-              }}
-            >
+            <form onSubmit={handleSubmit}>
               <Box>
                 <Heading
                   fontWeight="bold"
@@ -104,11 +125,7 @@ export default function AppointmentUpdateModal({ order, refetch }) {
                       </Text>
                     </GridItem>
                     <GridItem>
-                      <Input
-                        value={formData.type}
-                        onChange={(e) => handleChange("type", e.target.value)}
-                        placeholder="Hình thức"
-                      />
+                      <Input name="form" placeholder="Hình thức" required />
                     </GridItem>
 
                     <GridItem>
@@ -118,11 +135,9 @@ export default function AppointmentUpdateModal({ order, refetch }) {
                     </GridItem>
                     <GridItem>
                       <Input
-                        value={formData.location}
-                        onChange={(e) =>
-                          handleChange("location", e.target.value)
-                        }
+                        name="linkMeeting"
                         placeholder="Địa điểm"
+                        required
                       />
                     </GridItem>
 
@@ -134,9 +149,9 @@ export default function AppointmentUpdateModal({ order, refetch }) {
                     <GridItem>
                       <Input
                         type="datetime-local"
-                        value={formData.date}
-                        onChange={(e) => handleChange("date", e.target.value)}
+                        name="timeMeeting"
                         placeholder="Ngày hẹn"
+                        required
                       />
                     </GridItem>
 
@@ -146,23 +161,35 @@ export default function AppointmentUpdateModal({ order, refetch }) {
                       </Text>
                     </GridItem>
                     <GridItem>
-                      <AutoResizeTextarea
-                        value={formData.description}
-                        onChange={(e) =>
-                          handleChange("description", e.target.value)
-                        }
-                        placeholder="Mô tả"
-                      />
+                      <Textarea name="desc" placeholder="Mô tả" required />
                     </GridItem>
                   </Grid>
                 </Box>
               </Box>
+
+              <Box mt={6}>
+                <CheckboxList
+                  items={confirmationItems}
+                  setButtonDisabled={setIsButtonDisabled}
+                />
+              </Box>
+
               <HStack mt={10}>
                 <Spacer />
-                <Button colorScheme="blue" mr={3} type="submit">
+                <Button
+                  colorScheme="blue"
+                  mr={3}
+                  type="submit"
+                  isLoading={isLoading}
+                  loadingText="Đang lưu"
+                  leftIcon={<FiCheck />}
+                  isDisabled={isButtonDisabled}
+                >
                   Cập nhật
                 </Button>
-                <Button onClick={onClose}>Hủy</Button>
+                <Button onClick={onClose} leftIcon={<FiX />}>
+                  Hủy
+                </Button>
               </HStack>
             </form>
           </ModalBody>

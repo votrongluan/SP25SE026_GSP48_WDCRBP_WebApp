@@ -7,6 +7,9 @@ import {
   Alert,
   AlertIcon,
   VStack,
+  Textarea,
+  FormControl,
+  FormLabel,
 } from "@chakra-ui/react";
 import { formatPrice } from "../../../../utils/utils.js";
 import { appColorTheme } from "../../../../config/appconfig.js";
@@ -15,7 +18,7 @@ import { useCreateCustomizeOrderMutation } from "../../../../services/serviceOrd
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useNotify } from "../../../../components/Utility/Notify.jsx";
-import { FiLogIn } from "react-icons/fi";
+import { FiLogIn, FiShoppingCart } from "react-icons/fi";
 import useCart from "../../../../hooks/useCart.js";
 
 export default function DesignOrderSummary({
@@ -29,6 +32,7 @@ export default function DesignOrderSummary({
   addressError,
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [description, setDescription] = useState("");
   const [createCustomizeOrder] = useCreateCustomizeOrderMutation();
   const navigate = useNavigate();
   const notify = useNotify();
@@ -99,6 +103,7 @@ export default function DesignOrderSummary({
           quantity: item.quantity,
         })),
         address: selectedAddressObj.address,
+        description: description.trim(), // Include the description in the API request
       };
 
       // Call the API
@@ -182,6 +187,19 @@ export default function DesignOrderSummary({
             </Box>
           )}
 
+          {/* Note Section */}
+          <FormControl mt={4}>
+            <FormLabel fontWeight="medium">Ghi chú đơn hàng</FormLabel>
+            <Textarea
+              placeholder="Nhập ghi chú hoặc yêu cầu đặc biệt cho đơn hàng này"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              size="md"
+              resize="vertical"
+              maxLength={500}
+            />
+          </FormControl>
+
           <Divider my={4} />
 
           <Flex justify="space-between" mb={4}>
@@ -206,6 +224,7 @@ export default function DesignOrderSummary({
           isDisabled={!canProceed || getTotalQuantity() > 4}
           onClick={handlePlaceOrder}
           isLoading={isSubmitting}
+          leftIcon={<FiShoppingCart />}
         >
           Tiến hành đặt hàng
         </Button>

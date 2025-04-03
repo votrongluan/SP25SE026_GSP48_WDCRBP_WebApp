@@ -59,8 +59,8 @@ export const transactionTypeColorMap = {
 
 export const service = {
   ["Personalization"]: {
-    serviceName: "Dịch vụ thiết kế và gia công theo ý tưởng khách hàng",
-    serviceAlterName: "Dịch vụ Cá nhân hóa",
+    serviceName: "Dịch vụ cá nhân hóa",
+    serviceAlterName: "Dịch vụ cá nhân hóa",
     serviceType: "Personalization",
     description:
       "Dịch vụ thiết kế và gia công theo ý tưởng khách hàng, giúp bạn biến ý tưởng thành hiện thực.",
@@ -69,8 +69,8 @@ export const service = {
     action: "navigate",
   },
   ["Customization"]: {
-    serviceName: "Dịch vụ gia công theo ý tưởng thiết kế của xưởng",
-    serviceAlterName: "Dịch vụ Tùy chỉnh",
+    serviceName: "Dịch vụ tùy chỉnh",
+    serviceAlterName: "Dịch vụ tùy chỉnh",
     serviceType: "Customization",
     description:
       "Dịch vụ gia công theo ý tưởng thiết kế của xưởng, đảm bảo chất lượng và độ chính xác.",
@@ -80,9 +80,9 @@ export const service = {
     tabIndex: 2,
   },
   ["Guarantee"]: {
-    serviceName: "Dịch vụ sửa chữa và bảo hành sản phẩm của xưởng",
+    serviceName: "Dịch vụ sửa chữa / bảo hành",
     serviceType: "Guarantee",
-    serviceAlterName: "Dịch vụ Sửa chữa",
+    serviceAlterName: "Dịch vụ BH / sửa chữa",
     description:
       "Dịch vụ sửa chữa và bảo hành sản phẩm của xưởng, đảm bảo sự hài lòng của khách hàng.",
     path: "guarantee",
@@ -90,7 +90,7 @@ export const service = {
     action: "navigate",
   },
   ["Sale"]: {
-    serviceName: "Dịch vụ bán sản phẩm có sẵn",
+    serviceName: "Dịch vụ bán hàng",
     serviceType: "Sale",
     serviceAlterName: "Dịch vụ Bán hàng",
     description:
@@ -100,4 +100,10 @@ export const service = {
     action: "changeTab",
     tabIndex: 3,
   },
+};
+
+export const serviceTypeMap = {
+  "Tùy chỉnh": "Customization",
+  "Cá nhân hóa": "Personalization",
+  "Mua hàng": "Sale",
 };

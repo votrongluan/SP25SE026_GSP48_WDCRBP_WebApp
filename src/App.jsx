@@ -21,7 +21,6 @@ import AdminLayout from "./layouts/AdminLayout.jsx";
 import WoodworkerLayout from "./layouts/WoodworkerLayout.jsx";
 import CustomerLayout from "./layouts/CustomerLayout.jsx";
 import ScrollToTopAndBottom from "./components/Utility/ScrollToTopAndBottom.jsx";
-import CusServiceOrderDetailPage from "./pages/customer/ServiceOrder/ServiceOrderDetail/CustomizeService/DetailPage/CusServiceOrderDetailPage.jsx";
 import { appColorTheme } from "./config/appconfig.js";
 import ProductDetailPage from "./pages/general/Product/ProductDetail/ProductDetailPage.jsx";
 import WoodworkersPage from "./pages/general/Woodworker/WoodworkerList/WoodworkersPage.jsx";
@@ -37,7 +36,6 @@ import ProductsPage from "./pages/general/Product/ProductList/ProductsPage.jsx";
 import CusGuaranteeOrderListPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderList/CusGuaranteeOrderListPage.jsx";
 import CusGuaranteeOrderDetailPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderDetail/CusGuaranteeOrderDetailPage.jsx";
 import WWServiceOrderListPage from "./pages/woodworker/ServiceOrder/ServiceOrderList/WWServiceOrderListPage.jsx";
-import WWServiceOrderDetailPage from "./pages/woodworker/ServiceOrder/ServiceOrderDetail/CustomizeService/DetailPage/WWServiceOrderDetailPage.jsx";
 import WWGuaranteeOrderListPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderList/WWGuaranteeOrderListPage.jsx";
 import WWGuaranteeOrderDetailPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderDetail/WWGuaranteeOrderDetailPage.jsx";
 import WWRegister from "./pages/general/Auth/WWRegister.jsx";
@@ -60,6 +58,8 @@ import WoodworkerWelcomePage from "./pages/woodworker/Welcome/WoodworkerWelcomeP
 import PaymentSuccessPage from "./pages/general/PaymentSuccess/PaymentSuccessPage.jsx";
 import CusServiceOrderListPage from "./pages/customer/ServiceOrder/ServiceOrderList/CusServiceOrderListPage.jsx";
 import AdminWelcomePage from "./pages/admin/Welcome/AdminWelcomePage.jsx";
+import CusServiceOrderDetailPage from "./pages/customer/ServiceOrder/ServiceOrderDetail/MainPage/CusServiceOrderDetailPage.jsx";
+import WWServiceOrderDetailPage from "./pages/woodworker/ServiceOrder/ServiceOrderDetail/MainPage/WWServiceOrderDetailPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -166,7 +166,9 @@ function App() {
 
           <Route path="test" element={<TestPage />} />
 
-          <Route path="personalize" element={<PersonalizationRequestPage />} />
+          <Route path="personalization">
+            <Route path=":id" element={<PersonalizationRequestPage />} />
+          </Route>
 
           {/* Auth route */}
           <Route path="auth" element={<AuthPage />} />

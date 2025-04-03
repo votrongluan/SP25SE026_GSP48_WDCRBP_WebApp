@@ -75,7 +75,6 @@ export default function ProductList({ products = [], isLoading, error }) {
                         objectPosition="center"
                         w="100%"
                         h="200px"
-                        fallbackSrc="https://via.placeholder.com/200x150?text=No+Image"
                       />
                       {/* Display number of images badge */}
                       {product.mediaUrls && product.mediaUrls.includes(";") && (
