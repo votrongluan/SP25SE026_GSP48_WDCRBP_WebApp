@@ -35,16 +35,8 @@ export default function DepositModal({ isOpen, onClose, wallet }) {
 
   const checkboxItems = [
     {
-      description: "Tôi xác nhận số tiền nạp là chính xác",
+      description: "Tôi đã kiểm tra thông tin và xác nhận thao tác",
       isOptional: false,
-    },
-    {
-      description: "Tôi đã đọc và đồng ý với điều khoản nạp tiền",
-      isOptional: false,
-    },
-    {
-      description: "Gửi thông báo cho tôi khi giao dịch hoàn tất",
-      isOptional: true,
     },
   ];
 

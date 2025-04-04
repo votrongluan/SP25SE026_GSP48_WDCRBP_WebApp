@@ -32,10 +32,11 @@ export const contractApi = createApi({
       }),
     }),
 
-    customerSignContract: builder.mutation({
-      query: ({ serviceOrderId, customerSign, cusId }) => ({
-        url: `/api/v1/Contract/customer-sign?serviceOrderId=${serviceOrderId}&customerSign=${customerSign}&cusId=${cusId}`,
+    cusSignContract: builder.mutation({
+      query: (data) => ({
+        url: `/api/v1/Contract/customer-sign`,
         method: "POST",
+        body: data,
       }),
     }),
   }),
@@ -44,5 +45,5 @@ export const contractApi = createApi({
 export const {
   useGetContractByServiceOrderIdQuery,
   useCreateContractCustomizeMutation,
-  useCustomerSignContractMutation,
+  useCusSignContractMutation,
 } = contractApi;

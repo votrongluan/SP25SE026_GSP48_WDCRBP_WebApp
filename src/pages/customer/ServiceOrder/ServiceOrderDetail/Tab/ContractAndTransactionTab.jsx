@@ -96,30 +96,30 @@ export default function ContractAndTransactionTab({
           <Stack spacing={4}>
             <HStack>
               <Text fontWeight="bold">Họ tên thợ mộc:</Text>
-              <Text>{contract.wwFullName || "Chưa cập nhật"}</Text>
+              <Text>{contract?.woodworker?.username || "Chưa cập nhật"}</Text>
             </HStack>
             <HStack>
               <Text fontWeight="bold">SĐT thợ mộc:</Text>
-              <Text>{contract.wwPhone || "Chưa cập nhật"}</Text>
+              <Text>{contract?.woodworker?.phone || "Chưa cập nhật"}</Text>
             </HStack>
             <HStack>
-              <Text fontWeight="bold">Địa chỉ thợ mộc:</Text>
-              <Text>{contract.wwAddress || "Chưa cập nhật"}</Text>
+              <Text fontWeight="bold">Email thợ mộc:</Text>
+              <Text>{contract?.woodworker?.email || "Chưa cập nhật"}</Text>
             </HStack>
 
             <Box height="10px" />
 
             <HStack>
               <Text fontWeight="bold">Họ tên khách hàng:</Text>
-              <Text>{contract.cusFullName || "Chưa cập nhật"}</Text>
+              <Text>{contract?.customer?.username || "Chưa cập nhật"}</Text>
             </HStack>
             <HStack>
               <Text fontWeight="bold">SĐT khách hàng:</Text>
-              <Text>{contract.cusPhone || "Chưa cập nhật"}</Text>
+              <Text>{contract?.customer?.phone || "Chưa cập nhật"}</Text>
             </HStack>
             <HStack>
-              <Text fontWeight="bold">Địa chỉ khách hàng:</Text>
-              <Text>{contract.cusAddress || "Chưa cập nhật"}</Text>
+              <Text fontWeight="bold">Email khách hàng:</Text>
+              <Text>{contract?.customer?.email || "Chưa cập nhật"}</Text>
             </HStack>
 
             <Box height="10px" />
@@ -127,15 +127,6 @@ export default function ContractAndTransactionTab({
             <HStack>
               <Text fontWeight="bold">Mã hợp đồng:</Text>
               <Text>{contract.contractId || "Chưa cập nhật"}</Text>
-            </HStack>
-
-            <HStack>
-              <Text fontWeight="bold">Ngày tạo:</Text>
-              <Text>
-                {contract.createdAt
-                  ? formatDateTimeString(new Date(contract.createdAt))
-                  : "Chưa cập nhật"}
-              </Text>
             </HStack>
 
             <HStack>
@@ -176,7 +167,9 @@ export default function ContractAndTransactionTab({
 
             <Box>
               <Text fontWeight="bold">Chính sách bảo hành:</Text>
-              <Text>{contract.warrantyPolicy || "Chưa cập nhật"}</Text>
+              <Text whiteSpace={"pre-wrap"}>
+                {contract.warrantyPolicy || "Chưa cập nhật"}
+              </Text>
             </Box>
 
             <HStack>

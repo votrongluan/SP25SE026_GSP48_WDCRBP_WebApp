@@ -102,8 +102,8 @@ export default function DesignList({ designs = [] }) {
                       <Flex alignItems="center" mt={1}>
                         <HStack ml="auto" fontSize="sm">
                           <StarReview
-                            totalStar={design.woodworkerProfile.totalStar}
-                            totalReviews={design.woodworkerProfile.totalReviews}
+                            totalStar={design.totalStar}
+                            totalReviews={design.totalReviews}
                           />
                         </HStack>
                       </Flex>

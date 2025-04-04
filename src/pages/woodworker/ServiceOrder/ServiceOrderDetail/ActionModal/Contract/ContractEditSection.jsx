@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Heading,
@@ -12,17 +12,13 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
-  Image,
-  VStack,
   Textarea,
   FormControl,
   FormLabel,
-  Badge,
 } from "@chakra-ui/react";
-import SignatureCanvas from "react-signature-canvas";
 import { appColorTheme } from "../../../../../../config/appconfig.js";
 import { formatDateForInput } from "../../../../../../utils/utils.js";
-import { FiSave, FiTrash2 } from "react-icons/fi";
+import SignatureComponent from "../../../../../../components/Common/SignatureComponent.jsx";
 
 export default function ContractEditSection({
   initialContract,
@@ -42,9 +38,6 @@ export default function ContractEditSection({
     woodworkerSignature: "",
     signatureData: null, // Store raw signature data for later upload
   });
-
-  const signaturePad = useRef(null);
-  const [canvasSize, setCanvasSize] = useState({ width: 500, height: 200 });
 
   // Initialize contract data from existing contract (if any)
   useEffect(() => {
@@ -68,34 +61,6 @@ export default function ContractEditSection({
     }
   }, [initialContract, order]);
 
-  // Update signature data whenever the user finishes drawing
-  useEffect(() => {
-    if (!isExistingContract && signaturePad.current) {
-      const updateSignatureData = () => {
-        if (!signaturePad.current.isEmpty()) {
-          const dataURL = signaturePad.current.toDataURL("image/png");
-          setContract((prev) => ({
-            ...prev,
-            signatureData: dataURL,
-          }));
-        }
-      };
-
-      // Add an event listener to the signature pad element
-      const canvas = signaturePad.current._canvas;
-      canvas.addEventListener("mouseup", updateSignatureData);
-      canvas.addEventListener("touchend", updateSignatureData);
-
-      // Clean up the event listeners
-      return () => {
-        if (canvas) {
-          canvas.removeEventListener("mouseup", updateSignatureData);
-          canvas.removeEventListener("touchend", updateSignatureData);
-        }
-      };
-    }
-  }, [isExistingContract, canvasSize]);
-
   // Notify parent component of changes
   useEffect(() => {
     onChange && onChange(contract);
@@ -111,36 +76,10 @@ export default function ContractEditSection({
     });
   };
 
-  // Handle signature actions
-  const clearSignature = () => {
-    if (signaturePad.current) {
-      signaturePad.current.clear();
-      handleChange("woodworkerSignature", "");
-      handleChange("signatureData", null);
-    }
-  };
-
-  const saveSignature = () => {
-    if (signaturePad.current && !signaturePad.current.isEmpty()) {
-      const dataURL = signaturePad.current.toDataURL("image/png");
-
-      // Convert to blob for storage in parent component
-      fetch(dataURL)
-        .then((res) => res.blob())
-        .then((blob) => {
-          // Call the parent component's handler with both blob and dataURL
-          onSaveSignature(blob, dataURL);
-        });
-    }
-  };
-
-  // Handle canvas size changes
-  const handleSizeChange = (field, value) => {
-    signaturePad.current.clear();
-    setCanvasSize((prev) => ({
-      ...prev,
-      [field]: parseInt(value),
-    }));
+  // Handle signature save from SignatureComponent
+  const handleSignatureSave = (blob, dataUrl) => {
+    handleChange("signatureData", dataUrl);
+    onSaveSignature && onSaveSignature(blob, dataUrl);
   };
 
   return (
@@ -163,162 +102,55 @@ export default function ContractEditSection({
               />
             </FormControl>
 
-            <HStack>
-              <FormControl isRequired>
-                <FormLabel>Thời hạn bảo hành (tháng):</FormLabel>
-                <NumberInput
-                  value={contract.warrantyPeriod}
-                  onChange={(value) => handleChange("warrantyPeriod", value)}
-                  min={1}
-                  max={120}
-                  width="full"
-                >
-                  <NumberInputField placeholder="Thời hạn bảo hành" />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </FormControl>
-            </HStack>
+            <FormControl isRequired>
+              <FormLabel>Thời hạn bảo hành (tháng):</FormLabel>
+              <NumberInput
+                value={contract.warrantyPeriod}
+                onChange={(value) => handleChange("warrantyPeriod", value)}
+                min={1}
+                max={120}
+                width="full"
+              >
+                <NumberInputField placeholder="Thời hạn bảo hành" />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </FormControl>
 
-            <HStack>
-              <FormControl isRequired>
-                <FormLabel>Ngày hoàn thành:</FormLabel>
-                <Input
-                  type="date"
-                  value={contract.completeDate}
-                  onChange={(e) => handleChange("completeDate", e.target.value)}
-                />
-              </FormControl>
-            </HStack>
+            <FormControl isRequired>
+              <FormLabel>Ngày hoàn thành:</FormLabel>
+              <Input
+                type="date"
+                value={contract.completeDate}
+                onChange={(e) => handleChange("completeDate", e.target.value)}
+              />
+            </FormControl>
           </Stack>
         </Box>
 
-        {/* Signature section - only shown for new contracts */}
-        {!isExistingContract && (
-          <Box
-            p={5}
-            bgColor={appColorTheme.grey_1}
-            boxShadow="md"
-            borderRadius="10px"
-          >
-            <Heading size="md" mb={4}>
-              Chữ ký{" "}
-              {savedSignature && (
-                <Badge colorScheme="green" ml={2}>
-                  Đã lưu
-                </Badge>
-              )}
-            </Heading>
-
-            <VStack spacing={4} align="stretch">
-              <HStack spacing={4}>
-                <HStack>
-                  <Text fontWeight="bold" mb={2}>
-                    Chiều rộng (px):
-                  </Text>
-                  <NumberInput
-                    value={canvasSize.width}
-                    onChange={(value) => handleSizeChange("width", value)}
-                    min={200}
-                    max={1000}
-                    border="1px solid black"
-                    borderRadius="8px"
-                  >
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                </HStack>
-
-                <HStack>
-                  <Text fontWeight="bold" mb={2}>
-                    Chiều cao (px):
-                  </Text>
-                  <NumberInput
-                    value={canvasSize.height}
-                    onChange={(value) => handleSizeChange("height", value)}
-                    min={100}
-                    max={500}
-                    border="1px solid black"
-                    borderRadius="8px"
-                  >
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                </HStack>
-              </HStack>
-
-              <Text fontSize="sm" color="gray.600">
-                Vui lòng ký tên vào khu vực bên dưới
-              </Text>
-
-              <VStack>
-                <SignatureCanvas
-                  backgroundColor="white"
-                  ref={signaturePad}
-                  canvasProps={{
-                    width: canvasSize.width,
-                    height: canvasSize.height,
-                    className: "signature-canvas",
-                    style: {
-                      border: "2px solid black",
-                      borderRadius: "0.375rem",
-                    },
-                  }}
-                />
-              </VStack>
-
-              <HStack justifyContent="flex-end" mt={2} spacing={3}>
-                <Button
-                  onClick={saveSignature}
-                  colorScheme="green"
-                  leftIcon={<FiSave />}
-                  isDisabled={savedSignature}
-                >
-                  Lưu
-                </Button>
-                <Button
-                  onClick={clearSignature}
-                  variant="outline"
-                  colorScheme="red"
-                  leftIcon={<FiTrash2 />}
-                >
-                  Xóa
-                </Button>
-              </HStack>
-            </VStack>
-          </Box>
-        )}
-
-        {/* For existing contracts, just show the signature */}
-        {isExistingContract && contract.woodworkerSignature && (
-          <Box
-            p={5}
-            bgColor={appColorTheme.grey_1}
-            boxShadow="md"
-            borderRadius="10px"
-          >
-            <Heading size="md" mb={4}>
-              Chữ ký đã lưu
-            </Heading>
-            <Image
-              src={contract.woodworkerSignature}
-              alt="Chữ ký"
-              border="1px solid"
-              borderColor="gray.200"
-              borderRadius="md"
-              maxH="200px"
-              mx="auto"
+        {/* Signature section - using the new component */}
+        <Box
+          p={5}
+          bgColor={appColorTheme.grey_1}
+          boxShadow="md"
+          borderRadius="10px"
+        >
+          {!isExistingContract ? (
+            <SignatureComponent
+              onSaveSignature={handleSignatureSave}
+              savedSignature={savedSignature}
+              title="Chữ ký thợ"
             />
-          </Box>
-        )}
+          ) : (
+            <SignatureComponent
+              initialSignature={contract.woodworkerSignature}
+              isEditable={false}
+              title="Chữ ký đã lưu"
+            />
+          )}
+        </Box>
       </Stack>
     </Box>
   );

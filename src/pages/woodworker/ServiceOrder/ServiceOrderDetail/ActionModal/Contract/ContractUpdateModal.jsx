@@ -99,7 +99,7 @@ export default function ContractUpdateModal({ order, refetch }) {
         let file;
 
         if (localSignatureBlob) {
-          // Use the saved blob directly
+          // Use the saved blob directly from SignatureComponent
           file = new File([localSignatureBlob], `signature-${Date.now()}.png`, {
             type: "image/png",
           });
@@ -140,7 +140,7 @@ export default function ContractUpdateModal({ order, refetch }) {
         isExistingContract
           ? "Cập nhật hợp đồng thành công"
           : "Tạo hợp đồng thành công",
-        "Khách hàng sẽ được thông báo để xác nhận hợp đồng",
+        "",
         "success"
       );
 

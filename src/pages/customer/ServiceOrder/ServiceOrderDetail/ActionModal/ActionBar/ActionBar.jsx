@@ -3,13 +3,16 @@ import { serviceOrderStatusConstants } from "../../../../../../config/appconfig.
 import FeedbackModal from "../FeedbackModal/FeedbackModal.jsx";
 import CancelModal from "../FeedbackModal/CancelModal.jsx";
 import AppointmentConfirmModal from "../FeedbackModal/AppointmentConfirmModal.jsx";
+import ContractConfirmModal from "../FeedbackModal/ContractConfirmModal.jsx";
 
 export default function ActionBar({ status, feedback, order, refetch }) {
   const renderActionButtons = () => {
     // Default: no actions
     let showFeedbackButton = false;
-    let showConfirmButton = false;
+    let showAppointmentButton = false;
     let showCancelButton = false;
+    let showContractButton = false;
+    let showDesignButton = false;
     let confirmButtonText = "Xác nhận";
 
     // Only show actions if the role is Customer
@@ -28,7 +31,7 @@ export default function ActionBar({ status, feedback, order, refetch }) {
         case serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_LICH_HEN:
           if (!feedback || feedback.trim() === "") {
             // If there's NO feedback, show BOTH confirmation and feedback buttons
-            showConfirmButton = true;
+            showAppointmentButton = true;
             showFeedbackButton = true;
             confirmButtonText = "Xác nhận lịch hẹn";
           }
@@ -37,7 +40,7 @@ export default function ActionBar({ status, feedback, order, refetch }) {
         case serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_HOP_DONG:
           if (!feedback || feedback.trim() === "") {
             // If there's NO feedback, show BOTH confirmation and feedback buttons
-            showConfirmButton = true;
+            showContractButton = true;
             showFeedbackButton = true;
             confirmButtonText = "Xác nhận hợp đồng";
           }
@@ -46,7 +49,7 @@ export default function ActionBar({ status, feedback, order, refetch }) {
         case serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_THIET_KE:
           if (!feedback || feedback.trim() === "") {
             // If there's NO feedback, show BOTH confirmation and feedback buttons
-            showConfirmButton = true;
+            showDesignButton = true;
             showFeedbackButton = true;
             confirmButtonText = "Xác nhận thiết kế";
           }
@@ -64,10 +67,18 @@ export default function ActionBar({ status, feedback, order, refetch }) {
           <FeedbackModal serviceOrderId={order?.orderId} refetch={refetch} />
         )}
 
-        {showConfirmButton && (
+        {showAppointmentButton && (
           <AppointmentConfirmModal
             serviceOrderId={order?.orderId}
             appointment={order?.consultantAppointment}
+            buttonText={confirmButtonText}
+            refetch={refetch}
+          />
+        )}
+
+        {showContractButton && (
+          <ContractConfirmModal
+            serviceOrderId={order?.orderId}
             buttonText={confirmButtonText}
             refetch={refetch}
           />

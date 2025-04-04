@@ -21,7 +21,7 @@ export default function ContractPage() {
   const exportToDoc = useExportToDoc(
     null,
     "contract-template",
-    "hop-dong-mau.doc"
+    `hop-dong-so-${contractResponse?.data?.contractId}.doc`
   );
 
   // Handle loading state
