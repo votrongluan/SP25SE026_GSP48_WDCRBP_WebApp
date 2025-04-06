@@ -4,7 +4,8 @@ export default function PackageFrame({ children, packageType }) {
   const colors = {
     Bronze: {
       displayText: "Xưởng Đồng",
-      displayTextColor: "#CD7F32",
+      displayTextColor: "#7B341E",
+      displayBgColor: "#FFE8D1 ",
       border: useColorModeValue("#CD7F32", "#CD7F32"),
       glow: useColorModeValue(
         "rgba(205, 127, 50, 0.5)",
@@ -13,7 +14,8 @@ export default function PackageFrame({ children, packageType }) {
     },
     Silver: {
       displayText: "Xưởng Bạc",
-      displayTextColor: "#C0C0C0",
+      displayTextColor: "#374151 ",
+      displayBgColor: "#fff",
       border: useColorModeValue("#6B7280", "#6B7280"),
       glow: useColorModeValue(
         "rgba(107, 114, 128, 0.5)",
@@ -22,7 +24,8 @@ export default function PackageFrame({ children, packageType }) {
     },
     Gold: {
       displayText: "Xưởng Vàng",
-      displayTextColor: "#FFD700",
+      displayTextColor: "#78350F",
+      displayBgColor: "#FFF9C4",
       border: useColorModeValue("#FFD700", "#FFD700"),
       glow: useColorModeValue(
         "rgba(255, 215, 0, 0.5)",
@@ -36,38 +39,31 @@ export default function PackageFrame({ children, packageType }) {
   }
 
   return (
-    <Box position="relative" p={1}>
+    <Box position="relative" p="2px">
       <Box
         position="absolute"
         top={0}
         left={0}
         right={0}
         bottom={0}
-        border="2px solid"
+        border="10px solid"
         borderColor={colors[packageType]?.border}
         borderRadius="md"
         boxShadow={`0 0 10px ${colors[packageType]?.glow}`}
       />
-      <Box
-        position="relative"
-        bg={useColorModeValue("white", "gray.800")}
-        borderRadius="md"
-        zIndex={1}
-      >
-        <Text
+      <Box position="relative" borderRadius="md" zIndex={1}>
+        {/* <Text
           position="absolute"
           zIndex={2}
-          top={-2}
-          left={-2}
-          borderRadius={"full"}
-          px={2}
-          bg={"black"}
+          px={1}
           color={colors[packageType]?.displayTextColor}
+          bg={colors[packageType]?.displayBgColor}
+          borderRadius="sm"
+          fontSize="xs"
           fontWeight="bold"
-          fontSize="sm"
         >
           {colors[packageType]?.displayText}
-        </Text>
+        </Text> */}
         {children}
       </Box>
     </Box>

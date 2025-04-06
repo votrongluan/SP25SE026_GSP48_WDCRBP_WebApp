@@ -42,7 +42,7 @@ export default function WoodworkerList({ woodworkers = [] }) {
                 key={woodworker.woodworkerId}
               >
                 <PackageFrame packageType={woodworker.servicePack?.name}>
-                  <Box overflow="hidden" bgColor="white">
+                  <Box borderRadius={"md"} overflow="hidden" bgColor="white">
                     <Image
                       src={woodworker.imgUrl}
                       alt={woodworker.brandName}

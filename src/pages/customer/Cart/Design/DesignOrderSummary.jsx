@@ -10,6 +10,7 @@ import {
   Textarea,
   FormControl,
   FormLabel,
+  Icon,
 } from "@chakra-ui/react";
 import { formatPrice } from "../../../../utils/utils.js";
 import { appColorTheme } from "../../../../config/appconfig.js";
@@ -20,6 +21,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useNotify } from "../../../../components/Utility/Notify.jsx";
 import { FiLogIn, FiShoppingCart } from "react-icons/fi";
 import useCart from "../../../../hooks/useCart.js";
+import { MdLocationOn, MdStorefront } from "react-icons/md";
 
 export default function DesignOrderSummary({
   auth,
@@ -166,10 +168,20 @@ export default function DesignOrderSummary({
             <Box mb={4} p={3} bg="gray.50" borderRadius="md">
               <VStack align="start" spacing={1}>
                 <Text fontWeight="bold">Thông tin xưởng mộc:</Text>
-                <Text>{woodworkerInfo.name}</Text>
-                <Text fontSize="sm" color="gray.600">
-                  {woodworkerInfo.address}
-                </Text>
+
+                <Flex alignItems="center" mt={1}>
+                  <Icon as={MdStorefront} mr={1} color="gray.600" />
+                  <Text noOfLines={1} fontWeight="medium" fontSize="sm">
+                    {woodworkerInfo.name || "Không có tên xưởng"}
+                  </Text>
+                </Flex>
+
+                <Flex alignItems="center">
+                  <Icon as={MdLocationOn} mr={1} color="gray.500" />
+                  <Text fontSize="sm" color="gray.500">
+                    {woodworkerInfo.address || "Không có địa chỉ"}
+                  </Text>
+                </Flex>
               </VStack>
             </Box>
           )}

@@ -12,10 +12,12 @@ import { FiArrowRight } from "react-icons/fi";
 import { appColorTheme, service } from "../../../../../../config/appconfig.js";
 import { useGetAvailableServiceByWwIdQuery } from "../../../../../../services/availableServiceApi";
 import { useParams } from "react-router-dom";
+import useAuth from "../../../../../../hooks/useAuth.js";
 
 export default function AvailableService({ woodworkerId, onServiceAction }) {
   const { id } = useParams();
   const wwId = woodworkerId || id;
+  const { auth } = useAuth();
 
   const {
     data: response,
@@ -86,18 +88,20 @@ export default function AvailableService({ woodworkerId, onServiceAction }) {
               <Text mb={2}>
                 <b>Mô tả dịch vụ của xưởng:</b> {availableService.description}
               </Text>
-              <Button
-                bg={appColorTheme.brown_2}
-                color="white"
-                borderRadius="20px"
-                px={6}
-                py={3}
-                _hover={{ bg: appColorTheme.brown_1 }}
-                rightIcon={<Icon as={FiArrowRight} />}
-                onClick={() => handleServiceClick(serviceType)}
-              >
-                {serviceInfo.buttonText || "Đặt dịch vụ"}
-              </Button>
+              {!auth?.role == "Woodworker" && (
+                <Button
+                  bg={appColorTheme.brown_2}
+                  color="white"
+                  borderRadius="20px"
+                  px={6}
+                  py={3}
+                  _hover={{ bg: appColorTheme.brown_1 }}
+                  rightIcon={<Icon as={FiArrowRight} />}
+                  onClick={() => handleServiceClick(serviceType)}
+                >
+                  {serviceInfo.buttonText || "Đặt dịch vụ"}
+                </Button>
+              )}
             </Box>
           );
         })}

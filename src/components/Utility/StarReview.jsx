@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Text } from "@chakra-ui/react";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 
@@ -45,7 +44,7 @@ export default function StarReview({ totalStar, totalReviews }) {
           ))}
       </Box>
       {totalReviews > 0 && (
-        <Text color="yellow.700" ml={2} fontSize="sm">
+        <Text noOfLines={1} color="yellow.700" ml={2} fontSize="sm">
           {rating.toFixed(1)} ({totalReviews} đánh giá)
         </Text>
       )}

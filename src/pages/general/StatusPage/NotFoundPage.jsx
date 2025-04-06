@@ -38,7 +38,9 @@ function NotFoundPage() {
           </Heading>
 
           <Text color="gray.600" fontSize="lg" maxW="md" mx="auto">
-            Xin lỗi, trang bạn đang tìm kiếm không tồn tại hoặc đã bị di chuyển.
+            Xin lỗi, nhưng trang mà bạn đang cố gắng truy cập hiện không tồn
+            tại, có thể đã bị xóa, di chuyển đến một vị trí khác hoặc đường dẫn
+            bạn nhập không chính xác.
           </Text>
 
           <Link to="/">

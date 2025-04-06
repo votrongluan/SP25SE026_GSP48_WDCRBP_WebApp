@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import useAuth from "../../../hooks/useAuth.js";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Navigate } from "react-router-dom";
 import AddPersonalizationProduct from "./AddPersonalizationProduct.jsx";
 import { appColorTheme } from "../../../config/appconfig.js";
 import { useNotify } from "../../../components/Utility/Notify.jsx";
@@ -28,6 +28,10 @@ export default function PersonalizationRequestPage() {
   const navigate = useNavigate();
   const notify = useNotify();
   const [editIndex, setEditIndex] = useState(-1);
+
+  if (auth?.role != "Customer") {
+    return <Navigate to="/unauthorized" />;
+  }
 
   // Fetch tech specs
   const {
