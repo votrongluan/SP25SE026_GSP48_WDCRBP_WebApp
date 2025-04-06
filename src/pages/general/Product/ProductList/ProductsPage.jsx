@@ -10,28 +10,32 @@ import { useGetAllProductsQuery } from "../../../../services/productApi";
 
 export default function ProductsPage() {
   const { data: response, isLoading, error } = useGetAllProductsQuery();
+  const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   // Set initial data when API response changes
   useEffect(() => {
     if (response?.data) {
       const data = response.data.filter((product) => {
-        const isServicePackValid =
+        const isVisible =
           product?.servicePackEndDate &&
           Date.now() <= new Date(product.servicePackEndDate).getTime() &&
-          product?.packType !== servicePackNameConstants.BRONZE;
+          product?.packType !== servicePackNameConstants.BRONZE &&
+          product.isWoodworkerProfilePublic == true;
 
-        return isServicePackValid;
+        return isVisible;
       });
+
+      setProducts(data);
       setFilteredProducts(data);
     }
   }, [response?.data]);
 
   // Handler for filter changes
   const handleFilterChange = (newFilters) => {
-    if (!response?.data) return;
+    if (!products) return;
 
-    let result = response.data;
+    let result = products;
 
     // Chỉ áp dụng filter nếu checkbox được chọn
     if (newFilters?.applyFilters) {

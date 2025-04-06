@@ -158,7 +158,7 @@ export default function WoodworkerWelcomePage() {
             leftIcon={<FiHome />}
             onClick={() => navigate(`/woodworker/${auth?.wwId}`)}
           >
-            Xem trang cá nhân
+            Xem xưởng của bạn
           </Button>
         )}
       </Flex>

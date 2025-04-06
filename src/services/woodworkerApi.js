@@ -16,7 +16,6 @@ export const woodworkerApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["WoodworkerProfile", "ServicePack"],
   endpoints: (builder) => ({
     listWoodworkers: builder.query({
       query: () => "/api/v1/ww",
@@ -42,10 +41,17 @@ export const woodworkerApi = createApi({
       }),
     }),
 
-    // Update woodworker status
     updateWoodworkerStatus: builder.mutation({
       query: (data) => ({
         url: "/api/v1/ww/ww-update-status",
+        method: "PUT",
+        body: data,
+      }),
+    }),
+
+    updateWoodworkerPublicStatus: builder.mutation({
+      query: (data) => ({
+        url: "/api/v1/ww/update-public-status",
         method: "PUT",
         body: data,
       }),
@@ -76,6 +82,7 @@ export const {
   useGetInactiveWoodworkersQuery,
   useRegisterWoodworkerMutation,
   useUpdateWoodworkerStatusMutation,
+  useUpdateWoodworkerPublicStatusMutation,
   useAddServicePackMutation,
   useAddServicePackByIdMutation,
 } = woodworkerApi;

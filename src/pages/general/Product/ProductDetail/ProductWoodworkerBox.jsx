@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import PackageFrame from "../../../../components/Utility/PackageFrame";
 import StarReview from "../../../../components/Utility/StarReview";
-import { appColorTheme } from "../../../../config/appconfig";
+import { appColorTheme, getPackTypeLabel } from "../../../../config/appconfig";
 
 // Component to display woodworker information
 export default function ProductWoodworkerBox({ product }) {
@@ -66,6 +66,13 @@ export default function ProductWoodworkerBox({ product }) {
             <HStack>
               <Text fontWeight="bold">Loại hình kinh doanh:</Text>
               <Text>{product?.businessType || "Chưa cập nhật"}</Text>
+            </HStack>
+
+            <HStack>
+              <Text fontWeight="bold">Loại xưởng:</Text>
+              <Text>
+                {getPackTypeLabel(product?.packType) || "Chưa cập nhật"}
+              </Text>
             </HStack>
 
             <HStack>

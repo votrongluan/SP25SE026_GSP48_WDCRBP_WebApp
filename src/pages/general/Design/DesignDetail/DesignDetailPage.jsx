@@ -80,8 +80,12 @@ export default function DesignDetailPage() {
     Date.now() <=
       new Date(designDetail.woodworkerProfile.servicePackEndDate).getTime();
 
+  const isWoodworkerProfilePublic =
+    designDetail?.woodworkerProfile?.publicStatus == true;
+
   // Design is available if both service is operating and service pack is valid
-  const isDesignAvailable = isCustomizationAvailable && isServicePackValid;
+  const isDesignAvailable =
+    isCustomizationAvailable && isServicePackValid && isWoodworkerProfilePublic;
 
   if (
     isDesignLoading ||

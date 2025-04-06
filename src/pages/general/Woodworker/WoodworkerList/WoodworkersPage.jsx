@@ -7,12 +7,13 @@ import { useListWoodworkersQuery } from "../../../../services/woodworkerApi";
 
 export default function WoodworkersPage() {
   const { data: response } = useListWoodworkersQuery();
+  const [wws, setWws] = useState([]);
   const [filteredWoodworkers, setFilteredWoodworkers] = useState([]);
 
   const handleFilterChange = (newFilters) => {
-    if (!response?.data) return;
+    if (!wws) return;
 
-    let result = response.data;
+    let result = wws;
 
     // Chỉ áp dụng filter nếu checkbox được chọn
     if (newFilters?.applyFilters) {
@@ -78,7 +79,14 @@ export default function WoodworkersPage() {
   // Set initial data
   useMemo(() => {
     if (response?.data) {
-      setFilteredWoodworkers(response.data);
+      const data = response.data.filter((item) => {
+        const publicStatus = item?.publicStatus;
+
+        return publicStatus;
+      });
+
+      setWws(data);
+      setFilteredWoodworkers(data);
     }
   }, [response?.data]);
 

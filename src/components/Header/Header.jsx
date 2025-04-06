@@ -26,8 +26,10 @@ import { appColorTheme } from "../../config/appconfig.js";
 
 function Header() {
   const { auth, setAuth } = useAuth();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const links = [
+    { path: "/", label: "Trang chủ" },
     { path: "/product", label: "Sản phẩm" },
     { path: "/design", label: "Thiết kế" },
     { path: "/woodworker", label: "Xưởng mộc" },
@@ -46,7 +48,7 @@ function Header() {
   });
 
   return (
-    <Box bgColor="white" color="black" zIndex="1" w="100%" padding="10px 20px">
+    <Box bgColor="white" color="black" zIndex="2" w="100%" padding="10px 20px">
       <Flex as="nav" height="70px" alignItems="center">
         <BrandLogo />
 
@@ -58,10 +60,11 @@ function Header() {
               fontFamily="Montserrat"
               fontSize="16px"
               fontWeight="medium"
-              spacing={6}
+              spacing={5}
               borderRadius="30px"
               bgColor="app_grey.2"
               px="16px"
+              mr={5}
             >
               {links.map((link, index) => {
                 if (

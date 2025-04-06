@@ -62,13 +62,16 @@ export default function ProductDetailPage() {
   const isSaleAvailable = saleService?.operatingStatus !== false;
 
   // Check if service pack is valid (not expired, not BRONZE)
-  const isServicePackValid =  
+  const isServicePackValid =
     product?.servicePackEndDate &&
     Date.now() <= new Date(product.servicePackEndDate).getTime() &&
     product?.packType !== servicePackNameConstants.BRONZE;
 
+  const isWoodworkerProfilePublic = product?.isWoodworkerProfilePublic == true;
+
   // Product is available if both service is operating and service pack is valid
-  const isProductAvailable = isSaleAvailable && isServicePackValid;
+  const isProductAvailable =
+    isSaleAvailable && isServicePackValid && isWoodworkerProfilePublic;
 
   // Handle adding to cart
   const handleAddToCart = () => {

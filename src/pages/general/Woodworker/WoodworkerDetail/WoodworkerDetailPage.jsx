@@ -26,10 +26,16 @@ import PostTab from "./Tab/PostTab/PostTab.jsx";
 import PackageFrame from "../../../../components/Utility/PackageFrame.jsx";
 import { useParams, useNavigate } from "react-router-dom";
 import { useGetWoodworkerByIdQuery } from "../../../../services/woodworkerApi";
-import { appColorTheme } from "../../../../config/appconfig.js";
+import {
+  appColorTheme,
+  getPackTypeLabel,
+} from "../../../../config/appconfig.js";
+import useAuth from "../../../../hooks/useAuth.js";
 
 export default function WoodworkerDetailPage() {
   const { id } = useParams();
+  const { auth } = useAuth();
+
   const navigate = useNavigate();
   const [tabIndex, setTabIndex] = useState(0);
   const { data: response, isLoading, error } = useGetWoodworkerByIdQuery(id);
@@ -68,6 +74,17 @@ export default function WoodworkerDetailPage() {
     return (
       <Center py={10}>
         <Text>Không tìm thấy thông tin xưởng mộc</Text>
+      </Center>
+    );
+  }
+
+  const isPublic = woodworker?.publicStatus;
+  const isOwner = woodworker?.user?.userId == auth?.userId;
+
+  if (!isPublic && !isOwner) {
+    return (
+      <Center py={10}>
+        <Text>Xưởng mộc hiện đang ẩn trạng thái hiển thị</Text>
       </Center>
     );
   }
@@ -135,7 +152,15 @@ export default function WoodworkerDetailPage() {
                 </HStack>
 
                 <HStack>
-                  <Text fontWeight="bold">Liên hệ:</Text>
+                  <Text fontWeight="bold">Loại xưởng:</Text>
+                  <Text>
+                    {getPackTypeLabel(woodworker?.servicePack?.name) ||
+                      "Chưa cập nhật"}
+                  </Text>
+                </HStack>
+
+                <HStack>
+                  <Text fontWeight="bold">Số điện thoại:</Text>
                   <Text>{woodworker.user?.phone || "Chưa cập nhật"}</Text>
                 </HStack>
 

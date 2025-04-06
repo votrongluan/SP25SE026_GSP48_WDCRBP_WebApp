@@ -102,8 +102,20 @@ export const service = {
   },
 };
 
-export const serviceTypeMap = {
-  "Tùy chỉnh": "Customization",
-  "Cá nhân hóa": "Personalization",
-  "Mua hàng": "Sale",
+export const getServiceTypeLabel = function (type) {
+  const map = {
+    Customization: "Tùy chỉnh",
+    Personalization: "Cá nhân hóa",
+    Sale: "Mua hàng",
+  };
+  return map[type] || type;
+};
+
+export const getPackTypeLabel = function (type) {
+  const map = {
+    Gold: "Xưởng vàng",
+    Silver: "Xưởng bạc",
+    Bronze: "Xưởng đồng",
+  };
+  return map[type] || type;
 };

@@ -7,12 +7,13 @@ import { useGetAllDesignIdeasQuery } from "../../../../services/designIdeaApi";
 
 export default function DesignsPage() {
   const { data: response } = useGetAllDesignIdeasQuery();
+  const [designs, setDesigns] = useState([]);
   const [filteredDesigns, setFilteredDesigns] = useState([]);
 
   const handleFilterChange = (newFilters) => {
-    if (!response?.data) return;
+    if (!designs) return;
 
-    let result = response.data;
+    let result = designs;
 
     // Chỉ áp dụng filter nếu checkbox được chọn
     if (newFilters?.applyFilters) {
@@ -91,14 +92,16 @@ export default function DesignsPage() {
   useMemo(() => {
     if (response?.data) {
       const data = response.data.filter((design) => {
-        const isServicePackValid =
+        const isVisible =
           design?.woodworkerProfile?.servicePackEndDate &&
           Date.now() <=
-            new Date(design?.woodworkerProfile?.servicePackEndDate).getTime();
+            new Date(design?.woodworkerProfile?.servicePackEndDate).getTime() &&
+          design?.woodworkerProfile?.publicStatus == true;
 
-        return isServicePackValid;
+        return isVisible;
       });
 
+      setDesigns(data);
       setFilteredDesigns(data);
     }
   }, [response?.data]);
