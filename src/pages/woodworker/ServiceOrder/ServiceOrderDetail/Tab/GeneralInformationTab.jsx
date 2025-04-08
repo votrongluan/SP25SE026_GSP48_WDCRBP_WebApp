@@ -15,6 +15,8 @@ import {
 import CustomizationProductList from "./CustomizationProductList.jsx";
 import StarRating from "../../../../../components/Utility/StarRating.jsx";
 import { useGetShipmentsByServiceOrderIdQuery } from "../../../../../services/shipmentApi.js";
+import { getServiceTypeLabel } from "../../../../../config/appconfig.js";
+import PersonalizationProductList from "./PersonalizationProductList.jsx";
 
 export default function GeneralInformationTab({
   order,
@@ -33,12 +35,22 @@ export default function GeneralInformationTab({
     }
   }, [isActive, order?.orderId, refetchShipment]);
 
+  const serviceName = order?.service?.service?.serviceName;
+
   return (
     <Box>
-      <CustomizationProductList
-        products={order?.requestedProduct || []}
-        totalAmount={order?.totalAmount}
-      />
+      {serviceName == "Personalization" && (
+        <PersonalizationProductList
+          products={order?.requestedProduct}
+          totalAmount={order?.totalAmount}
+        />
+      )}
+      {serviceName == "Customization" && (
+        <CustomizationProductList
+          products={order?.requestedProduct}
+          totalAmount={order?.totalAmount}
+        />
+      )}
 
       <SimpleGrid
         mt={6}
@@ -63,9 +75,7 @@ export default function GeneralInformationTab({
               <HStack>
                 <Text fontWeight="bold">Loại dịch vụ:</Text>
                 <Text>
-                  {order?.service?.service?.serviceName == "Customization"
-                    ? "Tùy chỉnh"
-                    : "" || "Chưa cập nhật"}
+                  {getServiceTypeLabel(order?.service?.service?.serviceName)}
                 </Text>
               </HStack>
 

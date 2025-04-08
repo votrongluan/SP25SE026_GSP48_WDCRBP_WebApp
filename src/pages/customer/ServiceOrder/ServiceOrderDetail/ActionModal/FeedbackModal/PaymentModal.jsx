@@ -52,8 +52,6 @@ export default function PaymentModal({ deposit, order, refetch }) {
     },
   ];
 
-  console.log(deposit);
-
   const handleSubmit = async () => {
     try {
       const postData = {

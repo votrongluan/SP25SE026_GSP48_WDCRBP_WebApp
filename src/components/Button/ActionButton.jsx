@@ -14,8 +14,8 @@ export default function ActionButton({
         backgroundColor: hoverBgColor,
         color: hoverTextColor,
       }}
-      px="40px"
-      py="25px"
+      px="30px"
+      py="20px"
       bgColor={bgColor}
       color={textColor}
       borderRadius="40px"

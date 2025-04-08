@@ -17,6 +17,8 @@ import {
 import ImageUpdateUploader from "../../../components/Utility/ImageUpdateUploader.jsx";
 import ActionButton from "../../../components/Button/ActionButton.jsx";
 import AutoCompleteInput from "./AutoCompleteInput.jsx";
+import { useState } from "react";
+import CategorySelector from "../../../components/Utility/CategorySelector.jsx";
 
 export default function AddPersonalizationProduct({
   techSpecs = [],
@@ -26,11 +28,38 @@ export default function AddPersonalizationProduct({
   isEditing = false,
   onCancelEdit,
 }) {
+  // Add a resetKey state to force components to remount
+  const [resetKeys, setResetKeys] = useState({});
+
   // Handle form input changes
   const handleInputChange = (techSpecId, value) => {
     setProductData({
       ...productData,
       [`techSpec_${techSpecId}`]: value,
+    });
+  };
+
+  // Handle category selection
+  const handleCategoryChange = (categoryId) => {
+    setProductData((prevData) => {
+      const newData = {
+        ...prevData,
+        categoryId: categoryId,
+      };
+
+      return newData;
+    });
+  };
+
+  // Handle category name update
+  const handleCategoryNameChange = (categoryName) => {
+    setProductData((prevData) => {
+      const newData = {
+        ...prevData,
+        categoryName: categoryName,
+      };
+
+      return newData;
     });
   };
 
@@ -44,16 +73,29 @@ export default function AddPersonalizationProduct({
     });
   };
 
+  // Create a wrapped handleAddProduct function to reset components
+  const wrappedHandleAddProduct = () => {
+    // Call the original handleAddProduct function
+    handleAddProduct();
+
+    // Reset keys to force components to remount
+    const newResetKeys = {
+      categorySelector: Date.now(), // Add a key for CategorySelector
+    };
+
+    // Also reset ImageUpdateUploader keys
+    techSpecs.forEach((spec) => {
+      if (spec.optionType === "file") {
+        newResetKeys[spec.techSpecId] = Date.now();
+      }
+    });
+
+    setResetKeys(newResetKeys);
+  };
+
   // Handle file upload completion
   const handleImageUploadComplete = (techSpecId, imageUrls) => {
     handleInputChange(techSpecId, imageUrls);
-  };
-
-  // Get required tech specs (dimensions)
-  const getRequiredTechSpecs = () => {
-    return techSpecs
-      .filter((spec) => spec.optionType === "number")
-      .map((spec) => spec.techSpecId);
   };
 
   // Render appropriate input for each tech spec type
@@ -93,10 +135,12 @@ export default function AddPersonalizationProduct({
         );
 
       case "file":
+        // Add key prop to force re-render
         return (
           <ImageUpdateUploader
+            key={resetKeys[techSpec.techSpecId] || techSpec.techSpecId}
             imgUrls={value} // Pass the current image URLs
-            maxFiles={1}
+            maxFiles={4}
             onUploadComplete={(imgUrls) =>
               handleImageUploadComplete(techSpec.techSpecId, imgUrls)
             }
@@ -117,9 +161,6 @@ export default function AddPersonalizationProduct({
     }
   };
 
-  // Get the required tech spec IDs
-  const requiredTechSpecIds = getRequiredTechSpecs();
-
   return (
     <Box>
       <Box bgColor="white" p="20px" borderRadius="10px">
@@ -127,12 +168,22 @@ export default function AddPersonalizationProduct({
           {isEditing ? "Sửa sản phẩm" : "Thêm sản phẩm"}
         </Heading>
 
+        <FormControl mt={4} isRequired>
+          <FormLabel>Danh mục sản phẩm</FormLabel>
+          <CategorySelector
+            key={resetKeys.categorySelector || "category-selector"}
+            setCategoryId={handleCategoryChange}
+            setCategoryName={handleCategoryNameChange}
+          />
+          {productData.categoryName && (
+            <Text mt={2} fontSize="sm" color="green.600">
+              Danh mục đã chọn: <strong>{productData.categoryName}</strong>
+            </Text>
+          )}
+        </FormControl>
+
         {techSpecs.map((techSpec) => (
-          <FormControl
-            key={techSpec.techSpecId}
-            mt={4}
-            isRequired={requiredTechSpecIds.includes(techSpec.techSpecId)}
-          >
+          <FormControl key={techSpec.techSpecId} mt={4} isRequired>
             <FormLabel>{techSpec.name}</FormLabel>
             {renderInput(techSpec)}
           </FormControl>
@@ -171,11 +222,17 @@ export default function AddPersonalizationProduct({
                 bgColor="gray.400"
                 onClickExeFn={onCancelEdit}
               />
-              <ActionButton text="Cập nhật" onClickExeFn={handleAddProduct} />
+              <ActionButton
+                text="Cập nhật"
+                onClickExeFn={wrappedHandleAddProduct}
+              />
             </ButtonGroup>
           )}
           {!isEditing && (
-            <ActionButton text="+ Thêm" onClickExeFn={handleAddProduct} />
+            <ActionButton
+              text="+ Thêm"
+              onClickExeFn={wrappedHandleAddProduct}
+            />
           )}
         </Flex>
       </Box>

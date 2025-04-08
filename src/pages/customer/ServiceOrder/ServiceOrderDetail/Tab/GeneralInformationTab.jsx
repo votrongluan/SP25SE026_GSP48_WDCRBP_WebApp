@@ -9,7 +9,10 @@ import {
   Badge,
   Spacer,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../../config/appconfig.js";
+import {
+  appColorTheme,
+  getServiceTypeLabel,
+} from "../../../../../config/appconfig.js";
 import {
   formatDateTimeString,
   formatDateTimeToVietnamese,
@@ -17,14 +20,25 @@ import {
 import CustomizationProductList from "./CustomizationProductList.jsx";
 import StarRating from "../../../../../components/Utility/StarRating.jsx";
 import { Link } from "react-router-dom";
+import PersonalizationProductList from "./PersonalizationProductList.jsx";
 
 export default function GeneralInformationTab({ order }) {
+  const serviceName = order?.service?.service?.serviceName;
+
   return (
     <Box>
-      <CustomizationProductList
-        products={order?.requestedProduct || []}
-        totalAmount={order?.totalAmount}
-      />
+      {serviceName == "Personalization" && (
+        <PersonalizationProductList
+          products={order?.requestedProduct}
+          totalAmount={order?.totalAmount}
+        />
+      )}
+      {serviceName == "Customization" && (
+        <CustomizationProductList
+          products={order?.requestedProduct}
+          totalAmount={order?.totalAmount}
+        />
+      )}
 
       <SimpleGrid
         mt={6}
@@ -49,19 +63,15 @@ export default function GeneralInformationTab({ order }) {
               <HStack>
                 <Text fontWeight="bold">Loại dịch vụ:</Text>
                 <Text>
-                  {order?.service?.service?.serviceName == "Customization"
-                    ? "Tùy chỉnh"
-                    : "" || "Chưa cập nhật"}
+                  {getServiceTypeLabel(order?.service?.service?.serviceName)}
                 </Text>
               </HStack>
 
               <HStack>
                 <Text fontWeight="bold">Ngày đặt:</Text>
                 <Text>
-                  {order?.requestedProduct?.[0]?.createdAt
-                    ? formatDateTimeString(
-                        new Date(order.requestedProduct[0].createdAt)
-                      )
+                  {order?.createdAt
+                    ? formatDateTimeString(new Date(order.createdAt))
                     : "Chưa cập nhật"}
                 </Text>
               </HStack>

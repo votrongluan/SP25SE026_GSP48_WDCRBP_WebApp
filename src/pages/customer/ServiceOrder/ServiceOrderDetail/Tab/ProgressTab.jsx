@@ -52,11 +52,11 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
   const shipmentItems = shipmentResponse?.data || [];
 
   // Check if order is cancelled
-  const isOrderCancelled = order?.status === serviceOrderStatusConstants.DA_HUY;
+  const isOrderCancelled = order?.status == serviceOrderStatusConstants.DA_HUY;
 
   // Check service type to determine progress flow
   const isPersonalization =
-    order?.service?.service?.serviceType === "Personalization";
+    order?.service?.service?.serviceName == "Personalization";
 
   // Define progress steps based on service type
   const progressSteps = isPersonalization

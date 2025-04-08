@@ -9,8 +9,8 @@ import {
   VStack,
   Divider,
   Grid,
-  Badge,
   Stack,
+  Badge,
 } from "@chakra-ui/react";
 import { Add, Remove, Edit } from "@mui/icons-material";
 import { appColorTheme } from "../../../config/appconfig.js";
@@ -27,23 +27,6 @@ export default function PersonalizationProductList({
   // Find tech spec by id
   const getTechSpec = (id) => {
     return techSpecs.find((spec) => spec.techSpecId === parseInt(id));
-  };
-
-  // Get dimensions from product for display
-  const getDimensionsDisplay = (product) => {
-    const dimensions = techSpecs
-      .filter((spec) => spec.optionType === "number")
-      .map((spec) => {
-        const key = `techSpec_${spec.techSpecId}`;
-        return product[key]
-          ? `${product[key]}${spec.name.includes("cm") ? "" : "cm"}`
-          : "";
-      })
-      .filter(Boolean);
-
-    return dimensions.length > 0
-      ? dimensions.join(" x ")
-      : "Chưa có kích thước";
   };
 
   // Change quantity for a product in the list
@@ -99,13 +82,26 @@ export default function PersonalizationProductList({
             >
               <Grid templateColumns="1fr auto" gap={4}>
                 <Box>
-                  <Flex justifyContent="space-between" mb={2}>
-                    <Text fontWeight="bold" fontSize="lg">
-                      Sản phẩm {index + 1}
-                    </Text>
-                    <Badge colorScheme="blue">
-                      {getDimensionsDisplay(product)}
-                    </Badge>
+                  <Flex
+                    justifyContent="space-between"
+                    mb={2}
+                    alignItems="center"
+                  >
+                    <Flex alignItems="center" gap={2}>
+                      <Text fontWeight="bold" fontSize="lg">
+                        Sản phẩm {index + 1}
+                      </Text>
+                      {product.categoryName && (
+                        <Badge
+                          colorScheme="green"
+                          fontSize="0.8em"
+                          px={2}
+                          py={1}
+                        >
+                          {product.categoryName}
+                        </Badge>
+                      )}
+                    </Flex>
                   </Flex>
 
                   {/* Display product images if available */}
@@ -134,9 +130,6 @@ export default function PersonalizationProductList({
                         const spec = getTechSpec(techSpecId);
 
                         if (!spec) return null;
-
-                        // Skip rendering number type specs individually as they're combined in the dimensions display
-                        if (spec.optionType === "number") return null;
 
                         return (
                           <Text key={key}>

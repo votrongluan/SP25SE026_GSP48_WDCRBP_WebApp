@@ -126,7 +126,13 @@ export default function ServiceOrderList() {
       {
         headerName: "Tổng tiền",
         field: "totalAmount",
-        valueFormatter: (p) => formatPrice(p.value),
+        valueFormatter: (p) => {
+          if (!p.value) {
+            return "Chưa cập nhật";
+          }
+
+          return formatPrice(p.value);
+        },
       },
       {
         headerName: "SĐT k.hàng",

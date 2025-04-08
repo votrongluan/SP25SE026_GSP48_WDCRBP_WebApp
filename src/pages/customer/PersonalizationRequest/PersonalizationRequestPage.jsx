@@ -8,6 +8,11 @@ import {
   Alert,
   AlertIcon,
   Button,
+  Textarea,
+  FormControl,
+  FormLabel,
+  Divider,
+  VStack,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import useAuth from "../../../hooks/useAuth.js";
@@ -21,6 +26,8 @@ import { useGetAvailableServiceByWwIdQuery } from "../../../services/availableSe
 import { useCreatePersonalOrderMutation } from "../../../services/serviceOrderApi";
 import PersonalizationProductList from "./PersonalizationProductList.jsx";
 import WoodworkerBox from "./WoodworkerBox.jsx";
+import { useGetUserAddressesByUserIdQuery } from "../../../services/userAddressApi.js";
+import AddressSelection from "../Cart/components/AddressSelection.jsx";
 
 export default function PersonalizationRequestPage() {
   const { id: woodworkerId } = useParams();
@@ -28,10 +35,17 @@ export default function PersonalizationRequestPage() {
   const navigate = useNavigate();
   const notify = useNotify();
   const [editIndex, setEditIndex] = useState(-1);
+  const [notes, setNotes] = useState(""); // Notes state
+  const [selectedAddress, setSelectedAddress] = useState(null); // Selected address state
 
-  if (auth?.role != "Customer") {
-    return <Navigate to="/unauthorized" />;
-  }
+  // Fetch addresses
+  const {
+    data: addressesResponse,
+    isLoading: isLoadingAddresses,
+    error: addressesError,
+  } = useGetUserAddressesByUserIdQuery(auth?.userId, {
+    skip: !auth?.userId,
+  });
 
   // Fetch tech specs
   const {
@@ -64,6 +78,9 @@ export default function PersonalizationRequestPage() {
   // Store product being edited or created
   const [productData, setProductData] = useState({});
 
+  // Get available addresses
+  const addresses = addressesResponse?.data || [];
+
   // Check service availability
   const woodworker = woodworkerData?.data;
   const availableServices = serviceData?.data || [];
@@ -92,6 +109,7 @@ export default function PersonalizationRequestPage() {
     });
 
     initialData.quantity = 1;
+    initialData.categoryId = null;
     setProductData(initialData);
     setEditIndex(-1);
   };
@@ -104,20 +122,6 @@ export default function PersonalizationRequestPage() {
 
   // Handle adding or updating product
   const handleAddProduct = () => {
-    // Validation for required fields
-    const lengthValue = productData["techSpec_1"];
-    const widthValue = productData["techSpec_2"];
-    const heightValue = productData["techSpec_3"];
-
-    if (!lengthValue || !widthValue || !heightValue || !productData.quantity) {
-      notify(
-        "Lỗi!",
-        "Vui lòng nhập đầy đủ kích thước và số lượng sản phẩm.",
-        "error"
-      );
-      return;
-    }
-
     // Check total quantity limit
     const currentTotalQuantity = productList.reduce((sum, product, index) => {
       if (editIndex !== -1 && index === editIndex) return sum;
@@ -168,7 +172,30 @@ export default function PersonalizationRequestPage() {
       return;
     }
 
+    // Check if all products have category selected
+    const missingCategory = productList.some((product) => !product.categoryId);
+    if (missingCategory) {
+      notify("Lỗi!", "Vui lòng chọn danh mục cho tất cả sản phẩm.", "error");
+      return;
+    }
+
+    // Check if address is selected
+    if (!selectedAddress) {
+      notify("Lỗi!", "Vui lòng chọn địa chỉ giao hàng.", "error");
+      return;
+    }
+
     try {
+      // Find the selected address object
+      const selectedAddressObj = addresses.find(
+        (addr) => addr.userAddressId.toString() === selectedAddress
+      );
+
+      if (!selectedAddressObj) {
+        notify("Lỗi", "Không tìm thấy thông tin địa chỉ.", "error");
+        return;
+      }
+
       const requestedProducts = productList.map((product) => {
         // Get all tech specs, even empty ones
         const techSpecs =
@@ -183,6 +210,7 @@ export default function PersonalizationRequestPage() {
         return {
           quantity: product.quantity.toString(),
           techSpecs,
+          categoryId: product.categoryId, // Include categoryId in request
         };
       });
 
@@ -190,11 +218,13 @@ export default function PersonalizationRequestPage() {
         availableServiceId: personalizationService?.availableServiceId,
         userId: auth?.userId,
         requestedProducts,
+        note: notes.trim(), // Add notes
+        address: selectedAddressObj.address, // Send the address string instead of addressId
       };
 
       await createPersonalOrder(orderData).unwrap();
       notify("Thành công!", "Đơn hàng đã được tạo thành công.", "success");
-      navigate("/orders");
+      navigate("/cus/service-order");
     } catch (error) {
       notify(
         "Lỗi!",
@@ -203,6 +233,11 @@ export default function PersonalizationRequestPage() {
       );
     }
   };
+
+  // Redirect if user is not a customer
+  if (auth?.role != "Customer") {
+    return <Navigate to="/unauthorized" />;
+  }
 
   // Show loading state
   if (isTechSpecLoading || isWoodworkerLoading || isServiceLoading) {
@@ -283,13 +318,51 @@ export default function PersonalizationRequestPage() {
                   notify={notify}
                 />
 
+                <Box bg="white" p={5} borderRadius="10px" mt={5}>
+                  <VStack align="stretch" spacing={4}>
+                    {/* Address Selection */}
+                    <Box>
+                      <AddressSelection
+                        addresses={addresses}
+                        isLoading={isLoadingAddresses}
+                        error={addressesError}
+                        selectedAddress={selectedAddress}
+                        setSelectedAddress={setSelectedAddress}
+                      />
+                    </Box>
+
+                    <Divider />
+
+                    {/* Notes Field */}
+                    <FormControl>
+                      <FormLabel fontWeight="medium">
+                        Ghi chú đơn hàng
+                      </FormLabel>
+                      <Textarea
+                        placeholder="Nhập ghi chú hoặc yêu cầu đặc biệt cho đơn hàng này"
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
+                        size="md"
+                        resize="vertical"
+                        maxLength={500}
+                      />
+                    </FormControl>
+                  </VStack>
+                </Box>
+
                 <WoodworkerBox woodworkerProfile={woodworker} />
 
                 <Flex justifyContent="center" mt={6}>
                   <Button
+                    _hover={{ backgroundColor: "app_brown.1", color: "white" }}
+                    px="30px"
+                    py="20px"
+                    bgColor={appColorTheme.brown_2}
+                    color="white"
+                    borderRadius="40px"
                     onClick={handleSubmitOrder}
                     isLoading={isCreating}
-                    isDisabled={productList.length === 0}
+                    isDisabled={productList.length === 0 || !selectedAddress}
                   >
                     Gửi yêu cầu
                   </Button>

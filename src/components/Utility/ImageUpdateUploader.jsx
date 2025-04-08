@@ -187,7 +187,7 @@ export default function ImageUpdateUploader({
 
       {!isUploadComplete && (
         <HStack spacing={4}>
-          <Button onClick={handleCancel}>Hủy</Button>
+          <Button onClick={handleCancel}>Hiện ảnh ban đầu</Button>
           <Button
             bgColor={appColorTheme.green_0}
             color="white"

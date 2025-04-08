@@ -17,6 +17,7 @@ import { appColorTheme } from "../../config/appconfig";
 
 const CategorySelector = ({
   setCategoryId,
+  setCategoryName,
   initialCategoryId,
   allowLevel1Selection = true,
 }) => {
@@ -78,6 +79,7 @@ const CategorySelector = ({
     if (isLeaf || (level === 0 && allowLevel1Selection)) {
       setSelectedCategoryId(category.id);
       setCategoryId(category.id);
+      setCategoryName ? setCategoryName(category.categoryName) : null;
     }
   };
 
@@ -101,7 +103,7 @@ const CategorySelector = ({
   // Render a level of categories
   const renderCategoryLevel = (cats, level) => {
     return (
-      <VStack align="stretch" spacing={2} width="100%">
+      <VStack align="start" spacing={2} width="100%">
         {cats.map((category) => (
           <Button
             key={category.id}
@@ -111,10 +113,17 @@ const CategorySelector = ({
             justifyContent="flex-start"
             onClick={() => handleCategorySelect(category, level)}
             position="relative"
+            width="fit-content"
           >
             {category.categoryName}
             {selectedCategoryId === category.id && (
-              <Badge position="absolute" right={2} colorScheme="blue">
+              <Badge
+                size={"sm"}
+                position="absolute"
+                right={0}
+                top={0}
+                colorScheme="blue"
+              >
                 ✓
               </Badge>
             )}
@@ -153,22 +162,6 @@ const CategorySelector = ({
                     1
                   )}
                 </SimpleGrid>
-
-                {/* Additional levels if needed */}
-                {selectedCategoryPath.length > 1 &&
-                  selectedCategoryPath[1]?.children?.length > 0 && (
-                    <Box mt={4}>
-                      <Text fontWeight="bold" mb={2}>
-                        Danh mục con cấp 3
-                      </Text>
-                      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={3}>
-                        {renderCategoryLevel(
-                          selectedCategoryPath[1]?.children || [],
-                          2
-                        )}
-                      </SimpleGrid>
-                    </Box>
-                  )}
               </>
             )}
 

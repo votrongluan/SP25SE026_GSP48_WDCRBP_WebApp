@@ -88,7 +88,7 @@ export default function AvailableService({ woodworkerId, onServiceAction }) {
               <Text mb={2}>
                 <b>Mô tả dịch vụ của xưởng:</b> {availableService.description}
               </Text>
-              {!auth?.role == "Woodworker" && (
+              {auth?.role != "Woodworker" && (
                 <Button
                   bg={appColorTheme.brown_2}
                   color="white"
