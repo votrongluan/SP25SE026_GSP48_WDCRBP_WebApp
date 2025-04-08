@@ -25,6 +25,7 @@ import {
 export default function ContractAndTransactionTab({
   activeTabIndex,
   isActive,
+  order,
 }) {
   const { id } = useParams();
 
@@ -264,12 +265,8 @@ export default function ContractAndTransactionTab({
             <Stack spacing={4}>
               <Stack spacing={4}>
                 <HStack>
-                  <Text fontWeight="bold">Chi tiết giao dịch của đơn hàng</Text>
-                </HStack>
-
-                <HStack>
                   <Text fontWeight="bold">Thành tiền:</Text>
-                  <Text>
+                  <Text fontWeight="bold" color={appColorTheme.brown_2}>
                     {contract.contractTotalAmount
                       ? formatPrice(contract.contractTotalAmount)
                       : "Chưa cập nhật"}
@@ -278,28 +275,15 @@ export default function ContractAndTransactionTab({
 
                 <HStack>
                   <Text fontWeight="bold">Số tiền đã thanh toán:</Text>
-                  <Text>
-                    {formatPrice(
-                      deposits.reduce(
-                        (sum, deposit) =>
-                          deposit.status ? sum + (deposit.amount || 0) : sum,
-                        0
-                      )
-                    )}
+                  <Text fontWeight="bold" color={appColorTheme.brown_2}>
+                    {formatPrice(order?.amountPaid)}
                   </Text>
                 </HStack>
 
                 <HStack>
                   <Text fontWeight="bold">Số tiền còn lại:</Text>
-                  <Text>
-                    {formatPrice(
-                      contract.contractTotalAmount -
-                        deposits.reduce(
-                          (sum, deposit) =>
-                            deposit.status ? sum + (deposit.amount || 0) : sum,
-                          0
-                        )
-                    )}
+                  <Text fontWeight="bold" color={appColorTheme.brown_2}>
+                    {formatPrice(order?.amountRemaining)}
                   </Text>
                 </HStack>
               </Stack>
@@ -324,10 +308,19 @@ export default function ContractAndTransactionTab({
                   </HStack>
 
                   <HStack>
-                    <Text fontWeight="bold">Ngày thanh toán:</Text>
+                    <Text fontWeight="bold">Ngày tạo:</Text>
                     <Text>
                       {deposit.createdAt
                         ? formatDateTimeString(new Date(deposit.createdAt))
+                        : "Chưa cập nhật"}
+                    </Text>
+                  </HStack>
+
+                  <HStack>
+                    <Text fontWeight="bold">Ngày thanh toán:</Text>
+                    <Text>
+                      {deposit.updatedAt
+                        ? formatDateTimeString(new Date(deposit.updatedAt))
                         : "Chưa cập nhật"}
                     </Text>
                   </HStack>

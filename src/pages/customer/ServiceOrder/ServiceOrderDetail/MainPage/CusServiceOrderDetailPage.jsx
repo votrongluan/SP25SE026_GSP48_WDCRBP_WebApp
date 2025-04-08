@@ -23,12 +23,20 @@ import { FiActivity, FiFile, FiFileText } from "react-icons/fi";
 import GeneralInformationTab from "../Tab/GeneralInformationTab.jsx";
 import ProcessTab from "../Tab/ProgressTab.jsx";
 import ContractAndTransactionTab from "../Tab/ContractAndTransactionTab.jsx";
+import { useGetAllOrderDepositByOrderIdQuery } from "../../../../../services/orderDepositApi.js";
 import { useState } from "react";
 
 export default function CusServiceOrderDetailPage() {
   const { id } = useParams();
   const { data, isLoading, error, refetch } = useGetServiceOrderByIdQuery(id);
   const order = data?.data;
+  const {
+    data: depositsResponse,
+    isLoading: isDepositsLoading,
+    error: depositsError,
+    refetch: refetchDeposit,
+  } = useGetAllOrderDepositByOrderIdQuery(id);
+  const deposits = depositsResponse?.data || [];
   const { auth } = useAuth();
 
   // Track active tab index
@@ -39,7 +47,7 @@ export default function CusServiceOrderDetailPage() {
     setActiveTabIndex(index);
   };
 
-  if (isLoading) {
+  if (isLoading || isDepositsLoading) {
     return (
       <Center h="200px">
         <Spinner size="xl" color={appColorTheme.brown_2} />
@@ -47,7 +55,7 @@ export default function CusServiceOrderDetailPage() {
     );
   }
 
-  if (error) {
+  if (error || depositsError) {
     return (
       <Center h="200px">
         <Text>Đã có lỗi xảy ra khi tải thông tin đơn dịch vụ</Text>
@@ -101,20 +109,16 @@ export default function CusServiceOrderDetailPage() {
         <Spacer />
 
         <Box>
-          {order?.role == "Customer" ? (
-            <HStack spacing={4}>
-              <ActionBar
-                order={order}
-                refetch={refetch}
-                status={order?.status}
-                feedback={order?.feedback}
-              />
-            </HStack>
-          ) : (
-            <>
-              <Text>Chờ phản hồi từ thợ mộc</Text>
-            </>
-          )}
+          <HStack spacing={4}>
+            <ActionBar
+              deposits={deposits}
+              order={order}
+              refetch={refetch}
+              status={order?.status}
+              feedback={order?.feedback}
+              refetchDeposit={refetchDeposit}
+            />
+          </HStack>
         </Box>
       </HStack>
 
@@ -170,6 +174,7 @@ export default function CusServiceOrderDetailPage() {
             </TabPanel>
             <TabPanel p={0}>
               <ContractAndTransactionTab
+                order={order}
                 activeTabIndex={activeTabIndex}
                 isActive={activeTabIndex === 2}
               />

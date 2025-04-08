@@ -38,15 +38,6 @@ export default function AppointmentUpdateModal({ order, refetch }) {
   // Button disable state for checkboxes
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
-  // Format datetime for input field
-  const formatDateForInput = (dateString) => {
-    if (!dateString) return "";
-    // Create a date object and adjust it to local timezone for proper formatting
-    const date = new Date(dateString);
-    // Format to YYYY-MM-DDThh:mm
-    return date.toISOString().slice(0, 16);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -79,7 +70,6 @@ export default function AppointmentUpdateModal({ order, refetch }) {
       refetch();
       onClose();
     } catch (error) {
-      console.error("Appointment update error:", error);
       notify(
         "Đã xảy ra lỗi",
         error.message || "Không thể cập nhật lịch hẹn, vui lòng thử lại sau",
@@ -167,7 +157,7 @@ export default function AppointmentUpdateModal({ order, refetch }) {
                     </GridItem>
                     <GridItem>
                       <Input
-                        name="linkMeeting"
+                        name="meetAddress"
                         placeholder="Địa điểm"
                         defaultValue={appointment.meetAddress || ""}
                         required
@@ -184,7 +174,7 @@ export default function AppointmentUpdateModal({ order, refetch }) {
                         type="datetime-local"
                         name="timeMeeting"
                         placeholder="Ngày hẹn"
-                        defaultValue={formatDateForInput(appointment.dateTime)}
+                        defaultValue={appointment.dateTime}
                         required
                       />
                     </GridItem>

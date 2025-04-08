@@ -101,20 +101,14 @@ export default function WWServiceOrderDetailPage() {
         <Spacer />
 
         <Box>
-          {order?.role == "Woodworker" ? (
-            <HStack spacing={4}>
-              <ActionBar
-                order={order}
-                refetch={refetch}
-                status={order?.status}
-                feedback={order?.feedback}
-              />
-            </HStack>
-          ) : (
-            <>
-              <Text>Chờ phản hồi từ khách hàng</Text>
-            </>
-          )}
+          <HStack spacing={4}>
+            <ActionBar
+              order={order}
+              refetch={refetch}
+              status={order?.status}
+              feedback={order?.feedback}
+            />
+          </HStack>
         </Box>
       </HStack>
 
@@ -170,6 +164,7 @@ export default function WWServiceOrderDetailPage() {
             </TabPanel>
             <TabPanel p={0}>
               <ContractAndTransactionTab
+                order={order}
                 activeTabIndex={activeTabIndex}
                 isActive={activeTabIndex === 2}
               />

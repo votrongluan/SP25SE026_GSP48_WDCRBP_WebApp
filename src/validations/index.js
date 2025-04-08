@@ -331,9 +331,9 @@ export const validateAppointment = (data) => {
   }
 
   // Validate location/link
-  if (!data.linkMeeting) {
+  if (!data.meetAddress) {
     errors.push("Địa điểm/Link họp là bắt buộc");
-  } else if (data.linkMeeting.trim().length < 3) {
+  } else if (data.meetAddress.trim().length < 3) {
     errors.push("Địa điểm/Link họp phải có ít nhất 3 ký tự");
   }
 

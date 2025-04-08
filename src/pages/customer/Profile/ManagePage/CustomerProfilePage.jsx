@@ -43,8 +43,12 @@ export default function CustomerProfilePage() {
 
   return (
     <Box>
-      {/* Thông tin cá nhân */}
       <Stack spacing={6}>
+        <UserAddress />
+      </Stack>
+
+      {/* Thông tin cá nhân */}
+      <Stack mt={6} spacing={6}>
         <Heading
           color={appColorTheme.brown_2}
           fontFamily="Montserrat"
@@ -57,10 +61,6 @@ export default function CustomerProfilePage() {
           <CustomerPersonalInfoForm userData={userData} refetch={refetch} />
           <CustomerPasswordChangeForm refetch={refetch} />
         </Stack>
-      </Stack>
-
-      <Stack mt={6} spacing={6}>
-        <UserAddress />
       </Stack>
     </Box>
   );

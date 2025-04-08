@@ -3,10 +3,7 @@ import {
   Box,
   Heading,
   Stack,
-  HStack,
-  Text,
   Input,
-  Button,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
@@ -15,10 +12,12 @@ import {
   Textarea,
   FormControl,
   FormLabel,
+  Text,
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../../../config/appconfig.js";
 import { formatDateForInput } from "../../../../../../utils/utils.js";
 import SignatureComponent from "../../../../../../components/Common/SignatureComponent.jsx";
+import { differenceInMonths, format, addMonths } from "date-fns";
 
 export default function ContractEditSection({
   initialContract,
@@ -39,6 +38,9 @@ export default function ContractEditSection({
     signatureData: null, // Store raw signature data for later upload
   });
 
+  // Add state for calculated warranty end date
+  const [warrantyEndDate, setWarrantyEndDate] = useState("");
+
   // Initialize contract data from existing contract (if any)
   useEffect(() => {
     if (initialContract) {
@@ -47,8 +49,10 @@ export default function ContractEditSection({
         contractTotalAmount: initialContract.contractTotalAmount || 0,
         completeDate: formatDateForInput(initialContract.completeDate) || "",
         warrantyPeriod: initialContract.warrantyPeriod
-          ? new Date(initialContract.warrantyPeriod).getMonth() -
-            new Date().getMonth()
+          ? differenceInMonths(
+              new Date(initialContract.warrantyPeriod),
+              new Date()
+            ) + 1
           : 12,
         woodworkerSignature: initialContract.woodworkerSignature || "",
         signatureData: null,
@@ -60,6 +64,13 @@ export default function ContractEditSection({
       }));
     }
   }, [initialContract, order]);
+
+  // Calculate warranty end date whenever warrantyPeriod changes
+  useEffect(() => {
+    const months = parseInt(contract.warrantyPeriod) || 0;
+    const endDate = addMonths(new Date(), months);
+    setWarrantyEndDate(format(endDate, "dd/MM/yyyy"));
+  }, [contract.warrantyPeriod]);
 
   // Notify parent component of changes
   useEffect(() => {
@@ -117,6 +128,9 @@ export default function ContractEditSection({
                   <NumberDecrementStepper />
                 </NumberInputStepper>
               </NumberInput>
+              <Text fontSize="sm" color="gray.600" mt={1}>
+                Hạn bảo hành kết thúc ngày: <b>{warrantyEndDate}</b>
+              </Text>
             </FormControl>
 
             <FormControl isRequired>

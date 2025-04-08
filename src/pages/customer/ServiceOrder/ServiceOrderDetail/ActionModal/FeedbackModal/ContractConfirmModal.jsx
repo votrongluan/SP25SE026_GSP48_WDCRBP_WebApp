@@ -35,6 +35,7 @@ export default function ContractConfirmModal({
   serviceOrderId,
   buttonText = "Xác nhận hợp đồng",
   refetch,
+  refetchDeposit,
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const notify = useNotify();
@@ -125,7 +126,7 @@ export default function ContractConfirmModal({
 
       await confirmContract({
         serviceOrderId,
-        customerSign: "sss",
+        customerSign: customerSign,
         cusId: auth?.userId,
       }).unwrap();
 
@@ -137,6 +138,7 @@ export default function ContractConfirmModal({
 
       onClose();
       refetch(); // Refresh data
+      refetchDeposit(); // Refresh deposit data
     } catch (err) {
       notify(
         "Xác nhận thất bại",

@@ -138,13 +138,6 @@ export default function ProgressTab({ activeTabIndex, isActive }) {
                 <Stack spacing={3} divider={<Divider />}>
                   <HStack alignItems="flex-start">
                     <Text fontWeight="bold" minW="120px">
-                      Mã vận chuyển:
-                    </Text>
-                    <Text>{shipment.shipmentId}</Text>
-                  </HStack>
-
-                  <HStack alignItems="flex-start">
-                    <Text fontWeight="bold" minW="120px">
                       Địa chỉ giao:
                     </Text>
                     <Text>{shipment.toAddress || "Chưa cập nhật"}</Text>
