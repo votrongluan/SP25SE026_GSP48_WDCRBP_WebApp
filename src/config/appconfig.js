@@ -21,6 +21,12 @@ export const appColorTheme = {
   rose_0: "#f43f5e",
 };
 
+export const configuration = {
+  GHN_Token_API: "GHN_Token_API",
+  SampleContract: "SampleContract",
+  PlatformSignature: "PlatformSignature",
+};
+
 export const transactionTypeConstants = {
   NAP_VI: "Nạp ví",
   RUT_VI: "Rút ví",

@@ -150,7 +150,7 @@ export default function ContractAndTransactionTab({
 
             <HStack>
               <Text fontWeight="bold">Giá trị hợp đồng:</Text>
-              <Text>
+              <Text fontWeight="bold" color={appColorTheme.brown_2}>
                 {contract.contractTotalAmount
                   ? formatPrice(contract.contractTotalAmount)
                   : "Chưa cập nhật"}

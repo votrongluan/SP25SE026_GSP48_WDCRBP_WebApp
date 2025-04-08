@@ -22,10 +22,9 @@ export default function ActionBar({
     let showCancelButton = false;
     let showContractButton = false;
     let showDesignButton = false;
+    let showReviewRatingButton = false;
     let confirmButtonText = "Xác nhận";
 
-    // Find the first unpaid deposit (with lowest depositNumber)
-    // Create a copy of deposits before sorting to avoid modifying the original array
     const unpaidDeposit =
       deposits?.length > 0
         ? [...deposits]
@@ -44,18 +43,15 @@ export default function ActionBar({
       serviceOrderStatusConstants.DANG_GIA_CONG,
     ].includes(status);
 
-    // Only show actions if the role is Customer
     if (order && order.role === "Customer") {
-      // Show cancel button for most statuses before completion
-
       switch (status) {
         case serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_LICH_HEN:
           if (!feedback || feedback.trim() === "") {
-            // If there's NO feedback, show BOTH confirmation and feedback buttons
             showAppointmentButton = true;
             showFeedbackButton = true;
             confirmButtonText = "Xác nhận lịch hẹn";
           }
+
           break;
 
         case serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_HOP_DONG:
@@ -65,28 +61,42 @@ export default function ActionBar({
             showFeedbackButton = true;
             confirmButtonText = "Xác nhận hợp đồng";
           }
+
           break;
 
         case serviceOrderStatusConstants.DA_DUYET_HOP_DONG:
           if ((!feedback || feedback.trim() === "") && unpaidDeposit) {
             showPaymentButton = true;
           }
+
           break;
 
         case serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_THIET_KE:
           if (!feedback || feedback.trim() === "") {
-            // If there's NO feedback, show BOTH confirmation and feedback buttons
             showDesignButton = true;
             showFeedbackButton = true;
             confirmButtonText = "Xác nhận thiết kế";
           }
+
+          break;
+
+        case serviceOrderStatusConstants.DA_DUYET_THIET_KE:
+          if ((!feedback || feedback.trim() === "") && unpaidDeposit) {
+            showPaymentButton = true;
+          }
+
           break;
 
         case serviceOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT:
+          if (unpaidDeposit) {
+            showPaymentButton = true;
+          } else {
+            showReviewRatingButton = true;
+          }
+
           break;
 
         default:
-          // No specific actions for other statuses except Cancel
           break;
       }
     }
