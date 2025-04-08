@@ -19,8 +19,6 @@ import StarRating from "../../../../../components/Utility/StarRating.jsx";
 import { Link } from "react-router-dom";
 
 export default function GeneralInformationTab({ order }) {
-  console.log("order", order);
-
   return (
     <Box>
       <CustomizationProductList

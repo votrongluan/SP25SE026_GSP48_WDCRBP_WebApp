@@ -8,11 +8,12 @@ import {
   Stack,
   Text,
   Spinner,
+  HStack,
 } from "@chakra-ui/react";
 import { useState, useMemo } from "react";
 import { appColorTheme } from "../../../config/appconfig";
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGetAllServicePacksQuery } from "../../../services/servicePackApi";
 
 const baseFeatures = [
@@ -31,6 +32,8 @@ const periodLabels = {
 export default function Pricing({
   handleButtonClick,
   label = "Đăng ký trở thành thợ mộc",
+  servicePackId,
+  packName,
 }) {
   const navigate = useNavigate();
   const [selectedPeriod, setSelectedPeriod] = useState(1);
@@ -77,6 +80,7 @@ export default function Pricing({
       acc[pack.name].prices[pack.duration] = {
         price: pack.price,
         servicePackId: pack.servicePackId,
+        name: pack.name,
       };
       return acc;
     }, {});
@@ -151,9 +155,16 @@ export default function Pricing({
             position="relative"
           >
             <Stack spacing={6}>
-              <Heading as="h3" fontSize="2xl">
-                {plan.name}
-              </Heading>
+              <HStack>
+                <Heading as="h3" fontSize="2xl">
+                  {plan.name}{" "}
+                </Heading>
+                <Text fontSize="md" color="gray.500">
+                  {servicePackId == plan.prices[selectedPeriod]?.servicePackId
+                    ? "(Đã mua trước đó)"
+                    : ""}
+                </Text>
+              </HStack>
               <Flex align="baseline">
                 <Text
                   fontSize="4xl"
@@ -186,7 +197,9 @@ export default function Pricing({
                 w="full"
                 _hover={{ bg: appColorTheme.brown_1, color: "white" }}
               >
-                {label}
+                {packName == plan.prices[selectedPeriod]?.name
+                  ? "Gia hạn thêm"
+                  : label}
               </Button>
 
               <Stack spacing={3}>

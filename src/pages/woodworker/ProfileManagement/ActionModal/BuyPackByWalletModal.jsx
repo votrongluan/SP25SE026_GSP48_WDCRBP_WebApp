@@ -17,17 +17,21 @@ import Pricing from "../../../general/Pricing/Pricing.jsx";
 import { FiXCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
-export default function BuyPackByWalletModal({ isOpen, onClose }) {
+export default function BuyPackByWalletModal({ isOpen, onClose, woodworker }) {
   const { auth } = useAuth();
   const navigate = useNavigate();
   const notify = useNotify();
   const [servicePackPayment, { isLoading }] = useServicePackPaymentMutation();
+  const isServicePackValid =
+    woodworker?.servicePackEndDate &&
+    Date.now() <= new Date(woodworker.servicePackEndDate).getTime();
 
   const handleBuyPack = async (data) => {
     const postData = {
       servicePackId: data.servicePackId,
       userId: auth.userId,
       email: auth.sub,
+      returnUrl: `${window.location.origin}/payment-success`,
     };
 
     try {
@@ -60,7 +64,7 @@ export default function BuyPackByWalletModal({ isOpen, onClose }) {
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Mua gói mới</ModalHeader>
+        <ModalHeader>Mua gói dịch vụ</ModalHeader>
         {!isLoading && <ModalCloseButton />}
         <ModalBody bgColor="app_grey.1" py={6}>
           {isLoading ? (
@@ -72,6 +76,14 @@ export default function BuyPackByWalletModal({ isOpen, onClose }) {
               handleButtonClick={handleBuyPack}
               label="Kích hoạt"
               isLoading={isLoading}
+              servicePackId={
+                isServicePackValid
+                  ? woodworker?.servicePack?.servicePackId
+                  : null
+              }
+              packName={
+                isServicePackValid ? woodworker?.servicePack?.name : null
+              }
             />
           )}
         </ModalBody>

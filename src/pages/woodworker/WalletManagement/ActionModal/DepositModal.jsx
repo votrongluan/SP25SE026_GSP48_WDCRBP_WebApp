@@ -53,6 +53,7 @@ export default function DepositModal({ isOpen, onClose, wallet }) {
         transactionType: "Nạp ví",
         amount: parseInt(amount),
         email: auth.sub,
+        returnUrl: `${window.location.origin}/payment-success`,
       };
 
       const res = await topUpWallet(postData).unwrap();

@@ -25,7 +25,7 @@ export const transactionTypeConstants = {
   NAP_VI: "Nạp ví",
   RUT_VI: "Rút ví",
   THANH_TOAN_BANG_VI: "Thanh toán bằng ví",
-  THANH_TOAN_QUA_CONG: "Thanh bằng VNPay",
+  THANH_TOAN_QUA_CONG: "Thanh toán bằng VNPay",
   NHAN_TIEN: "Nhận tiền",
 };
 

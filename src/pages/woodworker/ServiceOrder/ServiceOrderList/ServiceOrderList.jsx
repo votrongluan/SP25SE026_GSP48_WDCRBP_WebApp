@@ -146,8 +146,6 @@ export default function ServiceOrderList() {
           }
         },
         cellRenderer: (params) => {
-          console.log(params.value);
-
           return params.value === "Cần bạn phản hồi" ? (
             <Text color="green.500">{params.value}</Text>
           ) : (

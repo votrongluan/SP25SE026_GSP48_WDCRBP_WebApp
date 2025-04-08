@@ -94,10 +94,12 @@ export default function PackManagement({ woodworker }) {
       <BuyPackByWalletModal
         isOpen={walletModalDisclosure.isOpen}
         onClose={walletModalDisclosure.onClose}
+        woodworker={woodworker}
       />
       <BuyPackByPaymentGateway
         isOpen={paymentGatewayModalDisclosure.isOpen}
         onClose={paymentGatewayModalDisclosure.onClose}
+        woodworker={woodworker}
       />
     </>
   );
