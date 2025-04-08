@@ -82,6 +82,9 @@ export default function ActionBar({
           }
           break;
 
+        case serviceOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT:
+          break;
+
         default:
           // No specific actions for other statuses except Cancel
           break;

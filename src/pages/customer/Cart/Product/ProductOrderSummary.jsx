@@ -193,7 +193,7 @@ export default function ProductOrderSummary({
           <Divider my={4} />
 
           <Flex justify="space-between" mb={4}>
-            <Text fontSize="lg">Tổng thanh toán:</Text>
+            <Text fontSize="lg">Tổng giá trị:</Text>
             <Text fontSize="lg" fontWeight="bold" color="app_brown.2">
               {formatPrice(getSelectedProductsTotal())}
             </Text>

@@ -358,3 +358,63 @@ export const validateAppointment = (data) => {
 
   return errors;
 };
+
+export const validateDesignData = (data) => {
+  const errors = [];
+
+  // Validate basic fields
+  if (!data.name || data.name.trim() === "") {
+    errors.push("Tên thiết kế là bắt buộc");
+  }
+
+  if (!data.img || (Array.isArray(data.img) && data.img.length === 0)) {
+    errors.push("Hình ảnh thiết kế là bắt buộc");
+  }
+
+  if (!data.categoryId) {
+    errors.push("Danh mục thiết kế là bắt buộc");
+  }
+
+  if (!data.description || data.description.trim() === "") {
+    errors.push("Mô tả thiết kế là bắt buộc");
+  }
+
+  // Validate configurations
+  if (!data.configurations || data.configurations.length === 0) {
+    errors.push("Cấu hình sản phẩm là bắt buộc");
+  } else {
+    // Check for dimension configuration
+    const dimensionConfig = data.configurations.find(
+      (config) => config.name === "Kích thước (dài x rộng x cao cm)"
+    );
+
+    if (dimensionConfig) {
+      for (const value of dimensionConfig.values) {
+        if (!value.name.match(/^\d+\s*x\s*\d+\s*x\s*\d+$/)) {
+          errors.push(
+            `Giá trị "${value.name}" không đúng định dạng. Kích thước phải theo định dạng: "số x số x số"`
+          );
+        }
+      }
+    } else {
+      errors.push("Cấu hình Kích thước (dài x rộng x cao cm) là bắt buộc");
+    }
+  }
+
+  // Validate prices
+  if (!data.prices || data.prices.length === 0) {
+    errors.push("Bảng giá là bắt buộc");
+  } else {
+    for (const price of data.prices) {
+      if (price.price < 100000) {
+        errors.push("Giá phải từ 100.000đ trở lên");
+      } else if (price.price > 50000000) {
+        errors.push("Giá không được vượt quá 50.000.000đ");
+      } else if (price.price % 100000 !== 0) {
+        errors.push("Giá phải là bội số của 100.000đ");
+      }
+    }
+  }
+
+  return errors;
+};

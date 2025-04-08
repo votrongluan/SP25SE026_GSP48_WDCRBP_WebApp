@@ -35,11 +35,18 @@ import { useNotify } from "../../../../components/Utility/Notify";
 import CheckboxList from "../../../../components/Utility/CheckboxList";
 import useAuth from "../../../../hooks/useAuth";
 import CategorySelector from "../../../../components/Utility/CategorySelector";
+import { validateDesignData } from "../../../../validations";
 
 export default function DesignCreateModal({ refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
-  const [configurations, setConfigurations] = useState([]);
+  const [configurations, setConfigurations] = useState([
+    {
+      id: 1,
+      name: "Kích thước (dài x rộng x cao cm)",
+      values: [],
+    },
+  ]);
   const [prices, setPrices] = useState([]);
   const [imgUrls, setImgUrls] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(true);
@@ -189,6 +196,13 @@ export default function DesignCreateModal({ refetch }) {
       prices,
     };
 
+    // Validate data before submission
+    const validationErrors = validateDesignData(data);
+    if (validationErrors.length > 0) {
+      notify("Vui lòng kiểm tra", validationErrors[0], "error");
+      return;
+    }
+
     try {
       await addDesignIdea(data).unwrap();
       notify("Thêm thiết kế thành công");
@@ -313,15 +327,18 @@ export default function DesignCreateModal({ refetch }) {
                               placeholder="Nhập tên cấu hình"
                             />
                           </FormControl>
-                          <IconButton
-                            position="absolute"
-                            right={1}
-                            top={1}
-                            icon={<FiXCircle />}
-                            colorScheme="red"
-                            variant="ghost"
-                            onClick={() => handleRemoveConfig(config.id)}
-                          />
+                          {config.name !=
+                            "Kích thước (dài x rộng x cao cm)" && (
+                            <IconButton
+                              position="absolute"
+                              right={1}
+                              top={1}
+                              icon={<FiXCircle />}
+                              colorScheme="red"
+                              variant="ghost"
+                              onClick={() => handleRemoveConfig(config.id)}
+                            />
+                          )}
                         </HStack>
 
                         <VStack spacing={2} align="stretch">

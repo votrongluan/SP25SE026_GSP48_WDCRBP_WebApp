@@ -8,7 +8,6 @@ export default function DesignVariantConfig({
   design,
   onVariantSelect,
 }) {
-
   // Transform the API data to structured format
   const getConfigurationsFromVariants = (variants) => {
     if (!variants || variants.length === 0) return [];
@@ -134,6 +133,9 @@ export default function DesignVariantConfig({
   return (
     <>
       <Stack spacing={4}>
+        <Text mt={5} fontSize="18px" fontWeight="bold">
+          Cấu hình sản phẩm
+        </Text>
         {configurations.map((config) => (
           <Flex gap={5} justifyContent="space-between" key={config.id}>
             <Text width="200px" fontWeight="bold">

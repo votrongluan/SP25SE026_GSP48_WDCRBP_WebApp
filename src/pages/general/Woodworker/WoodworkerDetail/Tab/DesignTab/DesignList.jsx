@@ -75,8 +75,8 @@ export default function DesignList({ designs = [] }) {
                       {design.category && (
                         <Badge
                           position="absolute"
-                          bottom="8px"
-                          left="8px"
+                          bottom="0"
+                          right="0"
                           colorScheme="purple"
                         >
                           {design.category.categoryName}

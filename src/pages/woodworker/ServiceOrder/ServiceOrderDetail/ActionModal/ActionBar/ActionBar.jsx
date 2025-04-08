@@ -4,10 +4,14 @@ import { serviceOrderStatusConstants } from "../../../../../../config/appconfig.
 
 export default function ActionBar({ status, feedback, order, refetch }) {
   const renderActionButtons = () => {
+    const serviceName = order?.service?.service?.serviceName;
+
     // Default: no actions
     let showAppointmentModal = false;
+    let showCancelModal = false;
     let showContractModal = false;
     let showDesignModal = false;
+    let showCompleteModal = false;
 
     switch (status) {
       // For appointment scheduling
@@ -32,13 +36,19 @@ export default function ActionBar({ status, feedback, order, refetch }) {
         }
         break;
       case serviceOrderStatusConstants.DA_DUYET_HOP_DONG:
-        showDesignModal = true;
+        if (serviceName == "Personalization") {
+          showDesignModal = true;
+        }
+
         break;
       case serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_THIET_KE:
         // Show design modal if feedback exists
         if (feedback && feedback.trim() !== "") {
           showDesignModal = true;
         }
+        break;
+      case serviceOrderStatusConstants.DANG_GIA_CONG:
+        showCompleteModal = true;
         break;
       default:
         // No actions for other statuses

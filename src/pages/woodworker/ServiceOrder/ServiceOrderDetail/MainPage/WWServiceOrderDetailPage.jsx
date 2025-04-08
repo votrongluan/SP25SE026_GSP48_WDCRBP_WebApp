@@ -158,6 +158,7 @@ export default function WWServiceOrderDetailPage() {
             </TabPanel>
             <TabPanel p={0}>
               <ProcessTab
+                order={order}
                 activeTabIndex={activeTabIndex}
                 isActive={activeTabIndex === 1}
               />
