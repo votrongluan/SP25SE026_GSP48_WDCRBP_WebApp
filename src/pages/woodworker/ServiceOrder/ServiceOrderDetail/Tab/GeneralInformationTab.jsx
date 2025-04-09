@@ -41,6 +41,7 @@ export default function GeneralInformationTab({
     <Box>
       {serviceName == "Personalization" && (
         <PersonalizationProductList
+          orderId={order?.orderId}
           products={order?.requestedProduct}
           totalAmount={order?.totalAmount}
         />

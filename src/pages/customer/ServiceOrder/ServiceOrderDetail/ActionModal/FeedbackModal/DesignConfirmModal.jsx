@@ -9,23 +9,26 @@ import {
   ModalOverlay,
   Stack,
   Text,
-  Divider,
   useDisclosure,
   Box,
-  Grid,
-  GridItem,
+  Heading,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useAcceptServiceOrderMutation } from "../../../../../../services/serviceOrderApi";
 import { useNotify } from "../../../../../../components/Utility/Notify";
 import { FiCheck, FiCheckCircle, FiXCircle } from "react-icons/fi";
 import CheckboxList from "../../../../../../components/Utility/CheckboxList";
-import { formatDateTimeToVietnamese } from "../../../../../../utils/utils";
+import ImageListSelector from "../../../../../../components/Utility/ImageListSelector";
 
-export default function AppointmentConfirmModal({
+export default function DesignConfirmModal({
   serviceOrderId,
-  appointment,
-  buttonText = "Xác nhận",
+  products = [],
+  buttonText = "Xác nhận thiết kế",
   refetch,
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -40,20 +43,23 @@ export default function AppointmentConfirmModal({
     },
   ];
 
+  // Filter products that have designs
+  const productsWithDesigns = products.filter(
+    (product) =>
+      product.personalProductDetail?.designUrls &&
+      product.personalProductDetail.designUrls.trim() !== ""
+  );
+
   const handleSubmit = async () => {
     try {
       await acceptOrder({
         serviceOrderId: serviceOrderId,
       }).unwrap();
 
-      notify(
-        "Xác nhận thành công",
-        "Đơn hàng của bạn đã được cập nhật",
-        "success"
-      );
+      notify("Xác nhận thành công", "Thiết kế đã được xác nhận", "success");
 
       onClose();
-      refetch(); // Refresh data
+      refetch();
     } catch (err) {
       notify(
         "Xác nhận thất bại",
@@ -74,7 +80,7 @@ export default function AppointmentConfirmModal({
         onClose={isLoading ? null : onClose}
         closeOnOverlayClick={false}
         closeOnEsc={false}
-        size="2xl"
+        size="4xl"
       >
         <ModalOverlay />
         <ModalContent>
@@ -82,47 +88,38 @@ export default function AppointmentConfirmModal({
           {!isLoading && <ModalCloseButton />}
           <ModalBody pb={6}>
             <Stack spacing={4}>
-              <Text fontSize="lg" fontWeight="bold">
-                Chi tiết lịch hẹn
-              </Text>
+              <Heading size="md">Thiết kế sản phẩm</Heading>
 
-              {appointment && (
-                <Box p={4} bg="gray.50" borderRadius="md" boxShadow="sm">
-                  <Grid templateColumns="120px 1fr" gap={3}>
-                    <GridItem>
-                      <Text fontWeight="semibold">Ngày hẹn:</Text>
-                    </GridItem>
-                    <GridItem>
-                      <Text>
-                        {formatDateTimeToVietnamese(appointment.dateTime)}
-                      </Text>
-                    </GridItem>
-
-                    <GridItem>
-                      <Text fontWeight="semibold">Hình thức:</Text>
-                    </GridItem>
-                    <GridItem>
-                      <Text>{appointment.form || "Không có"}</Text>
-                    </GridItem>
-
-                    <GridItem>
-                      <Text fontWeight="semibold">Địa điểm:</Text>
-                    </GridItem>
-                    <GridItem>
-                      <Text>{appointment.meetAddress || "Không có"}</Text>
-                    </GridItem>
-
-                    <GridItem>
-                      <Text fontWeight="semibold">Mô tả:</Text>
-                    </GridItem>
-                    <GridItem>
-                      <Text>{appointment.content || "Không có"}</Text>
-                    </GridItem>
-                  </Grid>
+              {productsWithDesigns.length > 0 ? (
+                <Accordion allowMultiple defaultIndex={[0]}>
+                  {productsWithDesigns.map((product) => (
+                    <AccordionItem key={product.requestedProductId}>
+                      <h2>
+                        <AccordionButton>
+                          <Box flex="1" textAlign="left" fontWeight="bold">
+                            Sản phẩm {product.category?.categoryName}
+                          </Box>
+                          <AccordionIcon />
+                        </AccordionButton>
+                      </h2>
+                      <AccordionPanel pb={4}>
+                        <Text mb={2}>Số lượng: {product.quantity}</Text>
+                        <Box mt={4}>
+                          <ImageListSelector
+                            imgUrls={product.personalProductDetail.designUrls}
+                            imgH={300}
+                          />
+                        </Box>
+                      </AccordionPanel>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              ) : (
+                <Box p={4} bg="gray.50" borderRadius="md">
+                  <Text>Không có thiết kế nào để xác nhận.</Text>
                 </Box>
               )}
 
-              <Divider my={2} />
               <CheckboxList
                 items={checkboxItems}
                 setButtonDisabled={setIsCheckboxDisabled}
@@ -136,6 +133,7 @@ export default function AppointmentConfirmModal({
               mr={3}
               onClick={onClose}
               leftIcon={<FiXCircle />}
+              isDisabled={isLoading}
             >
               Đóng
             </Button>
@@ -143,10 +141,12 @@ export default function AppointmentConfirmModal({
               colorScheme="green"
               onClick={handleSubmit}
               isLoading={isLoading}
-              isDisabled={isCheckboxDisabled}
+              isDisabled={
+                isCheckboxDisabled || productsWithDesigns.length === 0
+              }
               leftIcon={<FiCheck />}
             >
-              Xác nhận
+              Xác nhận thiết kế
             </Button>
           </ModalFooter>
         </ModalContent>

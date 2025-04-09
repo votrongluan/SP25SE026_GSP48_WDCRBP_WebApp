@@ -25,6 +25,7 @@ import { orderProgressApi } from "../services/orderProgressApi";
 import { orderDepositApi } from "../services/orderDepositApi";
 import { contractApi } from "../services/contractApi";
 import { shipmentApi } from "../services/shipmentApi";
+import { quotationApi } from "../services/quotationApi";
 
 export const store = configureStore({
   reducer: {
@@ -53,6 +54,7 @@ export const store = configureStore({
     [orderDepositApi.reducerPath]: orderDepositApi.reducer,
     [contractApi.reducerPath]: contractApi.reducer,
     [shipmentApi.reducerPath]: shipmentApi.reducer,
+    [quotationApi.reducerPath]: quotationApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -80,7 +82,8 @@ export const store = configureStore({
       orderProgressApi.middleware,
       orderDepositApi.middleware,
       contractApi.middleware,
-      shipmentApi.middleware
+      shipmentApi.middleware,
+      quotationApi.middleware
     ),
 });
 

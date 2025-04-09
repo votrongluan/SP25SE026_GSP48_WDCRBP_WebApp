@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import PackageFrame from "../../../components/Utility/PackageFrame";
 import StarReview from "../../../components/Utility/StarReview";
-import { appColorTheme } from "../../../config/appconfig";
+import { appColorTheme, getPackTypeLabel } from "../../../config/appconfig";
 
 export default function WoodworkerBox({ woodworkerProfile }) {
   if (!woodworkerProfile) {
@@ -69,6 +69,14 @@ export default function WoodworkerBox({ woodworkerProfile }) {
                 <b>Loại hình kinh doanh:</b>{" "}
                 {woodworkerProfile?.businessType || "Chưa cập nhật"}
               </Text>
+
+              <HStack>
+                <Text fontWeight="bold">Loại xưởng:</Text>
+                <Text>
+                  {getPackTypeLabel(woodworkerProfile?.servicePack?.name) ||
+                    "Chưa cập nhật"}
+                </Text>
+              </HStack>
 
               <HStack>
                 <Spacer />

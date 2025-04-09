@@ -233,7 +233,7 @@ export default function ContractAndTransactionTab({
                 target="_blank"
                 textDecoration="underline"
                 color={appColorTheme.brown_2}
-                href={`/contract/${contract.contractId}`}
+                href={`/contract/${order.orderId}`}
               >
                 Xem chi tiết
               </ChakraLink>

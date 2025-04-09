@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -13,36 +13,80 @@ import {
   HStack,
   Text,
   ButtonGroup,
+  Heading,
+  Alert,
+  AlertIcon,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  Spinner,
+  Center,
 } from "@chakra-ui/react";
-import { FiDownload, FiUpload, FiPlus, FiTrash2, FiEdit } from "react-icons/fi";
-import * as XLSX from "xlsx";
+import { FiPlus, FiTrash2, FiEdit, FiSave } from "react-icons/fi";
 import { useNotify } from "../../../../../../components/Utility/Notify.jsx";
+import {
+  useGetByServiceOrderMutation,
+  useSaveQuotationDetailsMutation,
+} from "../../../../../../services/quotationApi";
 
 const MIN_PRICE = 1000;
 const MAX_PRICE = 50000000;
 const PRICE_STEP = 1000;
 
-export default function PriceDetailSection({
-  productId,
-  priceDetails,
-  onPriceDetailsChange,
-}) {
+export default function PriceDetailSection({ orderId, onQuotationComplete }) {
   const notify = useNotify();
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingDetails, setEditingDetails] = useState(priceDetails || []);
+  const [getByServiceOrder, { isLoading: isLoadingQuotations }] =
+    useGetByServiceOrderMutation();
+  const [saveQuotationDetails, { isLoading: isSaving }] =
+    useSaveQuotationDetailsMutation();
+
+  const [quotationData, setQuotationData] = useState([]);
+  const [editingProductId, setEditingProductId] = useState(null);
+  const [editingDetails, setEditingDetails] = useState({});
+  const [isAllProductsQuoted, setIsAllProductsQuoted] = useState(false);
+
+  // Fetch quotation data
+  const fetchQuotations = async () => {
+    try {
+      const response = await getByServiceOrder({
+        serviceOrderId: parseInt(orderId),
+      }).unwrap();
+      setQuotationData(response.data || []);
+
+      // Check if all products have quotations
+      const allQuoted = (response.data || []).every(
+        (item) => item.quotationDetails && item.quotationDetails.length > 0
+      );
+      setIsAllProductsQuoted(allQuoted);
+
+      // Notify parent component about quotation status
+      onQuotationComplete && onQuotationComplete(allQuoted);
+    } catch (error) {
+      notify("Lỗi lấy dữ liệu", "Không thể lấy dữ liệu báo giá", "error");
+    }
+  };
+
+  // Initial data fetch
+  useEffect(() => {
+    if (orderId) {
+      fetchQuotations();
+    }
+  }, [orderId]);
 
   const validatePriceDetails = (details) => {
     const errors = [];
     const isValid = details.every((detail, index) => {
-      if (detail.type.trim() === "") {
+      if (!detail.costType || detail.costType.trim() === "") {
         errors.push(`Dòng ${index + 1}: Loại chi phí không được để trống`);
         return false;
       }
-      if (detail.quantity.trim() === "") {
+      if (!detail.quantityRequired || detail.quantityRequired.trim() === "") {
         errors.push(`Dòng ${index + 1}: Số lượng không được để trống`);
         return false;
       }
-      if (detail.price < MIN_PRICE || detail.price > MAX_PRICE) {
+      if (detail.costAmount < MIN_PRICE || detail.costAmount > MAX_PRICE) {
         errors.push(
           `Dòng ${
             index + 1
@@ -50,7 +94,7 @@ export default function PriceDetailSection({
         );
         return false;
       }
-      if (detail.price % PRICE_STEP !== 0) {
+      if (detail.costAmount % PRICE_STEP !== 0) {
         errors.push(
           `Dòng ${
             index + 1
@@ -64,26 +108,52 @@ export default function PriceDetailSection({
     return { isValid, errors };
   };
 
-  const handleStartEdit = () => {
-    setEditingDetails(priceDetails || []);
-    setIsEditing(true);
+  const handleStartEdit = (productId, existingQuotations = []) => {
+    // Map existing quotations to our editing format or initialize with empty array
+    const details =
+      existingQuotations.length > 0
+        ? existingQuotations.map((q) => ({
+            id: q.quotationDetailId || Date.now() + Math.random(),
+            costType: q.costType || "",
+            quantityRequired: q.quantityRequired || "",
+            costAmount: q.costAmount || MIN_PRICE,
+          }))
+        : [];
+
+    setEditingProductId(productId);
+    setEditingDetails(details);
   };
 
-  const handleSave = () => {
+  const handleSave = async (productId) => {
     const { isValid, errors } = validatePriceDetails(editingDetails);
+
     if (!isValid) {
-      notify("Dữ liệu không hợp lệ", errors.join("\\n"), "error");
+      notify("Dữ liệu không hợp lệ", errors.join("\n"), "error");
       return;
     }
 
-    onPriceDetailsChange(productId, editingDetails);
-    setIsEditing(false);
-    notify("Lưu thành công", "Đã cập nhật chi tiết giá", "success");
+    try {
+      const payload = {
+        requestedProductId: productId,
+        quotations: editingDetails.map((detail) => ({
+          costType: detail.costType,
+          costAmount: parseInt(detail.costAmount),
+          quantityRequired: detail.quantityRequired,
+        })),
+      };
+
+      await saveQuotationDetails(payload).unwrap();
+      setEditingProductId(null);
+      notify("Lưu thành công", "Đã cập nhật chi tiết giá", "success");
+      fetchQuotations();
+    } catch (error) {
+      notify("Lỗi lưu dữ liệu", "Không thể lưu báo giá", "error");
+    }
   };
 
   const handleCancel = () => {
-    setEditingDetails(priceDetails || []);
-    setIsEditing(false);
+    setEditingProductId(null);
+    setEditingDetails([]);
   };
 
   const handleAddPriceDetail = () => {
@@ -91,9 +161,9 @@ export default function PriceDetailSection({
       ...editingDetails,
       {
         id: Date.now(),
-        type: "",
-        quantity: "",
-        price: MIN_PRICE,
+        costType: "",
+        quantityRequired: "",
+        costAmount: MIN_PRICE,
       },
     ]);
   };
@@ -104,7 +174,7 @@ export default function PriceDetailSection({
         detail.id === detailId
           ? {
               ...detail,
-              [field]: field === "price" ? Number(value) : value,
+              [field]: field === "costAmount" ? Number(value) : value,
             }
           : detail
       )
@@ -118,206 +188,237 @@ export default function PriceDetailSection({
   };
 
   const calculateTotalPrice = (details) => {
-    return details?.reduce((total, detail) => total + detail.price, 0) || 0;
-  };
-
-  const handleExportExcel = () => {
-    if (!priceDetails?.length) {
-      notify("Không có dữ liệu", "Không có chi tiết giá để xuất", "warning");
-      return;
-    }
-
-    const ws = XLSX.utils.json_to_sheet(
-      priceDetails.map((detail, index) => ({
-        "Số thứ tự": index + 1,
-        "Loại chi phí": detail.type,
-        "Số lượng cần dùng": detail.quantity,
-        "Chi phí": detail.price,
-      }))
+    return (
+      details?.reduce((total, detail) => total + (detail.costAmount || 0), 0) ||
+      0
     );
-
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Chi tiết giá");
-    XLSX.writeFile(wb, `chi-tiet-gia.xlsx`);
   };
 
-  const handleImportExcel = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+  if (isLoadingQuotations) {
+    return (
+      <Center p={8}>
+        <Spinner size="xl" />
+      </Center>
+    );
+  }
 
-    try {
-      const data = await file.arrayBuffer();
-      const workbook = XLSX.read(data);
-      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      const jsonData = XLSX.utils.sheet_to_json(worksheet);
-
-      const formattedData = jsonData.map((row, index) => ({
-        id: Date.now() + index,
-        type: row["Loại chi phí"] || "",
-        quantity: row["Số lượng cần dùng"] || "",
-        price: Number(row["Chi phí"]) || MIN_PRICE,
-      }));
-
-      setEditingDetails(formattedData);
-      setIsEditing(true);
-      notify(
-        "Nhập dữ liệu thành công",
-        "Vui lòng kiểm tra và lưu lại thông tin",
-        "success"
-      );
-    } catch (error) {
-      notify("Lỗi nhập dữ liệu", "Có lỗi xảy ra khi đọc file Excel", "error");
-    }
-  };
-
-  const displayDetails = isEditing ? editingDetails : priceDetails;
+  if (!quotationData || quotationData.length === 0) {
+    return (
+      <Alert status="info">
+        <AlertIcon />
+        Không tìm thấy thông tin sản phẩm cho báo giá.
+      </Alert>
+    );
+  }
 
   return (
-    <Box>
-      <HStack justify="space-between" mb={4}>
-        <Text fontWeight="bold">Báo giá chi tiết</Text>
-        <HStack>
-          <input
-            type="file"
-            accept=".xlsx,.xls"
-            onChange={handleImportExcel}
-            style={{ display: "none" }}
-            id={`excel-upload-${productId}`}
-          />
-          <label htmlFor={`excel-upload-${productId}`}>
-            <Button
-              as="span"
-              size="sm"
-              leftIcon={<FiDownload />}
-              colorScheme="blue"
-              cursor="pointer"
-              isDisabled={isEditing}
-            >
-              Nhập file excel
-            </Button>
-          </label>
-          <Button
-            size="sm"
-            leftIcon={<FiUpload />}
-            onClick={handleExportExcel}
-            colorScheme="green"
-            isDisabled={isEditing}
-          >
-            Xuất file excel
-          </Button>
-          {!isEditing ? (
-            <IconButton
-              icon={<FiEdit />}
-              onClick={handleStartEdit}
-              colorScheme="teal"
-              size="sm"
-            />
-          ) : (
-            <IconButton
-              icon={<FiPlus />}
-              onClick={handleAddPriceDetail}
-              colorScheme="teal"
-              size="sm"
-            />
-          )}
-        </HStack>
-      </HStack>
+    <Box p={5} bgColor="white" mb={6}>
+      <Heading size="md" mb={4}>
+        Báo giá sản phẩm
+      </Heading>
 
-      <Table variant="simple" size="sm">
-        <Thead>
-          <Tr>
-            <Th>Số thứ tự</Th>
-            <Th>Loại chi phí</Th>
-            <Th>Số lượng cần dùng</Th>
-            <Th>Chi phí</Th>
-            <Th></Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {displayDetails?.map((detail, index) => (
-            <Tr key={detail.id}>
-              <Td>{index + 1}</Td>
-              <Td>
-                {isEditing ? (
-                  <Input
-                    size="sm"
-                    value={detail.type}
-                    onChange={(e) =>
-                      handlePriceDetailChange(detail.id, "type", e.target.value)
-                    }
-                  />
-                ) : (
-                  detail.type
-                )}
-              </Td>
-              <Td>
-                {isEditing ? (
-                  <Input
-                    size="sm"
-                    value={detail.quantity}
-                    onChange={(e) =>
-                      handlePriceDetailChange(
-                        detail.id,
-                        "quantity",
-                        e.target.value
-                      )
-                    }
-                  />
-                ) : (
-                  detail.quantity
-                )}
-              </Td>
-              <Td>
-                {isEditing ? (
-                  <Input
-                    size="sm"
-                    type="number"
-                    value={detail.price}
-                    onChange={(e) =>
-                      handlePriceDetailChange(
-                        detail.id,
-                        "price",
-                        e.target.value
-                      )
-                    }
-                  />
-                ) : (
-                  detail.price.toLocaleString() + "đ"
-                )}
-              </Td>
-              <Td>
-                {isEditing && (
-                  <IconButton
-                    icon={<FiTrash2 />}
-                    onClick={() => handleRemovePriceDetail(detail.id)}
-                    colorScheme="red"
-                    size="sm"
-                  />
-                )}
-              </Td>
-            </Tr>
-          ))}
-          <Tr>
-            <Td colSpan={3} textAlign="right" fontWeight="bold">
-              Tổng chi phí:
-            </Td>
-            <Td fontWeight="bold">
-              {calculateTotalPrice(displayDetails).toLocaleString()}đ
-            </Td>
-            <Td></Td>
-          </Tr>
-        </Tbody>
-      </Table>
+      <Accordion allowMultiple defaultIndex={[0]}>
+        {quotationData.map((productData, productIndex) => {
+          const product = productData.requestedProduct;
+          const quotations = productData.quotationDetails || [];
+          const hasQuotations = quotations.length > 0;
+          const isEditing = editingProductId === product.requestedProductId;
+          const displayDetails = isEditing ? editingDetails : quotations;
 
-      {isEditing && (
-        <ButtonGroup spacing={2} mt={4} width="100%" justifyContent="flex-end">
-          <Button onClick={handleCancel} variant="outline">
-            Đóng
-          </Button>
-          <Button onClick={handleSave} colorScheme="blue">
-            Lưu
-          </Button>
-        </ButtonGroup>
+          return (
+            <AccordionItem key={product.requestedProductId}>
+              <h2>
+                <AccordionButton>
+                  <Box flex="1" textAlign="left" fontWeight="bold">
+                    {product.category}{" "}
+                    {hasQuotations && !isEditing && (
+                      <Text as="span" ml={2} color="green.500">
+                        - Đã báo giá
+                      </Text>
+                    )}
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <HStack justify="space-between" mb={4}>
+                  <Text>Số lượng: {product.quantity}</Text>
+                  <HStack>
+                    {!isEditing ? (
+                      <IconButton
+                        icon={<FiEdit />}
+                        onClick={() =>
+                          handleStartEdit(
+                            product.requestedProductId,
+                            quotations
+                          )
+                        }
+                        colorScheme="teal"
+                        size="sm"
+                        isDisabled={
+                          isEditing &&
+                          editingProductId !== product.requestedProductId
+                        }
+                      />
+                    ) : (
+                      editingProductId === product.requestedProductId && (
+                        <IconButton
+                          icon={<FiPlus />}
+                          onClick={handleAddPriceDetail}
+                          colorScheme="teal"
+                          size="sm"
+                        />
+                      )
+                    )}
+                  </HStack>
+                </HStack>
+
+                <Table variant="simple" size="sm">
+                  <Thead>
+                    <Tr>
+                      <Th>Số thứ tự</Th>
+                      <Th>Loại chi phí</Th>
+                      <Th>Số lượng cần dùng</Th>
+                      <Th>Chi phí</Th>
+                      <Th></Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {displayDetails?.length > 0 ? (
+                      displayDetails.map((detail, index) => (
+                        <Tr key={detail.id || index}>
+                          <Td>{index + 1}</Td>
+                          <Td>
+                            {isEditing &&
+                            editingProductId === product.requestedProductId ? (
+                              <Input
+                                size="sm"
+                                value={detail.costType}
+                                onChange={(e) =>
+                                  handlePriceDetailChange(
+                                    detail.id,
+                                    "costType",
+                                    e.target.value
+                                  )
+                                }
+                              />
+                            ) : (
+                              detail.costType
+                            )}
+                          </Td>
+                          <Td>
+                            {isEditing &&
+                            editingProductId === product.requestedProductId ? (
+                              <Input
+                                size="sm"
+                                value={detail.quantityRequired}
+                                onChange={(e) =>
+                                  handlePriceDetailChange(
+                                    detail.id,
+                                    "quantityRequired",
+                                    e.target.value
+                                  )
+                                }
+                              />
+                            ) : (
+                              detail.quantityRequired
+                            )}
+                          </Td>
+                          <Td>
+                            {isEditing &&
+                            editingProductId === product.requestedProductId ? (
+                              <Input
+                                size="sm"
+                                type="number"
+                                value={detail.costAmount}
+                                onChange={(e) =>
+                                  handlePriceDetailChange(
+                                    detail.id,
+                                    "costAmount",
+                                    e.target.value
+                                  )
+                                }
+                              />
+                            ) : (
+                              detail.costAmount.toLocaleString() + "đ"
+                            )}
+                          </Td>
+                          <Td>
+                            {isEditing &&
+                              editingProductId ===
+                                product.requestedProductId && (
+                                <IconButton
+                                  icon={<FiTrash2 />}
+                                  onClick={() =>
+                                    handleRemovePriceDetail(detail.id)
+                                  }
+                                  colorScheme="red"
+                                  size="sm"
+                                />
+                              )}
+                          </Td>
+                        </Tr>
+                      ))
+                    ) : (
+                      <Tr>
+                        <Td colSpan={5} textAlign="center">
+                          {!isEditing
+                            ? "Chưa có báo giá"
+                            : "Thêm mục báo giá mới"}
+                        </Td>
+                      </Tr>
+                    )}
+                    {displayDetails?.length > 0 && (
+                      <Tr>
+                        <Td colSpan={3} textAlign="right" fontWeight="bold">
+                          Tổng chi phí:
+                        </Td>
+                        <Td fontWeight="bold">
+                          {calculateTotalPrice(displayDetails).toLocaleString()}
+                          đ
+                        </Td>
+                        <Td></Td>
+                      </Tr>
+                    )}
+                  </Tbody>
+                </Table>
+
+                {isEditing &&
+                  editingProductId === product.requestedProductId && (
+                    <ButtonGroup
+                      spacing={2}
+                      mt={4}
+                      width="100%"
+                      justifyContent="flex-end"
+                    >
+                      <Button
+                        onClick={handleCancel}
+                        variant="outline"
+                        isDisabled={isSaving}
+                      >
+                        Hủy
+                      </Button>
+                      <Button
+                        onClick={() => handleSave(product.requestedProductId)}
+                        colorScheme="blue"
+                        leftIcon={<FiSave />}
+                        isLoading={isSaving}
+                      >
+                        Lưu báo giá
+                      </Button>
+                    </ButtonGroup>
+                  )}
+              </AccordionPanel>
+            </AccordionItem>
+          );
+        })}
+      </Accordion>
+
+      {isAllProductsQuoted && (
+        <Alert status="success" mt={4}>
+          <AlertIcon />
+          Tất cả sản phẩm đã được báo giá. Bạn có thể tiếp tục tạo hợp đồng.
+        </Alert>
       )}
     </Box>
   );

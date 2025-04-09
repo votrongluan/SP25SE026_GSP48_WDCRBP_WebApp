@@ -12,10 +12,14 @@ import {
   useDisclosure,
   Spinner,
   Center,
+  Divider,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { FiEdit2, FiCheck, FiX } from "react-icons/fi";
 import ContractEditSection from "./ContractEditSection.jsx";
+import PriceDetailSection from "./PriceDetailSection.jsx";
 import { appColorTheme } from "../../../../../../config/appconfig.js";
 import {
   useGetContractByServiceOrderIdQuery,
@@ -27,10 +31,20 @@ import { useImageUpload } from "../../../../../../hooks/useImageUpload.js";
 
 export default function ContractUpdateModal({ order, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const serviceName = order?.service?.service?.serviceName;
+  const isPersonalizationService = serviceName === "Personalization";
   const initialRef = useRef(null);
   const notify = useNotify();
   const [isCheckboxDisabled, setIsCheckboxDisabled] = useState(true);
   const { uploadImage } = useImageUpload();
+  const [areAllProductsQuoted, setAreAllProductsQuoted] = useState(false);
+
+  // Set quotation status to true automatically for non-Personalization services
+  useEffect(() => {
+    if (!isPersonalizationService) {
+      setAreAllProductsQuoted(true);
+    }
+  }, [isPersonalizationService]);
 
   // Fetch contract data if it exists
   const {
@@ -55,6 +69,11 @@ export default function ContractUpdateModal({ order, refetch }) {
     setContractData(data);
   };
 
+  // Handle quotation completion status
+  const handleQuotationComplete = (isComplete) => {
+    setAreAllProductsQuoted(isComplete);
+  };
+
   // Handle saved signature from ContractEditSection
   const handleSaveSignature = (blob, dataUrl) => {
     setLocalSignatureBlob(blob);
@@ -70,6 +89,16 @@ export default function ContractUpdateModal({ order, refetch }) {
     e.preventDefault();
 
     const isExistingContract = !!contractResponse?.data;
+
+    // Ensure all products have been quoted only for Personalization service
+    if (isPersonalizationService && !areAllProductsQuoted) {
+      notify(
+        "Thiếu thông tin",
+        "Vui lòng báo giá đầy đủ cho tất cả sản phẩm trước khi tạo hợp đồng",
+        "error"
+      );
+      return;
+    }
 
     // For updates - no signature check needed
     // For new contracts - validate signature
@@ -190,9 +219,7 @@ export default function ContractUpdateModal({ order, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>
-            {contractResponse?.data ? "Cập nhật hợp đồng" : "Tạo hợp đồng mới"}
-          </ModalHeader>
+          <ModalHeader>Cập nhật hợp đồng</ModalHeader>
           {!isSubmitting && !isUploadingSignature && <ModalCloseButton />}
           <ModalBody bgColor="app_grey.1" pb={6}>
             {isLoadingContract ? (
@@ -201,47 +228,79 @@ export default function ContractUpdateModal({ order, refetch }) {
               </Center>
             ) : (
               <form onSubmit={handleSubmit}>
-                <Box>
-                  <ContractEditSection
-                    initialContract={contractResponse?.data || null}
-                    onChange={handleContractDataChange}
-                    onSaveSignature={handleSaveSignature}
-                    savedSignature={localSignatureBlob ? true : false}
-                    order={order}
-                    isExistingContract={!!contractResponse?.data}
-                  />
-                </Box>
+                {/* Show PriceDetailSection only for Personalization service */}
+                {isPersonalizationService && (
+                  <>
+                    <Box mb={4}>
+                      <PriceDetailSection
+                        orderId={order?.orderId}
+                        onQuotationComplete={handleQuotationComplete}
+                      />
+                    </Box>
+                    <Divider my={6} />
+                  </>
+                )}
 
-                <Box mt={6}>
-                  <CheckboxList
-                    items={checkboxItems}
-                    setButtonDisabled={setIsCheckboxDisabled}
-                  />
-                </Box>
+                {/* Show ContractEditSection based on conditions */}
+                {!isPersonalizationService ||
+                areAllProductsQuoted ||
+                contractResponse?.data ? (
+                  <Box>
+                    <ContractEditSection
+                      initialContract={contractResponse?.data || null}
+                      onChange={handleContractDataChange}
+                      onSaveSignature={handleSaveSignature}
+                      savedSignature={localSignatureBlob ? true : false}
+                      order={order}
+                      isExistingContract={!!contractResponse?.data}
+                    />
+                  </Box>
+                ) : (
+                  <Alert status="warning">
+                    <AlertIcon />
+                    Vui lòng báo giá tất cả sản phẩm trước khi tiếp tục soạn hợp
+                    đồng.
+                  </Alert>
+                )}
 
-                <HStack mt={10}>
-                  <Spacer />
-                  <Button
-                    colorScheme="blue"
-                    mr={3}
-                    type="submit"
-                    isLoading={isSubmitting || isUploadingSignature}
-                    isDisabled={isCheckboxDisabled}
-                    leftIcon={<FiCheck />}
-                    loadingText={
-                      isUploadingSignature ? "Đang tải chữ ký" : "Đang xử lý"
-                    }
-                  >
-                    {contractResponse?.data ? "Cập nhật" : "Tạo mới"}
-                  </Button>
-                  <Button
-                    onClick={onClose}
-                    leftIcon={<FiX />}
-                    isDisabled={isSubmitting || isUploadingSignature}
-                  >
-                    Đóng
-                  </Button>
-                </HStack>
+                {(!isPersonalizationService ||
+                  areAllProductsQuoted ||
+                  contractResponse?.data) && (
+                  <>
+                    <Box mt={6}>
+                      <CheckboxList
+                        items={checkboxItems}
+                        setButtonDisabled={setIsCheckboxDisabled}
+                      />
+                    </Box>
+
+                    <HStack mt={10}>
+                      <Spacer />
+                      <Button
+                        colorScheme="blue"
+                        mr={3}
+                        type="submit"
+                        isLoading={isSubmitting || isUploadingSignature}
+                        isDisabled={isCheckboxDisabled}
+                        leftIcon={<FiCheck />}
+                        loadingText={
+                          isUploadingSignature
+                            ? "Đang tải chữ ký"
+                            : "Đang xử lý"
+                        }
+                      >
+                        Cập nhật
+                      </Button>
+                      <Button
+                        onClick={onClose}
+                        leftIcon={<FiX />}
+                        isDisabled={isSubmitting || isUploadingSignature}
+                      >
+                        Đóng
+                      </Button>
+                    </HStack>
+                  </>
+                )}
               </form>
             )}
           </ModalBody>

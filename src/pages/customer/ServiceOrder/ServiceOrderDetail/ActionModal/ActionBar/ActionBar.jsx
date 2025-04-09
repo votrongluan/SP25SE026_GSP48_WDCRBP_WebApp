@@ -5,6 +5,7 @@ import CancelModal from "../FeedbackModal/CancelModal.jsx";
 import AppointmentConfirmModal from "../FeedbackModal/AppointmentConfirmModal.jsx";
 import ContractConfirmModal from "../FeedbackModal/ContractConfirmModal.jsx";
 import PaymentModal from "../FeedbackModal/PaymentModal.jsx";
+import DesignConfirmModal from "../FeedbackModal/DesignConfirmModal.jsx";
 
 export default function ActionBar({
   status,
@@ -25,11 +26,18 @@ export default function ActionBar({
     let showReviewRatingButton = false;
     let confirmButtonText = "Xác nhận";
 
+    let depositNumber = -1;
     const unpaidDeposit =
       deposits?.length > 0
         ? [...deposits]
             .sort((a, b) => a.depositNumber - b.depositNumber)
-            .find((d) => d.status !== true)
+            .find((d) => {
+              if (d.status != true) {
+                depositNumber = d.depositNumber;
+              }
+
+              return d.status !== true;
+            })
         : null;
 
     showCancelButton = [
@@ -65,7 +73,11 @@ export default function ActionBar({
           break;
 
         case serviceOrderStatusConstants.DA_DUYET_HOP_DONG:
-          if ((!feedback || feedback.trim() === "") && unpaidDeposit) {
+          if (
+            (!feedback || feedback.trim() === "") &&
+            unpaidDeposit &&
+            depositNumber == 1
+          ) {
             showPaymentButton = true;
           }
 
@@ -81,14 +93,18 @@ export default function ActionBar({
           break;
 
         case serviceOrderStatusConstants.DA_DUYET_THIET_KE:
-          if ((!feedback || feedback.trim() === "") && unpaidDeposit) {
+          if (
+            (!feedback || feedback.trim() === "") &&
+            unpaidDeposit &&
+            depositNumber == 2
+          ) {
             showPaymentButton = true;
           }
 
           break;
 
         case serviceOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT:
-          if (unpaidDeposit) {
+          if (unpaidDeposit && (depositNumber == 3 || depositNumber == 2)) {
             showPaymentButton = true;
           } else {
             showReviewRatingButton = true;
@@ -122,6 +138,15 @@ export default function ActionBar({
             buttonText={confirmButtonText}
             refetch={refetch}
             refetchDeposit={refetchDeposit}
+          />
+        )}
+
+        {showDesignButton && (
+          <DesignConfirmModal
+            serviceOrderId={order?.orderId}
+            products={order?.requestedProduct}
+            buttonText={confirmButtonText}
+            refetch={refetch}
           />
         )}
 

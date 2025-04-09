@@ -95,7 +95,7 @@ export default function PaymentModal({ deposit, order, refetch }) {
   return (
     <>
       <Button leftIcon={<FiCreditCard />} colorScheme="blue" onClick={onOpen}>
-        Thanh toán đặt cọc #{deposit.depositNumber}
+        Thanh toán lần #{deposit.depositNumber}
       </Button>
 
       <Modal

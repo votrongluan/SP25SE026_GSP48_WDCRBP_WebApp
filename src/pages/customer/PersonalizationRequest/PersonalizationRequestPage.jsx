@@ -13,6 +13,8 @@ import {
   FormLabel,
   Divider,
   VStack,
+  Checkbox,
+  Text,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import useAuth from "../../../hooks/useAuth.js";
@@ -37,6 +39,7 @@ export default function PersonalizationRequestPage() {
   const [editIndex, setEditIndex] = useState(-1);
   const [notes, setNotes] = useState(""); // Notes state
   const [selectedAddress, setSelectedAddress] = useState(null); // Selected address state
+  const [isInstall, setIsInstall] = useState(true); // Installation request state
 
   // Fetch addresses
   const {
@@ -220,11 +223,14 @@ export default function PersonalizationRequestPage() {
         requestedProducts,
         note: notes.trim(), // Add notes
         address: selectedAddressObj.address, // Send the address string instead of addressId
+        isInstall: isInstall, // Add installation flag
       };
 
       await createPersonalOrder(orderData).unwrap();
-      notify("Thành công!", "Đơn hàng đã được tạo thành công.", "success");
-      navigate("/cus/service-order");
+
+      navigate(
+        "/success?title=Đặt hàng thành công&desc=Đơn hàng của bạn đã được tạo thành công, vui lòng đợi xưởng mộc xác nhận đơn hàng.&buttonText=Xem danh sách đơn hàng&path=/cus/service-order"
+      );
     } catch (error) {
       notify(
         "Lỗi!",
@@ -347,6 +353,19 @@ export default function PersonalizationRequestPage() {
                         maxLength={500}
                       />
                     </FormControl>
+
+                    {/* Installation Checkbox */}
+                    <Box py={2} my={2}>
+                      <Checkbox
+                        isChecked={isInstall}
+                        onChange={(e) => setIsInstall(e.target.checked)}
+                        size="md"
+                      >
+                        <Text fontWeight="medium">
+                          Yêu cầu giao hàng + lắp đặt bởi xưởng
+                        </Text>
+                      </Checkbox>
+                    </Box>
                   </VStack>
                 </Box>
 

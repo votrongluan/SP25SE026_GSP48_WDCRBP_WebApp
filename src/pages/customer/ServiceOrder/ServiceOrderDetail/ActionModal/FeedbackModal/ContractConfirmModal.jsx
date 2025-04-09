@@ -63,11 +63,7 @@ export default function ContractConfirmModal({
 
   const checkboxItems = [
     {
-      description: "Tôi đã đọc và đồng ý với các điều khoản trong hợp đồng",
-      isOptional: false,
-    },
-    {
-      description: "Tôi xác nhận ký hợp đồng điện tử này",
+      description: "Tôi đã kiểm tra thông tin và xác nhận thao tác",
       isOptional: false,
     },
   ];
@@ -92,13 +88,7 @@ export default function ContractConfirmModal({
 
   const handleSubmit = async () => {
     try {
-      // Set loading state
-      const isUploading = savedSignature && localSignatureBlob;
-      if (isUploading) {
-        notify("Đang xử lý", "Đang tải chữ ký lên hệ thống", "info");
-      }
-
-      let customerSign = auth?.username || "Electronic signature";
+      let customerSign = null;
 
       // If we have a signature, upload it
       if (savedSignature && localSignatureBlob) {
@@ -124,6 +114,11 @@ export default function ContractConfirmModal({
         }
       }
 
+      if (!customerSign) {
+        notify("Vui lòng kí tên", "", "error");
+        return;
+      }
+
       await confirmContract({
         serviceOrderId,
         customerSign: customerSign,
@@ -137,8 +132,8 @@ export default function ContractConfirmModal({
       );
 
       onClose();
-      refetch(); // Refresh data
-      refetchDeposit(); // Refresh deposit data
+      refetch();
+      refetchDeposit();
     } catch (err) {
       notify(
         "Xác nhận thất bại",
@@ -162,7 +157,7 @@ export default function ContractConfirmModal({
         onClose={isLoading ? null : onClose}
         closeOnOverlayClick={false}
         closeOnEsc={false}
-        size="2xl"
+        size="6xl"
       >
         <ModalOverlay />
         <ModalContent>
@@ -263,18 +258,10 @@ export default function ContractConfirmModal({
                     onSaveSignature={handleSaveSignature}
                     savedSignature={savedSignature}
                     title="Chữ ký của bạn"
-                    showSizeControls={false}
+                    showSizeControls={true}
                   />
                 </Box>
               )}
-
-              <Box p={4} bg="blue.50" borderRadius="md">
-                <Text>
-                  Khi xác nhận, bạn đồng ý với tất cả các điều khoản trong hợp
-                  đồng. Việc xác nhận này có giá trị pháp lý tương đương với
-                  việc ký hợp đồng giấy.
-                </Text>
-              </Box>
 
               <Divider my={2} />
               <CheckboxList

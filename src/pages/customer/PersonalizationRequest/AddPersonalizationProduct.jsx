@@ -168,6 +168,10 @@ export default function AddPersonalizationProduct({
           {isEditing ? "Sửa sản phẩm" : "Thêm sản phẩm"}
         </Heading>
 
+        <Text color="gray.500">
+          (Lưu ý sử dụng <b>cm</b> làm đơn vị cho kích thước)
+        </Text>
+
         <FormControl mt={4} isRequired>
           <FormLabel>Danh mục sản phẩm</FormLabel>
           <CategorySelector

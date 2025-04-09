@@ -74,7 +74,7 @@ export default function CustomizationProductList({
                           {product?.quantity}
                         </Text>
                       </ChakraLink>
-                      <Badge colorScheme="green">
+                      <Badge colorScheme="purple">
                         {designDetail?.category?.categoryName ||
                           "Không phân loại"}
                       </Badge>

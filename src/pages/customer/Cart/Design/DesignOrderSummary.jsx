@@ -11,6 +11,7 @@ import {
   FormControl,
   FormLabel,
   Icon,
+  Checkbox,
 } from "@chakra-ui/react";
 import { formatPrice } from "../../../../utils/utils.js";
 import { appColorTheme } from "../../../../config/appconfig.js";
@@ -35,6 +36,7 @@ export default function DesignOrderSummary({
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [description, setDescription] = useState("");
+  const [isInstall, setIsInstall] = useState(true);
   const [createCustomizeOrder] = useCreateCustomizeOrderMutation();
   const navigate = useNavigate();
   const notify = useNotify();
@@ -105,7 +107,8 @@ export default function DesignOrderSummary({
           quantity: item.quantity,
         })),
         address: selectedAddressObj.address,
-        description: description.trim(), // Include the description in the API request
+        description: description.trim(),
+        isInstall: isInstall, // Add installation flag to request
       };
 
       // Call the API
@@ -145,7 +148,7 @@ export default function DesignOrderSummary({
   return (
     <Box bg="white" p={6} borderRadius="md" boxShadow="sm" height="fit-content">
       <Text fontSize="xl" fontWeight="bold" mb={4}>
-        Tổng tiền đơn hàng
+        Thông tin đặt hàng
       </Text>
 
       {!selectedWoodworker ? (
@@ -211,6 +214,18 @@ export default function DesignOrderSummary({
               maxLength={500}
             />
           </FormControl>
+
+          <Box py={2} my={2}>
+            <Checkbox
+              isChecked={isInstall}
+              onChange={(e) => setIsInstall(e.target.checked)}
+              size="md"
+            >
+              <Text fontWeight="medium">
+                Yêu cầu giao hàng + lắp đặt bởi xưởng
+              </Text>
+            </Checkbox>
+          </Box>
 
           <Divider my={4} />
 

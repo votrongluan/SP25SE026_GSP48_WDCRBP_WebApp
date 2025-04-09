@@ -100,7 +100,7 @@ export default function AppointmentUpdateModal({ order, refetch }) {
         leftIcon={<FiCalendar />}
         onClick={onOpen}
       >
-        {appointment.appointmentId ? "Cập nhật lịch" : "Đặt lịch"}
+        Cập nhật lịch hẹn
       </Button>
 
       <Modal
@@ -113,11 +113,7 @@ export default function AppointmentUpdateModal({ order, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>
-            {appointment.appointmentId
-              ? "Cập nhật lịch hẹn"
-              : "Tạo lịch hẹn mới"}
-          </ModalHeader>
+          <ModalHeader>Cập nhật lịch hẹn</ModalHeader>
           {!isLoading && <ModalCloseButton />}
           <ModalBody bgColor="app_grey.1" pb={6}>
             <form onSubmit={handleSubmit}>
@@ -214,7 +210,7 @@ export default function AppointmentUpdateModal({ order, refetch }) {
                   leftIcon={<FiCheck />}
                   isDisabled={isButtonDisabled}
                 >
-                  {appointment.appointmentId ? "Cập nhật" : "Tạo lịch hẹn"}
+                  Cập nhật
                 </Button>
                 <Button onClick={onClose} leftIcon={<FiX />}>
                   Đóng

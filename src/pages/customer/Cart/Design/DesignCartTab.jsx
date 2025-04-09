@@ -73,7 +73,7 @@ export default function DesignCartTab() {
         {Object.keys(cart.designs).length === 0 ? (
           <Box textAlign="center" py={10}>
             <Text fontSize="lg">Giỏ hàng trống</Text>
-            <Button mt={4} onClick={() => navigate("/")}>
+            <Button mt={4} onClick={() => navigate("/design")}>
               Tiếp tục mua sắm
             </Button>
           </Box>
