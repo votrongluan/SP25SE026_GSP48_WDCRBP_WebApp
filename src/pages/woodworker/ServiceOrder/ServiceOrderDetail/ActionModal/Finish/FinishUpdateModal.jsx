@@ -28,16 +28,17 @@ import { FiImage, FiUpload, FiXCircle } from "react-icons/fi";
 import { appColorTheme } from "../../../../../../config/appconfig.js";
 import ImageListSelector from "../../../../../../components/Utility/ImageListSelector.jsx";
 import ImageUpdateUploader from "../../../../../../components/Utility/ImageUpdateUploader.jsx";
-import { useAddProductImageMutation } from "../../../../../../services/serviceOrderApi";
+import { useAddFinishProductImageMutation } from "../../../../../../services/serviceOrderApi";
 import { useNotify } from "../../../../../../components/Utility/Notify.jsx";
 
-export default function DesignUpdateModal({
+export default function FinishUpdateModal({
   products = [],
   refetch,
   serviceOrderId,
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [addProductImage, { isLoading }] = useAddProductImageMutation();
+  const [addFinishProductImage, { isLoading }] =
+    useAddFinishProductImageMutation();
   const notify = useNotify();
 
   // Store each product's upload status
@@ -84,14 +85,14 @@ export default function DesignUpdateModal({
       }));
 
       // Call the API with the array as body and serviceId as query param
-      await addProductImage({
+      await addFinishProductImage({
         serviceId: serviceOrderId,
-        body: formattedPayload, // This will be sent as the request body
+        body: formattedPayload,
       }).unwrap();
 
       notify(
-        "Cập nhật thiết kế thành công",
-        "Tất cả thiết kế đã được lưu",
+        "Cập nhật ảnh thành công",
+        "Tất cả ảnh sản phẩm hoàn thiện đã được lưu",
         "success"
       );
 
@@ -99,8 +100,8 @@ export default function DesignUpdateModal({
       closeModal();
     } catch (error) {
       notify(
-        "Lỗi cập nhật thiết kế",
-        error.data?.message || "Không thể cập nhật thiết kế",
+        "Lỗi cập nhật ảnh",
+        error.data?.message || "Không thể cập nhật ảnh",
         "error"
       );
     } finally {
@@ -123,14 +124,14 @@ export default function DesignUpdateModal({
   const allProductsPrepared = products.every(
     (product) =>
       isProductPrepared(product.requestedProductId) ||
-      (product.personalProductDetail?.designUrls && product.hasDesign === true)
+      product.personalProductDetail?.finishImgUrls
   );
 
   // Calculate how many products are ready
   const preparedProductsCount = products.reduce((count, product) => {
     if (
       isProductPrepared(product.requestedProductId) ||
-      (product.personalProductDetail?.designUrls && product.hasDesign === true)
+      product.personalProductDetail?.finishImgUrls
     ) {
       return count + 1;
     }
@@ -153,7 +154,7 @@ export default function DesignUpdateModal({
         leftIcon={<FiImage />}
         onClick={onOpen}
       >
-        Cập nhật thiết kế
+        Cập nhật ảnh hoàn thiện
       </Button>
 
       <Modal
@@ -166,14 +167,14 @@ export default function DesignUpdateModal({
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Cập nhật thiết kế sản phẩm</ModalHeader>
+          <ModalHeader>Cập nhật ảnh hoàn thiện sản phẩm</ModalHeader>
           {!isSubmitting && <ModalCloseButton />}
           <ModalBody>
             {isLoading || isSubmitting ? (
               <Center py={8} flexDirection="column">
                 <Spinner size="xl" color={appColorTheme.brown_2} mb={4} />
                 <Text>
-                  {isSubmitting ? "Đang lưu thiết kế..." : "Đang xử lý..."}
+                  {isSubmitting ? "Đang lưu ảnh..." : "Đang xử lý..."}
                 </Text>
               </Center>
             ) : (
@@ -192,9 +193,10 @@ export default function DesignUpdateModal({
 
                 <Accordion allowMultiple defaultIndex={[0]}>
                   {products.map((product, idx) => {
-                    const designUrls =
-                      product.personalProductDetail?.designUrls || "";
-                    const alreadyHasDesign = product.hasDesign && designUrls;
+                    const finishImgUrls =
+                      product.personalProductDetail?.finishImgUrls || "";
+                    const alreadyHasImages =
+                      finishImgUrls && finishImgUrls.trim() !== "";
                     const isPrepared = isProductPrepared(
                       product.requestedProductId
                     );
@@ -213,9 +215,9 @@ export default function DesignUpdateModal({
                                   Đã chuẩn bị
                                 </Badge>
                               )}
-                              {alreadyHasDesign && !isPrepared && (
+                              {alreadyHasImages && !isPrepared && (
                                 <Badge colorScheme="blue" ml={2}>
-                                  Thiết kế hiện tại
+                                  Ảnh hiện tại
                                 </Badge>
                               )}
                             </Box>
@@ -223,13 +225,13 @@ export default function DesignUpdateModal({
                           </AccordionButton>
                         </h2>
                         <AccordionPanel pb={4}>
-                          {alreadyHasDesign && !isPrepared && (
+                          {alreadyHasImages && !isPrepared && (
                             <Box mb={4}>
                               <Text fontWeight="bold" mb={2}>
-                                Thiết kế hiện tại:
+                                Ảnh hoàn thiện hiện tại:
                               </Text>
                               <ImageListSelector
-                                imgUrls={designUrls}
+                                imgUrls={finishImgUrls}
                                 imgH={300}
                               />
                               <Divider my={4} />
@@ -239,15 +241,15 @@ export default function DesignUpdateModal({
                           {isPrepared ? (
                             <Alert status="success">
                               <AlertIcon />
-                              Đã chuẩn bị thiết kế mới
+                              Đã chuẩn bị ảnh hoàn thiện mới
                             </Alert>
                           ) : (
                             <Box>
                               <Text fontWeight="bold" mb={2}>
-                                Tải lên thiết kế mới:
+                                Tải lên ảnh hoàn thiện mới:
                               </Text>
                               <ImageUpdateUploader
-                                imgUrls={designUrls}
+                                imgUrls={finishImgUrls}
                                 maxFiles={5}
                                 onUploadComplete={(urls) =>
                                   handleUploadComplete(
@@ -288,7 +290,7 @@ export default function DesignUpdateModal({
               isLoading={isSubmitting}
               loadingText="Đang lưu..."
             >
-              Lưu tất cả thiết kế
+              Lưu tất cả ảnh
             </Button>
           </ModalFooter>
         </ModalContent>

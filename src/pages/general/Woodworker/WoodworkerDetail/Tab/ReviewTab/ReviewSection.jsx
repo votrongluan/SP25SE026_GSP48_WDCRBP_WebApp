@@ -6,6 +6,7 @@ import Pagination from "../../../../../../components/Utility/Pagination.jsx";
 import { FiBook, FiClock } from "react-icons/fi";
 import { useGetWoodworkerReviewsQuery } from "../../../../../../services/reviewApi.js";
 import { useParams } from "react-router-dom";
+import { getServiceTypeLabel } from "../../../../../../config/appconfig.js";
 
 // Component to render review items (will be passed to Pagination)
 const ReviewList = ({ data }) => {
@@ -36,7 +37,7 @@ const ReviewList = ({ data }) => {
               <HStack spacing={1}>
                 <FiBook size={12} color="gray.600" />
                 <Text fontSize="sm" color="gray.600">
-                  {review.serviceName}
+                  {getServiceTypeLabel(review.serviceName)}
                 </Text>
               </HStack>
             </Flex>

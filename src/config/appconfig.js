@@ -113,6 +113,7 @@ export const getServiceTypeLabel = function (type) {
     Customization: "Tùy chỉnh",
     Personalization: "Cá nhân hóa",
     Sale: "Mua hàng",
+    Guarantee: "Sửa chữa / Bảo hành",
   };
   return map[type] || type;
 };

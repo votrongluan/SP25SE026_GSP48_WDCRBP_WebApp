@@ -31,7 +31,7 @@ import { useOrderPaymentMutation } from "../../../../../../services/walletApi";
 import { useCreatePaymentMutation } from "../../../../../../services/paymentApi";
 import { useNavigate } from "react-router-dom";
 
-export default function PaymentModal({ deposit, order, refetch }) {
+export default function PaymentModal({ deposit, order, refetch, buttonText }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const notify = useNotify();
   const { auth } = useAuth();
@@ -95,7 +95,7 @@ export default function PaymentModal({ deposit, order, refetch }) {
   return (
     <>
       <Button leftIcon={<FiCreditCard />} colorScheme="blue" onClick={onOpen}>
-        Thanh toán lần #{deposit.depositNumber}
+        {buttonText ? buttonText : `Thanh toán lần #${deposit.depositNumber}`}
       </Button>
 
       <Modal

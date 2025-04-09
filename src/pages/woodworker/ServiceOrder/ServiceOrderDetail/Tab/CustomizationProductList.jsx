@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../../config/appconfig.js";
 import { formatPrice } from "../../../../../utils/utils.js";
+import ImageListSelector from "../../../../../components/Utility/ImageListSelector.jsx";
 
 const ConfigurationItem = ({ name, value }) => (
   <HStack justify="space-between" w="100%">
@@ -94,9 +95,32 @@ export default function CustomizationProductList({
 
               <AccordionPanel pb={4}>
                 <Stack spacing={6}>
+                  {/* Finish Images if available */}
+                  {product?.finishImgUrls && (
+                    <Box mt={4}>
+                      <Text
+                        color={appColorTheme.brown_2}
+                        fontWeight="bold"
+                        fontSize="lg"
+                        my={3}
+                      >
+                        Ảnh hoàn thành sản phẩm:
+                      </Text>
+                      <ImageListSelector
+                        imgUrls={product.finishImgUrls}
+                        imgH={200}
+                      />
+                    </Box>
+                  )}
+
                   {/* Cấu hình đã chọn */}
                   <Box>
-                    <Text fontWeight="bold" mb={3}>
+                    <Text
+                      color={appColorTheme.brown_2}
+                      fontWeight="bold"
+                      fontSize="lg"
+                      my={3}
+                    >
                       Cấu hình đã chọn:
                     </Text>
                     <Stack spacing={3}>

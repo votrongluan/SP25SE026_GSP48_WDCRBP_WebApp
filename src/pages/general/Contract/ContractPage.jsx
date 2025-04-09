@@ -3,13 +3,20 @@ import { appColorTheme } from "../../../config/appconfig";
 import { FiDownload } from "react-icons/fi";
 import { useExportToDoc } from "html-to-doc-react";
 import { useGetContractByServiceOrderIdQuery } from "../../../services/contractApi";
+import { useGetConfigurationByDescriptionMutation } from "../../../services/configurationApi";
 import useAuth from "../../../hooks/useAuth";
 import { Navigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
+import { useEffect, useState } from "react";
 
 export default function ContractPage() {
   const { id } = useParams();
   const { auth } = useAuth();
+  const [platformTerms, setPlatformTerms] = useState("");
+  const [platformSignature, setPlatformSignature] = useState("");
+
+  const [getConfigurationByDescription] =
+    useGetConfigurationByDescriptionMutation();
 
   // Fetch contract data
   const {
@@ -17,6 +24,42 @@ export default function ContractPage() {
     isLoading,
     error,
   } = useGetContractByServiceOrderIdQuery(id);
+
+  // Fetch platform terms and signature from configuration
+  useEffect(() => {
+    const fetchPlatformTerms = async () => {
+      try {
+        const response = await getConfigurationByDescription({
+          description: "SampleContract",
+          value: "string",
+        }).unwrap();
+
+        if (response.data && response.data.length > 0) {
+          setPlatformTerms(response.data[0].value);
+        }
+      } catch (err) {
+        console.error("Error fetching platform terms:", err);
+      }
+    };
+
+    const fetchPlatformSignature = async () => {
+      try {
+        const response = await getConfigurationByDescription({
+          description: "PlatformSignature",
+          value: "string",
+        }).unwrap();
+
+        if (response.data && response.data.length > 0) {
+          setPlatformSignature(response.data[0].value);
+        }
+      } catch (err) {
+        console.error("Error fetching platform signature:", err);
+      }
+    };
+
+    fetchPlatformTerms();
+    fetchPlatformSignature();
+  }, [getConfigurationByDescription]);
 
   const exportToDoc = useExportToDoc(
     null,
@@ -109,7 +152,7 @@ export default function ContractPage() {
           HỢP ĐỒNG CUNG ỨNG DỊCH VỤ
         </p>
         <p style={{ textAlign: "center", marginTop: "10px" }}>
-          Số: <b>{contract.contractId}</b>
+          Mã Số: <b>{contract.contractId}</b>
         </p>
         <p style={{ marginTop: "10px" }}>Bộ luật dân sự 2015;</p>
         <p style={{ marginTop: "10px" }}>Luật thương mại 2005</p>
@@ -133,6 +176,7 @@ export default function ContractPage() {
           Đại diện bởi: <b>{contract.woodworker?.username || ""}</b>
         </p>
         <p style={{ marginTop: "10px" }}>Sau đây được gọi là "Bên A".</p>
+
         <p style={{ marginTop: "10px", fontWeight: "bold" }}>
           Bên Thuê Dịch Vụ:{" "}
           <b>{contract.customer?.username || contract.cusFullName || ""}</b>
@@ -148,46 +192,103 @@ export default function ContractPage() {
           Đại diện bởi:{" "}
           <b>{contract.customer?.username || contract.cusFullName || ""}</b>
         </p>
+        <p style={{ marginTop: "10px" }}>Sau đây được gọi là "Bên B".</p>
+
+        <p style={{ marginTop: "10px", fontWeight: "bold" }}>
+          Bên Cung Ứng Nền Tảng: <b>WDCRBP</b>
+        </p>
+        <p style={{ marginTop: "10px" }}>Sau đây được gọi là "Bên C".</p>
 
         <p style={{ marginTop: "10px" }}>
-          2.1 Bên A cam kết sẽ hoàn thành dịch vụ vào ngày{" "}
+          Bên A cam kết sẽ hoàn thành dịch vụ vào ngày{" "}
           <b>{formatDate(contract.completeDate)}</b> nếu bên B hoàn thành nghĩa
           vụ thanh toán theo từng giai đoạn với tổng số tiền cần phải thanh toán
           là <b>{contract.contractTotalAmount?.toLocaleString("vi-VN")} VNĐ</b>.
         </p>
-        <p style={{ marginTop: "10px" }}>
-          2.2 Bên A sẽ chịu trách nhiệm bảo hành dịch vụ theo chính sách:
+
+        {/* Display woodworker terms */}
+        {contract.woodworkerTerms && (
+          <div style={{ marginTop: "20px", whiteSpace: "pre-wrap" }}>
+            <p style={{ fontWeight: "bold" }}>
+              Điều khoản của nhà cung cấp dịch vụ:
+            </p>
+            <p>{contract.woodworkerTerms}</p>
+          </div>
+        )}
+
+        {/* Display platform terms */}
+        {platformTerms && (
+          <div style={{ marginTop: "20px", whiteSpace: "pre-wrap" }}>
+            <p style={{ fontWeight: "bold" }}>Điều khoản nền tảng:</p>
+            <p>{platformTerms}</p>
+          </div>
+        )}
+
+        <p style={{ marginTop: "20px" }}>
+          Bên A sẽ chịu trách nhiệm bảo hành dịch vụ theo chính sách:
         </p>
-        <p style={{ marginTop: "10px" }}>
+        <p style={{ marginTop: "10px", whiteSpace: "pre-wrap" }}>
           <b>{contract.warrantyPolicy || "Không có"}</b>
         </p>
+
         <div
           style={{
-            marginTop: "10px",
+            marginTop: "40px",
             fontWeight: "bold",
             display: "flex",
             justifyContent: "space-between",
           }}
         >
-          <div>
+          <div style={{ textAlign: "center", flex: "1" }}>
             <p>ĐẠI DIỆN BÊN A</p>
             {contract.woodworkerSignature && (
               <img
                 src={contract.woodworkerSignature}
                 alt="Chữ ký bên A"
-                style={{ maxWidth: "300px", marginTop: "10px" }}
+                style={{
+                  maxWidth: "150px",
+                  marginTop: "10px",
+                  margin: "0 auto",
+                }}
               />
             )}
+            <p style={{ marginTop: "10px" }}>
+              {contract.woodworker?.username || ""}
+            </p>
           </div>
-          <div>
+
+          <div style={{ textAlign: "center", flex: "1" }}>
             <p>ĐẠI DIỆN BÊN B</p>
             {contract.customerSignature && (
               <img
                 src={contract.customerSignature}
                 alt="Chữ ký bên B"
-                style={{ maxWidth: "300px", marginTop: "10px" }}
+                style={{
+                  maxWidth: "150px",
+                  marginTop: "10px",
+                  margin: "0 auto",
+                }}
               />
             )}
+            <p style={{ marginTop: "10px" }}>
+              {contract.customer?.username || contract.cusFullName || ""}
+            </p>
+          </div>
+
+          <div style={{ textAlign: "center", flex: "1" }}>
+            <p>ĐẠI DIỆN BÊN C</p>
+            {platformSignature && (
+              <img
+                src={platformSignature}
+                alt="Chữ ký nền tảng"
+                style={{
+                  maxWidth: "150px",
+                  marginTop: "10px",
+                  margin: "0 auto",
+                }}
+              />
+            )}
+            <p style={{ marginTop: "10px" }}>WDCRBP</p>
           </div>
         </div>
       </div>

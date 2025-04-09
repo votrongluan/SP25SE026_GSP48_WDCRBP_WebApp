@@ -208,6 +208,24 @@ export default function PersonalizationProductList({
                     )}
                   </Box>
 
+                  {/* Finish Images if available */}
+                  {product?.finishImgUrls && (
+                    <Box mt={4}>
+                      <Text
+                        color={appColorTheme.brown_2}
+                        fontWeight="bold"
+                        fontSize="lg"
+                        my={3}
+                      >
+                        Ảnh hoàn thành sản phẩm:
+                      </Text>
+                      <ImageListSelector
+                        imgUrls={product.finishImgUrls}
+                        imgH={200}
+                      />
+                    </Box>
+                  )}
+
                   {/* Design Images if available */}
                   {personalDetail?.designUrls && (
                     <Box mt={4}>

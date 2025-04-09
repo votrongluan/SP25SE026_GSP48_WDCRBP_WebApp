@@ -130,6 +130,13 @@ export default function ContractAndTransactionTab({
               <Text>{contract.contractId || "Chưa cập nhật"}</Text>
             </HStack>
 
+            <Box>
+              <Text fontWeight="bold">Điều khoản của thợ mộc:</Text>
+              <Text whiteSpace={"pre-wrap"}>
+                {contract.woodworkerTerms || "Chưa cập nhật"}
+              </Text>
+            </Box>
+
             <HStack>
               <Text fontWeight="bold">Ngày ký:</Text>
               <Text>

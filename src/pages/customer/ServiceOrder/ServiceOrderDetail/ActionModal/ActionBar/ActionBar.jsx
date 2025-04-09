@@ -1,4 +1,4 @@
-import { HStack } from "@chakra-ui/react";
+import { HStack, Text } from "@chakra-ui/react";
 import { serviceOrderStatusConstants } from "../../../../../../config/appconfig.js";
 import FeedbackModal from "../FeedbackModal/FeedbackModal.jsx";
 import CancelModal from "../FeedbackModal/CancelModal.jsx";
@@ -6,6 +6,8 @@ import AppointmentConfirmModal from "../FeedbackModal/AppointmentConfirmModal.js
 import ContractConfirmModal from "../FeedbackModal/ContractConfirmModal.jsx";
 import PaymentModal from "../FeedbackModal/PaymentModal.jsx";
 import DesignConfirmModal from "../FeedbackModal/DesignConfirmModal.jsx";
+import useAuth from "../../../../../../hooks/useAuth.js";
+import ReviewModal from "../FeedbackModal/ReviewModal.jsx";
 
 export default function ActionBar({
   status,
@@ -15,6 +17,8 @@ export default function ActionBar({
   refetchDeposit,
   deposits,
 }) {
+  const { auth } = useAuth();
+
   const renderActionButtons = () => {
     // Default: no actions
     let showFeedbackButton = false;
@@ -25,6 +29,7 @@ export default function ActionBar({
     let showDesignButton = false;
     let showReviewRatingButton = false;
     let confirmButtonText = "Xác nhận";
+    let paymentButtonText = "";
 
     let depositNumber = -1;
     const unpaidDeposit =
@@ -39,6 +44,10 @@ export default function ActionBar({
               return d.status !== true;
             })
         : null;
+
+    if (!order?.review && status == serviceOrderStatusConstants.DA_HOAN_TAT) {
+      showReviewRatingButton = true;
+    }
 
     showCancelButton = [
       serviceOrderStatusConstants.DANG_CHO_THO_DUYET,
@@ -106,8 +115,7 @@ export default function ActionBar({
         case serviceOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT:
           if (unpaidDeposit && (depositNumber == 3 || depositNumber == 2)) {
             showPaymentButton = true;
-          } else {
-            showReviewRatingButton = true;
+            paymentButtonText = "Thanh toán lần cuối và xác nhận đơn hàng";
           }
 
           break;
@@ -155,11 +163,20 @@ export default function ActionBar({
             deposit={unpaidDeposit}
             order={order}
             refetch={refetch}
+            buttonText={paymentButtonText}
           />
         )}
 
         {showCancelButton && (
           <CancelModal serviceOrderId={order?.orderId} refetch={refetch} />
+        )}
+
+        {showReviewRatingButton && (
+          <ReviewModal
+            serviceOrderId={order?.orderId}
+            refetch={refetch}
+            userId={auth?.userId}
+          />
         )}
       </HStack>
     );

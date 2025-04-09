@@ -96,6 +96,13 @@ export default function GeneralInformationTab({
                 <Text>{order?.quantity || "Chưa cập nhật"}</Text>
               </HStack>
 
+              <HStack>
+                <Text fontWeight="bold">
+                  Yêu cầu giao hàng + lắp đặt bởi xưởng:
+                </Text>
+                <Text>{order?.install || "Chưa cập nhật"}</Text>
+              </HStack>
+
               <Box>
                 <Text fontWeight="bold">Ghi chú:</Text>
                 <Text>{order?.description || "Không có ghi chú"}</Text>
@@ -146,14 +153,13 @@ export default function GeneralInformationTab({
       </SimpleGrid>
 
       <Box bgColor="white" boxShadow="md" p={5} borderRadius="10px" mt={6}>
-        <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
-          Thông tin khách hàng & Đánh giá
-        </Heading>
-
-        <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={10}>
+        <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={20}>
           {/* Thông tin xưởng mộc */}
           <Box>
             <Stack spacing={3}>
+              <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
+                Thông tin khách hàng
+              </Heading>
               <Text>
                 <b>Tên khách hàng:</b>{" "}
                 {order?.user?.username || "Chưa cập nhật"}
@@ -167,8 +173,12 @@ export default function GeneralInformationTab({
           </Box>
 
           <Box>
-            {order?.review ? (
+            {order?.review?.status ? (
               <Stack spacing={3}>
+                <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
+                  Đánh giá
+                </Heading>
+
                 <HStack>
                   <Text fontWeight="bold">Số sao:</Text>
                   <StarRating rating={order.review.rating} />
@@ -184,13 +194,6 @@ export default function GeneralInformationTab({
                   <Text>
                     {formatDateTimeString(new Date(order.review.createdAt))}
                   </Text>
-                </HStack>
-
-                <HStack>
-                  <Text fontWeight="bold">Trạng thái:</Text>
-                  <Badge colorScheme={order.review.status ? "green" : "red"}>
-                    {order.review.status ? "Đã phê duyệt" : "Chưa phê duyệt"}
-                  </Badge>
                 </HStack>
               </Stack>
             ) : (

@@ -24,7 +24,7 @@ import {
   Spinner,
   Center,
 } from "@chakra-ui/react";
-import { FiPlus, FiTrash2, FiEdit, FiSave } from "react-icons/fi";
+import { FiPlus, FiTrash2, FiEdit, FiSave, FiXCircle } from "react-icons/fi";
 import { useNotify } from "../../../../../../components/Utility/Notify.jsx";
 import {
   useGetByServiceOrderMutation,
@@ -395,8 +395,9 @@ export default function PriceDetailSection({ orderId, onQuotationComplete }) {
                         onClick={handleCancel}
                         variant="outline"
                         isDisabled={isSaving}
+                        leftIcon={<FiXCircle />}
                       >
-                        Hủy
+                        Đóng
                       </Button>
                       <Button
                         onClick={() => handleSave(product.requestedProductId)}

@@ -4,6 +4,7 @@ import { serviceOrderStatusConstants } from "../../../../../../config/appconfig.
 import { Text } from "@chakra-ui/react";
 import CancelModal from "./CancelModal.jsx";
 import DesignUpdateModal from "../Design/DesignUpdateModal.jsx";
+import FinishUpdateModal from "../Finish/FinishUpdateModal.jsx";
 
 export default function ActionBar({ status, feedback, order, refetch }) {
   const renderActionButtons = () => {
@@ -84,7 +85,13 @@ export default function ActionBar({ status, feedback, order, refetch }) {
             refetch={refetch}
           />
         )}
-        {showCompleteModal && <Text>Giao hàng</Text>}
+        {showCompleteModal && (
+          <FinishUpdateModal
+            serviceOrderId={order?.orderId}
+            products={order?.requestedProduct}
+            refetch={refetch}
+          />
+        )}
       </>
     );
   };

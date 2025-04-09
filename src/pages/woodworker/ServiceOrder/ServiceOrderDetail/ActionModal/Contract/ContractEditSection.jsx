@@ -26,9 +26,11 @@ export default function ContractEditSection({
   savedSignature,
   order,
   isExistingContract,
+  platformTerms,
 }) {
   const [contract, setContract] = useState({
     warrantyPolicy: "",
+    woodworkerTerms: "", // New field for woodworker terms
     contractTotalAmount: 0,
     completeDate: formatDateForInput(
       new Date(new Date().setMonth(new Date().getMonth() + 1))
@@ -46,6 +48,7 @@ export default function ContractEditSection({
     if (initialContract) {
       setContract({
         warrantyPolicy: initialContract.warrantyPolicy || "",
+        woodworkerTerms: initialContract.woodworkerTerms || "", // Initialize from existing contract
         contractTotalAmount: initialContract.contractTotalAmount || 0,
         completeDate: formatDateForInput(initialContract.completeDate) || "",
         warrantyPeriod: initialContract.warrantyPeriod
@@ -103,6 +106,38 @@ export default function ContractEditSection({
         {/* Contract basic information */}
         <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
           <Stack spacing={4}>
+            {/* Platform terms section - display only */}
+            {platformTerms && (
+              <FormControl>
+                <FormLabel fontWeight="bold">
+                  Điều khoản của nền tảng:
+                </FormLabel>
+                <Box
+                  p={3}
+                  bg="gray.50"
+                  borderRadius="md"
+                  whiteSpace="pre-wrap"
+                  overflowY="auto"
+                >
+                  {platformTerms}
+                </Box>
+              </FormControl>
+            )}
+
+            {/* Woodworker terms - new field */}
+            <FormControl isRequired>
+              <FormLabel>Điều khoản của thợ mộc:</FormLabel>
+              <Textarea
+                rows={6}
+                value={contract.woodworkerTerms}
+                onChange={(e) =>
+                  handleChange("woodworkerTerms", e.target.value)
+                }
+                placeholder="Nhập điều khoản của thợ mộc"
+                whiteSpace="pre-wrap"
+              />
+            </FormControl>
+
             <FormControl isRequired>
               <FormLabel>Chính sách bảo hành:</FormLabel>
               <Textarea

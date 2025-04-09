@@ -147,7 +147,7 @@ export default function ServiceOrderList() {
         valueGetter: (params) => {
           if (params?.data?.role == "Customer") {
             return "Cần bạn phản hồi";
-          } else {
+          } else if (params?.data?.role == "Woodworker") {
             return "Chờ phản hồi từ thợ mộc";
           }
         },

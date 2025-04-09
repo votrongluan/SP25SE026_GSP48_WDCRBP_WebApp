@@ -35,6 +35,14 @@ export const reviewApi = createApi({
         method: "GET",
       }),
     }),
+    // Add new mutation for posting reviews
+    createReview: builder.mutation({
+      query: (data) => ({
+        url: `/api/v1/reviews`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -42,4 +50,5 @@ export const {
   useGetWoodworkerReviewsQuery,
   useGetProductReviewsQuery,
   useGetDesignReviewsQuery,
+  useCreateReviewMutation, // Export the new hook
 } = reviewApi;

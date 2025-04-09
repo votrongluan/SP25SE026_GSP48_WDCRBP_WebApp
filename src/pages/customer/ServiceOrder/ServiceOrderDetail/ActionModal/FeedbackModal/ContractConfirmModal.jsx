@@ -42,6 +42,7 @@ export default function ContractConfirmModal({
   const { auth } = useAuth();
   const [isCheckboxDisabled, setIsCheckboxDisabled] = useState(true);
   const { uploadImage } = useImageUpload();
+  const [submitLoading, setSubmitLoading] = useState(false);
 
   // Signature state
   const [savedSignature, setSavedSignature] = useState(false);
@@ -87,6 +88,7 @@ export default function ContractConfirmModal({
   };
 
   const handleSubmit = async () => {
+    setSubmitLoading(true);
     try {
       let customerSign = null;
 
@@ -140,6 +142,8 @@ export default function ContractConfirmModal({
         err?.data?.message || "Có lỗi xảy ra, vui lòng thử lại sau",
         "error"
       );
+    } finally {
+      setSubmitLoading(false);
     }
   };
 
@@ -154,7 +158,7 @@ export default function ContractConfirmModal({
 
       <Modal
         isOpen={isOpen}
-        onClose={isLoading ? null : onClose}
+        onClose={onClose}
         closeOnOverlayClick={false}
         closeOnEsc={false}
         size="6xl"
@@ -162,7 +166,7 @@ export default function ContractConfirmModal({
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{buttonText}</ModalHeader>
-          {!isLoading && <ModalCloseButton />}
+          {!submitLoading && <ModalCloseButton />}
           <ModalBody pb={6}>
             <Stack spacing={4}>
               <Text fontSize="lg" fontWeight="bold">
@@ -284,7 +288,7 @@ export default function ContractConfirmModal({
             <Button
               colorScheme="green"
               onClick={handleSubmit}
-              isLoading={confirmLoading}
+              isLoading={submitLoading}
               isDisabled={isCheckboxDisabled || !contract || contractLoading}
               leftIcon={<FiCheck />}
             >

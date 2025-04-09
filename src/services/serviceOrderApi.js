@@ -70,6 +70,15 @@ export const serviceOrderApi = createApi({
         body: body, // This will be the array of objects
       }),
     }),
+
+    addFinishProductImage: builder.mutation({
+      query: ({ serviceId, body }) => ({
+        url: `/api/v1/service-orders/finish-product-image`,
+        method: "POST",
+        params: { serviceId },
+        body: body,
+      }),
+    }),
   }),
 });
 
@@ -81,4 +90,5 @@ export const {
   useGetServiceOrdersQuery,
   useGetServiceOrderByIdQuery,
   useAddProductImageMutation,
+  useAddFinishProductImageMutation,
 } = serviceOrderApi;
