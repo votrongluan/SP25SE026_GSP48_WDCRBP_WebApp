@@ -42,6 +42,8 @@ export default function DesignOrderSummary({
   const notify = useNotify();
   const { removeDesignFromCart } = useCart();
 
+  console.log(cartDesigns);
+
   // Helper function to get total price for the selected woodworker
   const getSelectedDesignsTotal = () => {
     if (!selectedWoodworker) return 0;

@@ -25,6 +25,7 @@ import {
   Flex,
   Textarea,
   Tooltip,
+  Checkbox,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FiEdit2, FiPlus, FiTrash, FiXCircle } from "react-icons/fi";
@@ -36,6 +37,7 @@ export default function DesignUpdateModal({ design, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const [imgUrls, setImgUrls] = useState(design?.imgUrls || "");
+  const [isInstall, setIsInstall] = useState(design?.isInstall || false);
 
   const [configurations, setConfigurations] = useState([
     {
@@ -198,6 +200,7 @@ export default function DesignUpdateModal({ design, refetch }) {
       description: formData.get("description"),
       configurations,
       prices,
+      isInstall: isInstall,
     };
     onClose();
   };
@@ -255,6 +258,22 @@ export default function DesignUpdateModal({ design, refetch }) {
                     <option value="Giường ngủ">Giường ngủ</option>
                   </Select>
                 </FormControl>
+
+                <Box py={2}>
+                  <Checkbox
+                    isChecked={isInstall}
+                    onChange={(e) => setIsInstall(e.target.checked)}
+                    size="md"
+                    colorScheme="green"
+                    bg="white"
+                    p={2}
+                    borderRadius="md"
+                  >
+                    <Text fontWeight="medium">
+                      Cần giao hàng + lắp đặt bởi xưởng
+                    </Text>
+                  </Checkbox>
+                </Box>
 
                 <FormControl isRequired>
                   <FormLabel>Mô tả</FormLabel>

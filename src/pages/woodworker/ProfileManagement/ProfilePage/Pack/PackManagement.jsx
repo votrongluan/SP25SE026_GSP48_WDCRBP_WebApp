@@ -7,7 +7,10 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { appColorTheme } from "../../../../../config/appconfig.js";
+import {
+  appColorTheme,
+  getPackTypeLabel,
+} from "../../../../../config/appconfig.js";
 import PackageFrame from "../../../../../components/Utility/PackageFrame.jsx";
 import BuyPackByWalletModal from "../../ActionModal/BuyPackByWalletModal.jsx";
 import { formatDateTimeString } from "../../../../../utils/utils.js";
@@ -47,12 +50,14 @@ export default function PackManagement({ woodworker }) {
           </Heading>
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
             <Box>
-              <Text fontWeight="bold">Loại gói:</Text>
+              <Text fontWeight="bold">Loại xưởng:</Text>
               <Text
                 color={getPackColor(woodworker.servicePack?.name)}
                 fontSize="xl"
               >
-                {woodworker.servicePack?.name?.toUpperCase() || "Chưa đăng ký"}
+                {getPackTypeLabel(
+                  woodworker.servicePack?.name
+                )?.toUpperCase() || "Chưa đăng ký"}
               </Text>
             </Box>
             <Box>

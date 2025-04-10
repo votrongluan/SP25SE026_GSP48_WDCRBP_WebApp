@@ -154,7 +154,7 @@ export default function FinishUpdateModal({
         leftIcon={<FiImage />}
         onClick={onOpen}
       >
-        Cập nhật ảnh hoàn thiện
+        Cập nhật ảnh hoàn thiện và giao hàng
       </Button>
 
       <Modal
@@ -206,9 +206,11 @@ export default function FinishUpdateModal({
                         <h2>
                           <AccordionButton>
                             <Box flex="1" textAlign="left">
+                              {console.log(product)}
                               <Text fontWeight="bold">
                                 Sản phẩm #{idx + 1} -{" "}
-                                {product.category?.categoryName}
+                                {product.category?.categoryName ||
+                                  product?.designIdeaVariantDetail?.name}
                               </Text>
                               {isPrepared && (
                                 <Badge colorScheme="green" ml={2}>

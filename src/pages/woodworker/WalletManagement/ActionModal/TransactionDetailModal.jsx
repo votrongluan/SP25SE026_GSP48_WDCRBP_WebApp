@@ -106,31 +106,6 @@ export default function TransactionDetailModal({ transaction }) {
             </Grid>
           </Box>
         </Box>
-
-        {/* Thông tin liên quan */}
-        {(detail?.orderDepositId || detail?.paymentId) && (
-          <Box>
-            <Heading size="md" mb={4}>
-              Thông tin liên quan
-            </Heading>
-            <Box bg="white" p={5} borderRadius="lg" boxShadow="md">
-              <Grid templateColumns="repeat(2, 1fr)" gap={5}>
-                {detail?.orderDepositId && (
-                  <Box>
-                    <Text fontWeight="bold">Mã đơn hàng:</Text>
-                    <Text>{detail.orderDepositId}</Text>
-                  </Box>
-                )}
-                {detail?.paymentId && (
-                  <Box>
-                    <Text fontWeight="bold">Mã thanh toán:</Text>
-                    <Text>{detail.paymentId}</Text>
-                  </Box>
-                )}
-              </Grid>
-            </Box>
-          </Box>
-        )}
       </Stack>
     );
   };

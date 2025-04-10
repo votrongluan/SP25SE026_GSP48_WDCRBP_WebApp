@@ -125,6 +125,8 @@ export default function ActionBar({
       }
     }
 
+    showCancelButton = false;
+
     return (
       <HStack spacing={4} justify="flex-end">
         {showFeedbackButton && (

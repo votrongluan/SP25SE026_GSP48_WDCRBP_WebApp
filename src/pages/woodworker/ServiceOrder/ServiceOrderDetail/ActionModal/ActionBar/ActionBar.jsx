@@ -67,6 +67,8 @@ export default function ActionBar({ status, feedback, order, refetch }) {
       }
     }
 
+    showCancelModal = false;
+
     return (
       <>
         {showAppointmentModal && (

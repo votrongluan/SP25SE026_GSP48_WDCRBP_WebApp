@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import ReviewSection from "./ReviewSection.jsx";
-import { FiShoppingBag, FiShoppingCart } from "react-icons/fi";
+import { FiShoppingBag, FiShoppingCart, FiTruck } from "react-icons/fi";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector.jsx";
 import DesignVariantConfig from "./DesignVariantConfig.jsx";
 import useAuth from "../../../../hooks/useAuth.js";
@@ -199,6 +199,18 @@ export default function DesignDetailPage() {
                 <Text fontWeight="bold">Loại sản phẩm:</Text>
                 <Text>
                   {designDetail?.category?.categoryName || "Chưa cập nhật"}
+                </Text>
+              </HStack>
+
+              <HStack>
+                <Box
+                  as={FiTruck}
+                  color={designDetail?.isInstall ? "green.500" : "gray.400"}
+                />
+                <Text>
+                  {designDetail?.isInstall
+                    ? "Cần giao hàng và lắp đặt bởi xưởng"
+                    : "Không yêu cầu giao hàng & lắp đặt bởi xưởng"}
                 </Text>
               </HStack>
 

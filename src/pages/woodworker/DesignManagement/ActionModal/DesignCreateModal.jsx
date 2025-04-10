@@ -24,6 +24,7 @@ import {
   useDisclosure,
   Flex,
   Textarea,
+  Checkbox,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FiPlus, FiTrash, FiX, FiXCircle } from "react-icons/fi";
@@ -51,6 +52,7 @@ export default function DesignCreateModal({ refetch }) {
   const [imgUrls, setImgUrls] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [categoryId, setCategoryId] = useState(null);
+  const [isInstall, setIsInstall] = useState(false);
   const notify = useNotify();
   const { auth } = useAuth();
 
@@ -194,6 +196,7 @@ export default function DesignCreateModal({ refetch }) {
       description: formData.get("description"),
       configurations,
       prices,
+      isInstall: isInstall,
     };
 
     // Validate data before submission
@@ -278,6 +281,19 @@ export default function DesignCreateModal({ refetch }) {
                     setCategoryId={setCategoryId}
                   />
                 </FormControl>
+
+                <Box py={2}>
+                  <Checkbox
+                    isChecked={isInstall}
+                    onChange={(e) => setIsInstall(e.target.checked)}
+                    size="md"
+                    colorScheme="green"
+                  >
+                    <Text fontWeight="medium">
+                      Cần giao hàng + lắp đặt bởi xưởng
+                    </Text>
+                  </Checkbox>
+                </Box>
 
                 <FormControl isRequired>
                   <FormLabel>Mô tả</FormLabel>
@@ -382,6 +398,11 @@ export default function DesignCreateModal({ refetch }) {
                     ))}
                   </VStack>
                 </Box>
+
+                <Text mb={4}>
+                  * Lưu ý: Hãy tính phần tiền giao hàng + lắp đặt vào trong giá
+                  của sản phẩm
+                </Text>
 
                 {prices.length > 0 && (
                   <Box>

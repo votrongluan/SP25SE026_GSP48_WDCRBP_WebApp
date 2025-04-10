@@ -58,13 +58,17 @@ export default function CustomerWalletPage() {
           params.data?.status == true
         ) {
           return `+ ${formatPrice(params.value)}`;
-        }
-
-        if (params.data?.status == true) {
+        } else if (
+          params.data?.transactionType == transactionTypeConstants.RUT_VI
+        ) {
           return `- ${formatPrice(params.value)}`;
         }
 
-        return `* ${formatPrice(params.value)}`;
+        if (params.data?.status == true) {
+          return `${formatPrice(params.value)}`;
+        }
+
+        return `${formatPrice(params.value)}`;
       },
       cellStyle: (params) => {
         if (
@@ -88,12 +92,6 @@ export default function CustomerWalletPage() {
     {
       headerName: "Trạng thái",
       field: "status",
-      // valueFormatter: (params) =>
-      //   params.value ? "Đã hoàn thành" : "Chưa hoàn thành",
-      // cellStyle: (params) =>
-      //   params.value
-      //     ? { color: appColorTheme.green_0 }
-      //     : { color: appColorTheme.red_0 },
     },
     {
       headerName: "Thao tác",
