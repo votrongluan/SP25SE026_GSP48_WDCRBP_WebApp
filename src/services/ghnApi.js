@@ -52,6 +52,24 @@ export const ghnApi = createApi({
         method: "GET",
       }),
     }),
+
+    // Get available shipping services
+    getAvailableServices: builder.mutation({
+      query: (data) => ({
+        url: "/api/v1/GHNApi/services",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // Tính phí vận chuyển
+    calculateShippingFee: builder.mutation({
+      query: (data) => ({
+        url: "/api/v1/GHNApi/calculate-fee",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -60,4 +78,6 @@ export const {
   useGetAllProvinceSelectQuery,
   useGetDistrictByProvinceIdQuery,
   useGetWardByDistrictIdQuery,
+  useGetAvailableServicesMutation,
+  useCalculateShippingFeeMutation,
 } = ghnApi;

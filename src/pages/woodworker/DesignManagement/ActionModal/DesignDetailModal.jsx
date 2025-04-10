@@ -28,7 +28,7 @@ import {
   Badge,
 } from "@chakra-ui/react";
 import { useRef } from "react";
-import { FiEye, FiTruck } from "react-icons/fi";
+import { FiEye, FiPackage } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector";
 import { formatPrice } from "../../../../utils/utils";
@@ -164,22 +164,13 @@ export default function DesignDetailModal({ data }) {
                           <Text>{design?.category?.categoryName}</Text>
                         </Box>
 
-                        {/* Add installation information */}
                         <Box>
-                          <Text fontWeight="bold">Giao hàng & lắp đặt:</Text>
-                          <HStack>
-                            <Box
-                              as={FiTruck}
-                              color={
-                                design?.isInstall ? "green.500" : "gray.400"
-                              }
-                            />
-                            <Text>
-                              {design?.isInstall
-                                ? "Cần giao hàng và lắp đặt bởi xưởng"
-                                : "Không yêu cầu giao hàng & lắp đặt bởi xưởng"}
-                            </Text>
-                          </HStack>
+                          <Text fontWeight="bold">Lắp đặt:</Text>
+                          <Text>
+                            {design?.isInstall
+                              ? "Cần lắp đặt"
+                              : "Không cần lắp đặt"}
+                          </Text>
                         </Box>
 
                         <Box>

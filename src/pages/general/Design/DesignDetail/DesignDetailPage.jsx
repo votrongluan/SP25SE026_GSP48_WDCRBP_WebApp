@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import ReviewSection from "./ReviewSection.jsx";
-import { FiShoppingBag, FiShoppingCart, FiTruck } from "react-icons/fi";
+import { FiPackage, FiShoppingBag, FiShoppingCart } from "react-icons/fi";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector.jsx";
 import DesignVariantConfig from "./DesignVariantConfig.jsx";
 import useAuth from "../../../../hooks/useAuth.js";
@@ -124,7 +124,10 @@ export default function DesignDetailPage() {
       woodworkerName: designDetail?.woodworkerProfile?.brandName,
       quantity: 1,
       address: designDetail?.woodworkerProfile?.address,
+      fromDistrictId: designDetail?.woodworkerProfile?.districtId,
+      fromWardCode: designDetail?.woodworkerProfile?.wardCode,
       availableServiceId: customizationService?.availableServiceId,
+      isInstall: designDetail?.isInstall,
     };
 
     addDesignToCart(cartItem);
@@ -146,8 +149,11 @@ export default function DesignDetailPage() {
       woodworkerId: designDetail?.woodworkerProfile?.woodworkerId,
       woodworkerName: designDetail?.woodworkerProfile?.brandName,
       address: designDetail?.woodworkerProfile?.address,
+      fromDistrictId: designDetail?.woodworkerProfile?.districtId,
+      fromWardCode: designDetail?.woodworkerProfile?.wardCode,
       quantity: 1,
       availableServiceId: customizationService?.availableServiceId,
+      isInstall: designDetail?.isInstall,
     };
 
     addDesignToCart(cartItem);
@@ -203,14 +209,11 @@ export default function DesignDetailPage() {
               </HStack>
 
               <HStack>
-                <Box
-                  as={FiTruck}
-                  color={designDetail?.isInstall ? "green.500" : "gray.400"}
-                />
+                <Text fontWeight="bold">Lắp đặt:</Text>
                 <Text>
                   {designDetail?.isInstall
-                    ? "Cần giao hàng và lắp đặt bởi xưởng"
-                    : "Không yêu cầu giao hàng & lắp đặt bởi xưởng"}
+                    ? "Cần lắp đặt"
+                    : "Không cần lắp đặt"}
                 </Text>
               </HStack>
 

@@ -236,12 +236,12 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
                     <Text>{shipment.toAddress || "Chưa cập nhật"}</Text>
                   </HStack>
 
-                  {shipment.from_address && (
+                  {shipment.fromAddress && (
                     <HStack alignItems="flex-start">
                       <Text fontWeight="bold" minW="120px">
                         Địa chỉ lấy hàng:
                       </Text>
-                      <Text>{shipment.from_address}</Text>
+                      <Text>{shipment.fromAddress}</Text>
                     </HStack>
                   )}
 

@@ -83,10 +83,10 @@ export default function GeneralInformationTab({ order }) {
               </HStack>
 
               <HStack>
-                <Text fontWeight="bold">
-                  Yêu cầu giao hàng + lắp đặt bởi xưởng:
+                <Text fontWeight="bold">Yêu cầu lắp đặt bởi xưởng:</Text>
+                <Text>
+                  {order?.install ? "Có lắp đặt" : "Không cần lắp đặt"}
                 </Text>
-                <Text>{order?.install || "Chưa cập nhật"}</Text>
               </HStack>
 
               <Box>

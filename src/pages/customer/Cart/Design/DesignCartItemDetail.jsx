@@ -83,6 +83,19 @@ export default function DesignCartItemDetail({ design, type, woodworkerId }) {
             />
           </Flex>
 
+          {/* Installation status badge */}
+          {design.isInstall ? (
+            <HStack>
+              <Text fontSize="sm" color="blue.600">
+                Cần lắp đặt
+              </Text>
+            </HStack>
+          ) : (
+            <Text fontSize="sm" color="orange.600">
+              Không cần lắp đặt
+            </Text>
+          )}
+
           {/* Config information with more space */}
           <ConfigDisplay
             config={design.designIdeaVariantConfig}
