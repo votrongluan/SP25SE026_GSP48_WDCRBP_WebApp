@@ -59,7 +59,9 @@ export default function WalletManagementListPage() {
         ) {
           return `+ ${formatPrice(params.value)}`;
         } else if (
-          params.data?.transactionType == transactionTypeConstants.RUT_VI
+          params.data?.transactionType == transactionTypeConstants.RUT_VI ||
+          params.data?.transactionType ==
+            transactionTypeConstants.THANH_TOAN_BANG_VI
         ) {
           return `- ${formatPrice(params.value)}`;
         }

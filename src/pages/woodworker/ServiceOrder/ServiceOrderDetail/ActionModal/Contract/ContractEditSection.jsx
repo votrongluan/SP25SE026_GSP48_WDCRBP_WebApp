@@ -163,9 +163,6 @@ export default function ContractEditSection({
                   <NumberDecrementStepper />
                 </NumberInputStepper>
               </NumberInput>
-              <Text fontSize="sm" color="gray.600" mt={1}>
-                Hạn bảo hành kết thúc ngày: <b>{warrantyEndDate}</b>
-              </Text>
             </FormControl>
 
             <FormControl isRequired>

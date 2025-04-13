@@ -63,7 +63,7 @@ export default function PersonalizationProductList({
   return (
     <Box bgColor="white" p={5} borderRadius="10px">
       <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
-        Danh sách sản phẩm đã thêm ({productList.length}/4)
+        Danh sách sản phẩm đã thêm
       </Heading>
 
       {productList.length === 0 ? (

@@ -36,6 +36,7 @@ export default function GeneralInformationTab({ order }) {
       )}
       {serviceName == "Customization" && (
         <CustomizationProductList
+          shipFee={order?.shipFee}
           products={order?.requestedProduct}
           totalAmount={order?.totalAmount}
         />

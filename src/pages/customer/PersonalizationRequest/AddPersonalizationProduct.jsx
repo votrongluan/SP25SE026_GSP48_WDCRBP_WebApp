@@ -234,7 +234,7 @@ export default function AddPersonalizationProduct({
           )}
           {!isEditing && (
             <ActionButton
-              text="+ Thêm"
+              text="+ Thêm sản phẩm"
               onClickExeFn={wrappedHandleAddProduct}
             />
           )}

@@ -12,9 +12,6 @@ import {
   FormLabel,
   Icon,
   Spinner,
-  RadioGroup,
-  Radio,
-  Stack,
 } from "@chakra-ui/react";
 import { formatPrice } from "../../../../utils/utils.js";
 import { appColorTheme } from "../../../../config/appconfig.js";
@@ -45,7 +42,6 @@ export default function DesignOrderSummary({
   const [description, setDescription] = useState("");
   const [shippingFee, setShippingFee] = useState(0);
   const [isCalculatingShipping, setIsCalculatingShipping] = useState(false);
-  const [availableServices, setAvailableServices] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
   const [isLoadingServices, setIsLoadingServices] = useState(false);
 
@@ -83,12 +79,12 @@ export default function DesignOrderSummary({
     }
   };
 
-  // Fetch available shipping services when address changes
+  // Calculate shipping fee when address changes for non-installation orders
   useEffect(() => {
-    const fetchShippingServices = async () => {
-      // Only fetch services for non-installation orders
+    const calculateCheapestShipping = async () => {
+      // Only calculate shipping fee for non-installation orders
       if (isInstall || !selectedAddress || !cartDesigns?.length) {
-        setAvailableServices([]);
+        setShippingFee(0);
         setSelectedService(null);
         return;
       }
@@ -109,71 +105,27 @@ export default function DesignOrderSummary({
 
       try {
         setIsLoadingServices(true);
+        setIsCalculatingShipping(true);
 
-        // Fetch available services
+        // Step 1: Fetch available services
         const servicesData = {
           from_district: +firstItem.fromDistrictId,
           to_district: +selectedAddressObj.districtId,
           shop_id: 0,
         };
 
-        const response = await getAvailableServices(servicesData).unwrap();
+        const servicesResponse = await getAvailableServices(
+          servicesData
+        ).unwrap();
+        const services = servicesResponse.data.data || [];
 
-        setAvailableServices(response.data.data || []);
-      } catch (error) {
-        console.error("Error fetching shipping services:", error);
-        setAvailableServices([]);
-        setSelectedService(null);
-      } finally {
-        setIsLoadingServices(false);
-      }
-    };
+        if (!services.length) {
+          setShippingFee(0);
+          setSelectedService(null);
+          return;
+        }
 
-    fetchShippingServices();
-  }, [
-    selectedAddress,
-    cartDesigns,
-    isInstall,
-    addresses,
-    getAvailableServices,
-  ]);
-
-  // Calculate shipping fee when service selection changes
-  useEffect(() => {
-    const calculateFee = async () => {
-      // Only calculate shipping fee for non-installation orders with selected service
-      if (
-        isInstall ||
-        !selectedAddress ||
-        !cartDesigns?.length ||
-        !selectedService
-      ) {
-        setShippingFee(0);
-        return;
-      }
-
-      const selectedAddressObj = addresses.find(
-        (addr) => addr.userAddressId.toString() === selectedAddress
-      );
-
-      if (
-        !selectedAddressObj ||
-        !selectedAddressObj.districtId ||
-        !selectedAddressObj.wardCode
-      ) {
-        return;
-      }
-
-      // Get the first item for origin details
-      const firstItem = cartDesigns[0];
-      if (!firstItem || !firstItem.fromDistrictId || !firstItem.fromWardCode) {
-        return;
-      }
-
-      try {
-        setIsCalculatingShipping(true);
-
-        // Prepare items data with dimensions
+        // Step 2: Prepare items data with dimensions
         const items = cartDesigns.map((item) => {
           const dimensions = extractDimensions(item.designIdeaVariantConfig[0]);
           return {
@@ -186,43 +138,71 @@ export default function DesignOrderSummary({
           };
         });
 
-        // Calculate shipping fee with selected service
-        const shippingData = {
-          from_district_id: +firstItem.fromDistrictId,
-          from_ward_code: firstItem.fromWardCode,
-          to_district_id: +selectedAddressObj.districtId,
-          to_ward_code: selectedAddressObj.wardCode,
-          service_id: selectedService.service_id,
-          service_type_id: selectedService.service_type_id,
-          insurance_value: 0,
-          cod_failed_amount: 0,
-          coupon: "",
-          height: 0,
-          length: 0,
-          width: 0,
-          weight: 0,
-          items: items,
-        };
+        // Step 3: Calculate shipping fee for each service
+        let cheapestService = null;
+        let cheapestFee = Infinity;
 
-        const response = await calculateShippingFee(shippingData).unwrap();
+        for (const service of services) {
+          try {
+            const shippingData = {
+              from_district_id: +firstItem.fromDistrictId,
+              from_ward_code: firstItem.fromWardCode,
+              to_district_id: +selectedAddressObj.districtId,
+              to_ward_code: selectedAddressObj.wardCode,
+              service_id: service.service_id,
+              service_type_id: service.service_type_id,
+              insurance_value: 0,
+              cod_failed_amount: 0,
+              coupon: "",
+              height: 0,
+              length: 0,
+              width: 0,
+              weight: 0,
+              items: items,
+            };
 
-        setShippingFee(response.data.data.total || 0);
+            const response = await calculateShippingFee(shippingData).unwrap();
+            const fee = response.data.data.total || 0;
+
+            // Compare and save the cheapest option
+            if (fee < cheapestFee) {
+              cheapestFee = fee;
+              cheapestService = { ...service, fee };
+            }
+          } catch (error) {
+            console.error(
+              `Error calculating fee for service ${service.service_id}:`,
+              error
+            );
+          }
+        }
+
+        // Step 4: Set the selected service and fee
+        if (cheapestService) {
+          setSelectedService(cheapestService);
+          setShippingFee(cheapestService.fee);
+        } else {
+          setSelectedService(null);
+          setShippingFee(0);
+        }
       } catch (error) {
-        console.error("Error calculating shipping fee:", error);
+        console.error("Error in shipping calculation process:", error);
+        setSelectedService(null);
         setShippingFee(0);
       } finally {
+        setIsLoadingServices(false);
         setIsCalculatingShipping(false);
       }
     };
 
-    calculateFee();
+    calculateCheapestShipping();
   }, [
-    selectedService,
     selectedAddress,
     cartDesigns,
     isInstall,
     addresses,
     calculateShippingFee,
+    getAvailableServices,
   ]);
 
   // Helper function to get total price for the selected items
@@ -263,14 +243,6 @@ export default function DesignOrderSummary({
         }
       : null;
 
-  // Handle shipping service selection
-  const handleServiceChange = (serviceId) => {
-    const service = availableServices.find(
-      (s) => s.service_id === parseInt(serviceId)
-    );
-    setSelectedService(service);
-  };
-
   // Handle order submission
   const handlePlaceOrder = async () => {
     try {
@@ -293,7 +265,11 @@ export default function DesignOrderSummary({
 
       // For non-install orders, check if shipping service is selected
       if (!isInstall && !selectedService) {
-        notify("Lỗi", "Vui lòng chọn phương thức giao hàng.", "error");
+        notify(
+          "Lỗi",
+          "Không có dịch vụ vận chuyển phù hợp cho đơn hàng này.",
+          "error"
+        );
         return;
       }
 
@@ -392,11 +368,6 @@ export default function DesignOrderSummary({
             borderRadius="md"
             mb={3}
           >
-            <Icon
-              as={FiTruck}
-              mr={3}
-              color={isInstall ? "blue.500" : "orange.500"}
-            />
             <Text fontWeight="medium">
               {isInstall ? "Đơn hàng có lắp đặt" : "Đơn hàng không cần lắp đặt"}
             </Text>
@@ -438,43 +409,16 @@ export default function DesignOrderSummary({
             </Box>
           )}
 
-          {/* Shipping Service Selection for non-installation orders */}
-          {!isInstall && selectedAddress && (
-            <Box mt={4} mb={4}>
-              <FormControl>
-                <FormLabel fontWeight="medium">
-                  Phương thức vận chuyển
-                </FormLabel>
-                {isLoadingServices ? (
-                  <Flex align="center">
-                    <Spinner size="sm" mr={2} />
-                    <Text>Đang tải phương thức vận chuyển...</Text>
-                  </Flex>
-                ) : availableServices.length > 0 ? (
-                  <RadioGroup
-                    onChange={handleServiceChange}
-                    value={selectedService?.service_id.toString()}
-                  >
-                    <Stack spacing={2}>
-                      {availableServices.map((service) => (
-                        <Radio
-                          key={service.service_id}
-                          value={service.service_id.toString()}
-                          colorScheme="green"
-                        >
-                          <Text fontWeight="medium">{service.short_name}</Text>
-                        </Radio>
-                      ))}
-                    </Stack>
-                  </RadioGroup>
-                ) : (
-                  <Text color="red.500">
-                    Không tìm thấy phương thức vận chuyển phù hợp
-                  </Text>
-                )}
-              </FormControl>
-            </Box>
-          )}
+          {/* Shipping Service Info for non-installation orders */}
+          {!isInstall &&
+            selectedAddress &&
+            (isLoadingServices || isCalculatingShipping) && (
+              <Box mt={4} mb={4}>
+                <Flex align="center" justify="center" py={3}>
+                  <Spinner size="sm" mr={2} color="blue.500" />
+                </Flex>
+              </Box>
+            )}
 
           {/* Note Section */}
           <FormControl mt={4}>
@@ -500,16 +444,15 @@ export default function DesignOrderSummary({
 
             {!isInstall && (
               <Flex justify="space-between" align="center">
-                <Text>
-                  Phí vận chuyển{" "}
-                  {selectedService ? `(${selectedService.short_name})` : ""}:
-                </Text>
-                {isCalculatingShipping ? (
+                <Text>Phí vận chuyển </Text>
+                {isCalculatingShipping || isLoadingServices ? (
                   <Spinner size="sm" color="blue.500" />
-                ) : (
+                ) : selectedService ? (
                   <Text>
                     {shippingFee > 0 ? formatPrice(shippingFee) : "Miễn phí"}
                   </Text>
+                ) : (
+                  <Text color="red.500">Không khả dụng</Text>
                 )}
               </Flex>
             )}

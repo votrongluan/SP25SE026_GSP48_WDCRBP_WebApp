@@ -224,6 +224,8 @@ export default function PersonalizationRequestPage() {
         note: notes.trim(), // Add notes
         address: selectedAddressObj.address, // Send the address string instead of addressId
         isInstall: isInstall, // Add installation flag
+        toDistrictId: selectedAddressObj.districtId,
+        toWardCode: selectedAddressObj.wardCode,
       };
 
       await createPersonalOrder(orderData).unwrap();
