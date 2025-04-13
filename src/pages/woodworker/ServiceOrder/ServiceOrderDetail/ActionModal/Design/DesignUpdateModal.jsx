@@ -123,14 +123,14 @@ export default function DesignUpdateModal({
   const allProductsPrepared = products.every(
     (product) =>
       isProductPrepared(product.requestedProductId) ||
-      (product.personalProductDetail?.designUrls && product.hasDesign === true)
+      product.personalProductDetail?.designUrls
   );
 
   // Calculate how many products are ready
   const preparedProductsCount = products.reduce((count, product) => {
     if (
       isProductPrepared(product.requestedProductId) ||
-      (product.personalProductDetail?.designUrls && product.hasDesign === true)
+      product.personalProductDetail?.designUrls
     ) {
       return count + 1;
     }
@@ -194,7 +194,7 @@ export default function DesignUpdateModal({
                   {products.map((product, idx) => {
                     const designUrls =
                       product.personalProductDetail?.designUrls || "";
-                    const alreadyHasDesign = product.hasDesign && designUrls;
+                    const alreadyHasDesign = !!designUrls;
                     const isPrepared = isProductPrepared(
                       product.requestedProductId
                     );
