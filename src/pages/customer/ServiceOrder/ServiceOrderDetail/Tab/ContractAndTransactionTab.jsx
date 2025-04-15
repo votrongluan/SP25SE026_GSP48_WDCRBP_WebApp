@@ -20,6 +20,7 @@ import { useGetAllOrderDepositByOrderIdQuery } from "../../../../../services/ord
 import {
   formatPrice,
   formatDateTimeString,
+  formatDateString,
 } from "../../../../../utils/utils.js";
 
 export default function ContractAndTransactionTab({
@@ -141,16 +142,16 @@ export default function ContractAndTransactionTab({
               <Text fontWeight="bold">Ngày ký:</Text>
               <Text>
                 {contract.signDate
-                  ? formatDateTimeString(new Date(contract.signDate))
+                  ? formatDateString(new Date(contract.signDate))
                   : "Chưa cập nhật"}
               </Text>
             </HStack>
 
             <HStack>
-              <Text fontWeight="bold">Ngày cam kết giao sản phẩm:</Text>
+              <Text fontWeight="bold">Ngày cam kết hoàn thành sản phẩm:</Text>
               <Text>
                 {contract.completeDate
-                  ? formatDateTimeString(new Date(contract.completeDate))
+                  ? formatDateString(new Date(contract.completeDate))
                   : "Chưa cập nhật"}
               </Text>
             </HStack>

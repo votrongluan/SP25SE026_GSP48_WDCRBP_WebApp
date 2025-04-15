@@ -25,7 +25,7 @@ export const availableServiceApi = createApi({
     }),
     updateAvailableServiceByWwId: builder.mutation({
       query: (data) => ({
-        url: `/api/v1/AvailableService/update`,
+        url: `/api/v1/AvailableService`,
         method: "PUT",
         body: data,
       }),

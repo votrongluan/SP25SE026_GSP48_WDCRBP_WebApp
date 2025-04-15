@@ -28,7 +28,6 @@ import {
 import { useNotify } from "../../../../../../components/Utility/Notify.jsx";
 import CheckboxList from "../../../../../../components/Utility/CheckboxList.jsx";
 import { useImageUpload } from "../../../../../../hooks/useImageUpload.js";
-import { useGetConfigurationByDescriptionMutation } from "../../../../../../services/configurationApi";
 
 export default function ContractUpdateModal({ order, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -39,11 +38,6 @@ export default function ContractUpdateModal({ order, refetch }) {
   const [isCheckboxDisabled, setIsCheckboxDisabled] = useState(true);
   const { uploadImage } = useImageUpload();
   const [areAllProductsQuoted, setAreAllProductsQuoted] = useState(false);
-  const [platformTerms, setPlatformTerms] = useState("");
-
-  // Get configuration API
-  const [getConfigurationByDescription, { isLoading: isLoadingConfig }] =
-    useGetConfigurationByDescriptionMutation();
 
   // Set quotation status to true automatically for non-Personalization services
   useEffect(() => {
@@ -52,32 +46,9 @@ export default function ContractUpdateModal({ order, refetch }) {
     }
   }, [isPersonalizationService]);
 
-  // Remove the problematic useEffect for fetching platform terms
-
-  // Replace with a single function that can be called when needed
-  const fetchPlatformTerms = async () => {
-    try {
-      const response = await getConfigurationByDescription({
-        description: "SampleContract",
-        value: "string",
-      }).unwrap();
-
-      if (response.data?.[0]?.value) {
-        setPlatformTerms(response.data?.[0]?.value);
-      }
-    } catch (error) {
-      console.error("Error fetching platform terms:", error);
-      notify("Lỗi", "Không thể lấy điều khoản mẫu từ hệ thống", "error");
-    }
-  };
-
   // Handle modal opening
-  const handleOpenModal = async () => {
+  const handleOpenModal = () => {
     onOpen();
-    // Fetch terms when modal opens - only once
-    if (!platformTerms) {
-      fetchPlatformTerms();
-    }
   };
 
   // Fetch contract data if it exists
@@ -183,19 +154,15 @@ export default function ContractUpdateModal({ order, refetch }) {
       const completeDate = new Date(contractData.completeDate);
       completeDate.setHours(23, 59, 59, 999); // Set to end of day
 
-      // Calculate warranty period date by adding months to current date
-      const warrantyMonths = parseInt(contractData.warrantyPeriod);
-      const warrantyDate = new Date();
-      warrantyDate.setMonth(warrantyDate.getMonth() + warrantyMonths);
-
-      // Prepare API data with proper date formats
+      // Prepare API data with the new format that includes per-product warranty durations
       const postData = {
-        woodworkerSignature: signatureUrl, // string
-        warrantyPolicy: contractData.warrantyPolicy, // string
-        woodworkerTerms: contractData.woodworkerTerms, // Add woodworker terms
-        completeDate: completeDate.toISOString(), // ISO date string
-        warrantyPeriod: warrantyDate.toISOString(), // ISO date string
-        serviceOrderId: parseInt(order.orderId), // number
+        woodworkerSignature: signatureUrl,
+        warrantyPolicy: contractData.warrantyPolicy,
+        woodworkerTerms: contractData.woodworkerTerms,
+        completeDate: completeDate.toISOString(),
+        serviceOrderId: parseInt(order.orderId),
+        requestedProductIds: contractData.requestedProductIds,
+        warrantyDurations: contractData.warrantyDurations,
       };
 
       await createContractCustomize(postData).unwrap();
@@ -257,7 +224,7 @@ export default function ContractUpdateModal({ order, refetch }) {
           <ModalHeader>Cập nhật hợp đồng</ModalHeader>
           {!isSubmitting && !isUploadingSignature && <ModalCloseButton />}
           <ModalBody bgColor="app_grey.1" pb={6}>
-            {isLoadingContract || isLoadingConfig ? (
+            {isLoadingContract ? (
               <Center p={8}>
                 <Spinner size="xl" color={appColorTheme.brown_2} />
               </Center>
@@ -288,7 +255,6 @@ export default function ContractUpdateModal({ order, refetch }) {
                       savedSignature={localSignatureBlob ? true : false}
                       order={order}
                       isExistingContract={!!contractResponse?.data}
-                      platformTerms={platformTerms} // Pass platform terms
                     />
                   </Box>
                 ) : (

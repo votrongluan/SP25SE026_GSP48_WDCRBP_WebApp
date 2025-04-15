@@ -60,6 +60,7 @@ import WWServiceOrderDetailPage from "./pages/woodworker/ServiceOrder/ServiceOrd
 import CusServiceOrderListPage from "./pages/customer/ServiceOrder/ServiceOrderList/CusServiceOrderListPage.jsx";
 import CusServiceOrderDetailPage from "./pages/customer/ServiceOrder/ServiceOrderDetail/MainPage/CusServiceOrderDetailPage.jsx";
 import ContractPage from "./pages/general/Contract/ContractPage.jsx";
+import TermsPage from "./pages/general/Terms/TermsPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -191,6 +192,8 @@ function App() {
             <Route index element={<DesignsPage />} />
             <Route path=":id" element={<DesignDetailPage />} />
           </Route>
+
+          <Route path="terms" element={<TermsPage />} />
 
           <Route path="cart" element={<CartPage />} />
         </Route>

@@ -12,12 +12,21 @@ import {
   Textarea,
   FormControl,
   FormLabel,
-  Text,
+  Link,
+  Flex,
+  Icon,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
 } from "@chakra-ui/react";
+import { Link as RouterLink } from "react-router-dom";
+import { FiExternalLink } from "react-icons/fi";
 import { appColorTheme } from "../../../../../../config/appconfig.js";
 import { formatDateForInput } from "../../../../../../utils/utils.js";
 import SignatureComponent from "../../../../../../components/Common/SignatureComponent.jsx";
-import { differenceInMonths, format, addMonths } from "date-fns";
 
 export default function ContractEditSection({
   initialContract,
@@ -26,54 +35,48 @@ export default function ContractEditSection({
   savedSignature,
   order,
   isExistingContract,
-  platformTerms,
 }) {
   const [contract, setContract] = useState({
     warrantyPolicy: "",
-    woodworkerTerms: "", // New field for woodworker terms
+    woodworkerTerms: "",
     contractTotalAmount: 0,
     completeDate: formatDateForInput(
       new Date(new Date().setMonth(new Date().getMonth() + 1))
     ),
-    warrantyPeriod: 12,
+    requestedProductIds: [],
+    warrantyDurations: [],
     woodworkerSignature: "",
-    signatureData: null, // Store raw signature data for later upload
+    signatureData: null,
   });
 
-  // Add state for calculated warranty end date
-  const [warrantyEndDate, setWarrantyEndDate] = useState("");
-
-  // Initialize contract data from existing contract (if any)
+  // Initialize contract data from existing contract (if any) or order data
   useEffect(() => {
+    const productIds =
+      order.requestedProduct?.map((p) => p.requestedProductId) || [];
+    const durations =
+      order.requestedProduct?.map((p) => p.warrantyDuration || 12) || [];
+
     if (initialContract) {
-      setContract({
-        warrantyPolicy: initialContract.warrantyPolicy || "",
-        woodworkerTerms: initialContract.woodworkerTerms || "", // Initialize from existing contract
-        contractTotalAmount: initialContract.contractTotalAmount || 0,
-        completeDate: formatDateForInput(initialContract.completeDate) || "",
-        warrantyPeriod: initialContract.warrantyPeriod
-          ? differenceInMonths(
-              new Date(initialContract.warrantyPeriod),
-              new Date()
-            ) + 1
-          : 12,
-        woodworkerSignature: initialContract.woodworkerSignature || "",
-        signatureData: null,
-      });
-    } else if (order?.totalAmount) {
+      // Handle data from existing contract
       setContract((prev) => ({
         ...prev,
-        contractTotalAmount: order.totalAmount,
+        warrantyPolicy: initialContract.warrantyPolicy || "",
+        woodworkerTerms: initialContract.woodworkerTerms || "",
+        contractTotalAmount: initialContract.contractTotalAmount || 0,
+        completeDate: formatDateForInput(initialContract.completeDate) || "",
+        requestedProductIds: productIds,
+        warrantyDurations: durations,
+        woodworkerSignature: initialContract.woodworkerSignature || "",
+      }));
+    } else if (order) {
+      setContract((prev) => ({
+        ...prev,
+        contractTotalAmount: order.totalAmount || 0,
+        requestedProductIds: productIds,
+        warrantyDurations: durations,
       }));
     }
   }, [initialContract, order]);
-
-  // Calculate warranty end date whenever warrantyPeriod changes
-  useEffect(() => {
-    const months = parseInt(contract.warrantyPeriod) || 0;
-    const endDate = addMonths(new Date(), months);
-    setWarrantyEndDate(format(endDate, "dd/MM/yyyy"));
-  }, [contract.warrantyPeriod]);
 
   // Notify parent component of changes
   useEffect(() => {
@@ -81,13 +84,21 @@ export default function ContractEditSection({
   }, [contract, onChange]);
 
   const handleChange = (field, value) => {
-    setContract((prev) => {
-      const updated = {
-        ...prev,
-        [field]: value,
-      };
-      return updated;
-    });
+    setContract((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  // Handle warranty duration change for a specific product
+  const handleWarrantyDurationChange = (index, value) => {
+    const newWarrantyDurations = [...contract.warrantyDurations];
+    newWarrantyDurations[index] = parseInt(value) || 0;
+
+    setContract((prev) => ({
+      ...prev,
+      warrantyDurations: newWarrantyDurations,
+    }));
   };
 
   // Handle signature save from SignatureComponent
@@ -106,25 +117,26 @@ export default function ContractEditSection({
         {/* Contract basic information */}
         <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
           <Stack spacing={4}>
-            {/* Platform terms section - display only */}
-            {platformTerms && (
-              <FormControl>
-                <FormLabel fontWeight="bold">
-                  Điều khoản của nền tảng:
-                </FormLabel>
-                <Box
-                  p={3}
-                  bg="gray.50"
-                  borderRadius="md"
-                  whiteSpace="pre-wrap"
-                  overflowY="auto"
+            {/* Platform terms section - link to terms page */}
+            <FormControl>
+              <FormLabel>Điều khoản của nền tảng:</FormLabel>
+              <Flex align="center">
+                <Link
+                  as={RouterLink}
+                  to="/terms"
+                  color="blue.500"
+                  fontWeight="medium"
+                  target="_blank"
+                  display="flex"
+                  alignItems="center"
                 >
-                  {platformTerms}
-                </Box>
-              </FormControl>
-            )}
+                  Xem điều khoản nền tảng
+                  <Icon as={FiExternalLink} ml={2} />
+                </Link>
+              </Flex>
+            </FormControl>
 
-            {/* Woodworker terms - new field */}
+            {/* Woodworker terms */}
             <FormControl isRequired>
               <FormLabel>Điều khoản của thợ mộc:</FormLabel>
               <Textarea
@@ -138,6 +150,7 @@ export default function ContractEditSection({
               />
             </FormControl>
 
+            {/* Warranty policy */}
             <FormControl isRequired>
               <FormLabel>Chính sách bảo hành:</FormLabel>
               <Textarea
@@ -148,23 +161,51 @@ export default function ContractEditSection({
               />
             </FormControl>
 
+            {/* Product warranty durations table */}
             <FormControl isRequired>
-              <FormLabel>Thời hạn bảo hành (tháng):</FormLabel>
-              <NumberInput
-                value={contract.warrantyPeriod}
-                onChange={(value) => handleChange("warrantyPeriod", value)}
-                min={1}
-                max={120}
-                width="full"
-              >
-                <NumberInputField placeholder="Thời hạn bảo hành" />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
+              <FormLabel>Thời hạn bảo hành theo sản phẩm (tháng):</FormLabel>
+              <Box overflowX="auto">
+                <Table variant="simple" size="sm">
+                  <Thead bg={appColorTheme.grey_1}>
+                    <Tr>
+                      <Th>Mã sản phẩm</Th>
+                      <Th>Sản phẩm</Th>
+                      <Th>Số lượng</Th>
+                      <Th>Thời hạn bảo hành (tháng)</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {order?.requestedProduct?.map((product, index) => (
+                      <Tr key={product.requestedProductId}>
+                        <Td>{product.requestedProductId}</Td>
+                        <Td>{product.category?.categoryName || "Sản phẩm"}</Td>
+                        <Td>{product.quantity}</Td>
+                        <Td>
+                          <NumberInput
+                            value={contract.warrantyDurations[index] || 0}
+                            onChange={(value) =>
+                              handleWarrantyDurationChange(index, value)
+                            }
+                            min={0}
+                            max={120}
+                            size="sm"
+                            width="100px"
+                          >
+                            <NumberInputField />
+                            <NumberInputStepper>
+                              <NumberIncrementStepper />
+                              <NumberDecrementStepper />
+                            </NumberInputStepper>
+                          </NumberInput>
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </Box>
             </FormControl>
 
+            {/* Completion date */}
             <FormControl isRequired>
               <FormLabel>Ngày hoàn thành:</FormLabel>
               <Input
@@ -176,7 +217,7 @@ export default function ContractEditSection({
           </Stack>
         </Box>
 
-        {/* Signature section - using the new component */}
+        {/* Signature section */}
         <Box
           p={5}
           bgColor={appColorTheme.grey_1}

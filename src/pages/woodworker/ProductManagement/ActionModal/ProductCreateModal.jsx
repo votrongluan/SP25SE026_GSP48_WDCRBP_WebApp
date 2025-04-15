@@ -62,7 +62,7 @@ export default function ProductCreateModal({ refetch }) {
         // Convert string values to numbers
         price: Number(formEntries.price),
         stock: Number(formEntries.stock),
-        weight: Number(formEntries.weight),
+        warrantyDuration: Number(formEntries.warrantyDuration),
         length: Number(formEntries.length),
         width: Number(formEntries.width),
         height: Number(formEntries.height),
@@ -204,8 +204,13 @@ export default function ProductCreateModal({ refetch }) {
 
                 <HStack spacing={4}>
                   <FormControl isRequired>
-                    <FormLabel>Cân nặng (kg)</FormLabel>
-                    <NumberInput name="weight" min={0} max={1000} step={0.1}>
+                    <FormLabel>Bảo hành (tháng)</FormLabel>
+                    <NumberInput
+                      name="warrantyDuration"
+                      min={0}
+                      max={120}
+                      step={1}
+                    >
                       <NumberInputField bg="white" />
                       <NumberInputStepper>
                         <NumberIncrementStepper />

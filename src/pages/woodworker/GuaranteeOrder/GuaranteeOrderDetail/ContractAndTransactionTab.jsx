@@ -69,7 +69,7 @@ export default function ContractAndTransactionTab() {
             </HStack>
 
             <HStack>
-              <Text fontWeight="bold">Ngày cam kết giao sản phẩm:</Text>
+              <Text fontWeight="bold">Ngày cam kết hoàn thành sản phẩm:</Text>
               <Text>Chưa cập nhật</Text>
             </HStack>
 

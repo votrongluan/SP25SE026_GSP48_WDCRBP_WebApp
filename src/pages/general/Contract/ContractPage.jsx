@@ -3,20 +3,13 @@ import { appColorTheme } from "../../../config/appconfig";
 import { FiDownload } from "react-icons/fi";
 import { useExportToDoc } from "html-to-doc-react";
 import { useGetContractByServiceOrderIdQuery } from "../../../services/contractApi";
-import { useGetConfigurationByDescriptionMutation } from "../../../services/configurationApi";
 import useAuth from "../../../hooks/useAuth";
 import { Navigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
-import { useEffect, useState } from "react";
 
 export default function ContractPage() {
   const { id } = useParams();
   const { auth } = useAuth();
-  const [platformTerms, setPlatformTerms] = useState("");
-  const [platformSignature, setPlatformSignature] = useState("");
-
-  const [getConfigurationByDescription] =
-    useGetConfigurationByDescriptionMutation();
 
   // Fetch contract data
   const {
@@ -24,42 +17,6 @@ export default function ContractPage() {
     isLoading,
     error,
   } = useGetContractByServiceOrderIdQuery(id);
-
-  // Fetch platform terms and signature from configuration
-  useEffect(() => {
-    const fetchPlatformTerms = async () => {
-      try {
-        const response = await getConfigurationByDescription({
-          description: "SampleContract",
-          value: "string",
-        }).unwrap();
-
-        if (response.data && response.data.length > 0) {
-          setPlatformTerms(response.data[0].value);
-        }
-      } catch (err) {
-        console.error("Error fetching platform terms:", err);
-      }
-    };
-
-    const fetchPlatformSignature = async () => {
-      try {
-        const response = await getConfigurationByDescription({
-          description: "PlatformSignature",
-          value: "string",
-        }).unwrap();
-
-        if (response.data && response.data.length > 0) {
-          setPlatformSignature(response.data[0].value);
-        }
-      } catch (err) {
-        console.error("Error fetching platform signature:", err);
-      }
-    };
-
-    fetchPlatformTerms();
-    fetchPlatformSignature();
-  }, [getConfigurationByDescription]);
 
   const exportToDoc = useExportToDoc(
     null,
@@ -102,6 +59,11 @@ export default function ContractPage() {
     } catch (e) {
       return "";
     }
+  };
+
+  // Format currency function
+  const formatCurrency = (amount) => {
+    return amount?.toLocaleString("vi-VN") + " VNĐ";
   };
 
   // Get contract sign date parts
@@ -194,35 +156,102 @@ export default function ContractPage() {
         </p>
         <p style={{ marginTop: "10px" }}>Sau đây được gọi là "Bên B".</p>
 
-        <p style={{ marginTop: "10px", fontWeight: "bold" }}>
-          Bên Cung Ứng Nền Tảng: <b>WDCRBP</b>
-        </p>
-        <p style={{ marginTop: "10px" }}>Sau đây được gọi là "Bên C".</p>
-
         <p style={{ marginTop: "10px" }}>
           Bên A cam kết sẽ hoàn thành dịch vụ vào ngày{" "}
           <b>{formatDate(contract.completeDate)}</b> nếu bên B hoàn thành nghĩa
           vụ thanh toán theo từng giai đoạn với tổng số tiền cần phải thanh toán
-          là <b>{contract.contractTotalAmount?.toLocaleString("vi-VN")} VNĐ</b>.
+          là <b>{formatCurrency(contract.contractTotalAmount)}</b>.
         </p>
 
-        {/* Display woodworker terms */}
-        {contract.woodworkerTerms && (
-          <div style={{ marginTop: "20px", whiteSpace: "pre-wrap" }}>
-            <p style={{ fontWeight: "bold" }}>
-              Điều khoản của nhà cung cấp dịch vụ:
-            </p>
-            <p>{contract.woodworkerTerms}</p>
-          </div>
-        )}
-
-        {/* Display platform terms */}
-        {platformTerms && (
-          <div style={{ marginTop: "20px", whiteSpace: "pre-wrap" }}>
-            <p style={{ fontWeight: "bold" }}>Điều khoản nền tảng:</p>
-            <p>{platformTerms}</p>
-          </div>
-        )}
+        {/* Product details section */}
+        <div style={{ marginTop: "20px" }}>
+          <p style={{ fontWeight: "bold" }}>Chi tiết sản phẩm:</p>
+          <table
+            style={{
+              width: "100%",
+              borderCollapse: "collapse",
+              marginTop: "10px",
+            }}
+          >
+            <thead>
+              <tr style={{ backgroundColor: "#f2f2f2" }}>
+                <th
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "8px",
+                    textAlign: "left",
+                  }}
+                >
+                  Sản phẩm
+                </th>
+                <th
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "8px",
+                    textAlign: "center",
+                  }}
+                >
+                  Số lượng
+                </th>
+                <th
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "8px",
+                    textAlign: "center",
+                  }}
+                >
+                  Thời hạn bảo hành (tháng)
+                </th>
+                <th
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "8px",
+                    textAlign: "right",
+                  }}
+                >
+                  Thành tiền
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {contract.requestedProducts?.map((product) => (
+                <tr key={product.requestedProductId}>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {product.category?.categoryName ||
+                      "Sản phẩm không xác định"}
+                  </td>
+                  <td
+                    style={{
+                      border: "1px solid #ddd",
+                      padding: "8px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {product.quantity}
+                  </td>
+                  <td
+                    style={{
+                      border: "1px solid #ddd",
+                      padding: "8px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {product.warrantyDuration || 0}
+                  </td>
+                  <td
+                    style={{
+                      border: "1px solid #ddd",
+                      padding: "8px",
+                      textAlign: "right",
+                    }}
+                  >
+                    {formatCurrency(product.totalAmount)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         <p style={{ marginTop: "20px" }}>
           Bên A sẽ chịu trách nhiệm bảo hành dịch vụ theo chính sách:
@@ -230,6 +259,33 @@ export default function ContractPage() {
         <p style={{ marginTop: "10px", whiteSpace: "pre-wrap" }}>
           <b>{contract.warrantyPolicy || "Không có"}</b>
         </p>
+
+        {/* Display woodworker terms */}
+        {contract.woodworkerTerms && (
+          <div style={{ marginTop: "20px", whiteSpace: "pre-wrap" }}>
+            <p style={{ fontWeight: "bold" }}>Điều khoản của bên A:</p>
+            <p>{contract.woodworkerTerms}</p>
+          </div>
+        )}
+
+        {/* Link to platform terms - using standard HTML anchor tag for better docx compatibility */}
+        <div style={{ marginTop: "20px" }}>
+          <p style={{ fontWeight: "bold" }}>Điều khoản nền tảng:</p>
+          <p style={{ marginTop: "5px" }}>
+            <a
+              href={`${window.location.origin}/terms`}
+              style={{
+                color: "#3182CE",
+                fontWeight: "500",
+                textDecoration: "underline",
+              }}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Xem điều khoản nền tảng
+            </a>
+          </p>
+        </div>
 
         <div
           style={{
@@ -273,22 +329,6 @@ export default function ContractPage() {
             <p style={{ marginTop: "10px" }}>
               {contract.customer?.username || contract.cusFullName || ""}
             </p>
-          </div>
-
-          <div style={{ textAlign: "center", flex: "1" }}>
-            <p>ĐẠI DIỆN BÊN C</p>
-            {platformSignature && (
-              <img
-                src={platformSignature}
-                alt="Chữ ký nền tảng"
-                style={{
-                  maxWidth: "150px",
-                  marginTop: "10px",
-                  margin: "0 auto",
-                }}
-              />
-            )}
-            <p style={{ marginTop: "10px" }}>WDCRBP</p>
           </div>
         </div>
       </div>

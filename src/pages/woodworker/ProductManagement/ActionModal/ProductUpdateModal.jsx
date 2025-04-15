@@ -61,7 +61,7 @@ export default function ProductUpdateModal({ product, refetch }) {
         // Convert string values to numbers
         price: Number(formEntries.price),
         stock: Number(formEntries.stock),
-        weight: Number(formEntries.weight),
+        warrantyDuration: Number(formEntries.warrantyDuration),
         length: Number(formEntries.length),
         width: Number(formEntries.width),
         height: Number(formEntries.height),
@@ -220,13 +220,13 @@ export default function ProductUpdateModal({ product, refetch }) {
 
                 <HStack spacing={4}>
                   <FormControl isRequired>
-                    <FormLabel>Cân nặng (kg)</FormLabel>
+                    <FormLabel>Bảo hành (tháng)</FormLabel>
                     <NumberInput
-                      name="weight"
+                      name="warrantyDuration"
                       min={0}
-                      max={1000}
-                      step={0.1}
-                      defaultValue={product?.weight}
+                      max={120}
+                      step={1}
+                      defaultValue={product?.warrantyDuration}
                     >
                       <NumberInputField bg="white" />
                       <NumberInputStepper>

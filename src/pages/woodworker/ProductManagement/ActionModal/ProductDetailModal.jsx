@@ -113,8 +113,8 @@ export default function ProductDetailModal({ product }) {
                       <Text>{product?.stock} sản phẩm</Text>
                     </Box>
                     <Box>
-                      <Text fontWeight="bold">Cân nặng:</Text>
-                      <Text>{product?.weight} kg</Text>
+                      <Text fontWeight="bold">Bảo hành:</Text>
+                      <Text>{product?.warrantyDuration} tháng</Text>
                     </Box>
                     <Box>
                       <Text fontWeight="bold">Kích thước:</Text>

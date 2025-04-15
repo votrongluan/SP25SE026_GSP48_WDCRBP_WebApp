@@ -125,8 +125,9 @@ export default function PersonalizationProductList({
                   <HStack>
                     <Box>
                       <Text fontWeight="bold">
-                        Sản phẩm #{product.requestedProductId} x{" "}
-                        {product.quantity}
+                        #{product.requestedProductId} {". "}
+                        {product.category?.categoryName} x{" "}
+                        {`${product.quantity}`}
                       </Text>
                       <Badge colorScheme="purple">
                         {product.category?.categoryName || "Không phân loại"}

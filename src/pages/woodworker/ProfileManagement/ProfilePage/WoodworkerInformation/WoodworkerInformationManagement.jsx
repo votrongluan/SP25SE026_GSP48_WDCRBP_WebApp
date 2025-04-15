@@ -28,7 +28,7 @@ export default function WoodworkerInformationManagement({
 }) {
   const [imgUrl, setImgUrl] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(true);
-  const { notify } = useNotify();
+  const notify = useNotify();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {

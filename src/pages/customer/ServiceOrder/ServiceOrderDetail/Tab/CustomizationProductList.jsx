@@ -72,8 +72,10 @@ export default function CustomizationProductList({
                           }}
                           fontWeight="bold"
                         >
-                          {designDetail?.name || "Sản phẩm không xác định"} x{" "}
-                          {product?.quantity}
+                          #{product.requestedProductId}
+                          {". "}
+                          {designDetail?.name ||
+                            "Sản phẩm không xác định"} x {product?.quantity}
                         </Text>
                       </ChakraLink>
                       <Badge colorScheme="purple">

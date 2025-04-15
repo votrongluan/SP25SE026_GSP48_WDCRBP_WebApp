@@ -103,9 +103,8 @@ export default function WWRegister() {
     <>
       <Box mb={6}>
         <Heading
-          fontWeight="normal"
-          as="h2"
-          fontSize="22px"
+          color={appColorTheme.brown_2}
+          fontSize="2xl"
           fontFamily="Montserrat"
         >
           Đăng ký thông tin xưởng mộc

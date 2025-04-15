@@ -16,6 +16,7 @@ import {
   GridItem,
   Spinner,
   Center,
+  Link,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNotify } from "../../../../../../components/Utility/Notify";
@@ -169,10 +170,6 @@ export default function ContractConfirmModal({
           {!submitLoading && <ModalCloseButton />}
           <ModalBody pb={6}>
             <Stack spacing={4}>
-              <Text fontSize="lg" fontWeight="bold">
-                Chi tiết hợp đồng
-              </Text>
-
               {contractLoading ? (
                 <Center p={4}>
                   <Spinner size="lg" color={appColorTheme.brown_2} />
@@ -190,6 +187,17 @@ export default function ContractConfirmModal({
                     <GridItem>
                       <Text>{contract.contractId}</Text>
                     </GridItem>
+
+                    <GridItem>
+                      <Link
+                        href={`/contract/${serviceOrderId}`}
+                        target="_blank"
+                        color={appColorTheme.brown_2}
+                      >
+                        Xem chi tiết
+                      </Link>
+                    </GridItem>
+                    <GridItem></GridItem>
 
                     <GridItem>
                       <Text fontWeight="semibold">Ngày hoàn thành:</Text>
@@ -213,13 +221,6 @@ export default function ContractConfirmModal({
                         {contract.contractTotalAmount?.toLocaleString("vi-VN")}{" "}
                         VNĐ
                       </Text>
-                    </GridItem>
-
-                    <GridItem>
-                      <Text fontWeight="semibold">Hạn bảo hành đến:</Text>
-                    </GridItem>
-                    <GridItem>
-                      <Text>{formatDate(contract.warrantyPeriod)}</Text>
                     </GridItem>
 
                     <GridItem>

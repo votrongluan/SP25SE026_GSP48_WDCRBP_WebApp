@@ -201,17 +201,12 @@ export default function ProductDetailPage() {
               </Text>
 
               <Text>
-                <strong>Tình trạng:</strong>{" "}
-                {product.stock > 0 ? "Còn hàng" : "Hết hàng"}
-              </Text>
-
-              <Text>
                 <strong>Kích thước (D x R x C):</strong> {product.length} x{" "}
                 {product.width} x {product.height} cm
               </Text>
 
               <Text>
-                <strong>Trọng lượng:</strong> {product.weight} kg
+                <strong>Bảo hành:</strong> {product.warrantyDuration} tháng
               </Text>
 
               <Text>
