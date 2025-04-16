@@ -79,6 +79,15 @@ export const ghnApi = createApi({
         body: data,
       }),
     }),
+
+    // Track order by order code
+    trackOrderByCode: builder.mutation({
+      query: (data) => ({
+        url: "/api/v1/GHNApi/order-code",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -90,4 +99,5 @@ export const {
   useGetAvailableServicesMutation,
   useCalculateShippingFeeMutation,
   useCreateShipmentForServiceOrderMutation,
+  useTrackOrderByCodeMutation,
 } = ghnApi;

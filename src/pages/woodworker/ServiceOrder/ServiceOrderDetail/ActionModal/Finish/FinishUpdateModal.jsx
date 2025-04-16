@@ -191,7 +191,7 @@ export default function FinishUpdateModal({
         data: requestData,
       }).unwrap();
 
-      const orderCode = response.data.data.data.order_code;
+      const orderCode = response.data.data.order_code;
 
       await updateShipmentOrderCode({
         serviceOrderId,

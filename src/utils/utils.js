@@ -79,3 +79,32 @@ export const formatDateForInput = (date) => {
 
   return `${year}-${month}-${day}`;
 };
+
+export function translateShippingStatus(status) {
+  const statusMap = {
+    ready_to_pick: "Đơn hàng vừa được tạo",
+    picking: "Shipper đang đến lấy hàng",
+    cancel: "Đơn hàng đã bị hủy",
+    money_collect_picking: "Shipper đang tương tác với người bán",
+    picked: "Shipper đã lấy hàng",
+    storing: "Hàng đã được chuyển đến kho phân loại của GHN",
+    transporting: "Hàng đang được luân chuyển",
+    sorting: "Hàng đang được phân loại tại kho",
+    delivering: "Shipper đang giao hàng cho khách",
+    money_collect_delivering: "Shipper đang tương tác với người mua",
+    delivered: "Hàng đã được giao cho khách",
+    delivery_fail: "Không giao được hàng cho khách",
+    waiting_to_return: "Chờ giao lại (trong vòng 24/48h)",
+    return: "Chờ hoàn về do giao không thành công sau 3 lần",
+    return_transporting: "Hàng hoàn đang được luân chuyển",
+    return_sorting: "Hàng hoàn đang được phân loại tại kho",
+    returning: "Shipper đang hoàn hàng về cho người bán",
+    return_fail: "Hoàn hàng thất bại",
+    returned: "Hàng đã hoàn về cho người bán",
+    exception: "Xử lý ngoại lệ (đơn hàng phát sinh tình huống bất thường)",
+    damage: "Hàng hóa bị hư hỏng",
+    lost: "Hàng hóa bị thất lạc",
+  };
+
+  return statusMap[status] || "Trạng thái không xác định";
+}

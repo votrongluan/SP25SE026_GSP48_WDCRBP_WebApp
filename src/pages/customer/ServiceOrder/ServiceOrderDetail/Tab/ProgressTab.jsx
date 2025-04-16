@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   Box,
@@ -11,6 +11,7 @@ import {
   SimpleGrid,
   Heading,
   Divider,
+  Link,
 } from "@chakra-ui/react";
 import {
   appColorTheme,
@@ -18,13 +19,16 @@ import {
 } from "../../../../../config/appconfig.js";
 import { useGetAllOrderProgressByOrderIdQuery } from "../../../../../services/orderProgressApi.js";
 import { useGetShipmentsByServiceOrderIdQuery } from "../../../../../services/shipmentApi.js";
+import { useTrackOrderByCodeMutation } from "../../../../../services/ghnApi.js";
 import {
   formatDateTimeString,
-  formatPrice,
+  translateShippingStatus,
+  formatDateString,
 } from "../../../../../utils/utils.js";
 
 export default function ProgressTab({ order, activeTabIndex, isActive }) {
   const { id } = useParams();
+  const [trackingData, setTrackingData] = useState({});
 
   const {
     data: progressResponse,
@@ -40,6 +44,8 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
     refetch: refetchShipment,
   } = useGetShipmentsByServiceOrderIdQuery(id);
 
+  const [trackOrderByCode] = useTrackOrderByCodeMutation();
+
   // Refetch data when tab becomes active
   useEffect(() => {
     if (isActive) {
@@ -47,6 +53,34 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
       refetchShipment();
     }
   }, [isActive, refetchProgress, refetchShipment]);
+
+  // Fetch tracking information when shipment data is available
+  useEffect(() => {
+    const fetchTrackingData = async () => {
+      if (shipmentResponse?.data) {
+        for (const shipment of shipmentResponse.data) {
+          if (shipment.orderCode && shipment.orderCode !== "string") {
+            try {
+              const response = await trackOrderByCode({
+                order_code: shipment.orderCode,
+              }).unwrap();
+
+              setTrackingData((prev) => ({
+                ...prev,
+                [shipment.orderCode]: response.data.data,
+              }));
+            } catch (error) {
+              console.error("Error fetching tracking data:", error);
+            }
+          }
+        }
+      }
+    };
+
+    if (isActive && shipmentResponse?.data) {
+      fetchTrackingData();
+    }
+  }, [shipmentResponse, isActive, trackOrderByCode]);
 
   const progressItems = progressResponse?.data || [];
   const shipmentItems = shipmentResponse?.data || [];
@@ -254,15 +288,6 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
                     </HStack>
                   )}
 
-                  {shipment.orderCode && (
-                    <HStack>
-                      <Text fontWeight="bold" minW="120px">
-                        Mã vận đơn:
-                      </Text>
-                      <Text>{shipment.orderCode}</Text>
-                    </HStack>
-                  )}
-
                   {shipment.shipType && (
                     <HStack>
                       <Text fontWeight="bold" minW="120px">
@@ -272,13 +297,49 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
                     </HStack>
                   )}
 
-                  {shipment.shipFee && (
-                    <HStack>
-                      <Text fontWeight="bold" minW="120px">
-                        Phí vận chuyển:
-                      </Text>
-                      <Text>{formatPrice(shipment.shipFee)}</Text>
-                    </HStack>
+                  {shipment.orderCode && shipment.orderCode !== "string" && (
+                    <Stack mt={5}>
+                      <HStack>
+                        <Text fontWeight="bold" minW="120px">
+                          Mã vận đơn:
+                        </Text>
+                        <Text>{shipment.orderCode}</Text>
+                      </HStack>
+                      <Link
+                        target="_blank"
+                        href={`https://donhang.ghn.vn/?order_code=${shipment.orderCode}`}
+                        color={appColorTheme.brown_2}
+                        mb={2}
+                      >
+                        Tra cứu
+                      </Link>
+                      <HStack>
+                        <Text fontWeight="bold" minW="120px">
+                          Ngày giao dự kiến:
+                        </Text>
+                        <Text>
+                          {trackingData[shipment.orderCode]?.leadtime
+                            ? formatDateString(
+                                new Date(
+                                  trackingData[shipment.orderCode].leadtime
+                                )
+                              )
+                            : "Không có thông tin"}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Text fontWeight="bold" minW="120px">
+                          Trạng thái vận chuyển:
+                        </Text>
+                        <Text>
+                          {trackingData[shipment.orderCode]?.status
+                            ? translateShippingStatus(
+                                trackingData[shipment.orderCode].status
+                              )
+                            : "Không có thông tin"}
+                        </Text>
+                      </HStack>
+                    </Stack>
                   )}
                 </Stack>
               </Box>
