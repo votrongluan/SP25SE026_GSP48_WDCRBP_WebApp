@@ -60,7 +60,7 @@ export default function DepositModal({ isOpen, onClose, wallet }) {
 
       onClose();
 
-      window.location.href = res.url;
+      window.location.href = res.data.url;
     } catch (err) {
       notify(
         "Nạp tiền thất bại",

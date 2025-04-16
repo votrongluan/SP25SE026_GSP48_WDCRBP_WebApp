@@ -22,7 +22,17 @@ export const shipmentApi = createApi({
         url: `/api/v1/Shipment/getAllShipmentByServiceOrderId/${serviceOrderId}`,
       }),
     }),
+    updateShipmentOrderCode: builder.mutation({
+      query: ({ serviceOrderId, orderCode }) => ({
+        url: `/api/v1/Shipment/service-order/${serviceOrderId}`,
+        method: "PUT",
+        body: { orderCode },
+      }),
+    }),
   }),
 });
 
-export const { useGetShipmentsByServiceOrderIdQuery } = shipmentApi;
+export const {
+  useGetShipmentsByServiceOrderIdQuery,
+  useUpdateShipmentOrderCodeMutation,
+} = shipmentApi;

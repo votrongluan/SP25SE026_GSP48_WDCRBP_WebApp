@@ -70,6 +70,15 @@ export const ghnApi = createApi({
         body: data,
       }),
     }),
+
+    // Create shipment for service order
+    createShipmentForServiceOrder: builder.mutation({
+      query: ({ serviceOrderId, data }) => ({
+        url: `/api/v1/GHNApi/service-order/${serviceOrderId}`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -80,4 +89,5 @@ export const {
   useGetWardByDistrictIdQuery,
   useGetAvailableServicesMutation,
   useCalculateShippingFeeMutation,
+  useCreateShipmentForServiceOrderMutation,
 } = ghnApi;

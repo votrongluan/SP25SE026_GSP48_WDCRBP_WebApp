@@ -75,13 +75,12 @@ export default function PaymentModal({ deposit, order, refetch, buttonText }) {
         onClose();
         refetch(); // Refresh data
       } else {
-        // Using payment gateway
         postData.transactionType = transactionTypeConstants.THANH_TOAN_QUA_CONG;
         const response = await createPayment(postData).unwrap();
 
         onClose();
-        // Redirect to payment gateway
-        window.location.href = response.url;
+
+        window.location.href = response.data.url;
       }
     } catch (err) {
       notify(

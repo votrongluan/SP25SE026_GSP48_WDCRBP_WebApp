@@ -24,7 +24,7 @@ import {
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useNotify } from "../../../../components/Utility/Notify.jsx";
-import { FiLogIn, FiShoppingCart, FiTruck } from "react-icons/fi";
+import { FiLogIn, FiShoppingCart } from "react-icons/fi";
 import useCart from "../../../../hooks/useCart.js";
 import { MdLocationOn, MdStorefront } from "react-icons/md";
 
@@ -298,9 +298,9 @@ export default function DesignOrderSummary({
         toDistrictId: !isInstall ? selectedAddressObj.districtId : "",
         toWardCode: !isInstall ? selectedAddressObj.wardCode : "",
         priceShipping: !isInstall ? shippingFee : 0,
-        serviceId:
+        ghnServiceId:
           !isInstall && selectedService ? selectedService.service_id : 0,
-        serviceTypeId:
+        ghnServiceTypeId:
           !isInstall && selectedService ? selectedService.service_type_id : 0,
       };
 

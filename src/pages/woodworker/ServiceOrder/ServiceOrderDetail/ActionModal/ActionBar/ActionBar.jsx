@@ -89,6 +89,7 @@ export default function ActionBar({ status, feedback, order, refetch }) {
         )}
         {showCompleteModal && (
           <FinishUpdateModal
+            order={order}
             serviceOrderId={order?.orderId}
             products={order?.requestedProduct}
             refetch={refetch}
