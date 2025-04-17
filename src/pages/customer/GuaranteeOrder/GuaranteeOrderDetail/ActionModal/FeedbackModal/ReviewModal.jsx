@@ -19,15 +19,15 @@ import {
   AlertIcon,
 } from "@chakra-ui/react";
 import { FiStar, FiCheck, FiXCircle } from "react-icons/fi";
-import { useCreateReviewMutation } from "../../../../../../services/reviewApi";
+import { useCreateGuaranteeOrderReviewMutation } from "../../../../../../services/reviewApi";
 import { useNotify } from "../../../../../../components/Utility/Notify";
 
-export default function ReviewModal({ serviceOrderId, userId, refetch }) {
+export default function ReviewModal({ guaranteeOrderId, userId, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [rating, setRating] = useState(5);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [comment, setComment] = useState("");
-  const [createReview, { isLoading }] = useCreateReviewMutation();
+  const [createReview, { isLoading }] = useCreateGuaranteeOrderReviewMutation();
   const notify = useNotify();
 
   const handleStarClick = (selectedRating) => {
@@ -47,7 +47,7 @@ export default function ReviewModal({ serviceOrderId, userId, refetch }) {
     try {
       const reviewData = {
         userId: userId,
-        serviceOrderId: serviceOrderId,
+        guaranteeOrderId: guaranteeOrderId,
         rating: rating,
         comment: comment.trim(),
       };

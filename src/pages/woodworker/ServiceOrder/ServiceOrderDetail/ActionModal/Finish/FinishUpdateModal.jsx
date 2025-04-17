@@ -219,7 +219,9 @@ export default function FinishUpdateModal({
     try {
       setIsSubmitting(true);
 
-      await processShipment();
+      if (!order?.install) {
+        await processShipment();
+      }
 
       // Format the request payload as an array of objects
       const formattedPayload = requestPayload.map((item) => ({

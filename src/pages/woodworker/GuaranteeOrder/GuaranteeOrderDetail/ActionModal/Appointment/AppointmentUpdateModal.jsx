@@ -21,7 +21,7 @@ import {
 import { useRef, useState } from "react";
 import { FiCalendar, FiCheck, FiX } from "react-icons/fi";
 import { appColorTheme } from "../../../../../../config/appconfig.js";
-import { useAcceptServiceOrderMutation } from "../../../../../../services/serviceOrderApi.js";
+import { useAcceptGuaranteeOrderMutation } from "../../../../../../services/guaranteeOrderApi.js";
 import CheckboxList from "../../../../../../components/Utility/CheckboxList.jsx";
 import { useNotify } from "../../../../../../components/Utility/Notify.jsx";
 import { validateAppointment } from "../../../../../../validations/index.js";
@@ -33,7 +33,7 @@ export default function AppointmentUpdateModal({ order, refetch }) {
   const notify = useNotify();
 
   // API mutation
-  const [acceptServiceOrder, { isLoading }] = useAcceptServiceOrderMutation();
+  const [acceptServiceOrder, { isLoading }] = useAcceptGuaranteeOrderMutation();
 
   // Button disable state for checkboxes
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -48,7 +48,7 @@ export default function AppointmentUpdateModal({ order, refetch }) {
 
       // Prepare data for validation and API
       const apiData = {
-        serviceOrderId: order.orderId,
+        serviceOrderId: order.guaranteeOrderId,
         ...formDataObj,
       };
 

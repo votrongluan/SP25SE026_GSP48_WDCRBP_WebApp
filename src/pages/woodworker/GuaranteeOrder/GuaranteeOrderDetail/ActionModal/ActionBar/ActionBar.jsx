@@ -1,63 +1,51 @@
 import AppointmentUpdateModal from "../Appointment/AppointmentUpdateModal.jsx";
-import ContractUpdateModal from "../Contract/ContractUpdateModal.jsx";
-import { serviceOrderStatusConstants } from "../../../../../../config/appconfig.js";
-import { Text } from "@chakra-ui/react";
+import { guaranteeOrderStatusConstants } from "../../../../../../config/appconfig.js";
 import CancelModal from "./CancelModal.jsx";
-import DesignUpdateModal from "../Design/DesignUpdateModal.jsx";
 import FinishUpdateModal from "../Finish/FinishUpdateModal.jsx";
+import QuotationUpdateModal from "../Quotation/QuotationUpdateModal.jsx";
+import ReceiveConfirmationModal from "./ReceiveConfirmationModal.jsx";
 
 export default function ActionBar({ status, feedback, order, refetch }) {
   const renderActionButtons = () => {
-    const serviceName = order?.service?.service?.serviceName;
-
     let showAppointmentModal = false;
     let showCancelModal = false;
-    let showContractModal = false;
-    let showDesignModal = false;
+    let showQuotationModal = false;
+    let showConfirmReceiveModal = false;
     let showCompleteModal = false;
 
     if (order && order.role === "Woodworker") {
       switch (status) {
-        case serviceOrderStatusConstants.DANG_CHO_THO_DUYET:
+        case guaranteeOrderStatusConstants.DANG_CHO_THO_MOC_XAC_NHAN:
           showAppointmentModal = true;
           showCancelModal = true;
 
           break;
 
-        case serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_LICH_HEN:
+        case guaranteeOrderStatusConstants.DANG_CHO_KHACH_DUYET_LICH_HEN:
           if (feedback && feedback.trim() !== "") {
             showAppointmentModal = true;
           }
 
           break;
 
-        case serviceOrderStatusConstants.DA_DUYET_LICH_HEN:
-          showContractModal = true;
+        case guaranteeOrderStatusConstants.DA_DUYET_LICH_HEN:
+          showQuotationModal = true;
 
           break;
 
-        case serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_HOP_DONG:
+        case guaranteeOrderStatusConstants.DANG_CHO_KHACH_DUYET_BAO_GIA:
           if (feedback && feedback.trim() !== "") {
-            showContractModal = true;
+            showQuotationModal = true;
           }
 
           break;
 
-        case serviceOrderStatusConstants.DA_DUYET_HOP_DONG:
-          if (serviceName == "Personalization") {
-            showDesignModal = true;
-          }
+        case guaranteeOrderStatusConstants.DANG_CHO_NHAN_HANG:
+          showConfirmReceiveModal = true;
 
           break;
 
-        case serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_THIET_KE:
-          if (feedback && feedback.trim() !== "") {
-            showDesignModal = true;
-          }
-
-          break;
-
-        case serviceOrderStatusConstants.DANG_GIA_CONG:
+        case guaranteeOrderStatusConstants.DANG_SUA_CHUA:
           showCompleteModal = true;
 
           break;
@@ -74,24 +62,32 @@ export default function ActionBar({ status, feedback, order, refetch }) {
         {showAppointmentModal && (
           <AppointmentUpdateModal refetch={refetch} order={order} />
         )}
-        {showContractModal && (
-          <ContractUpdateModal refetch={refetch} order={order} />
-        )}
+
         {showCancelModal && (
-          <CancelModal serviceOrderId={order?.orderId} refetch={refetch} />
-        )}
-        {showDesignModal && (
-          <DesignUpdateModal
-            serviceOrderId={order?.orderId}
-            products={order?.requestedProduct}
+          <CancelModal
+            serviceOrderId={order?.guaranteeOrderId}
             refetch={refetch}
           />
         )}
+
+        {showQuotationModal && (
+          <QuotationUpdateModal
+            refetch={refetch}
+            guaranteeOrderId={order?.guaranteeOrderId}
+          />
+        )}
+
+        {showConfirmReceiveModal && (
+          <ReceiveConfirmationModal
+            refetch={refetch}
+            guaranteeOrderId={order?.guaranteeOrderId}
+          />
+        )}
+
         {showCompleteModal && (
           <FinishUpdateModal
+            guaranteeOrderId={order?.guaranteeOrderId}
             order={order}
-            serviceOrderId={order?.orderId}
-            products={order?.requestedProduct}
             refetch={refetch}
           />
         )}

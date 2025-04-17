@@ -35,12 +35,44 @@ export const reviewApi = createApi({
         method: "GET",
       }),
     }),
-    // Add new mutation for posting reviews
     createReview: builder.mutation({
       query: (data) => ({
         url: `/api/v1/reviews`,
         method: "POST",
         body: data,
+      }),
+    }),
+    createGuaranteeOrderReview: builder.mutation({
+      query: (data) => ({
+        url: `/api/v1/reviews/guarantee-order`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    updateReviewStatus: builder.mutation({
+      query: ({ reviewId, ...body }) => ({
+        url: `/api/v1/reviews/${reviewId}/status`,
+        method: "PATCH",
+        body,
+      }),
+    }),
+    updateReviewResponseStatus: builder.mutation({
+      query: ({ reviewId, ...body }) => ({
+        url: `/api/v1/reviews/${reviewId}/response-status`,
+        method: "PATCH",
+        body,
+      }),
+    }),
+    getPendingReviews: builder.query({
+      query: () => ({
+        url: `/api/v1/reviews/status-false`,
+        method: "GET",
+      }),
+    }),
+    getPendingWoodworkerResponses: builder.query({
+      query: () => ({
+        url: `/api/v1/reviews/WWResponse-status-false`,
+        method: "GET",
       }),
     }),
   }),
@@ -50,5 +82,10 @@ export const {
   useGetWoodworkerReviewsQuery,
   useGetProductReviewsQuery,
   useGetDesignReviewsQuery,
-  useCreateReviewMutation, // Export the new hook
+  useCreateReviewMutation,
+  useCreateGuaranteeOrderReviewMutation,
+  useUpdateReviewStatusMutation,
+  useUpdateReviewResponseStatusMutation,
+  useGetPendingReviewsQuery,
+  useGetPendingWoodworkerResponsesQuery,
 } = reviewApi;

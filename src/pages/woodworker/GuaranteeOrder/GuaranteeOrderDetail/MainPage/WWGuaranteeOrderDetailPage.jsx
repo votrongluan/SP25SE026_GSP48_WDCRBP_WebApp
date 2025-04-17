@@ -15,20 +15,29 @@ import {
   TabPanels,
   TabPanel,
 } from "@chakra-ui/react";
-import { useGetServiceOrderByIdQuery } from "../../../../../services/serviceOrderApi";
+import { useGetGuaranteeOrderByIdQuery } from "../../../../../services/guaranteeOrderApi";
 import { appColorTheme } from "../../../../../config/appconfig";
 import useAuth from "../../../../../hooks/useAuth";
 import ActionBar from "../ActionModal/ActionBar/ActionBar.jsx";
 import { FiActivity, FiFile, FiFileText } from "react-icons/fi";
 import GeneralInformationTab from "../Tab/GeneralInformationTab.jsx";
 import ProcessTab from "../Tab/ProgressTab.jsx";
-import ContractAndTransactionTab from "../Tab/ContractAndTransactionTab.jsx";
+import { useGetAllOrderDepositByGuaranteeOrderIdQuery } from "../../../../../services/orderDepositApi";
 import { useState } from "react";
+import QuotationAndTransactionTab from "../Tab/QuotationAndTransactionTab.jsx";
 
 export default function WWGuaranteeOrderDetailPage() {
   const { id } = useParams();
-  const { data, isLoading, error, refetch } = useGetServiceOrderByIdQuery(id);
+  const { data, isLoading, error, refetch } = useGetGuaranteeOrderByIdQuery(id);
+
+  const {
+    data: depositsResponse,
+    isLoading: isDepositsLoading,
+    error: depositsError,
+  } = useGetAllOrderDepositByGuaranteeOrderIdQuery(id);
+
   const order = data?.data;
+  const deposits = depositsResponse?.data || [];
   const { auth } = useAuth();
 
   // Track active tab index
@@ -39,7 +48,7 @@ export default function WWGuaranteeOrderDetailPage() {
     setActiveTabIndex(index);
   };
 
-  if (isLoading) {
+  if (isLoading || isDepositsLoading) {
     return (
       <Center h="200px">
         <Spinner size="xl" color={appColorTheme.brown_2} />
@@ -47,21 +56,21 @@ export default function WWGuaranteeOrderDetailPage() {
     );
   }
 
-  if (error) {
+  if (error || depositsError) {
     return (
       <Center h="200px">
-        <Text>Đã có lỗi xảy ra khi tải thông tin đơn dịch vụ</Text>
+        <Text>Đã có lỗi xảy ra khi tải thông tin đơn bảo hành</Text>
       </Center>
     );
   }
 
   if (
     auth?.userId != order?.user?.userId &&
-    auth?.wwId != order?.service?.wwDto?.woodworkerId
+    auth?.wwId != order?.woodworker?.woodworkerId
   ) {
     return (
       <Center h="200px">
-        <Text>Không có quyền truy cập vào thông tin đơn dịch vụ này</Text>
+        <Text>Không có quyền truy cập vào thông tin đơn bảo hành này</Text>
       </Center>
     );
   }
@@ -76,7 +85,7 @@ export default function WWGuaranteeOrderDetailPage() {
               fontSize="2xl"
               fontFamily="Montserrat"
             >
-              Chi tiết đơn #{order.orderId}
+              Chi tiết đơn #{order.guaranteeOrderId}
             </Heading>
 
             <Box
@@ -104,6 +113,7 @@ export default function WWGuaranteeOrderDetailPage() {
           <HStack spacing={4}>
             <ActionBar
               order={order}
+              deposits={deposits}
               refetch={refetch}
               status={order?.status}
               feedback={order?.feedback}
@@ -127,7 +137,7 @@ export default function WWGuaranteeOrderDetailPage() {
             {[
               { label: "Chung", icon: FiFileText },
               { label: "Tiến độ", icon: FiActivity },
-              { label: "Hợp đồng & Giao dịch", icon: FiFile },
+              { label: "Báo giá & Giao dịch", icon: FiFile },
             ].map((tab, index) => (
               <Tab
                 key={index}
@@ -164,7 +174,7 @@ export default function WWGuaranteeOrderDetailPage() {
               />
             </TabPanel>
             <TabPanel p={0}>
-              <ContractAndTransactionTab
+              <QuotationAndTransactionTab
                 order={order}
                 activeTabIndex={activeTabIndex}
                 isActive={activeTabIndex === 2}

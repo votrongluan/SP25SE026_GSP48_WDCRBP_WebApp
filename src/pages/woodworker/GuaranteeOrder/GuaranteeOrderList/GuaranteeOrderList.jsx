@@ -13,17 +13,17 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useMemo, useState, useRef, useEffect } from "react";
 import {
   appColorTheme,
-  serviceOrderStatusConstants,
+  guaranteeOrderStatusConstants,
 } from "../../../../config/appconfig";
 import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { useGetServiceOrdersQuery } from "../../../../services/serviceOrderApi";
+import { useGetGuaranteeOrdersQuery } from "../../../../services/guaranteeOrderApi";
 import useAuth from "../../../../hooks/useAuth";
 import { formatPrice } from "../../../../utils/utils";
 
 const ActionButton = (params) => {
   const navigate = useNavigate();
-  const orderId = params.data.orderId;
+  const orderId = params.data.guaranteeOrderId;
 
   return (
     <HStack columnGap="4px">
@@ -43,40 +43,24 @@ const ActionButton = (params) => {
   );
 };
 
-// Map between display values and API values for service types
-const serviceTypeMap = {
-  "Tùy chỉnh": "Customization",
-  "Cá nhân hóa": "Personalization",
-  "Mua hàng": "Sale",
-};
-
-// Reverse lookup for display names
-const getServiceTypeDisplayName = (apiValue) => {
-  for (const [display, api] of Object.entries(serviceTypeMap)) {
-    if (api === apiValue) return display;
-  }
-  return apiValue;
-};
-
-export default function ServiceOrderList() {
+export default function GuaranteeOrderList() {
   const { auth } = useAuth();
   const gridRef = useRef();
   const [statusFilter, setStatusFilter] = useState("");
-  const [serviceTypeFilter, setServiceTypeFilter] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
   // Get unique status values from the constants for the dropdown
   const statusValues = useMemo(() => {
-    return Object.values(serviceOrderStatusConstants);
+    return Object.values(guaranteeOrderStatusConstants);
   }, []);
 
   const {
     data: apiResponse,
     error,
     isLoading,
-  } = useGetServiceOrdersQuery({
-    id: auth?.userId,
-    role: "Customer",
+  } = useGetGuaranteeOrdersQuery({
+    id: auth?.wwId,
+    role: "Woodworker",
   });
 
   // Set initial filtered data when API data is loaded
@@ -97,46 +81,23 @@ export default function ServiceOrderList() {
       filtered = filtered.filter((item) => item.status === statusFilter);
     }
 
-    // Apply service type filter if selected
-    if (serviceTypeFilter !== "") {
-      const apiServiceType = serviceTypeMap[serviceTypeFilter];
-      filtered = filtered.filter(
-        (item) => item.service?.service?.serviceName === apiServiceType
-      );
-    }
-
     setFilteredData(filtered);
-  }, [statusFilter, serviceTypeFilter, apiResponse]);
+  }, [statusFilter, apiResponse]);
 
   const colDefs = useMemo(
     () => [
       {
-        headerName: "Mã đơn hàng",
-        field: "orderId",
+        headerName: "Mã yêu cầu",
+        field: "guaranteeOrderId",
         sort: "desc",
       },
       {
-        headerName: "Loại dịch vụ",
-        valueGetter: (params) => {
-          const serviceName =
-            params.data.service?.service?.serviceName || "N/A";
-          return getServiceTypeDisplayName(serviceName);
-        },
+        headerName: "Mã sản phẩm",
+        field: "requestedProduct.requestedProductId",
       },
       {
-        headerName: "Tổng tiền",
-        field: "totalAmount",
-        valueFormatter: (p) => {
-          if (!p.value) {
-            return "Chưa cập nhật";
-          }
-
-          return formatPrice(p.value);
-        },
-      },
-      {
-        headerName: "Xưởng mộc",
-        valueGetter: (params) => params.data.service?.wwDto?.brandName || "N/A",
+        headerName: "SĐT k.hàng",
+        valueGetter: (params) => params.data.user?.phone || "N/A",
       },
       {
         headerName: "Trạng thái",
@@ -145,11 +106,12 @@ export default function ServiceOrderList() {
       {
         headerName: "Cần phản hồi?",
         valueGetter: (params) => {
-          if (params?.data?.role == "Customer") {
+          if (params?.data?.role === "Woodworker") {
             return "Cần bạn phản hồi";
-          } else if (params?.data?.role == "Woodworker") {
-            return "Chờ phản hồi từ thợ mộc";
+          } else if (params?.data?.role === "Customer") {
+            return "Chờ phản hồi từ khách hàng";
           }
+          return "";
         },
         cellRenderer: (params) => {
           return params.value === "Cần bạn phản hồi" ? (
@@ -177,10 +139,6 @@ export default function ServiceOrderList() {
   // Handle filter changes
   const handleStatusFilterChange = (e) => {
     setStatusFilter(e.target.value);
-  };
-
-  const handleServiceTypeFilterChange = (e) => {
-    setServiceTypeFilter(e.target.value);
   };
 
   if (isLoading) {
@@ -214,21 +172,6 @@ export default function ServiceOrderList() {
   return (
     <Box>
       <HStack mb={4} spacing={4}>
-        <HStack>
-          <Text fontWeight="medium">Lọc theo loại dịch vụ:</Text>
-          <Select
-            width="200px"
-            bgColor="white"
-            value={serviceTypeFilter}
-            onChange={handleServiceTypeFilterChange}
-          >
-            <option value="">Tất cả dịch vụ</option>
-            <option value="Tùy chỉnh">Tùy chỉnh</option>
-            <option value="Cá nhân hóa">Cá nhân hóa</option>
-            <option value="Mua hàng">Mua hàng</option>
-          </Select>
-        </HStack>
-
         <HStack>
           <Text fontWeight="medium">Lọc theo trạng thái:</Text>
           <Select

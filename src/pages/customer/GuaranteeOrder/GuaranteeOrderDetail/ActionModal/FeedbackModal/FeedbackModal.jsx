@@ -15,7 +15,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { useSendServiceOrderFeedbackMutation } from "../../../../../../services/serviceOrderApi";
+import { useSubmitFeedbackMutation } from "../../../../../../services/guaranteeOrderApi";
 import { useNotify } from "../../../../../../components/Utility/Notify";
 import { FiEdit, FiSend, FiXCircle } from "react-icons/fi";
 import CheckboxList from "../../../../../../components/Utility/CheckboxList";
@@ -24,7 +24,7 @@ import { validateFeedback } from "../../../../../../validations";
 export default function FeedbackModal({ serviceOrderId, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const notify = useNotify();
-  const [sendFeedback, { isLoading }] = useSendServiceOrderFeedbackMutation();
+  const [sendFeedback, { isLoading }] = useSubmitFeedbackMutation();
   const initialRef = useRef(null);
   const [feedback, setFeedback] = useState("");
   const [isCheckboxDisabled, setIsCheckboxDisabled] = useState(true);

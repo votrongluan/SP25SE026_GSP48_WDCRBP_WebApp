@@ -16,7 +16,7 @@ import {
   GridItem,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { useAcceptServiceOrderMutation } from "../../../../../../services/serviceOrderApi";
+import { useAcceptGuaranteeOrderMutation } from "../../../../../../services/guaranteeOrderApi";
 import { useNotify } from "../../../../../../components/Utility/Notify";
 import { FiCheck, FiCheckCircle, FiXCircle } from "react-icons/fi";
 import CheckboxList from "../../../../../../components/Utility/CheckboxList";
@@ -30,7 +30,7 @@ export default function AppointmentConfirmModal({
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const notify = useNotify();
-  const [acceptOrder, { isLoading }] = useAcceptServiceOrderMutation();
+  const [acceptOrder, { isLoading }] = useAcceptGuaranteeOrderMutation();
   const [isCheckboxDisabled, setIsCheckboxDisabled] = useState(true);
 
   const checkboxItems = [

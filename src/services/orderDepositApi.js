@@ -19,11 +19,20 @@ export const orderDepositApi = createApi({
   endpoints: (builder) => ({
     getAllOrderDepositByOrderId: builder.query({
       query: (id) => ({
-        url: `/api/v1/OrderDeposit/getAllOrderDepositByOrderId/${id}`,
+        url: `/api/v1/OrderDeposit/service-order/${id}`,
+        method: "GET",
+      }),
+    }),
+    getAllOrderDepositByGuaranteeOrderId: builder.query({
+      query: (id) => ({
+        url: `/api/v1/OrderDeposit/guarantee-order/${id}`,
         method: "GET",
       }),
     }),
   }),
 });
 
-export const { useGetAllOrderDepositByOrderIdQuery } = orderDepositApi;
+export const {
+  useGetAllOrderDepositByOrderIdQuery,
+  useGetAllOrderDepositByGuaranteeOrderIdQuery,
+} = orderDepositApi;

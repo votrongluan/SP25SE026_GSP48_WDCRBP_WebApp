@@ -31,8 +31,34 @@ export const quotationApi = createApi({
         body: data,
       }),
     }),
+    saveQuotationDetailsForGuarantee: builder.mutation({
+      query: (data) => ({
+        url: `/api/v1/quotation/guarantee-order/save-quotation-details`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getByGuaranteeOrder: builder.mutation({
+      query: (data) => ({
+        url: `/api/v1/quotation/guarantee-order/get-by-service-order`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    acceptGuaranteeQuotations: builder.mutation({
+      query: (data) => ({
+        url: `/api/v1/quotation/guarantee-order/accept`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useSaveQuotationDetailsMutation, useGetByServiceOrderMutation } =
-  quotationApi;
+export const {
+  useSaveQuotationDetailsMutation,
+  useGetByServiceOrderMutation,
+  useGetByGuaranteeOrderMutation,
+  useSaveQuotationDetailsForGuaranteeMutation,
+  useAcceptGuaranteeQuotationsMutation,
+} = quotationApi;

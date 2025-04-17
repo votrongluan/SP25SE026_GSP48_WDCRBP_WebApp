@@ -45,6 +45,20 @@ export const guaranteeOrderApi = createApi({
         body: data,
       }),
     }),
+    confirmReceiveProduct: builder.mutation({
+      query: (data) => ({
+        url: `/api/v1/guarantee-orders/receive-confirmation`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    finishConfirmation: builder.mutation({
+      query: (data) => ({
+        url: `/api/v1/guarantee-orders/finish-confirmation`,
+        method: "POST",
+        body: data,
+      }),
+    }),
     getGuaranteeOrderById: builder.query({
       query: (id) => `/api/v1/guarantee-orders/${id}`,
     }),
@@ -57,4 +71,6 @@ export const {
   useSubmitFeedbackMutation,
   useAcceptGuaranteeOrderMutation,
   useGetGuaranteeOrderByIdQuery,
+  useConfirmReceiveProductMutation,
+  useFinishConfirmationMutation,
 } = guaranteeOrderApi;

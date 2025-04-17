@@ -33,19 +33,18 @@ export default function WoodworkerBox({ woodworkerProfile }) {
           boxShadow="md"
           gap={5}
         >
-          <Box>
-            <Image
-              src={
-                woodworkerProfile?.imgUrl ||
-                "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
-              }
-              width="150px"
-              height="150px"
-              objectFit="cover"
-              objectPosition="center"
-              borderRadius="50%"
-            />
-          </Box>
+          {woodworkerProfile?.imgUrl && (
+            <Box>
+              <Image
+                src={woodworkerProfile?.imgUrl}
+                width="150px"
+                height="150px"
+                objectFit="cover"
+                objectPosition="center"
+                borderRadius="50%"
+              />
+            </Box>
+          )}
 
           <Stack flex={1}>
             <Stack spacing={4}>
@@ -65,18 +64,22 @@ export default function WoodworkerBox({ woodworkerProfile }) {
                 {woodworkerProfile?.address || "Chưa cập nhật"}
               </Text>
 
-              <Text>
-                <b>Loại hình kinh doanh:</b>{" "}
-                {woodworkerProfile?.businessType || "Chưa cập nhật"}
-              </Text>
-
-              <HStack>
-                <Text fontWeight="bold">Loại xưởng:</Text>
+              {woodworkerProfile?.businessType && (
                 <Text>
-                  {getPackTypeLabel(woodworkerProfile?.servicePack?.name) ||
-                    "Chưa cập nhật"}
+                  <b>Loại hình kinh doanh:</b>{" "}
+                  {woodworkerProfile?.businessType || "Chưa cập nhật"}
                 </Text>
-              </HStack>
+              )}
+
+              {woodworkerProfile?.servicePack?.name && (
+                <HStack>
+                  <Text fontWeight="bold">Loại xưởng:</Text>
+                  <Text>
+                    {getPackTypeLabel(woodworkerProfile?.servicePack?.name) ||
+                      "Chưa cập nhật"}
+                  </Text>
+                </HStack>
+              )}
 
               <HStack>
                 <Spacer />

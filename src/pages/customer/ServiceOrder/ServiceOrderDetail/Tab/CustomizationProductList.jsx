@@ -154,19 +154,21 @@ export default function CustomizationProductList({
         })}
       </Accordion>
 
-      <Flex alignItems="center" my={4} p={5} bgColor={appColorTheme.grey_0}>
-        <Text mr={4} fontSize="16px">
-          Phí vận chuyển:
-        </Text>
-        <Text
-          ml="auto"
-          fontSize="20px"
-          color={appColorTheme.brown_2}
-          fontWeight="bold"
-        >
-          {formatPrice(shipFee)}
-        </Text>
-      </Flex>
+      {shipFee > 0 && (
+        <Flex alignItems="center" my={4} p={5} bgColor={appColorTheme.grey_0}>
+          <Text mr={4} fontSize="16px">
+            Phí vận chuyển:
+          </Text>
+          <Text
+            ml="auto"
+            fontSize="20px"
+            color={appColorTheme.brown_2}
+            fontWeight="bold"
+          >
+            {formatPrice(shipFee)}
+          </Text>
+        </Flex>
+      )}
 
       <Flex alignItems="center" my={4} p={5} bgColor={appColorTheme.grey_0}>
         <Text mr={4} fontSize="20px">

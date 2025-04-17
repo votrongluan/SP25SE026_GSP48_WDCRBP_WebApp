@@ -1,8 +1,8 @@
 import { Heading, Stack } from "@chakra-ui/react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import ServiceOrderList from "./ServiceOrderList.jsx";
 import { appColorTheme } from "../../../../config/appconfig";
+import GuaranteeOrderList from "./GuaranteeOrderList.jsx";
 
 export default function CusGuaranteeOrderListPage() {
   return (
@@ -13,10 +13,10 @@ export default function CusGuaranteeOrderListPage() {
         fontSize="2xl"
         fontFamily="Montserrat"
       >
-        Đơn đặt dịch vụ
+        Đơn đặt dịch vụ bảo hành, sửa chữa
       </Heading>
 
-      <ServiceOrderList />
+      <GuaranteeOrderList />
     </Stack>
   );
 }

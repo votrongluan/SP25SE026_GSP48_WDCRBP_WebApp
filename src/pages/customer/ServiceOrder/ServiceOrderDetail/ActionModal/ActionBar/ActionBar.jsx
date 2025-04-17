@@ -45,7 +45,19 @@ export default function ActionBar({
             })
         : null;
 
-    if (!order?.review && status == serviceOrderStatusConstants.DA_HOAN_TAT) {
+    const isWithinReviewWindow = () => {
+      if (!order?.updatedAt) return false;
+      const updatedDate = new Date(order.updatedAt);
+      const currentDate = new Date();
+      const differenceMs = currentDate - updatedDate;
+      const differenceDays = differenceMs / 86400000;
+      return differenceDays <= 14;
+    };
+    if (
+      !order?.review &&
+      status == serviceOrderStatusConstants.DA_HOAN_TAT &&
+      isWithinReviewWindow()
+    ) {
       showReviewRatingButton = true;
     }
 

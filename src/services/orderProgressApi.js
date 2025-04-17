@@ -19,11 +19,20 @@ export const orderProgressApi = createApi({
   endpoints: (builder) => ({
     getAllOrderProgressByOrderId: builder.query({
       query: (id) => ({
-        url: `/api/v1/OderProgress/getAllOrderProgressByOrderId/${id}`,
+        url: `/api/v1/OderProgress/service-order/${id}`,
+        method: "GET",
+      }),
+    }),
+    getAllOrderProgressByGuaranteeOrderId: builder.query({
+      query: (id) => ({
+        url: `/api/v1/OderProgress/guarantee-order/${id}`,
         method: "GET",
       }),
     }),
   }),
 });
 
-export const { useGetAllOrderProgressByOrderIdQuery } = orderProgressApi;
+export const {
+  useGetAllOrderProgressByOrderIdQuery,
+  useGetAllOrderProgressByGuaranteeOrderIdQuery,
+} = orderProgressApi;

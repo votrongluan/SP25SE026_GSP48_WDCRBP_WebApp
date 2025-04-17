@@ -3,20 +3,23 @@ import {
   Box,
   Heading,
   HStack,
+  Link,
   SimpleGrid,
   Stack,
   Text,
-  Badge,
 } from "@chakra-ui/react";
 import {
   formatDateTimeString,
   formatDateTimeToVietnamese,
 } from "../../../../../utils/utils.js";
-import CustomizationProductList from "./CustomizationProductList.jsx";
 import StarRating from "../../../../../components/Utility/StarRating.jsx";
-import { useGetShipmentsByServiceOrderIdQuery } from "../../../../../services/shipmentApi.js";
-import { getServiceTypeLabel } from "../../../../../config/appconfig.js";
-import PersonalizationProductList from "./PersonalizationProductList.jsx";
+import { useGetShipmentsByGuaranteeOrderIdQuery } from "../../../../../services/shipmentApi.js";
+import {
+  appColorTheme,
+  getServiceTypeLabel,
+} from "../../../../../config/appconfig.js";
+import PersonalizationProduct from "./PersonalizationProduct.jsx";
+import CustomizationProduct from "./CustomizationProduct.jsx";
 
 export default function GeneralInformationTab({
   order,
@@ -24,8 +27,8 @@ export default function GeneralInformationTab({
   isActive,
 }) {
   const { data: shipmentData, refetch: refetchShipment } =
-    useGetShipmentsByServiceOrderIdQuery(order?.orderId, {
-      skip: !order?.orderId,
+    useGetShipmentsByGuaranteeOrderIdQuery(order?.guaranteeOrderId, {
+      skip: !order?.guaranteeOrderId,
     });
 
   // Refetch data when tab becomes active
@@ -35,22 +38,36 @@ export default function GeneralInformationTab({
     }
   }, [isActive, order?.orderId, refetchShipment]);
 
-  const serviceName = order?.service?.service?.serviceName;
+  const serviceName = order?.serviceOrderDetail?.service?.service?.serviceName;
+  const serviceOrder = order?.serviceOrderDetail;
 
   return (
     <Box>
       {serviceName == "Personalization" && (
-        <PersonalizationProductList
-          orderId={order?.orderId}
-          products={order?.requestedProduct}
-          totalAmount={order?.totalAmount}
+        <PersonalizationProduct
+          orderId={serviceOrder?.orderId}
+          completionDate={serviceOrder?.updatedAt}
+          currentProductImgUrls={order?.currentProductImgUrls}
+          productCurrentStatus={order?.productCurrentStatus}
+          warrantyDuration={order?.requestedProduct?.warrantyDuration}
+          product={order?.serviceOrderDetail?.requestedProduct.find(
+            (item) =>
+              item.requestedProductId ==
+              order?.requestedProduct?.requestedProductId
+          )}
         />
       )}
       {serviceName == "Customization" && (
-        <CustomizationProductList
-          shipFee={order?.shipFee}
-          products={order?.requestedProduct}
-          totalAmount={order?.totalAmount}
+        <CustomizationProduct
+          completionDate={serviceOrder?.updatedAt}
+          currentProductImgUrls={order?.currentProductImgUrls}
+          productCurrentStatus={order?.productCurrentStatus}
+          warrantyDuration={order?.requestedProduct?.warrantyDuration}
+          product={order?.serviceOrderDetail?.requestedProduct.find(
+            (item) =>
+              item.requestedProductId ==
+              order?.requestedProduct?.requestedProductId
+          )}
         />
       )}
 
@@ -70,31 +87,31 @@ export default function GeneralInformationTab({
 
             <Stack spacing={4}>
               <HStack>
-                <Text fontWeight="bold">Mã đơn hàng:</Text>
-                <Text>{order?.orderId || "Chưa cập nhật"}</Text>
+                <Text fontWeight="bold">Mã yêu cầu:</Text>
+                <Text>{order?.guaranteeOrderId || "Chưa cập nhật"}</Text>
               </HStack>
 
               <HStack>
-                <Text fontWeight="bold">Loại dịch vụ:</Text>
+                <Text fontWeight="bold">Mã đơn hàng đã đặt:</Text>
                 <Text>
-                  {getServiceTypeLabel(order?.service?.service?.serviceName)}
+                  {getServiceTypeLabel(order?.serviceOrderDetail?.orderId)}
                 </Text>
+                <Link
+                  target="_blank"
+                  color={appColorTheme.brown_2}
+                  href={`/ww/service-order/${order?.serviceOrderDetail?.orderId}`}
+                >
+                  Xem chi tiết
+                </Link>
               </HStack>
 
               <HStack>
                 <Text fontWeight="bold">Ngày đặt:</Text>
                 <Text>
-                  {order?.requestedProduct?.[0]?.createdAt
-                    ? formatDateTimeString(
-                        new Date(order.requestedProduct[0].createdAt)
-                      )
+                  {order?.createdAt
+                    ? formatDateTimeString(new Date(order?.createdAt))
                     : "Chưa cập nhật"}
                 </Text>
-              </HStack>
-
-              <HStack>
-                <Text fontWeight="bold">Số lượng sản phẩm:</Text>
-                <Text>{order?.quantity || "Chưa cập nhật"}</Text>
               </HStack>
 
               <HStack>
@@ -168,35 +185,47 @@ export default function GeneralInformationTab({
 
               <Text>
                 <b>Địa chỉ giao hàng:</b>{" "}
-                {shipmentData?.data[0]?.toAddress || "Chưa cập nhật"}
+                {shipmentData?.data?.find((item) =>
+                  item?.shipType?.startsWith("Giao")
+                ).toAddress || "Chưa cập nhật"}
               </Text>
             </Stack>
           </Box>
 
           <Box>
-            {order?.review?.status ? (
-              <Stack spacing={3}>
-                <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
-                  Đánh giá
-                </Heading>
+            {order?.review ? (
+              <>
+                {order?.review?.status ? (
+                  <>
+                    <Stack spacing={3}>
+                      <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
+                        Đánh giá
+                      </Heading>
 
-                <HStack>
-                  <Text fontWeight="bold">Số sao:</Text>
-                  <StarRating rating={order.review.rating} />
-                </HStack>
+                      <HStack>
+                        <Text fontWeight="bold">Số sao:</Text>
+                        <StarRating rating={order.review.rating} />
+                      </HStack>
 
-                <HStack>
-                  <Text fontWeight="bold">Bình luận:</Text>
-                  <Text>{order.review.comment}</Text>
-                </HStack>
+                      <HStack>
+                        <Text fontWeight="bold">Bình luận:</Text>
+                        <Text>{order.review.comment}</Text>
+                      </HStack>
 
-                <HStack>
-                  <Text fontWeight="bold">Ngày đăng:</Text>
-                  <Text>
-                    {formatDateTimeString(new Date(order.review.createdAt))}
-                  </Text>
-                </HStack>
-              </Stack>
+                      <HStack>
+                        <Text fontWeight="bold">Ngày đăng:</Text>
+                        <Text>
+                          {formatDateTimeString(
+                            new Date(order.review.createdAt)
+                          )}
+                        </Text>
+                      </HStack>
+                    </Stack>
+                  </>
+                ) : (
+                  <Text color="gray.500">(Đánh giá chưa được duyệt)</Text>
+                )}
+              </>
             ) : (
               <Text color="gray.500">(Chưa có đánh giá)</Text>
             )}

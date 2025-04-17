@@ -15,10 +15,10 @@ import {
 } from "@chakra-ui/react";
 import {
   appColorTheme,
-  serviceOrderStatusConstants,
+  guaranteeOrderStatusConstants,
 } from "../../../../../config/appconfig.js";
-import { useGetAllOrderProgressByOrderIdQuery } from "../../../../../services/orderProgressApi.js";
-import { useGetShipmentsByServiceOrderIdQuery } from "../../../../../services/shipmentApi.js";
+import { useGetAllOrderProgressByGuaranteeOrderIdQuery } from "../../../../../services/orderProgressApi.js";
+import { useGetShipmentsByGuaranteeOrderIdQuery } from "../../../../../services/shipmentApi.js";
 import { useTrackOrderByCodeMutation } from "../../../../../services/ghnApi.js";
 import {
   formatDateTimeString,
@@ -35,14 +35,14 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
     isLoading: isLoadingProgress,
     error: progressError,
     refetch: refetchProgress,
-  } = useGetAllOrderProgressByOrderIdQuery(id);
+  } = useGetAllOrderProgressByGuaranteeOrderIdQuery(id);
 
   const {
     data: shipmentResponse,
     isLoading: isLoadingShipment,
     error: shipmentError,
     refetch: refetchShipment,
-  } = useGetShipmentsByServiceOrderIdQuery(id);
+  } = useGetShipmentsByGuaranteeOrderIdQuery(id);
 
   const [trackOrderByCode] = useTrackOrderByCodeMutation();
 
@@ -86,36 +86,21 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
   const shipmentItems = shipmentResponse?.data || [];
 
   // Check if order is cancelled
-  const isOrderCancelled = order?.status == serviceOrderStatusConstants.DA_HUY;
-
-  // Check service type to determine progress flow
-  const isPersonalization =
-    order?.service?.service?.serviceName == "Personalization";
+  const isOrderCancelled =
+    order?.status == guaranteeOrderStatusConstants.DA_HUY;
 
   // Define progress steps based on service type
-  const progressSteps = isPersonalization
-    ? [
-        serviceOrderStatusConstants.DANG_CHO_THO_DUYET,
-        serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_LICH_HEN,
-        serviceOrderStatusConstants.DA_DUYET_LICH_HEN,
-        serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_HOP_DONG,
-        serviceOrderStatusConstants.DA_DUYET_HOP_DONG,
-        serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_THIET_KE,
-        serviceOrderStatusConstants.DA_DUYET_THIET_KE,
-        serviceOrderStatusConstants.DANG_GIA_CONG,
-        serviceOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT,
-        serviceOrderStatusConstants.DA_HOAN_TAT,
-      ]
-    : [
-        serviceOrderStatusConstants.DANG_CHO_THO_DUYET,
-        serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_LICH_HEN,
-        serviceOrderStatusConstants.DA_DUYET_LICH_HEN,
-        serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_HOP_DONG,
-        serviceOrderStatusConstants.DA_DUYET_HOP_DONG,
-        serviceOrderStatusConstants.DANG_GIA_CONG,
-        serviceOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT,
-        serviceOrderStatusConstants.DA_HOAN_TAT,
-      ];
+  const progressSteps = [
+    guaranteeOrderStatusConstants.DANG_CHO_THO_MOC_XAC_NHAN,
+    guaranteeOrderStatusConstants.DANG_CHO_KHACH_DUYET_LICH_HEN,
+    guaranteeOrderStatusConstants.DA_DUYET_LICH_HEN,
+    guaranteeOrderStatusConstants.DANG_CHO_KHACH_DUYET_BAO_GIA,
+    guaranteeOrderStatusConstants.DA_DUYET_BAO_GIA,
+    guaranteeOrderStatusConstants.DANG_CHO_NHAN_HANG,
+    guaranteeOrderStatusConstants.DANG_SUA_CHUA,
+    guaranteeOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT,
+    guaranteeOrderStatusConstants.DA_HOAN_TAT,
+  ];
 
   // Display loading state
   if (isLoadingProgress || isLoadingShipment) {
@@ -259,10 +244,20 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
             </Text>
           </Center>
         ) : (
-          <Stack spacing={4}>
+          <Stack spacing={10}>
             {shipmentItems.map((shipment) => (
               <Box key={shipment.shipmentId}>
                 <Stack spacing={3} divider={<Divider />}>
+                  {shipment.shipType && (
+                    <Text
+                      color={appColorTheme.brown_2}
+                      fontWeight="bold"
+                      fontSize="18px"
+                    >
+                      {shipment.shipType}
+                    </Text>
+                  )}
+
                   <HStack alignItems="flex-start">
                     <Text fontWeight="bold" minW="120px">
                       Địa chỉ giao:
@@ -285,15 +280,6 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
                         Đơn vị vận chuyển:
                       </Text>
                       <Text>{shipment.shippingUnit}</Text>
-                    </HStack>
-                  )}
-
-                  {shipment.shipType && (
-                    <HStack>
-                      <Text fontWeight="bold" minW="120px">
-                        Loại vận chuyển:
-                      </Text>
-                      <Text>{shipment.shipType}</Text>
                     </HStack>
                   )}
 

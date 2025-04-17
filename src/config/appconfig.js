@@ -55,6 +55,19 @@ export const serviceOrderStatusConstants = {
   DA_HUY: "Đã hủy",
 };
 
+export const guaranteeOrderStatusConstants = {
+  DANG_CHO_THO_MOC_XAC_NHAN: "Đang chờ thợ mộc xác nhận đơn hàng",
+  DANG_CHO_KHACH_DUYET_LICH_HEN: "Đang chờ khách hàng duyệt lịch hẹn",
+  DA_DUYET_LICH_HEN: "Đã duyệt lịch hẹn",
+  DANG_CHO_KHACH_DUYET_BAO_GIA: "Đang chờ khách hàng duyệt báo giá",
+  DA_DUYET_BAO_GIA: "Đã duyệt báo giá",
+  DANG_CHO_NHAN_HANG: "Đang chờ nhận hàng để sửa chữa",
+  DANG_SUA_CHUA: "Đang sửa chữa",
+  DANG_GIAO_HANG_LAP_DAT: "Đang giao hàng lắp đặt",
+  DA_HOAN_TAT: "Đã hoàn tất",
+  DA_HUY: "Đã hủy",
+};
+
 export const transactionTypeColorMap = {
   [transactionTypeConstants.NAP_VI]: "#38a169",
   [transactionTypeConstants.RUT_VI]: "#9f7aea",

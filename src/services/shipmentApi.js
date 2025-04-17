@@ -19,7 +19,7 @@ export const shipmentApi = createApi({
   endpoints: (builder) => ({
     getShipmentsByServiceOrderId: builder.query({
       query: (serviceOrderId) => ({
-        url: `/api/v1/Shipment/getAllShipmentByServiceOrderId/${serviceOrderId}`,
+        url: `/api/v1/Shipment/service-order/${serviceOrderId}`,
       }),
     }),
     updateShipmentOrderCode: builder.mutation({
@@ -29,10 +29,26 @@ export const shipmentApi = createApi({
         body: { orderCode },
       }),
     }),
+
+    // New endpoints for guarantee orders
+    getShipmentsByGuaranteeOrderId: builder.query({
+      query: (guaranteeOrderId) => ({
+        url: `/api/v1/Shipment/guarantee-order/${guaranteeOrderId}`,
+      }),
+    }),
+    updateGuaranteeOrderShipmentOrderCode: builder.mutation({
+      query: ({ guaranteeOrderId, ...body }) => ({
+        url: `/api/v1/Shipment/guarantee-order/${guaranteeOrderId}`,
+        method: "PUT",
+        body: body,
+      }),
+    }),
   }),
 });
 
 export const {
   useGetShipmentsByServiceOrderIdQuery,
   useUpdateShipmentOrderCodeMutation,
+  useGetShipmentsByGuaranteeOrderIdQuery,
+  useUpdateGuaranteeOrderShipmentOrderCodeMutation,
 } = shipmentApi;

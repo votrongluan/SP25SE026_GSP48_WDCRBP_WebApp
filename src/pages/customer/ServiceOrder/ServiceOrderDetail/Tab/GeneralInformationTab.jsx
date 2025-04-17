@@ -172,29 +172,39 @@ export default function GeneralInformationTab({ order }) {
           </Box>
 
           <Box>
-            {order?.review?.status ? (
-              <Stack spacing={3}>
-                <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
-                  Đánh giá
-                </Heading>
+            {order?.review ? (
+              <>
+                {order?.review?.status ? (
+                  <>
+                    <Stack spacing={3}>
+                      <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
+                        Đánh giá
+                      </Heading>
 
-                <HStack>
-                  <Text fontWeight="bold">Số sao:</Text>
-                  <StarRating rating={order.review.rating} />
-                </HStack>
+                      <HStack>
+                        <Text fontWeight="bold">Số sao:</Text>
+                        <StarRating rating={order.review.rating} />
+                      </HStack>
 
-                <HStack>
-                  <Text fontWeight="bold">Bình luận:</Text>
-                  <Text>{order.review.comment}</Text>
-                </HStack>
+                      <HStack>
+                        <Text fontWeight="bold">Bình luận:</Text>
+                        <Text>{order.review.comment}</Text>
+                      </HStack>
 
-                <HStack>
-                  <Text fontWeight="bold">Ngày đăng:</Text>
-                  <Text>
-                    {formatDateTimeString(new Date(order.review.createdAt))}
-                  </Text>
-                </HStack>
-              </Stack>
+                      <HStack>
+                        <Text fontWeight="bold">Ngày đăng:</Text>
+                        <Text>
+                          {formatDateTimeString(
+                            new Date(order.review.createdAt)
+                          )}
+                        </Text>
+                      </HStack>
+                    </Stack>
+                  </>
+                ) : (
+                  <Text color="gray.500">(Đánh giá chưa được duyệt)</Text>
+                )}
+              </>
             ) : (
               <Text color="gray.500">(Chưa có đánh giá)</Text>
             )}

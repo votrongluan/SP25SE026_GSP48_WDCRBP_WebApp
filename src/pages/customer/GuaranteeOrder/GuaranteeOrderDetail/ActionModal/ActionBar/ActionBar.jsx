@@ -1,13 +1,12 @@
-import { HStack, Text } from "@chakra-ui/react";
-import { serviceOrderStatusConstants } from "../../../../../../config/appconfig.js";
+import { HStack } from "@chakra-ui/react";
+import { guaranteeOrderStatusConstants } from "../../../../../../config/appconfig.js";
 import FeedbackModal from "../FeedbackModal/FeedbackModal.jsx";
 import CancelModal from "../FeedbackModal/CancelModal.jsx";
 import AppointmentConfirmModal from "../FeedbackModal/AppointmentConfirmModal.jsx";
-import ContractConfirmModal from "../FeedbackModal/ContractConfirmModal.jsx";
 import PaymentModal from "../FeedbackModal/PaymentModal.jsx";
-import DesignConfirmModal from "../FeedbackModal/DesignConfirmModal.jsx";
 import useAuth from "../../../../../../hooks/useAuth.js";
 import ReviewModal from "../FeedbackModal/ReviewModal.jsx";
+import QuotationConfirmModal from "../FeedbackModal/QuotationConfirmModal.jsx";
 
 export default function ActionBar({
   status,
@@ -20,13 +19,11 @@ export default function ActionBar({
   const { auth } = useAuth();
 
   const renderActionButtons = () => {
-    // Default: no actions
     let showFeedbackButton = false;
     let showPaymentButton = false;
     let showAppointmentButton = false;
     let showCancelButton = false;
-    let showContractButton = false;
-    let showDesignButton = false;
+    let showQuotationButton = false;
     let showReviewRatingButton = false;
     let confirmButtonText = "Xác nhận";
     let paymentButtonText = "";
@@ -45,24 +42,33 @@ export default function ActionBar({
             })
         : null;
 
-    if (!order?.review && status == serviceOrderStatusConstants.DA_HOAN_TAT) {
+    const isWithinReviewWindow = () => {
+      if (!order?.updatedAt) return false;
+      const updatedDate = new Date(order.updatedAt);
+      const currentDate = new Date();
+      const differenceMs = currentDate - updatedDate;
+      const differenceDays = differenceMs / 86400000;
+      return differenceDays <= 14;
+    };
+    if (
+      !order?.review &&
+      status == guaranteeOrderStatusConstants.DA_HOAN_TAT &&
+      isWithinReviewWindow()
+    ) {
       showReviewRatingButton = true;
     }
 
     showCancelButton = [
-      serviceOrderStatusConstants.DANG_CHO_THO_DUYET,
-      serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_LICH_HEN,
-      serviceOrderStatusConstants.DA_DUYET_LICH_HEN,
-      serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_HOP_DONG,
-      serviceOrderStatusConstants.DA_DUYET_HOP_DONG,
-      serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_THIET_KE,
-      serviceOrderStatusConstants.DA_DUYET_THIET_KE,
-      serviceOrderStatusConstants.DANG_GIA_CONG,
+      guaranteeOrderStatusConstants.DANG_CHO_THO_MOC_XAC_NHAN,
+      guaranteeOrderStatusConstants.DANG_CHO_KHACH_DUYET_LICH_HEN,
+      guaranteeOrderStatusConstants.DA_DUYET_LICH_HEN,
+      guaranteeOrderStatusConstants.DANG_CHO_KHACH_DUYET_BAO_GIA,
+      guaranteeOrderStatusConstants.DA_DUYET_BAO_GIA,
     ].includes(status);
 
     if (order && order.role === "Customer") {
       switch (status) {
-        case serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_LICH_HEN:
+        case guaranteeOrderStatusConstants.DANG_CHO_KHACH_DUYET_LICH_HEN:
           if (!feedback || feedback.trim() === "") {
             showAppointmentButton = true;
             showFeedbackButton = true;
@@ -71,17 +77,16 @@ export default function ActionBar({
 
           break;
 
-        case serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_HOP_DONG:
+        case guaranteeOrderStatusConstants.DANG_CHO_KHACH_DUYET_BAO_GIA:
           if (!feedback || feedback.trim() === "") {
-            // If there's NO feedback, show BOTH confirmation and feedback buttons
-            showContractButton = true;
+            showQuotationButton = true;
             showFeedbackButton = true;
-            confirmButtonText = "Xác nhận hợp đồng";
+            confirmButtonText = "Xác nhận báo giá";
           }
 
           break;
 
-        case serviceOrderStatusConstants.DA_DUYET_HOP_DONG:
+        case guaranteeOrderStatusConstants.DA_DUYET_BAO_GIA:
           if (
             (!feedback || feedback.trim() === "") &&
             unpaidDeposit &&
@@ -92,27 +97,7 @@ export default function ActionBar({
 
           break;
 
-        case serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_THIET_KE:
-          if (!feedback || feedback.trim() === "") {
-            showDesignButton = true;
-            showFeedbackButton = true;
-            confirmButtonText = "Xác nhận thiết kế";
-          }
-
-          break;
-
-        case serviceOrderStatusConstants.DA_DUYET_THIET_KE:
-          if (
-            (!feedback || feedback.trim() === "") &&
-            unpaidDeposit &&
-            depositNumber == 2
-          ) {
-            showPaymentButton = true;
-          }
-
-          break;
-
-        case serviceOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT:
+        case guaranteeOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT:
           if (unpaidDeposit && (depositNumber == 3 || depositNumber == 2)) {
             showPaymentButton = true;
             paymentButtonText = "Thanh toán lần cuối và xác nhận đơn hàng";
@@ -130,32 +115,25 @@ export default function ActionBar({
     return (
       <HStack spacing={4} justify="flex-end">
         {showFeedbackButton && (
-          <FeedbackModal serviceOrderId={order?.orderId} refetch={refetch} />
+          <FeedbackModal
+            serviceOrderId={order?.guaranteeOrderId}
+            refetch={refetch}
+          />
         )}
 
         {showAppointmentButton && (
           <AppointmentConfirmModal
-            serviceOrderId={order?.orderId}
+            serviceOrderId={order?.guaranteeOrderId}
             appointment={order?.consultantAppointment}
             buttonText={confirmButtonText}
             refetch={refetch}
           />
         )}
 
-        {showContractButton && (
-          <ContractConfirmModal
-            serviceOrderId={order?.orderId}
-            buttonText={confirmButtonText}
-            refetch={refetch}
+        {showQuotationButton && (
+          <QuotationConfirmModal
             refetchDeposit={refetchDeposit}
-          />
-        )}
-
-        {showDesignButton && (
-          <DesignConfirmModal
-            serviceOrderId={order?.orderId}
-            products={order?.requestedProduct}
-            buttonText={confirmButtonText}
+            order={order}
             refetch={refetch}
           />
         )}
@@ -170,14 +148,18 @@ export default function ActionBar({
         )}
 
         {showCancelButton && (
-          <CancelModal serviceOrderId={order?.orderId} refetch={refetch} />
+          <CancelModal
+            serviceOrderId={order?.guaranteeOrderId}
+            refetch={refetch}
+          />
         )}
 
         {showReviewRatingButton && (
           <ReviewModal
-            serviceOrderId={order?.orderId}
+            guaranteeOrderId={order?.guaranteeOrderId}
             refetch={refetch}
             userId={auth?.userId}
+            orderUpdatedAt={order?.updatedAt}
           />
         )}
       </HStack>
