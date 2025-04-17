@@ -32,11 +32,7 @@ import { Provider } from "react-redux";
 import { store } from "./store/store.js";
 import TestPage from "./pages/TestPage.jsx";
 import ProductsPage from "./pages/general/Product/ProductList/ProductsPage.jsx";
-import CusGuaranteeOrderListPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderList/CusGuaranteeOrderListPage.jsx";
-import CusGuaranteeOrderDetailPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderDetail/CusGuaranteeOrderDetailPage.jsx";
 import WWServiceOrderListPage from "./pages/woodworker/ServiceOrder/ServiceOrderList/WWServiceOrderListPage.jsx";
-import WWGuaranteeOrderListPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderList/WWGuaranteeOrderListPage.jsx";
-import WWGuaranteeOrderDetailPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderDetail/WWGuaranteeOrderDetailPage.jsx";
 import WWRegister from "./pages/general/Auth/WWRegister.jsx";
 import Pricing from "./pages/general/Pricing/Pricing.jsx";
 import CustomerProfilePage from "./pages/customer/Profile/ManagePage/CustomerProfilePage.jsx";
@@ -61,6 +57,11 @@ import CusServiceOrderListPage from "./pages/customer/ServiceOrder/ServiceOrderL
 import CusServiceOrderDetailPage from "./pages/customer/ServiceOrder/ServiceOrderDetail/MainPage/CusServiceOrderDetailPage.jsx";
 import ContractPage from "./pages/general/Contract/ContractPage.jsx";
 import TermsPage from "./pages/general/Terms/TermsPage.jsx";
+import GuaranteeRequestPage from "./pages/customer/GuaranteeRequest/GuaranteeRequestPage.jsx";
+import CusGuaranteeOrderListPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderList/CusGuaranteeOrderListPage.jsx";
+import CusGuaranteeOrderDetailPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderDetail/MainPage/CusGuaranteeOrderDetailPage.jsx";
+import WWGuaranteeOrderListPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderList/WWGuaranteeOrderListPage.jsx";
+import WWGuaranteeOrderDetailPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderDetail/MainPage/WWGuaranteeOrderDetailPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -160,6 +161,10 @@ function App() {
           {/* Guard route */}
           <Route path="personalization">
             <Route path=":id" element={<PersonalizationRequestPage />} />
+          </Route>
+
+          <Route path="guarantee" element={<GuaranteeRequestPage />}>
+            <Route path=":id" element={<GuaranteeRequestPage />} />
           </Route>
 
           <Route path="contract">

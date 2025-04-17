@@ -28,29 +28,16 @@ import { FiImage, FiUpload, FiXCircle } from "react-icons/fi";
 import { appColorTheme } from "../../../../../../config/appconfig.js";
 import ImageListSelector from "../../../../../../components/Utility/ImageListSelector.jsx";
 import ImageUpdateUploader from "../../../../../../components/Utility/ImageUpdateUploader.jsx";
-import { useAddFinishProductImageMutation } from "../../../../../../services/serviceOrderApi";
-import {
-  useGetShipmentsByServiceOrderIdQuery,
-  useUpdateShipmentOrderCodeMutation,
-} from "../../../../../../services/shipmentApi";
-import { useCreateShipmentForServiceOrderMutation } from "../../../../../../services/ghnApi";
+import { useAddProductImageMutation } from "../../../../../../services/serviceOrderApi";
 import { useNotify } from "../../../../../../components/Utility/Notify.jsx";
 
-export default function FinishUpdateModal({
+export default function DesignUpdateModal({
   products = [],
   refetch,
-  order,
   serviceOrderId,
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [addFinishProductImage, { isLoading }] =
-    useAddFinishProductImageMutation();
-  const { data: shipmentData, isLoading: loadingShipment } =
-    useGetShipmentsByServiceOrderIdQuery(serviceOrderId, { skip: !isOpen });
-  const [createShipment, { isLoading: creatingShipment }] =
-    useCreateShipmentForServiceOrderMutation();
-  const [updateShipmentOrderCode, { isLoading: updatingShipment }] =
-    useUpdateShipmentOrderCodeMutation();
+  const [addProductImage, { isLoading }] = useAddProductImageMutation();
   const notify = useNotify();
 
   // Store each product's upload status
@@ -61,32 +48,6 @@ export default function FinishUpdateModal({
 
   // Track if we're currently submitting the final request
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Shipment processing state
-  const [processingShipment, setProcessingShipment] = useState(false);
-
-  // Helper function to extract dimensions
-  const extractDimensions = (config) => {
-    try {
-      const dimensionStr = config.designVariantValues[0].value;
-
-      const dimensions = dimensionStr
-        .split("x")
-        .map((dim) => parseFloat(dim.trim()));
-
-      if (dimensions.length === 3) {
-        return {
-          length: dimensions[0] || 20,
-          width: dimensions[1] || 20,
-          height: dimensions[2] || 20,
-        };
-      }
-
-      return { length: 20, width: 20, height: 20 };
-    } catch (error) {
-      return { length: 20, width: 20, height: 20 };
-    }
-  };
 
   // This function now just stores the uploaded media URLs in state
   const handleUploadComplete = (productId, mediaUrls) => {
@@ -111,115 +72,10 @@ export default function FinishUpdateModal({
     });
   };
 
-  // Process shipment creation for the service order
-  const processShipment = async () => {
-    try {
-      setProcessingShipment(true);
-
-      const shipment = shipmentData.data[0];
-
-      const items = products.map((product) => {
-        let dimensions;
-
-        if (product.designIdeaVariantDetail?.designIdeaVariantConfig) {
-          dimensions = extractDimensions({
-            designVariantValues: [
-              {
-                value:
-                  product.designIdeaVariantDetail.designIdeaVariantConfig[0]
-                    ?.designVariantValues[0]?.value,
-              },
-            ],
-          });
-        } else if (product.personalProductDetail) {
-          dimensions = {
-            length: product.personalProductDetail.techSpecList.find(
-              (item) => item.name == "Chiều dài"
-            ).value,
-            width: product.personalProductDetail.techSpecList.find(
-              (item) => item.name == "Chiều rộng"
-            ).value,
-            height: product.personalProductDetail.techSpecList.find(
-              (item) => item.name == "Chiều cao"
-            ).value,
-          };
-        } else {
-          dimensions = { length: 20, width: 20, height: 20 };
-        }
-
-        return {
-          name:
-            product.designIdeaVariantDetail?.name ||
-            product.category?.categoryName ||
-            "Sản phẩm",
-          quantity: product.quantity || 1,
-          length: dimensions.length,
-          width: dimensions.width,
-          height: dimensions.height,
-          weight: 0,
-        };
-      });
-
-      // Create GHN shipment request
-      const requestData = {
-        payment_type_id: 1,
-        required_note: "WAIT",
-        from_name: order?.service?.wwDto?.name,
-        from_phone: order?.service?.wwDto?.phone,
-        from_address: shipment.fromAddress,
-        from_ward_name:
-          order?.service?.wwDto?.address?.split(",")[1]?.trim() || "N/A",
-        from_district_name:
-          order?.service?.wwDto?.address?.split(",")[2]?.trim() || "N/A",
-        from_province_name:
-          order?.service?.wwDto?.address?.split(",")[3]?.trim() || "N/A",
-        to_phone: order?.user?.phone,
-        to_name: order?.user?.username,
-        to_address: shipment.toAddress,
-        to_ward_code: shipment.toWardCode,
-        to_district_id: shipment.toDistrictId,
-        weight: 0,
-        length: 0,
-        width: 0,
-        height: 0,
-        service_type_id: shipment.ghnServiceTypeId || 5,
-        items: items,
-      };
-
-      console.log(JSON.stringify(requestData, null, 2));
-
-      const response = await createShipment({
-        serviceOrderId,
-        data: requestData,
-      }).unwrap();
-
-      const orderCode = response.data.data.order_code;
-
-      await updateShipmentOrderCode({
-        serviceOrderId,
-        orderCode,
-      }).unwrap();
-
-      notify(
-        "Thành công",
-        "Đã tạo vận đơn thành công với mã: " + orderCode,
-        "success"
-      );
-    } catch (error) {
-      notify(
-        "Lỗi vận chuyển",
-        error.data?.message || error.message || "Không thể tạo vận đơn",
-        "error"
-      );
-    }
-  };
-
   // Submit all uploads at once
   const handleSubmitAllUploads = async () => {
     try {
       setIsSubmitting(true);
-
-      await processShipment();
 
       // Format the request payload as an array of objects
       const formattedPayload = requestPayload.map((item) => ({
@@ -228,14 +84,14 @@ export default function FinishUpdateModal({
       }));
 
       // Call the API with the array as body and serviceId as query param
-      await addFinishProductImage({
+      await addProductImage({
         serviceId: serviceOrderId,
-        body: formattedPayload,
+        body: formattedPayload, // This will be sent as the request body
       }).unwrap();
 
       notify(
-        "Cập nhật ảnh thành công",
-        "Tất cả ảnh sản phẩm hoàn thiện đã được lưu",
+        "Cập nhật thiết kế thành công",
+        "Tất cả thiết kế đã được lưu",
         "success"
       );
 
@@ -243,8 +99,8 @@ export default function FinishUpdateModal({
       closeModal();
     } catch (error) {
       notify(
-        "Lỗi cập nhật ảnh",
-        error.data?.message || "Không thể cập nhật ảnh",
+        "Lỗi cập nhật thiết kế",
+        error.data?.message || "Không thể cập nhật thiết kế",
         "error"
       );
     } finally {
@@ -267,14 +123,14 @@ export default function FinishUpdateModal({
   const allProductsPrepared = products.every(
     (product) =>
       isProductPrepared(product.requestedProductId) ||
-      product.personalProductDetail?.finishImgUrls
+      product.personalProductDetail?.designUrls
   );
 
   // Calculate how many products are ready
   const preparedProductsCount = products.reduce((count, product) => {
     if (
       isProductPrepared(product.requestedProductId) ||
-      product.personalProductDetail?.finishImgUrls
+      product.personalProductDetail?.designUrls
     ) {
       return count + 1;
     }
@@ -284,14 +140,6 @@ export default function FinishUpdateModal({
   // Progress percentage
   const progressPercentage =
     products.length > 0 ? (preparedProductsCount / products.length) * 100 : 0;
-
-  const isProcessing =
-    isLoading ||
-    isSubmitting ||
-    loadingShipment ||
-    creatingShipment ||
-    updatingShipment ||
-    processingShipment;
 
   return (
     <>
@@ -305,7 +153,7 @@ export default function FinishUpdateModal({
         leftIcon={<FiImage />}
         onClick={onOpen}
       >
-        Cập nhật ảnh hoàn thiện và giao hàng
+        Cập nhật thiết kế
       </Button>
 
       <Modal
@@ -318,20 +166,14 @@ export default function FinishUpdateModal({
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>
-            Cập nhật ảnh hoàn thiện sản phẩm và giao hàng
-          </ModalHeader>
-          {!isProcessing && <ModalCloseButton />}
+          <ModalHeader>Cập nhật thiết kế sản phẩm</ModalHeader>
+          {!isSubmitting && <ModalCloseButton />}
           <ModalBody>
-            {isProcessing ? (
+            {isLoading || isSubmitting ? (
               <Center py={8} flexDirection="column">
                 <Spinner size="xl" color={appColorTheme.brown_2} mb={4} />
                 <Text>
-                  {isSubmitting
-                    ? "Đang lưu ảnh..."
-                    : processingShipment
-                    ? "Đang tạo vận đơn..."
-                    : "Đang xử lý..."}
+                  {isSubmitting ? "Đang lưu thiết kế..." : "Đang xử lý..."}
                 </Text>
               </Center>
             ) : (
@@ -350,10 +192,9 @@ export default function FinishUpdateModal({
 
                 <Accordion allowMultiple defaultIndex={[0]}>
                   {products.map((product, idx) => {
-                    const finishImgUrls =
-                      product.personalProductDetail?.finishImgUrls || "";
-                    const alreadyHasImages =
-                      finishImgUrls && finishImgUrls.trim() !== "";
+                    const designUrls =
+                      product.personalProductDetail?.designUrls || "";
+                    const alreadyHasDesign = !!designUrls;
                     const isPrepared = isProductPrepared(
                       product.requestedProductId
                     );
@@ -365,17 +206,16 @@ export default function FinishUpdateModal({
                             <Box flex="1" textAlign="left">
                               <Text fontWeight="bold">
                                 Sản phẩm #{idx + 1} -{" "}
-                                {product.category?.categoryName ||
-                                  product?.designIdeaVariantDetail?.name}
+                                {product.category?.categoryName}
                               </Text>
                               {isPrepared && (
                                 <Badge colorScheme="green" ml={2}>
                                   Đã chuẩn bị
                                 </Badge>
                               )}
-                              {alreadyHasImages && !isPrepared && (
+                              {alreadyHasDesign && !isPrepared && (
                                 <Badge colorScheme="blue" ml={2}>
-                                  Ảnh hiện tại
+                                  Thiết kế hiện tại
                                 </Badge>
                               )}
                             </Box>
@@ -383,13 +223,13 @@ export default function FinishUpdateModal({
                           </AccordionButton>
                         </h2>
                         <AccordionPanel pb={4}>
-                          {alreadyHasImages && !isPrepared && (
+                          {alreadyHasDesign && !isPrepared && (
                             <Box mb={4}>
                               <Text fontWeight="bold" mb={2}>
-                                Ảnh hoàn thiện hiện tại:
+                                Thiết kế hiện tại:
                               </Text>
                               <ImageListSelector
-                                imgUrls={finishImgUrls}
+                                imgUrls={designUrls}
                                 imgH={300}
                               />
                               <Divider my={4} />
@@ -399,15 +239,15 @@ export default function FinishUpdateModal({
                           {isPrepared ? (
                             <Alert status="success">
                               <AlertIcon />
-                              Đã chuẩn bị ảnh hoàn thiện mới
+                              Đã chuẩn bị thiết kế mới
                             </Alert>
                           ) : (
                             <Box>
                               <Text fontWeight="bold" mb={2}>
-                                Tải lên ảnh hoàn thiện mới:
+                                Tải lên thiết kế mới:
                               </Text>
                               <ImageUpdateUploader
-                                imgUrls={finishImgUrls}
+                                imgUrls={designUrls}
                                 maxFiles={5}
                                 onUploadComplete={(urls) =>
                                   handleUploadComplete(
@@ -433,7 +273,6 @@ export default function FinishUpdateModal({
               colorScheme="gray"
               mr={3}
               onClick={closeModal}
-              isDisabled={isProcessing}
             >
               Đóng
             </Button>
@@ -442,7 +281,6 @@ export default function FinishUpdateModal({
               leftIcon={<FiUpload />}
               onClick={handleSubmitAllUploads}
               isDisabled={
-                isProcessing ||
                 !allProductsPrepared ||
                 products.length === 0 ||
                 requestPayload.length === 0
@@ -450,7 +288,7 @@ export default function FinishUpdateModal({
               isLoading={isSubmitting}
               loadingText="Đang lưu..."
             >
-              Cập nhật
+              Lưu tất cả thiết kế
             </Button>
           </ModalFooter>
         </ModalContent>
