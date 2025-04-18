@@ -62,6 +62,10 @@ import CusGuaranteeOrderListPage from "./pages/customer/GuaranteeOrder/Guarantee
 import CusGuaranteeOrderDetailPage from "./pages/customer/GuaranteeOrder/GuaranteeOrderDetail/MainPage/CusGuaranteeOrderDetailPage.jsx";
 import WWGuaranteeOrderListPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderList/WWGuaranteeOrderListPage.jsx";
 import WWGuaranteeOrderDetailPage from "./pages/woodworker/GuaranteeOrder/GuaranteeOrderDetail/MainPage/WWGuaranteeOrderDetailPage.jsx";
+import StaffWelcomePage from "./pages/staff/Welcome/StaffWelcomePage.jsx";
+import StaffLayout from "./layouts/StaffLayout.jsx";
+import CusReviewManagementPage from "./pages/staff/ReviewManagement/ReviewList/CusReviewManagementPage.jsx";
+import ServicePackUpgradeGuide from "./pages/general/Pricing/ServicePackUpgradeGuide.jsx";
 
 function App() {
   useEffect(() => {
@@ -111,6 +115,12 @@ function App() {
             path="ww-registration"
             element={<WWRegistrationManagementListPage />}
           />
+        </Route>
+
+        {/* Staff page route */}
+        <Route path="staff" element={<StaffLayout />}>
+          <Route index element={<StaffWelcomePage />} />
+          <Route path="review" element={<CusReviewManagementPage />} />
         </Route>
 
         {/* Woodworker page route */}
@@ -175,6 +185,7 @@ function App() {
           <Route path="payment-success" element={<PaymentSuccessPage />} />
           <Route path="ww-register" element={<WWRegister />} />
           <Route path="pricing" element={<Pricing />} />
+          <Route path="upgrade-guide" element={<ServicePackUpgradeGuide />} />
           <Route path="success" element={<SuccessPage />} />
 
           <Route path="test" element={<TestPage />} />

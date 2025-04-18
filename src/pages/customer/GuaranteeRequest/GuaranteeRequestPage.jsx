@@ -52,6 +52,7 @@ import {
   useCalculateShippingFeeMutation,
   useGetAvailableServicesMutation,
 } from "../../../services/ghnApi";
+import { formatDateString } from "../../../utils/utils.js";
 
 export default function GuaranteeRequestPage() {
   const { id: woodworkerId } = useParams();
@@ -515,6 +516,13 @@ export default function GuaranteeRequestPage() {
                       <Divider my={2} />
 
                       <Flex justifyContent="space-between" mt={2}>
+                        <Text fontSize="sm">Ngày nhận sản phẩm:</Text>
+                        <Text fontSize="sm" fontWeight="medium">
+                          {formatDateString(orderDetail.updatedAt)}
+                        </Text>
+                      </Flex>
+
+                      <Flex justifyContent="space-between" mt={1}>
                         <Text fontSize="sm">Thời hạn bảo hành:</Text>
                         <Text fontSize="sm" fontWeight="medium">
                           {selectedProduct.warrantyDuration || 0} tháng
@@ -580,7 +588,7 @@ export default function GuaranteeRequestPage() {
                 <FormLabel>Hình ảnh tình trạng hiện tại:</FormLabel>
                 <ImageUpdateUploader
                   imgUrls=""
-                  maxFiles={5}
+                  maxFiles={3}
                   onUploadComplete={handleUploadComplete}
                 />
                 {currentProductImages.length > 0 && (

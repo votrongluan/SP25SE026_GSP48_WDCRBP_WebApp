@@ -3,6 +3,7 @@ import {
   Button,
   Heading,
   HStack,
+  Link,
   SimpleGrid,
   Text,
   useDisclosure,
@@ -77,7 +78,7 @@ export default function PackManagement({ woodworker }) {
               </Text>
             </Box>
           </SimpleGrid>
-          <HStack spacing={4} mt={4}>
+          <HStack spacing={4} mb={4} mt={4}>
             <Button
               colorScheme="green"
               onClick={walletModalDisclosure.onOpen}
@@ -93,6 +94,14 @@ export default function PackManagement({ woodworker }) {
               Mua qua cổng thanh toán
             </Button>
           </HStack>
+
+          <Link
+            target="_blank"
+            color={appColorTheme.brown_2}
+            href="/upgrade-guide"
+          >
+            Xem hướng dẫn cách quy đổi ngày khi nâng cấp gói dịch vụ
+          </Link>
         </Box>
       </PackageFrame>
 

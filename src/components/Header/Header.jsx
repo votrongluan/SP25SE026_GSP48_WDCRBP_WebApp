@@ -33,7 +33,7 @@ function Header() {
     { path: "/product", label: "Sản phẩm" },
     { path: "/design", label: "Thiết kế" },
     { path: "/woodworker", label: "Xưởng mộc" },
-    { path: "/contact", label: "Liên hệ" },
+    { path: "/guarantee", label: "Sửa chữa / bảo hành" },
     { path: "/pricing", label: "Pricing" },
   ];
   const navLinkStyle = ({ isActive }) => {

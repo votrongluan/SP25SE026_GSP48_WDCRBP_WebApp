@@ -252,7 +252,7 @@ export default function PaymentModal({ deposit, order, refetch, buttonText }) {
 
         onClose();
 
-        window.location.href = response.data.url;
+        window.location.href = response.url || response.data.url;
       }
     } catch (err) {
       notify(

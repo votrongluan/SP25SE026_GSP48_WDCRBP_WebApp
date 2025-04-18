@@ -41,8 +41,10 @@ export default function BuyPackByPaymentGateway({
     try {
       const res = await payServicePack(postData).unwrap();
 
-      if (res.url) {
-        window.location.href = res.url;
+      if (res.url || res.data.url) {
+        console.log("Redirecting to payment URL:", res.url || res.data.url);
+
+        // window.location.href = res.url || res.data.url;
       } else {
         onClose();
         navigate(

@@ -7,33 +7,23 @@ import { appColorTheme } from "../../../../config/appconfig";
 import ReviewDetailModal from "../ActionModal/ReviewDetailModal";
 import { formatDateTimeString } from "../../../../utils/utils";
 import { FiStar } from "react-icons/fi";
-import { useGetWoodworkerResponseReviewsQuery } from "../../../../services/reviewApi";
-import useAuth from "../../../../hooks/useAuth";
+import { useGetPendingReviewsQuery } from "../../../../services/reviewApi";
 
-export default function ReviewManagementListPage() {
+export default function CusReviewManagementPage() {
   const toast = useToast();
   const [rowData, setRowData] = useState([]);
-  const { auth } = useAuth();
-  const woodworkerId = auth?.wwId;
 
-  // Fetch reviews that need woodworker response using the new endpoint
+  // Fetch pending reviews
   const {
     data: reviewsResponse,
     isLoading,
     error,
     refetch,
-  } = useGetWoodworkerResponseReviewsQuery(woodworkerId, {
-    skip: !woodworkerId,
-  });
+  } = useGetPendingReviewsQuery();
 
   useEffect(() => {
     if (reviewsResponse?.data) {
-      setRowData(
-        reviewsResponse.data.map((el) => ({
-          ...el,
-          createdAt: new Date(el.createdAt),
-        }))
-      );
+      setRowData(reviewsResponse.data);
     }
   }, [reviewsResponse]);
 
@@ -60,22 +50,8 @@ export default function ReviewManagementListPage() {
       sort: "desc",
     },
     {
-      headerName: "Loại đơn",
-      valueGetter: (params) => {
-        if (params.data.serviceOrderId) return "Đơn dịch vụ";
-        if (params.data.guaranteeOrderId) return "Đơn bảo hành";
-        return "Không xác định";
-      },
-    },
-    {
-      headerName: "Mã đơn hàng",
-      valueGetter: (params) =>
-        params.data.serviceOrderId || params.data.guaranteeOrderId || "N/A",
-    },
-    {
       headerName: "Khách hàng",
       field: "username",
-      valueFormatter: (params) => params.value || "Không có thông tin",
     },
     {
       headerName: "Đánh giá",
@@ -95,9 +71,30 @@ export default function ReviewManagementListPage() {
       },
     },
     {
+      headerName: "Nội dung",
+      field: "comment",
+      flex: 2,
+    },
+    {
       headerName: "Ngày tạo",
       field: "createdAt",
       valueFormatter: (params) => formatDateTimeString(params.value),
+    },
+    {
+      headerName: "Trạng thái",
+      valueGetter: (params) => {
+        if (params.data.status === true) return "Đã duyệt";
+        if (params.data.status === false) return "Từ chối";
+        return "Chờ duyệt";
+      },
+      cellStyle: (params) => {
+        if (params.value === "Đã duyệt") {
+          return { color: "#38A169" };
+        } else if (params.value === "Từ chối") {
+          return { color: "#E53E3E" };
+        }
+        return { color: "#F6AD55" }; // Orange for pending
+      },
     },
     {
       headerName: "Thao tác",
@@ -127,7 +124,7 @@ export default function ReviewManagementListPage() {
           fontSize="2xl"
           fontFamily="Montserrat"
         >
-          Quản lý Đánh giá
+          Duyệt Đánh Giá Khách Hàng
         </Heading>
       </Flex>
 
@@ -144,7 +141,7 @@ export default function ReviewManagementListPage() {
             rowData={rowData}
             columnDefs={colDefs}
             loadingOverlayComponent={() => "Đang tải dữ liệu..."}
-            overlayNoRowsTemplate="Không có đánh giá nào cần phản hồi"
+            overlayNoRowsTemplate="Không có đánh giá nào cần duyệt"
             overlayLoadingTemplate="Đang tải dữ liệu..."
           />
         </div>

@@ -143,6 +143,10 @@ export default function ServiceOrderList() {
         field: "status",
       },
       {
+        headerName: "Cần lắp đặt",
+        field: "install",
+      },
+      {
         headerName: "Cần phản hồi?",
         valueGetter: (params) => {
           if (params?.data?.role == "Customer") {

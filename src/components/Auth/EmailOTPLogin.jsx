@@ -17,6 +17,7 @@ import {
 } from "../../services/authApi";
 import { useNotify } from "../Utility/Notify";
 import { FiLogIn } from "react-icons/fi";
+import { API_URL } from "../../config/index.js";
 
 export default function EmailOTPLogin() {
   const notify = useNotify();
@@ -87,6 +88,18 @@ export default function EmailOTPLogin() {
         refreshToken: user.refreshToken,
       };
 
+      if (user?.role === "Customer" || user?.role === "Woodworker") {
+        const walletRes = await fetch(
+          `${API_URL}/api/v1/wallet/user/${decodedToken.userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.access_token}`,
+            },
+          }
+        ).then((res) => res.json());
+        auth.wallet = walletRes.data;
+      }
+
       switch (auth.role) {
         case "Customer":
           setAuth(auth);
@@ -99,6 +112,14 @@ export default function EmailOTPLogin() {
         case "Admin":
           setAuth(auth);
           navigate("/ad");
+          break;
+        case "Staff":
+          setAuth(auth);
+          navigate("/staff");
+          break;
+        case "Moderator":
+          setAuth(auth);
+          navigate("/mod");
           break;
       }
     } catch (error) {

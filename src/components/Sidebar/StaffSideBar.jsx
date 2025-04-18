@@ -25,7 +25,16 @@ export default function StaffSideBar({ isCollapsed, setIsCollapsed }) {
   });
 
   const navItems = [
-    { label: "Đơn đăng ký xưởng", path: "ww-registration", icon: FiUserCheck },
+    {
+      label: "Đánh giá của khách hàng",
+      path: "review",
+      icon: FiUserCheck,
+    },
+    {
+      label: "Phản hồi của thợ mộc",
+      path: "response",
+      icon: FiUserCheck,
+    },
     { label: "Đăng xuất", path: "/logout", icon: FiLogOut },
   ];
 

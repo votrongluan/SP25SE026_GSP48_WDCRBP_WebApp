@@ -187,6 +187,23 @@ export default function Pricing({
                 bg={appColorTheme.brown_0}
                 color="black"
                 size="lg"
+                isDisabled={(() => {
+                  // Logic to determine if button should be disabled
+                  if (!packName) return false; // No current package, enable all buttons
+
+                  const currentPackRank = {
+                    Bronze: 1,
+                    Silver: 2,
+                    Gold: 3,
+                  };
+
+                  const currentRank = currentPackRank[packName] || 0;
+                  const optionRank =
+                    currentPackRank[plan.prices[selectedPeriod]?.name] || 0;
+
+                  // Disable if this would be a downgrade
+                  return optionRank < currentRank;
+                })()}
                 onClick={(e) => {
                   e.preventDefault();
 

@@ -12,60 +12,38 @@ import {
   ModalOverlay,
   Stack,
   Text,
-  Textarea,
   Tooltip,
   useDisclosure,
   VStack,
-  Badge,
   useToast,
-  Link,
+  Badge,
+  Flex,
+  Divider,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { FiEye, FiStar, FiCheck } from "react-icons/fi";
+import { FiEye, FiStar, FiCheck, FiX } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import { formatDateTimeString } from "../../../../utils/utils";
-import { useUpdateReviewResponseMutation } from "../../../../services/reviewApi";
+import { useUpdateReviewResponseStatusMutation } from "../../../../services/reviewApi";
 
-export default function ReviewDetailModal({ review, refetch }) {
+export default function DetailModal({ review, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const toast = useToast();
-  const [response, setResponse] = useState(review?.woodworkerResponse || "");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const [updateReviewResponse] = useUpdateReviewResponseMutation();
+  const [updateResponseStatus] = useUpdateReviewResponseStatusMutation();
 
-  const handleSubmit = async () => {
-    if (!response.trim()) {
-      toast({
-        title: "Nội dung phản hồi không được để trống",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-      return;
-    }
-
-    if (response.length > 500) {
-      toast({
-        title: "Nội dung phản hồi không được vượt quá 500 ký tự",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-      return;
-    }
-
+  const handleUpdateStatus = async (status) => {
     try {
-      setIsSubmitting(true);
-      await updateReviewResponse({
+      setIsProcessing(true);
+      await updateResponseStatus({
         reviewId: review.reviewId,
-        woodworkerResponse: response.trim(),
+        status: status,
       }).unwrap();
 
       toast({
-        title: "Phản hồi thành công",
-        description: "Đã gửi phản hồi đánh giá",
+        title: `Đã ${status ? "duyệt" : "từ chối"} phản hồi`,
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -75,18 +53,27 @@ export default function ReviewDetailModal({ review, refetch }) {
       if (refetch) refetch();
     } catch (error) {
       toast({
-        title: "Lỗi khi gửi phản hồi",
+        title: `Lỗi khi ${status ? "duyệt" : "từ chối"} phản hồi`,
         description: error.data?.message || "Đã có lỗi xảy ra",
         status: "error",
         duration: 5000,
         isClosable: true,
       });
     } finally {
-      setIsSubmitting(false);
+      setIsProcessing(false);
     }
   };
 
-  const getStatusBadge = () => {
+  const getResponseStatusBadge = () => {
+    if (review?.woodworkerResponseStatus === true) {
+      return <Badge colorScheme="green">Đã duyệt</Badge>;
+    } else if (review?.woodworkerResponseStatus === false) {
+      return <Badge colorScheme="red">Từ chối</Badge>;
+    }
+    return <Badge colorScheme="orange">Chờ duyệt</Badge>;
+  };
+
+  const getReviewStatusBadge = () => {
     if (review?.status === true) {
       return <Badge colorScheme="green">Đã duyệt</Badge>;
     } else if (review?.status === false) {
@@ -111,7 +98,7 @@ export default function ReviewDetailModal({ review, refetch }) {
       </Tooltip>
 
       <Modal
-        size="4xl"
+        size="3xl"
         initialFocusRef={initialRef}
         isOpen={isOpen}
         closeOnOverlayClick={false}
@@ -120,8 +107,8 @@ export default function ReviewDetailModal({ review, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Chi tiết đánh giá</ModalHeader>
-          {!isSubmitting && <ModalCloseButton />}
+          <ModalHeader>Chi tiết phản hồi đánh giá</ModalHeader>
+          {!isProcessing && <ModalCloseButton />}
           <ModalBody bgColor="app_grey.1" pb={6}>
             <Stack gap={5}>
               {/* Thông tin cơ bản */}
@@ -136,57 +123,54 @@ export default function ReviewDetailModal({ review, refetch }) {
                       <Text>{review?.reviewId}</Text>
                     </Box>
                     <Box>
+                      <Text fontWeight="bold">Khách hàng:</Text>
+                      <Text>{review?.username}</Text>
+                    </Box>
+                    <Box>
+                      <Text fontWeight="bold">Thợ mộc:</Text>
+                      <Text>
+                        {review?.woodworkerUser?.username ||
+                          "Không có thông tin"}
+                      </Text>
+                    </Box>
+                    <Box>
                       <Text fontWeight="bold">Loại đơn:</Text>
                       <Text>
                         {review?.serviceOrderId
-                          ? "Đơn dịch vụ"
+                          ? "Đơn thiết kế"
                           : review?.guaranteeOrderId
                           ? "Đơn bảo hành"
                           : "Không xác định"}
                       </Text>
                     </Box>
                     <Box>
-                      <Text fontWeight="bold">Ngày tạo:</Text>
+                      <Text fontWeight="bold">Ngày đánh giá:</Text>
                       <Text>{formatDateTimeString(review?.createdAt)}</Text>
                     </Box>
                     <Box>
-                      <Text fontWeight="bold">Khách hàng:</Text>
-                      <Text>{review?.username || "Không có thông tin"}</Text>
+                      <Text fontWeight="bold">Trạng thái đánh giá:</Text>
+                      {getReviewStatusBadge()}
                     </Box>
                     <Box>
-                      <Text fontWeight="bold">Mã đơn hàng:</Text>
+                      <Text fontWeight="bold">Trạng thái phản hồi:</Text>
+                      {getResponseStatusBadge()}
+                    </Box>
+                    <Box>
+                      <Text fontWeight="bold">Ngày phản hồi:</Text>
                       <Text>
-                        {review?.serviceOrderId ||
-                          review?.guaranteeOrderId ||
-                          "N/A"}
+                        {review?.responseAt
+                          ? formatDateTimeString(review.responseAt)
+                          : "Chưa có"}
                       </Text>
-                      {review?.serviceOrderId && (
-                        <Link
-                          target="_blank"
-                          href={`/ww/service-order/${review?.serviceOrderId}`}
-                          color={appColorTheme.brown_2}
-                        >
-                          Xem chi tiết
-                        </Link>
-                      )}
-                      {review?.guaranteeOrderId && (
-                        <Link
-                          target="_blank"
-                          href={`/ww/guarantee-order/${review?.guaranteeOrderId}`}
-                          color={appColorTheme.brown_2}
-                        >
-                          Xem chi tiết
-                        </Link>
-                      )}
                     </Box>
                   </Grid>
                 </Box>
               </Box>
 
-              {/* Đánh giá và nội dung */}
+              {/* Đánh giá nội dung */}
               <Box>
                 <Heading size="md" mb={4}>
-                  Đánh giá và nội dung
+                  Nội dung đánh giá
                 </Heading>
                 <Box bg="white" p={5} borderRadius="lg" boxShadow="md">
                   <VStack spacing={4} align="stretch">
@@ -211,48 +195,51 @@ export default function ReviewDetailModal({ review, refetch }) {
                 </Box>
               </Box>
 
-              {/* Phản hồi */}
+              {/* Phản hồi của thợ mộc */}
               <Box>
                 <Heading size="md" mb={4}>
-                  Phản hồi
+                  Phản hồi của thợ mộc
                 </Heading>
                 <Box bg="white" p={5} borderRadius="lg" boxShadow="md">
-                  <VStack spacing={4} align="stretch">
-                    <Textarea
-                      ref={initialRef}
-                      value={response}
-                      onChange={(e) => setResponse(e.target.value)}
-                      placeholder="Nhập nội dung phản hồi..."
-                      rows={4}
-                      isDisabled={
-                        review?.woodworkerResponseStatus || isSubmitting
-                      }
-                    />
-                    <Text fontSize="sm" color="gray.500">
-                      {response.length}/500 ký tự
-                    </Text>
-                  </VStack>
+                  {review?.woodworkerResponse ? (
+                    <Text>{review.woodworkerResponse}</Text>
+                  ) : (
+                    <Text color="gray.500">Chưa có phản hồi</Text>
+                  )}
                 </Box>
               </Box>
             </Stack>
 
-            <HStack justify="flex-end" mt={6}>
+            <Divider my={6} />
+
+            <Flex mt={6} justify="flex-end">
               <Button onClick={onClose} mr={3}>
                 Đóng
               </Button>
-              {!review?.woodworkerResponseStatus && (
-                <Button
-                  colorScheme="blue"
-                  onClick={handleSubmit}
-                  isDisabled={!response.trim() || response.length > 500}
-                  isLoading={isSubmitting}
-                  loadingText="Đang gửi"
-                  leftIcon={<FiCheck />}
-                >
-                  Gửi phản hồi
-                </Button>
-              )}
-            </HStack>
+
+              {review?.woodworkerResponse &&
+                review?.woodworkerResponseStatus === null && (
+                  <>
+                    <Button
+                      colorScheme="red"
+                      mr={3}
+                      onClick={() => handleUpdateStatus(false)}
+                      leftIcon={<FiX />}
+                      isLoading={isProcessing}
+                    >
+                      Từ chối phản hồi
+                    </Button>
+                    <Button
+                      colorScheme="green"
+                      onClick={() => handleUpdateStatus(true)}
+                      leftIcon={<FiCheck />}
+                      isLoading={isProcessing}
+                    >
+                      Duyệt phản hồi
+                    </Button>
+                  </>
+                )}
+            </Flex>
           </ModalBody>
         </ModalContent>
       </Modal>

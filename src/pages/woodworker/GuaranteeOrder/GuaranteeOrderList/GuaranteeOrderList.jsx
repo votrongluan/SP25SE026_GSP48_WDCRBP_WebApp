@@ -104,6 +104,10 @@ export default function GuaranteeOrderList() {
         field: "status",
       },
       {
+        headerName: "Cần lắp đặt",
+        field: "install",
+      },
+      {
         headerName: "Cần phản hồi?",
         valueGetter: (params) => {
           if (params?.data?.role === "Woodworker") {

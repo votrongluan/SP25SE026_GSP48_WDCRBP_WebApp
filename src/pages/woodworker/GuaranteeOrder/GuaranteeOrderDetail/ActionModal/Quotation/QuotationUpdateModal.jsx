@@ -34,7 +34,7 @@ import {
 import { appColorTheme } from "../../../../../../config/appconfig.js";
 
 // Constants for validation
-const MIN_PRICE = 1000;
+const MIN_PRICE = 0;
 const MAX_PRICE = 50000000;
 const PRICE_STEP = 1000;
 

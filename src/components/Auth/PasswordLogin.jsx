@@ -38,17 +38,17 @@ export default function PasswordLogin() {
         refreshToken: user.refresh_token,
       };
 
-      // Lấy thông tin ví của user
-      const walletRes = await fetch(
-        `${API_URL}/api/v1/wallet/user/${decodedToken.userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${user.access_token}`,
-          },
-        }
-      ).then((res) => res.json());
-
-      auth.wallet = walletRes.data;
+      if (user?.role === "Customer" || user?.role === "Woodworker") {
+        const walletRes = await fetch(
+          `${API_URL}/api/v1/wallet/user/${decodedToken.userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.access_token}`,
+            },
+          }
+        ).then((res) => res.json());
+        auth.wallet = walletRes.data;
+      }
 
       switch (auth.role) {
         case "Customer":
@@ -62,6 +62,14 @@ export default function PasswordLogin() {
         case "Admin":
           setAuth(auth);
           navigate("/ad");
+          break;
+        case "Staff":
+          setAuth(auth);
+          navigate("/staff");
+          break;
+        case "Moderator":
+          setAuth(auth);
+          navigate("/mod");
           break;
       }
     } catch (err) {

@@ -3,14 +3,14 @@ import { Box, Icon, Text } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 import { appColorTheme } from "../config/appconfig.js";
 import { FiMenu } from "react-icons/fi";
-import AdminSidebar from "../components/Sidebar/AdminSideBar.jsx";
 import RequireAuth from "../components/Utility/RequireAuth.jsx";
+import StaffSideBar from "../components/Sidebar/StaffSideBar.jsx";
 
 export default function StaffLayout() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <RequireAuth allowedRoles={["Admin"]}>
+    <RequireAuth allowedRoles={["Staff"]}>
       <Box fontFamily="Nunito Sans">
         <Box>
           <Box
@@ -20,7 +20,7 @@ export default function StaffLayout() {
             color="black"
             minHeight="100vh"
             px={5}
-            width={isCollapsed ? "80px" : "300px"}
+            width={isCollapsed ? "80px" : "350px"}
             transition="width 0.3s"
           >
             <Text
@@ -32,10 +32,10 @@ export default function StaffLayout() {
               borderBottom="2px solid"
               borderColor={appColorTheme.brown_2}
             >
-              {!isCollapsed ? "Menu quản trị viên" : <Icon as={FiMenu} />}
+              {!isCollapsed ? "Menu nhân viên" : <Icon as={FiMenu} />}
             </Text>
 
-            <AdminSidebar
+            <StaffSideBar
               isCollapsed={isCollapsed}
               setIsCollapsed={setIsCollapsed}
             />
@@ -47,7 +47,7 @@ export default function StaffLayout() {
             color="black"
             minH="100svh"
             p={10}
-            ml={isCollapsed ? "80px" : "300px"}
+            ml={isCollapsed ? "80px" : "350px"}
             transition="margin-left 0.3s"
           >
             <Outlet />

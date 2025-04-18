@@ -63,6 +63,13 @@ export const reviewApi = createApi({
         body,
       }),
     }),
+    updateReviewResponse: builder.mutation({
+      query: (data) => ({
+        url: `/api/v1/reviews/response`,
+        method: "POST",
+        body: data,
+      }),
+    }),
     getPendingReviews: builder.query({
       query: () => ({
         url: `/api/v1/reviews/status-false`,
@@ -72,6 +79,12 @@ export const reviewApi = createApi({
     getPendingWoodworkerResponses: builder.query({
       query: () => ({
         url: `/api/v1/reviews/WWResponse-status-false`,
+        method: "GET",
+      }),
+    }),
+    getWoodworkerResponseReviews: builder.query({
+      query: (woodworkerId) => ({
+        url: `/api/v1/reviews/woodworker/response/${woodworkerId}`,
         method: "GET",
       }),
     }),
@@ -86,6 +99,8 @@ export const {
   useCreateGuaranteeOrderReviewMutation,
   useUpdateReviewStatusMutation,
   useUpdateReviewResponseStatusMutation,
+  useUpdateReviewResponseMutation,
   useGetPendingReviewsQuery,
   useGetPendingWoodworkerResponsesQuery,
+  useGetWoodworkerResponseReviewsQuery,
 } = reviewApi;
