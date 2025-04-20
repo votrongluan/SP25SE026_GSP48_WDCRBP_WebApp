@@ -48,10 +48,15 @@ import {
 } from "../../../services/serviceOrderApi.js";
 import { useCreateGuaranteeOrderMutation } from "../../../services/guaranteeOrderApi.js";
 import { useGetUserAddressesByUserIdQuery } from "../../../services/userAddressApi.js";
+import { useGetWoodworkerByIdQuery } from "../../../services/woodworkerApi.js";
 import {
   useCalculateShippingFeeMutation,
   useGetAvailableServicesMutation,
 } from "../../../services/ghnApi";
+import {
+  calculateCheapestShipping,
+  extractDimensionsFromProduct,
+} from "../../../utils/shippingUtils.js";
 import { formatDateString } from "../../../utils/utils.js";
 
 export default function GuaranteeRequestPage() {
@@ -71,6 +76,7 @@ export default function GuaranteeRequestPage() {
   const [shippingFee, setShippingFee] = useState(0);
   const [selectedService, setSelectedService] = useState(null);
   const [isCalculatingShipping, setIsCalculatingShipping] = useState(false);
+  const [currentWoodworkerId, setCurrentWoodworkerId] = useState(null);
 
   // Modal for product selection
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -98,6 +104,14 @@ export default function GuaranteeRequestPage() {
       skip: !selectedOrderId,
     });
 
+  // Get woodworker details with districtId and wardCode
+  const {
+    data: woodworkerDetailResponse,
+    isLoading: isLoadingWoodworkerDetail,
+  } = useGetWoodworkerByIdQuery(currentWoodworkerId, {
+    skip: !currentWoodworkerId,
+  });
+
   const [calculateShippingFee] = useCalculateShippingFeeMutation();
   const [getAvailableServices] = useGetAvailableServicesMutation();
 
@@ -115,56 +129,24 @@ export default function GuaranteeRequestPage() {
   // Get address list
   const addresses = addressesResponse?.data || [];
 
-  // Get woodworker info from selected order
-  const woodworkerInfo =
-    selectedOrder?.service?.wwDto || orderDetail?.service?.wwDto;
+  // Get woodworker info from API response
+  const woodworkerInfo = woodworkerDetailResponse?.data;
 
-  // Helper function to extract dimensions from variant config
-  const extractDimensions = (product) => {
-    try {
-      if (product.designIdeaVariantDetail?.designIdeaVariantConfig) {
-        const config =
-          product.designIdeaVariantDetail.designIdeaVariantConfig[0];
-        const dimensionStr = config.designVariantValues[0].value;
-
-        const dimensions = dimensionStr
-          .split("x")
-          .map((dim) => parseFloat(dim.trim()));
-
-        if (dimensions.length === 3) {
-          return {
-            length: dimensions[0] || 20,
-            width: dimensions[1] || 20,
-            height: dimensions[2] || 20,
-          };
-        }
-      } else if (product.personalProductDetail) {
-        return {
-          length:
-            product.personalProductDetail.techSpecList.find(
-              (item) => item.name === "Chiều dài"
-            )?.value || 20,
-          width:
-            product.personalProductDetail.techSpecList.find(
-              (item) => item.name === "Chiều rộng"
-            )?.value || 20,
-          height:
-            product.personalProductDetail.techSpecList.find(
-              (item) => item.name === "Chiều cao"
-            )?.value || 20,
-        };
-      }
-
-      return { length: 20, width: 20, height: 20 };
-    } catch (error) {
-      return { length: 20, width: 20, height: 20 };
+  // Update woodworkerId when order changes
+  useEffect(() => {
+    if (selectedOrder?.service?.wwDto?.woodworkerId) {
+      setCurrentWoodworkerId(selectedOrder.service.wwDto.woodworkerId);
+    } else if (orderDetail?.service?.wwDto?.woodworkerId) {
+      setCurrentWoodworkerId(orderDetail.service.wwDto.woodworkerId);
+    } else {
+      setCurrentWoodworkerId(null);
     }
-  };
+  }, [selectedOrder, orderDetail]);
 
   // Calculate shipping fee when address or product selection changes
   useEffect(() => {
     const calculateShipping = async () => {
-      if (!selectedAddress || !selectedProduct) {
+      if (!selectedAddress || !selectedProduct || !woodworkerInfo) {
         setShippingFee(0);
         return;
       }
@@ -173,40 +155,17 @@ export default function GuaranteeRequestPage() {
         (addr) => addr.userAddressId.toString() === selectedAddress
       );
 
-      if (
-        !selectedAddressObj ||
-        !selectedAddressObj.districtId ||
-        !woodworkerInfo
-      ) {
+      if (!selectedAddressObj || !selectedAddressObj.districtId) {
         return;
       }
 
       try {
         setIsCalculatingShipping(true);
 
-        // Get dimensions from the product
-        const dimensions = extractDimensions(selectedProduct);
+        // Get dimensions from the product using the utility function
+        const dimensions = extractDimensionsFromProduct(selectedProduct);
 
-        // Step 1: Fetch available services
-        const servicesData = {
-          // Using placeholder data if real data not available
-          from_district: 1459, // Sample district code - this should come from woodworker data
-          to_district: +selectedAddressObj.districtId,
-          shop_id: 0,
-        };
-
-        const servicesResponse = await getAvailableServices(
-          servicesData
-        ).unwrap();
-        const services = servicesResponse.data.data || [];
-
-        if (!services.length) {
-          setShippingFee(0);
-          setSelectedService(null);
-          return;
-        }
-
-        // Step 2: Prepare items data
+        // Prepare items data
         const items = [
           {
             name:
@@ -221,57 +180,24 @@ export default function GuaranteeRequestPage() {
           },
         ];
 
-        // Step 3: Calculate shipping fee for each service
-        let cheapestService = null;
-        let cheapestFee = Infinity;
+        // Use the extracted shipping calculation utility
+        const { selectedService: cheapestService, shippingFee: calculatedFee } =
+          await calculateCheapestShipping({
+            fromDistrictId: woodworkerInfo.districtId,
+            fromWardCode: woodworkerInfo.wardCode,
+            toDistrictId: +selectedAddressObj.districtId,
+            toWardCode: selectedAddressObj.wardCode,
+            items,
+            isInstall,
+            getAvailableServices,
+            calculateShippingFee,
+          });
 
-        for (const service of services) {
-          try {
-            const shippingData = {
-              from_district_id: 1459, // Should come from woodworker data
-              from_ward_code: "20308", // Should come from woodworker data
-              to_district_id: +selectedAddressObj.districtId,
-              to_ward_code: selectedAddressObj.wardCode,
-              service_id: service.service_id,
-              service_type_id: service.service_type_id,
-              insurance_value: 0,
-              cod_failed_amount: 0,
-              coupon: "",
-              height: 0,
-              length: 0,
-              width: 0,
-              weight: 0,
-              items: items,
-            };
-
-            const response = await calculateShippingFee(shippingData).unwrap();
-            const fee = response.data.data.total || 0;
-
-            if (fee < cheapestFee) {
-              cheapestFee = fee;
-              cheapestService = { ...service, fee };
-            }
-          } catch (error) {
-            console.error(
-              `Error calculating fee for service ${service.service_id}:`,
-              error
-            );
-          }
-        }
-
-        // Step 4: Set the selected service and fee
-        if (cheapestService) {
-          setSelectedService(cheapestService);
-          // If not installation, double the fee (round trip)
-          setShippingFee(
-            isInstall ? cheapestService.fee : cheapestService.fee * 2
-          );
-        } else {
-          setSelectedService(null);
-          setShippingFee(0);
-        }
+        // Update state with results
+        setSelectedService(cheapestService);
+        setShippingFee(calculatedFee);
       } catch (error) {
-        console.error("Error in shipping calculation:", error);
+        console.error("Error in shipping calculation process:", error);
         setSelectedService(null);
         setShippingFee(0);
       } finally {
@@ -322,11 +248,9 @@ export default function GuaranteeRequestPage() {
   const getWarrantyEndDate = (product) => {
     if (!product || !product.warrantyDuration) return null;
 
-    // Use the order update date or creation date as the starting point
     const orderDate = orderDetail?.updatedAt || orderDetail?.createdAt;
     if (!orderDate) return null;
 
-    // Add warranty duration (months) to the order date
     const endDate = addMonths(new Date(orderDate), product.warrantyDuration);
 
     return endDate;
@@ -401,7 +325,11 @@ export default function GuaranteeRequestPage() {
   };
 
   // Loading state
-  if (isLoadingOrders || (isLoadingOrderDetail && selectedOrderId)) {
+  if (
+    isLoadingOrders ||
+    (isLoadingOrderDetail && selectedOrderId) ||
+    isLoadingWoodworkerDetail
+  ) {
     return (
       <Center h="400px">
         <Spinner size="xl" color={appColorTheme.brown_2} />
@@ -434,9 +362,7 @@ export default function GuaranteeRequestPage() {
       </Box>
 
       <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={5}>
-        {/* Left column - Order selection and product info */}
         <VStack spacing={5} align="stretch">
-          {/* Order Selection */}
           <Box bg="white" p={5} borderRadius="10px" boxShadow="sm">
             <Heading size="md" mb={4}>
               Chọn đơn hàng đã hoàn thành
@@ -470,7 +396,6 @@ export default function GuaranteeRequestPage() {
             )}
           </Box>
 
-          {/* Product Selection */}
           {selectedOrder && (
             <Box bg="white" p={5} borderRadius="10px" boxShadow="sm">
               <Heading size="md" mb={4}>
@@ -568,7 +493,6 @@ export default function GuaranteeRequestPage() {
             </Box>
           )}
 
-          {/* Current Product Status */}
           {selectedProduct && (
             <Box bg="white" p={5} borderRadius="10px" boxShadow="sm">
               <Heading size="md" mb={4}>
@@ -607,9 +531,7 @@ export default function GuaranteeRequestPage() {
           )}
         </VStack>
 
-        {/* Right column - Address, Shipping, Notes */}
         <VStack spacing={5} align="stretch">
-          {/* Address Selection */}
           <Box bg="white" p={5} borderRadius="10px" boxShadow="sm">
             <AddressSelection
               addresses={addresses}
@@ -619,11 +541,9 @@ export default function GuaranteeRequestPage() {
             />
           </Box>
 
-          {/* Shipping & Notes */}
           {selectedProduct && selectedAddress && (
             <Box bg="white" p={5} borderRadius="10px" boxShadow="sm">
               <VStack spacing={4} align="stretch">
-                {/* Installation Option */}
                 <FormControl isRequired>
                   <Checkbox
                     isChecked={isInstall}
@@ -644,7 +564,6 @@ export default function GuaranteeRequestPage() {
 
                 <Divider />
 
-                {/* Shipping Fee Display */}
                 <Box>
                   <Text fontWeight="medium" mb={2}>
                     Chi phí vận chuyển:
@@ -670,7 +589,6 @@ export default function GuaranteeRequestPage() {
 
                 <Divider />
 
-                {/* Notes */}
                 <FormControl>
                   <FormLabel>Ghi chú bổ sung:</FormLabel>
                   <Textarea
@@ -683,12 +601,10 @@ export default function GuaranteeRequestPage() {
             </Box>
           )}
 
-          {/* Woodworker Info */}
           {woodworkerInfo && (
             <WoodworkerBox woodworkerProfile={woodworkerInfo} />
           )}
 
-          {/* Submit Button */}
           <Flex justifyContent="center" mt={4}>
             <Button
               leftIcon={<FiSend />}
@@ -714,7 +630,6 @@ export default function GuaranteeRequestPage() {
         </VStack>
       </SimpleGrid>
 
-      {/* Product Selection Modal */}
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent>

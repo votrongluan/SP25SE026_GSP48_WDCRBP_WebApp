@@ -14,6 +14,10 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { formatPrice } from "../../../../utils/utils.js";
+import {
+  calculateCheapestShipping,
+  extractDimensionsFromConfig,
+} from "../../../../utils/shippingUtils.js";
 import { appColorTheme } from "../../../../config/appconfig.js";
 import AddressSelection from "../components/AddressSelection.jsx";
 import { useCreateCustomizeOrderMutation } from "../../../../services/serviceOrderApi.js";
@@ -56,32 +60,9 @@ export default function DesignOrderSummary({
   // Check if we have items with installation requirement
   const isInstall = selectedGroup ? selectedGroup[1] === "install" : false;
 
-  // Extract dimensions from variant config (length x width x height)
-  const extractDimensions = (config) => {
-    try {
-      const dimensionStr = config.designVariantValues[0].value;
-
-      const dimensions = dimensionStr
-        .split("x")
-        .map((dim) => parseFloat(dim.trim()));
-
-      if (dimensions.length === 3) {
-        return {
-          length: dimensions[0] || 20,
-          width: dimensions[1] || 20,
-          height: dimensions[2] || 20,
-        };
-      }
-
-      return { length: 20, width: 20, height: 20 };
-    } catch (error) {
-      return { length: 20, width: 20, height: 20 };
-    }
-  };
-
   // Calculate shipping fee when address changes for non-installation orders
   useEffect(() => {
-    const calculateCheapestShipping = async () => {
+    const calculateShipping = async () => {
       // Only calculate shipping fee for non-installation orders
       if (isInstall || !selectedAddress || !cartDesigns?.length) {
         setShippingFee(0);
@@ -107,27 +88,11 @@ export default function DesignOrderSummary({
         setIsLoadingServices(true);
         setIsCalculatingShipping(true);
 
-        // Step 1: Fetch available services
-        const servicesData = {
-          from_district: +firstItem.fromDistrictId,
-          to_district: +selectedAddressObj.districtId,
-          shop_id: 0,
-        };
-
-        const servicesResponse = await getAvailableServices(
-          servicesData
-        ).unwrap();
-        const services = servicesResponse.data.data || [];
-
-        if (!services.length) {
-          setShippingFee(0);
-          setSelectedService(null);
-          return;
-        }
-
-        // Step 2: Prepare items data with dimensions
+        // Prepare items data with dimensions
         const items = cartDesigns.map((item) => {
-          const dimensions = extractDimensions(item.designIdeaVariantConfig[0]);
+          const dimensions = extractDimensionsFromConfig(
+            item.designIdeaVariantConfig[0]
+          );
           return {
             name: item.name,
             quantity: item.quantity,
@@ -138,53 +103,22 @@ export default function DesignOrderSummary({
           };
         });
 
-        // Step 3: Calculate shipping fee for each service
-        let cheapestService = null;
-        let cheapestFee = Infinity;
+        // Use the extracted shipping calculation utility
+        const { selectedService: cheapestService, shippingFee: calculatedFee } =
+          await calculateCheapestShipping({
+            fromDistrictId: +firstItem.fromDistrictId,
+            fromWardCode: firstItem.fromWardCode,
+            toDistrictId: +selectedAddressObj.districtId,
+            toWardCode: selectedAddressObj.wardCode,
+            items,
+            isInstall: false, // Always false for this component (non-install orders)
+            getAvailableServices,
+            calculateShippingFee,
+          });
 
-        for (const service of services) {
-          try {
-            const shippingData = {
-              from_district_id: +firstItem.fromDistrictId,
-              from_ward_code: firstItem.fromWardCode,
-              to_district_id: +selectedAddressObj.districtId,
-              to_ward_code: selectedAddressObj.wardCode,
-              service_id: service.service_id,
-              service_type_id: service.service_type_id,
-              insurance_value: 0,
-              cod_failed_amount: 0,
-              coupon: "",
-              height: 0,
-              length: 0,
-              width: 0,
-              weight: 0,
-              items: items,
-            };
-
-            const response = await calculateShippingFee(shippingData).unwrap();
-            const fee = response.data.data.total || 0;
-
-            // Compare and save the cheapest option
-            if (fee < cheapestFee) {
-              cheapestFee = fee;
-              cheapestService = { ...service, fee };
-            }
-          } catch (error) {
-            console.error(
-              `Error calculating fee for service ${service.service_id}:`,
-              error
-            );
-          }
-        }
-
-        // Step 4: Set the selected service and fee
-        if (cheapestService) {
-          setSelectedService(cheapestService);
-          setShippingFee(cheapestService.fee);
-        } else {
-          setSelectedService(null);
-          setShippingFee(0);
-        }
+        // Update state with results
+        setSelectedService(cheapestService);
+        setShippingFee(calculatedFee);
       } catch (error) {
         console.error("Error in shipping calculation process:", error);
         setSelectedService(null);
@@ -195,7 +129,7 @@ export default function DesignOrderSummary({
       }
     };
 
-    calculateCheapestShipping();
+    calculateShipping();
   }, [
     selectedAddress,
     cartDesigns,

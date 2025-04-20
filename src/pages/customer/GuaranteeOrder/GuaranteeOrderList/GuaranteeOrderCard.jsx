@@ -12,8 +12,6 @@ import {
   GridItem,
   Heading,
   Link,
-  Image,
-  Box,
 } from "@chakra-ui/react";
 import { FiEye } from "react-icons/fi";
 import {

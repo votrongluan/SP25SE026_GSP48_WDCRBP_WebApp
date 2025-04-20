@@ -15,7 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useGetGuaranteeOrdersQuery } from "../../../../services/guaranteeOrderApi";
 import useAuth from "../../../../hooks/useAuth";
-import GuaranteeOrderCard from "../components/GuaranteeOrderCard";
+import GuaranteeOrderCard from "./GuaranteeOrderCard";
 
 export default function GuaranteeOrderList() {
   const { auth } = useAuth();
