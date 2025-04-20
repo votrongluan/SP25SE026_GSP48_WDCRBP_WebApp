@@ -1,52 +1,27 @@
 import {
   Box,
-  Button,
-  HStack,
-  Tooltip,
   Spinner,
   Text,
   Select,
+  Flex,
+  HStack,
+  Stack,
 } from "@chakra-ui/react";
-import { AgGridReact } from "ag-grid-react";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-quartz.css";
-import { useMemo, useState, useRef, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import {
   appColorTheme,
   guaranteeOrderStatusConstants,
 } from "../../../../config/appconfig";
-import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { useGetGuaranteeOrdersQuery } from "../../../../services/guaranteeOrderApi";
 import useAuth from "../../../../hooks/useAuth";
-import { formatPrice } from "../../../../utils/utils";
-
-const ActionButton = (params) => {
-  const navigate = useNavigate();
-  const orderId = params.data.guaranteeOrderId;
-
-  return (
-    <HStack columnGap="4px">
-      <Tooltip label="Chi tiết" hasArrow>
-        <Button
-          p="1px"
-          onClick={() => navigate(`${orderId}`)}
-          color={appColorTheme.brown_2}
-          bg="none"
-          border={`1px solid ${appColorTheme.brown_2}`}
-          _hover={{ bg: appColorTheme.brown_2, color: "white" }}
-        >
-          <FiEye />
-        </Button>
-      </Tooltip>
-    </HStack>
-  );
-};
+import GuaranteeOrderCard from "../components/GuaranteeOrderCard";
 
 export default function GuaranteeOrderList() {
   const { auth } = useAuth();
-  const gridRef = useRef();
+  const navigate = useNavigate();
   const [statusFilter, setStatusFilter] = useState("");
+  const [sortOption, setSortOption] = useState("orderIdDesc");
   const [filteredData, setFilteredData] = useState([]);
 
   // Get unique status values from the constants for the dropdown
@@ -70,7 +45,7 @@ export default function GuaranteeOrderList() {
     }
   }, [apiResponse]);
 
-  // Filter data when filters change
+  // Filter and sort data when filters or sort option changes
   useEffect(() => {
     if (!apiResponse?.data) return;
 
@@ -81,68 +56,32 @@ export default function GuaranteeOrderList() {
       filtered = filtered.filter((item) => item.status === statusFilter);
     }
 
-    setFilteredData(filtered);
-  }, [statusFilter, apiResponse]);
+    // Apply sorting
+    const sorted = [...filtered].sort((a, b) => {
+      switch (sortOption) {
+        case "orderIdAsc":
+          return a.guaranteeOrderId - b.guaranteeOrderId;
+        case "orderIdDesc":
+          return b.guaranteeOrderId - a.guaranteeOrderId;
+        default:
+          return b.guaranteeOrderId - a.guaranteeOrderId;
+      }
+    });
 
-  const colDefs = useMemo(
-    () => [
-      {
-        headerName: "Mã yêu cầu",
-        field: "guaranteeOrderId",
-        sort: "desc",
-      },
-      {
-        headerName: "Mã sản phẩm",
-        field: "requestedProduct.requestedProductId",
-      },
-      {
-        headerName: "Xưởng mộc",
-        valueGetter: (params) => params.data.woodworker?.brandName,
-      },
-      {
-        headerName: "Trạng thái",
-        field: "status",
-      },
-      {
-        headerName: "Cần lắp đặt",
-        field: "install",
-      },
-      {
-        headerName: "Cần phản hồi?",
-        valueGetter: (params) => {
-          if (params?.data?.role === "Customer") {
-            return "Cần bạn phản hồi";
-          } else if (params?.data?.role === "Woodworker") {
-            return "Chờ phản hồi từ thợ mộc";
-          }
-          return "";
-        },
-        cellRenderer: (params) => {
-          return params.value === "Cần bạn phản hồi" ? (
-            <Text color="green.500">{params.value}</Text>
-          ) : (
-            <Text>{params.value}</Text>
-          );
-        },
-      },
-      {
-        headerName: "Thao tác",
-        cellRenderer: ActionButton,
-      },
-    ],
-    []
-  );
-
-  const defaultColDef = useMemo(() => {
-    return {
-      filter: true,
-      floatingFilter: true,
-    };
-  }, []);
+    setFilteredData(sorted);
+  }, [statusFilter, sortOption, apiResponse]);
 
   // Handle filter changes
   const handleStatusFilterChange = (e) => {
     setStatusFilter(e.target.value);
+  };
+
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+  };
+
+  const handleViewDetails = (orderId) => {
+    navigate(`${orderId}`);
   };
 
   if (isLoading) {
@@ -175,7 +114,7 @@ export default function GuaranteeOrderList() {
 
   return (
     <Box>
-      <HStack mb={4} spacing={4}>
+      <Flex mb={4} gap={4} flexWrap="wrap">
         <HStack>
           <Text fontWeight="medium">Lọc theo trạng thái:</Text>
           <Select
@@ -192,24 +131,36 @@ export default function GuaranteeOrderList() {
             ))}
           </Select>
         </HStack>
-      </HStack>
 
-      <Box>
-        <div
-          className="ag-theme-quartz"
-          style={{ height: 700, fontSize: "16px" }}
-        >
-          <AgGridReact
-            ref={gridRef}
-            pagination
-            paginationPageSize={20}
-            paginationPageSizeSelector={[10, 20, 50, 100]}
-            defaultColDef={defaultColDef}
-            rowData={filteredData}
-            columnDefs={colDefs}
-          />
-        </div>
-      </Box>
+        <HStack>
+          <Text fontWeight="medium">Sắp xếp theo:</Text>
+          <Select
+            width="250px"
+            bgColor="white"
+            value={sortOption}
+            onChange={handleSortChange}
+          >
+            <option value="orderIdDesc">Mã giảm dần</option>
+            <option value="orderIdAsc">Mã tăng dần</option>
+          </Select>
+        </HStack>
+      </Flex>
+
+      {filteredData.length === 0 ? (
+        <Box textAlign="center" py={10}>
+          <Text fontSize="lg">Không có đơn hàng nào phù hợp với bộ lọc.</Text>
+        </Box>
+      ) : (
+        <Stack spacing={4}>
+          {filteredData.map((order) => (
+            <GuaranteeOrderCard
+              key={order.guaranteeOrderId}
+              order={order}
+              onViewDetails={handleViewDetails}
+            />
+          ))}
+        </Stack>
+      )}
     </Box>
   );
 }

@@ -55,6 +55,29 @@ export const serviceOrderStatusConstants = {
   DA_HUY: "Đã hủy",
 };
 
+// Add function to get color for service order status
+export const getServiceOrderStatusColor = (status) => {
+  switch (status) {
+    case serviceOrderStatusConstants.DA_HOAN_TAT:
+      return "green";
+    case serviceOrderStatusConstants.DANG_GIA_CONG:
+    case serviceOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT:
+      return "blue";
+    case serviceOrderStatusConstants.DANG_CHO_THO_DUYET:
+    case serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_LICH_HEN:
+    case serviceOrderStatusConstants.DA_DUYET_LICH_HEN:
+    case serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_HOP_DONG:
+    case serviceOrderStatusConstants.DA_DUYET_HOP_DONG:
+    case serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_THIET_KE:
+    case serviceOrderStatusConstants.DA_DUYET_THIET_KE:
+      return "orange";
+    case serviceOrderStatusConstants.DA_HUY:
+      return "red";
+    default:
+      return "gray";
+  }
+};
+
 export const guaranteeOrderStatusConstants = {
   DANG_CHO_THO_MOC_XAC_NHAN: "Đang chờ thợ mộc xác nhận đơn hàng",
   DANG_CHO_KHACH_DUYET_LICH_HEN: "Đang chờ khách hàng duyệt lịch hẹn",
@@ -66,6 +89,28 @@ export const guaranteeOrderStatusConstants = {
   DANG_GIAO_HANG_LAP_DAT: "Đang giao hàng lắp đặt",
   DA_HOAN_TAT: "Đã hoàn tất",
   DA_HUY: "Đã hủy",
+};
+
+// Add function to get color for guarantee order status
+export const getGuaranteeOrderStatusColor = (status) => {
+  switch (status) {
+    case guaranteeOrderStatusConstants.DA_HOAN_TAT:
+      return "green";
+    case guaranteeOrderStatusConstants.DANG_SUA_CHUA:
+    case guaranteeOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT:
+      return "blue";
+    case guaranteeOrderStatusConstants.DANG_CHO_THO_MOC_XAC_NHAN:
+    case guaranteeOrderStatusConstants.DANG_CHO_KHACH_DUYET_LICH_HEN:
+    case guaranteeOrderStatusConstants.DA_DUYET_LICH_HEN:
+    case guaranteeOrderStatusConstants.DANG_CHO_KHACH_DUYET_BAO_GIA:
+    case guaranteeOrderStatusConstants.DA_DUYET_BAO_GIA:
+    case guaranteeOrderStatusConstants.DANG_CHO_NHAN_HANG:
+      return "orange";
+    case guaranteeOrderStatusConstants.DA_HUY:
+      return "red";
+    default:
+      return "gray";
+  }
 };
 
 export const transactionTypeColorMap = {
