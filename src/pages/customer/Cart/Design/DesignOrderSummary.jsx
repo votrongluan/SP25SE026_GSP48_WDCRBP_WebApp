@@ -111,7 +111,6 @@ export default function DesignOrderSummary({
             toDistrictId: +selectedAddressObj.districtId,
             toWardCode: selectedAddressObj.wardCode,
             items,
-            isInstall: false, // Always false for this component (non-install orders)
             getAvailableServices,
             calculateShippingFee,
           });

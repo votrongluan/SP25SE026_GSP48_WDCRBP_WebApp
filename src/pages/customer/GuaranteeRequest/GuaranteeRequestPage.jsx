@@ -188,14 +188,13 @@ export default function GuaranteeRequestPage() {
             toDistrictId: +selectedAddressObj.districtId,
             toWardCode: selectedAddressObj.wardCode,
             items,
-            isInstall,
             getAvailableServices,
             calculateShippingFee,
           });
 
-        // Update state with results
+        // Update state with results and handle multiplier for non-install
         setSelectedService(cheapestService);
-        setShippingFee(calculatedFee);
+        setShippingFee(isInstall ? calculatedFee : calculatedFee * 2); // Apply x2 here for guarantee repair
       } catch (error) {
         console.error("Error in shipping calculation process:", error);
         setSelectedService(null);

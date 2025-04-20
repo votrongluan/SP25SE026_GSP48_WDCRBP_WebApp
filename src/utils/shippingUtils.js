@@ -59,7 +59,7 @@ export const extractDimensionsFromProduct = (product) => {
 };
 
 /**
- * Calculate the cheapest shipping option based on product dimensions, addresses and installation requirements
+ * Calculate the cheapest shipping option based on product dimensions and addresses
  * @param {Object} params The parameters needed for shipping calculation
  * @returns {Promise<Object>} Object containing cheapest service and fee
  */
@@ -69,7 +69,6 @@ export const calculateCheapestShipping = async ({
   toDistrictId,
   toWardCode,
   items,
-  isInstall,
   getAvailableServices,
   calculateShippingFee,
 }) => {
@@ -126,19 +125,11 @@ export const calculateCheapestShipping = async ({
       }
     }
 
-    // Step 3: Return the selected service and fee
-    if (cheapestService) {
-      // For non-install orders, double the fee (round trip)
-      const finalFee = isInstall
-        ? cheapestService.fee
-        : cheapestService.fee * 2;
-      return {
-        selectedService: cheapestService,
-        shippingFee: finalFee,
-      };
-    }
-
-    return { selectedService: null, shippingFee: 0 };
+    // Step 3: Return the selected service and base fee without any multiplier
+    return {
+      selectedService: cheapestService,
+      shippingFee: cheapestService ? cheapestService.fee : 0,
+    };
   } catch (error) {
     console.error("Error in shipping calculation:", error);
     return { selectedService: null, shippingFee: 0 };
