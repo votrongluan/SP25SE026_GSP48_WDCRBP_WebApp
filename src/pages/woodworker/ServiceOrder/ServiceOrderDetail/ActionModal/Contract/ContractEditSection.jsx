@@ -138,14 +138,14 @@ export default function ContractEditSection({
 
             {/* Woodworker terms */}
             <FormControl isRequired>
-              <FormLabel>Điều khoản của thợ mộc:</FormLabel>
+              <FormLabel>Điều khoản của xưởng mộc:</FormLabel>
               <Textarea
                 rows={6}
                 value={contract.woodworkerTerms}
                 onChange={(e) =>
                   handleChange("woodworkerTerms", e.target.value)
                 }
-                placeholder="Nhập điều khoản của thợ mộc"
+                placeholder="Nhập điều khoản của xưởng mộc"
                 whiteSpace="pre-wrap"
               />
             </FormControl>

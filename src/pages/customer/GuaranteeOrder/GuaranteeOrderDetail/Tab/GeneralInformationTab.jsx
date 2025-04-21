@@ -19,6 +19,7 @@ import {
 import StarRating from "../../../../../components/Utility/StarRating.jsx";
 import PersonalizationProduct from "./PersonalizationProduct.jsx";
 import CustomizationProduct from "./CustomizationProduct.jsx";
+import SaleProduct from "./SaleProduct.jsx";
 
 export default function GeneralInformationTab({ order }) {
   const serviceName = order?.serviceOrderDetail?.service?.service?.serviceName;
@@ -42,6 +43,19 @@ export default function GeneralInformationTab({ order }) {
       )}
       {serviceName == "Customization" && (
         <CustomizationProduct
+          completionDate={serviceOrder?.updatedAt}
+          currentProductImgUrls={order?.currentProductImgUrls}
+          productCurrentStatus={order?.productCurrentStatus}
+          warrantyDuration={order?.requestedProduct?.warrantyDuration}
+          product={order?.serviceOrderDetail?.requestedProduct.find(
+            (item) =>
+              item.requestedProductId ==
+              order?.requestedProduct?.requestedProductId
+          )}
+        />
+      )}
+      {serviceName == "Sale" && (
+        <SaleProduct
           completionDate={serviceOrder?.updatedAt}
           currentProductImgUrls={order?.currentProductImgUrls}
           productCurrentStatus={order?.productCurrentStatus}

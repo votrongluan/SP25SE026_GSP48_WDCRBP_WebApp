@@ -31,7 +31,7 @@ const periodLabels = {
 
 export default function Pricing({
   handleButtonClick,
-  label = "Đăng ký trở thành thợ mộc",
+  label = "Đăng ký trở thành xưởng mộc",
   servicePackId,
   packName,
 }) {

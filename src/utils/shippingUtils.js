@@ -50,9 +50,14 @@ export const extractDimensionsFromProduct = (product) => {
             (item) => item.name === "Chiều cao"
           )?.value || 20,
       };
+    } else {
+      // Standard product with direct dimensions
+      return {
+        length: product.length || 20,
+        width: product.width || 20,
+        height: product.height || 20,
+      };
     }
-
-    return { length: 20, width: 20, height: 20 };
   } catch (error) {
     return { length: 20, width: 20, height: 20 };
   }
@@ -134,4 +139,106 @@ export const calculateCheapestShipping = async ({
     console.error("Error in shipping calculation:", error);
     return { selectedService: null, shippingFee: 0 };
   }
+};
+
+/**
+ * Create a GHN shipment for a service order and update the order code
+ * @param {Object} params - Parameters needed for shipment creation
+ * @returns {Promise<Object>} Result containing order code and success status
+ */
+export const createAndUpdateShipment = async ({
+  order,
+  products,
+  shipment,
+  serviceOrderId,
+  createShipment,
+  updateShipmentOrderCode,
+}) => {
+  // Prepare items data with dimensions for shipment
+  const items = products.map((product) => {
+    let dimensions;
+
+    if (product.designIdeaVariantDetail?.designIdeaVariantConfig) {
+      // Extract dimensions from design variant config
+      const variantConfig =
+        product.designIdeaVariantDetail.designIdeaVariantConfig[0];
+      dimensions = extractDimensionsFromConfig(variantConfig);
+    } else if (product.personalProductDetail) {
+      // Extract dimensions from personal product detail
+      dimensions = extractDimensionsFromProduct(product);
+    } else if (product.product) {
+      dimensions = {
+        length: product.product.length,
+        width: product.product.width,
+        height: product.product.height,
+      };
+    }
+    {
+      // Use default dimensions as fallback
+      dimensions = { length: 20, width: 20, height: 20 };
+    }
+
+    return {
+      name:
+        product.designIdeaVariantDetail?.name ||
+        product.category?.categoryName ||
+        "Sản phẩm",
+      quantity: product.quantity || 1,
+      length: dimensions.length,
+      width: dimensions.width,
+      height: dimensions.height,
+      weight: 0,
+    };
+  });
+
+  // Extract address components from comma-separated address string
+  const addressParts = order?.service?.wwDto?.address?.split(",") || [];
+  const wardName = addressParts[1]?.trim() || "N/A";
+  const districtName = addressParts[2]?.trim() || "N/A";
+  const provinceName = addressParts[3]?.trim() || "N/A";
+
+  // Prepare GHN shipment request
+  const requestData = {
+    payment_type_id: 1,
+    required_note: "WAIT",
+    // Sender information
+    from_name: order?.service?.wwDto?.name,
+    from_phone: order?.service?.wwDto?.phone,
+    from_address: shipment.fromAddress,
+    from_ward_name: wardName,
+    from_district_name: districtName,
+    from_province_name: provinceName,
+    // Receiver information
+    to_phone: order?.user?.phone,
+    to_name: order?.user?.username,
+    to_address: shipment.toAddress,
+    to_ward_code: shipment.toWardCode,
+    to_district_id: shipment.toDistrictId,
+    // Package information
+    weight: 0,
+    length: 0,
+    width: 0,
+    height: 0,
+    service_type_id: shipment.ghnServiceTypeId || 5,
+    items: items,
+  };
+
+  // Step 1: Create the shipment
+  const response = await createShipment({
+    serviceOrderId,
+    data: requestData,
+  }).unwrap();
+
+  const orderCode = response.data.data.order_code;
+
+  // Step 2: Update the shipment order code
+  await updateShipmentOrderCode({
+    serviceOrderId,
+    orderCode,
+  }).unwrap();
+
+  return {
+    success: true,
+    orderCode,
+  };
 };

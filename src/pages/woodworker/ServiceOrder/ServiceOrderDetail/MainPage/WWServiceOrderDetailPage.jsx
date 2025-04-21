@@ -30,6 +30,9 @@ export default function WWServiceOrderDetailPage() {
   const { data, isLoading, error, refetch } = useGetServiceOrderByIdQuery(id);
   const order = data?.data;
   const { auth } = useAuth();
+  const serviceName = order?.service?.service?.serviceName;
+
+  console.log(JSON.stringify(order, null, 2));
 
   // Track active tab index
   const [activeTabIndex, setActiveTabIndex] = useState(0);
@@ -127,7 +130,12 @@ export default function WWServiceOrderDetailPage() {
             {[
               { label: "Chung", icon: FiFileText },
               { label: "Tiến độ", icon: FiActivity },
-              { label: "Hợp đồng & Giao dịch", icon: FiFile },
+              {
+                label: `${
+                  serviceName != "Sale" ? "Hợp đồng & Giao dịch" : "Giao dịch"
+                }`,
+                icon: FiFile,
+              },
             ].map((tab, index) => (
               <Tab
                 key={index}

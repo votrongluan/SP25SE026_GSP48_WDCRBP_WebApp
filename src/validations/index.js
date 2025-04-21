@@ -182,9 +182,9 @@ export const validateProductData = (data) => {
     errors.push("Chiều cao sản phẩm phải lớn hơn 0");
   }
 
-  // Validate weight
-  if (!data.weight) {
-    errors.push("Cân nặng sản phẩm là bắt buộc");
+  // Validate warrantyDuration
+  if (!data.warrantyDuration) {
+    errors.push("Thời hạn bảo hành là bắt buộc");
   } else if (data.weight <= 0) {
     errors.push("Cân nặng sản phẩm phải lớn hơn 0");
   }

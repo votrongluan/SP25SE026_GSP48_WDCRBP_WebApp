@@ -12,6 +12,7 @@ import {
   Heading,
   Divider,
   Link,
+  Image,
 } from "@chakra-ui/react";
 import {
   appColorTheme,
@@ -25,6 +26,7 @@ import {
   translateShippingStatus,
   formatDateString,
 } from "../../../../../utils/utils.js";
+import ghnLogo from "../../../../../assets/images/ghnLogo.webp";
 
 export default function ProgressTab({ order, activeTabIndex, isActive }) {
   const { id } = useParams();
@@ -88,13 +90,15 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
   // Check if order is cancelled
   const isOrderCancelled = order?.status == serviceOrderStatusConstants.DA_HUY;
 
-  // Check service type to determine progress flow
-  const isPersonalization =
-    order?.service?.service?.serviceName == "Personalization";
+  // Get service type to determine progress flow
+  const serviceType = order?.service?.service?.serviceName;
 
   // Define progress steps based on service type
-  const progressSteps = isPersonalization
-    ? [
+  let progressSteps = [];
+
+  switch (serviceType) {
+    case "Personalization":
+      progressSteps = [
         serviceOrderStatusConstants.DANG_CHO_THO_DUYET,
         serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_LICH_HEN,
         serviceOrderStatusConstants.DA_DUYET_LICH_HEN,
@@ -105,8 +109,10 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
         serviceOrderStatusConstants.DANG_GIA_CONG,
         serviceOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT,
         serviceOrderStatusConstants.DA_HOAN_TAT,
-      ]
-    : [
+      ];
+      break;
+    case "Customization":
+      progressSteps = [
         serviceOrderStatusConstants.DANG_CHO_THO_DUYET,
         serviceOrderStatusConstants.DANG_CHO_KHACH_DUYET_LICH_HEN,
         serviceOrderStatusConstants.DA_DUYET_LICH_HEN,
@@ -116,6 +122,15 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
         serviceOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT,
         serviceOrderStatusConstants.DA_HOAN_TAT,
       ];
+      break;
+    case "Sale":
+      progressSteps = [
+        serviceOrderStatusConstants.DANG_CHO_THO_DUYET,
+        serviceOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT,
+        serviceOrderStatusConstants.DA_HOAN_TAT,
+      ];
+      break;
+  }
 
   // Display loading state
   if (isLoadingProgress || isLoadingShipment) {
@@ -259,10 +274,31 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
             </Text>
           </Center>
         ) : (
-          <Stack spacing={4}>
+          <Stack spacing={10}>
             {shipmentItems.map((shipment) => (
               <Box key={shipment.shipmentId}>
                 <Stack spacing={3} divider={<Divider />}>
+                  {shipment.shipType && (
+                    <HStack>
+                      {shipment.shipType.toLowerCase().includes("ghn") && (
+                        <Image
+                          src={ghnLogo}
+                          alt="GHN Logo"
+                          height="25px"
+                          objectFit="contain"
+                          ml={2}
+                        />
+                      )}
+                      <Text
+                        color={appColorTheme.brown_2}
+                        fontWeight="bold"
+                        fontSize="18px"
+                      >
+                        {shipment.shipType}
+                      </Text>
+                    </HStack>
+                  )}
+
                   <HStack alignItems="flex-start">
                     <Text fontWeight="bold" minW="120px">
                       Địa chỉ giao:
@@ -285,15 +321,6 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
                         Đơn vị vận chuyển:
                       </Text>
                       <Text>{shipment.shippingUnit}</Text>
-                    </HStack>
-                  )}
-
-                  {shipment.shipType && (
-                    <HStack>
-                      <Text fontWeight="bold" minW="120px">
-                        Loại vận chuyển:
-                      </Text>
-                      <Text>{shipment.shipType}</Text>
                     </HStack>
                   )}
 

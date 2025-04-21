@@ -41,7 +41,7 @@ export default function CancelModal({ serviceOrderId, refetch }) {
     try {
       notify(
         "Đã gửi yêu cầu hủy",
-        "Yêu cầu hủy đơn hàng đã được gửi tới thợ mộc",
+        "Yêu cầu hủy đơn hàng đã được gửi tới xưởng mộc",
         "success"
       );
 

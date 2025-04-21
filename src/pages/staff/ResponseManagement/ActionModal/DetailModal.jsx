@@ -127,10 +127,9 @@ export default function DetailModal({ review, refetch }) {
                       <Text>{review?.username}</Text>
                     </Box>
                     <Box>
-                      <Text fontWeight="bold">Thợ mộc:</Text>
+                      <Text fontWeight="bold">Xưởng mộc:</Text>
                       <Text>
-                        {review?.woodworkerUser?.username ||
-                          "Không có thông tin"}
+                        {review?.woodworker?.brandName || "Không có thông tin"}
                       </Text>
                     </Box>
                     <Box>
@@ -195,10 +194,9 @@ export default function DetailModal({ review, refetch }) {
                 </Box>
               </Box>
 
-              {/* Phản hồi của thợ mộc */}
               <Box>
                 <Heading size="md" mb={4}>
-                  Phản hồi của thợ mộc
+                  Phản hồi của xưởng mộc
                 </Heading>
                 <Box bg="white" p={5} borderRadius="lg" boxShadow="md">
                   {review?.woodworkerResponse ? (

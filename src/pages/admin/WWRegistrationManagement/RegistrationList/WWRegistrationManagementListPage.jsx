@@ -74,7 +74,7 @@ export default function WWRegistrationManagementListPage() {
           fontSize="2xl"
           fontFamily="Montserrat"
         >
-          Quản lý đăng ký thợ mộc
+          Quản lý đăng ký xưởng mộc
         </Heading>
       </Flex>
 

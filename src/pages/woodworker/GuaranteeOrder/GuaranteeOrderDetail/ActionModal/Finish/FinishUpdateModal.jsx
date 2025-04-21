@@ -137,7 +137,7 @@ export default function FinishUpdateModal({
       const requestData = {
         payment_type_id: 1,
         required_note: "WAIT",
-        from_name: order?.woodworkerUser?.username || "Thợ mộc",
+        from_name: order?.woodworkerUser?.username || "Xưởng mộc",
         from_phone: order?.woodworkerUser?.phone || "0123456789",
         from_address: shipment.fromAddress,
         from_ward_name: shipment.fromAddress?.split(",")[1]?.trim() || "N/A",

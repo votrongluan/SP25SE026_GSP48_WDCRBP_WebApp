@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Grid,
   Heading,
   HStack,
   Stack,
@@ -101,7 +100,7 @@ export default function WalletInformation() {
       <WithdrawModal
         isOpen={isWithdrawOpen}
         onClose={onWithdrawClose}
-        balance={wallet?.balance || 0}
+        wallet={wallet}
         onSuccess={() => {
           refetch();
           onWithdrawClose();

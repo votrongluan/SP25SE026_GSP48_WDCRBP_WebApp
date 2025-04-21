@@ -12,6 +12,7 @@ import {
   Heading,
   Divider,
   Link,
+  Image,
 } from "@chakra-ui/react";
 import {
   appColorTheme,
@@ -25,6 +26,7 @@ import {
   translateShippingStatus,
   formatDateString,
 } from "../../../../../utils/utils.js";
+import ghnLogo from "../../../../../assets/images/ghnLogo.webp";
 
 export default function ProgressTab({ order, activeTabIndex, isActive }) {
   const { id } = useParams();
@@ -249,13 +251,24 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
               <Box key={shipment.shipmentId}>
                 <Stack spacing={3} divider={<Divider />}>
                   {shipment.shipType && (
-                    <Text
-                      color={appColorTheme.brown_2}
-                      fontWeight="bold"
-                      fontSize="18px"
-                    >
-                      {shipment.shipType}
-                    </Text>
+                    <HStack>
+                      {shipment.shipType.toLowerCase().includes("ghn") && (
+                        <Image
+                          src={ghnLogo}
+                          alt="GHN Logo"
+                          height="25px"
+                          objectFit="contain"
+                          ml={2}
+                        />
+                      )}
+                      <Text
+                        color={appColorTheme.brown_2}
+                        fontWeight="bold"
+                        fontSize="18px"
+                      >
+                        {shipment.shipType}
+                      </Text>
+                    </HStack>
                   )}
 
                   <HStack alignItems="flex-start">

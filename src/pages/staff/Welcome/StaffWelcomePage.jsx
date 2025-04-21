@@ -26,11 +26,11 @@ function StaffWelcomePage() {
             fontSize="3xl"
             fontWeight="bold"
           >
-            Chào mừng đến với Trang Nhân Viên
+            Chào mừng đến với Trang Nhân Viên của nền tảng WDCRBP
           </Heading>
 
           <Text color="gray.600" fontSize="lg" maxW="md" mx="auto">
-            Đây là khu vực dành cho nhân viên
+            Đây là khu vực dành cho nhân viên của nền tảng WDCRBP
           </Text>
         </VStack>
       </Container>

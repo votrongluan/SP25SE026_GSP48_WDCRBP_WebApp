@@ -198,7 +198,7 @@ export default function ServiceConfiguration() {
                   <HStack spacing={4}>
                     <Text>Trạng thái: </Text>
                     {serviceItem.operatingStatus ? (
-                      <Text color="green.500">Đang cung cấp</Text>
+                      <Text color="green.500">Đang cung cấp dịch vụ</Text>
                     ) : (
                       <Text color="red.500">Tạm dừng</Text>
                     )}

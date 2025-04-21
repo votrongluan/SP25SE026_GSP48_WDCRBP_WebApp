@@ -20,6 +20,7 @@ import {
 } from "../../../../../config/appconfig.js";
 import PersonalizationProduct from "./PersonalizationProduct.jsx";
 import CustomizationProduct from "./CustomizationProduct.jsx";
+import SaleProduct from "./SaleProduct.jsx";
 
 export default function GeneralInformationTab({
   order,
@@ -59,6 +60,19 @@ export default function GeneralInformationTab({
       )}
       {serviceName == "Customization" && (
         <CustomizationProduct
+          completionDate={serviceOrder?.updatedAt}
+          currentProductImgUrls={order?.currentProductImgUrls}
+          productCurrentStatus={order?.productCurrentStatus}
+          warrantyDuration={order?.requestedProduct?.warrantyDuration}
+          product={order?.serviceOrderDetail?.requestedProduct.find(
+            (item) =>
+              item.requestedProductId ==
+              order?.requestedProduct?.requestedProductId
+          )}
+        />
+      )}
+      {serviceName == "Sale" && (
+        <SaleProduct
           completionDate={serviceOrder?.updatedAt}
           currentProductImgUrls={order?.currentProductImgUrls}
           productCurrentStatus={order?.productCurrentStatus}

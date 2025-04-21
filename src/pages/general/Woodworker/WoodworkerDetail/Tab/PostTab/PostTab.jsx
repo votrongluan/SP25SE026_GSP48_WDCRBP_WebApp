@@ -74,7 +74,7 @@ export default function PostTab() {
     return (
       <Alert status="info" borderRadius="md">
         <AlertIcon />
-        Thợ mộc này chưa có bài viết nào.
+        Xưởng mộc này chưa có bài viết nào.
       </Alert>
     );
   }

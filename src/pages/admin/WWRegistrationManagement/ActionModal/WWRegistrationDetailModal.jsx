@@ -91,7 +91,7 @@ export default function WWRegistrationDetailModal({ registration, refetch }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Chi tiết đăng ký thợ mộc</ModalHeader>
+          <ModalHeader>Chi tiết đăng ký xưởng mộc</ModalHeader>
           {!isLoading && <ModalCloseButton />}
           <ModalBody bgColor="app_grey.1" pb={6}>
             <Stack gap={5}>
@@ -116,12 +116,12 @@ export default function WWRegistrationDetailModal({ registration, refetch }) {
                 {/* Phần thông tin cơ bản */}
                 <Box>
                   <Heading size="md" mb={4}>
-                    Thông tin cơ bản
+                    Thông người đại diện
                   </Heading>
                   <Box bg="white" p={5} borderRadius="lg" boxShadow="md">
                     <VStack align="stretch" spacing={4}>
                       <Box>
-                        <Text fontWeight="bold">Mã thợ mộc:</Text>
+                        <Text fontWeight="bold">Mã xưởng mộc:</Text>
                         <Text>{registration?.woodworkerId}</Text>
                       </Box>
                       <Box>

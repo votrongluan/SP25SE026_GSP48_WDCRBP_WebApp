@@ -49,7 +49,7 @@ export default function WoodworkerLayout() {
 
   return (
     <RequireAuth allowedRoles={["Woodworker"]}>
-      <Box fontFamily="Nunito Sans">
+      <Box fontFamily="Nunito Sans" position="relative" pb="50px">
         <Header />
         <Box>
           <Box
@@ -63,15 +63,15 @@ export default function WoodworkerLayout() {
             transition="width 0.3s"
           >
             <Text
-              color={appColorTheme.brown_1}
+              color={appColorTheme.green_3}
               mt={2}
               mb={2}
               fontWeight="bold"
               textAlign="center"
               borderBottom="2px solid"
-              borderColor={appColorTheme.brown_2}
+              borderColor={appColorTheme.green_2}
             >
-              {!isCollapsed ? "Menu thợ mộc" : <Icon as={FiMenu} />}
+              {!isCollapsed ? "Menu xưởng mộc" : <Icon as={FiMenu} />}
             </Text>
 
             <WoodworkerSideBar
@@ -90,6 +90,27 @@ export default function WoodworkerLayout() {
             transition="margin-left 0.3s"
           >
             <Outlet />
+          </Box>
+
+          {/* Fixed Footer */}
+          <Box
+            position="fixed"
+            bottom={0}
+            left={0}
+            right={0}
+            height="50px"
+            bg="white"
+            borderTop="1px solid"
+            borderColor={appColorTheme.green_1}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            boxShadow="0 -2px 10px rgba(0,0,0,0.05)"
+            zIndex={10}
+          >
+            <Text fontSize="xl" fontWeight="bold" color={appColorTheme.green_3}>
+              Xưởng mộc {auth?.woodworker?.brandName || woodworker?.brandName}
+            </Text>
           </Box>
         </Box>
       </Box>

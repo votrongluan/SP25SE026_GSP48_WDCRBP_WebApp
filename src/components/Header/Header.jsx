@@ -74,6 +74,10 @@ function Header() {
                   return null;
                 }
 
+                if (link.path == "/guarantee" && auth?.role == "Woodworker") {
+                  return null;
+                }
+
                 return (
                   <ChakraLink
                     padding="15px 8px"

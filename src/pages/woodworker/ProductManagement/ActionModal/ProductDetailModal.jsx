@@ -154,6 +154,10 @@ export default function ProductDetailModal({ product }) {
                         totalStar={product?.totalStar || 0}
                       />
                     </Box>
+                    <Box>
+                      <Text fontWeight="bold">Cần giao hàng + lắp đặt:</Text>
+                      <Text>{product?.isInstall ? "Có" : "Không"}</Text>
+                    </Box>
                   </Grid>
                 </Box>
               </Box>

@@ -85,7 +85,6 @@ export default function TopUpWalletSuccessPage() {
       await updateTransactionStatus({
         transactionId: parseInt(transactionIdData?.data),
         status: true,
-        canceledAt: null,
       }).unwrap();
 
       setStatus("Giao dịch hoàn tất!");

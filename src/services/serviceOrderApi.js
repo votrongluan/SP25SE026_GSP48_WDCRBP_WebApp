@@ -41,6 +41,14 @@ export const serviceOrderApi = createApi({
       }),
     }),
 
+    createSaleOrder: builder.mutation({
+      query: (data) => ({
+        url: "/api/v1/service-orders/createSaleOrder",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
     acceptServiceOrder: builder.mutation({
       query: (data) => ({
         url: `/api/v1/service-orders/accept`,
@@ -86,6 +94,7 @@ export const {
   useSendServiceOrderFeedbackMutation,
   useCreatePersonalOrderMutation,
   useCreateCustomizeOrderMutation,
+  useCreateSaleOrderMutation,
   useAcceptServiceOrderMutation,
   useGetServiceOrdersQuery,
   useGetServiceOrderByIdQuery,

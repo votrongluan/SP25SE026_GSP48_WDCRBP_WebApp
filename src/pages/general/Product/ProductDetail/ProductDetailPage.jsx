@@ -11,6 +11,7 @@ import {
   Center,
   Alert,
   AlertIcon,
+  HStack,
 } from "@chakra-ui/react";
 import {
   appColorTheme,
@@ -79,11 +80,14 @@ export default function ProductDetailPage() {
 
     const cartItem = {
       productId: product.productId,
+      isInstall: product.isInstall,
       productName: product.productName,
       price: product.price,
       mediaUrls: product.mediaUrls,
       woodworkerId: product.woodworkerId,
       woodworkerName: product.woodworkerName,
+      fromDistrictId: product.districtId,
+      wardCode: product.wardCode,
       quantity: 1,
       woodType: product.woodType,
       color: product.color,
@@ -91,6 +95,7 @@ export default function ProductDetailPage() {
       width: product.width,
       height: product.height,
       address: product.address,
+      availableServiceId: saleService?.availableServiceId,
     };
 
     addProductToCart(cartItem);
@@ -104,10 +109,13 @@ export default function ProductDetailPage() {
     const cartItem = {
       productId: product.productId,
       productName: product.productName,
+      isInstall: product.isInstall,
       price: product.price,
       mediaUrls: product.mediaUrls,
       woodworkerId: product.woodworkerId,
       woodworkerName: product.woodworkerName,
+      fromDistrictId: product.districtId,
+      wardCode: product.wardCode,
       quantity: 1,
       woodType: product.woodType,
       color: product.color,
@@ -115,6 +123,7 @@ export default function ProductDetailPage() {
       width: product.width,
       height: product.height,
       address: product.address,
+      availableServiceId: saleService?.availableServiceId,
     };
 
     addProductToCart(cartItem);
@@ -195,6 +204,18 @@ export default function ProductDetailPage() {
                   Sản phẩm tạm ngừng kinh doanh
                 </Alert>
               )}
+
+              <HStack>
+                <Text fontWeight="bold">Loại sản phẩm:</Text>
+                <Text>{product?.categoryName || "Chưa cập nhật"}</Text>
+              </HStack>
+
+              <HStack>
+                <Text fontWeight="bold">Lắp đặt:</Text>
+                <Text>
+                  {product?.isInstall ? "Cần lắp đặt" : "Không cần lắp đặt"}
+                </Text>
+              </HStack>
 
               <Text>
                 <strong>Số lượng trong kho:</strong> {product.stock}

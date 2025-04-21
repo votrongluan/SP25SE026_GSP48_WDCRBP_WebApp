@@ -5,32 +5,34 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
+  Flex,
   HStack,
   Stack,
   Text,
   Image,
   Link as ChakraLink,
   Badge,
+  Divider,
 } from "@chakra-ui/react";
 import { format, add } from "date-fns";
 import { appColorTheme } from "../../../../../config/appconfig.js";
 import ImageListSelector from "../../../../../components/Utility/ImageListSelector.jsx";
 
-const ConfigurationItem = ({ name, value }) => (
+const AttributeItem = ({ name, value }) => (
   <HStack justify="space-between" w="100%">
     <Text fontWeight="bold">{name}:</Text>
     <Text>{value}</Text>
   </HStack>
 );
 
-export default function CustomizationProduct({
+export default function SaleProduct({
   product = {},
   productCurrentStatus = "",
   currentProductImgUrls = "",
   completionDate = null,
   warrantyDuration = 0,
 }) {
-  const designDetail = product.designIdeaVariantDetail;
+  const saleProduct = product.product;
 
   // Calculate warranty end date if completionDate exists
   const warrantyEndDate = completionDate
@@ -54,8 +56,8 @@ export default function CustomizationProduct({
             <Box flex="1" textAlign="left">
               <HStack>
                 <Image
-                  src={designDetail?.img_urls?.split(";")[0] || ""}
-                  alt={designDetail?.name}
+                  src={saleProduct?.mediaUrls?.split(";")[0] || ""}
+                  alt={saleProduct?.productName}
                   boxSize="50px"
                   objectFit="cover"
                   borderRadius="md"
@@ -63,7 +65,7 @@ export default function CustomizationProduct({
                 <Box>
                   <ChakraLink
                     target="_blank"
-                    href={`/design/${designDetail?.designIdeaId}`}
+                    href={`/product/${saleProduct?.productId}`}
                   >
                     <Text
                       _hover={{
@@ -73,12 +75,14 @@ export default function CustomizationProduct({
                     >
                       #{product.requestedProductId}
                       {". "}
-                      {designDetail?.name || "Sản phẩm không xác định"} x{" "}
-                      {product?.quantity}
+                      {saleProduct?.productName ||
+                        "Sản phẩm không xác định"} x {product?.quantity}
                     </Text>
                   </ChakraLink>
                   <Badge colorScheme="purple">
-                    {designDetail?.category?.categoryName || "Không phân loại"}
+                    {product?.category?.categoryName ||
+                      saleProduct?.categoryName ||
+                      "Không phân loại"}
                   </Badge>
                 </Box>
               </HStack>
@@ -106,7 +110,7 @@ export default function CustomizationProduct({
                 </Box>
               )}
 
-              {/* Cấu hình đã chọn */}
+              {/* Product images */}
               <Box>
                 <Text
                   color={appColorTheme.brown_2}
@@ -114,26 +118,68 @@ export default function CustomizationProduct({
                   fontSize="lg"
                   my={3}
                 >
-                  Cấu hình đã chọn:
+                  Hình ảnh sản phẩm:
                 </Text>
-                <Stack spacing={3}>
-                  {designDetail?.designIdeaVariantConfig?.map(
-                    (config, index) => {
-                      // Extract the config and its value
-                      const configSpec =
-                        config.designVariantValues[0]?.designIdeaConfig
-                          ?.specifications;
-                      const configValue = config.designVariantValues[0]?.value;
+                <ImageListSelector
+                  imgUrls={saleProduct?.mediaUrls}
+                  imgH={200}
+                />
+              </Box>
 
-                      return (
-                        <ConfigurationItem
-                          key={index}
-                          name={configSpec || `Cấu hình ${index + 1}`}
-                          value={configValue || "Không xác định"}
-                        />
-                      );
-                    }
-                  )}
+              {/* Description */}
+              {saleProduct?.description && (
+                <Box>
+                  <Text
+                    color={appColorTheme.brown_2}
+                    fontWeight="bold"
+                    fontSize="lg"
+                    my={3}
+                  >
+                    Mô tả:
+                  </Text>
+                  <Text whiteSpace="pre-wrap">{saleProduct.description}</Text>
+                </Box>
+              )}
+
+              {/* Product Attributes */}
+              <Box>
+                <Text
+                  color={appColorTheme.brown_2}
+                  fontWeight="bold"
+                  fontSize="lg"
+                  my={3}
+                >
+                  Thông số kỹ thuật:
+                </Text>
+                <Stack spacing={3} divider={<Divider />}>
+                  <AttributeItem
+                    name="Kích thước"
+                    value={`${saleProduct?.length} x ${saleProduct?.width} x ${saleProduct?.height} cm`}
+                  />
+                  <AttributeItem
+                    name="Loại gỗ"
+                    value={saleProduct?.woodType || "Không có thông tin"}
+                  />
+                  <AttributeItem
+                    name="Màu sắc"
+                    value={saleProduct?.color || "Không có thông tin"}
+                  />
+                  <AttributeItem
+                    name="Tính năng đặc biệt"
+                    value={saleProduct?.specialFeature || "Không có thông tin"}
+                  />
+                  <AttributeItem
+                    name="Phong cách"
+                    value={saleProduct?.style || "Không có thông tin"}
+                  />
+                  <AttributeItem
+                    name="Điêu khắc"
+                    value={saleProduct?.sculpture || "Không có thông tin"}
+                  />
+                  <AttributeItem
+                    name="Mùi hương"
+                    value={saleProduct?.scent || "Không có thông tin"}
+                  />
                 </Stack>
               </Box>
             </Stack>

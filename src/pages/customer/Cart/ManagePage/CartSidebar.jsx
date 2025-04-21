@@ -23,10 +23,17 @@ import { NavLink as RouterNavLink } from "react-router-dom";
 import DesignCartItem from "../Design/DesignCartItem.jsx";
 import ProductCartItem from "../Product/ProductCartItem.jsx";
 import useCart from "../../../../hooks/useCart.js";
+import { useState } from "react";
 
 export default function CartSidebar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { cart, getCartItemCount } = useCart();
+  const [tabIndex, setTabIndex] = useState(0);
+
+  // Function to determine the link based on active tab
+  const getCartPageLink = () => {
+    return tabIndex === 0 ? "/cart?tab=design" : "/cart?tab=product";
+  };
 
   return (
     <>
@@ -66,7 +73,7 @@ export default function CartSidebar() {
           </DrawerHeader>
 
           <DrawerBody p={0}>
-            <Tabs>
+            <Tabs onChange={(index) => setTabIndex(index)} index={tabIndex}>
               <TabList mb="1em">
                 <Tab
                   _selected={{
@@ -172,7 +179,7 @@ export default function CartSidebar() {
               left="20px"
               right="20px"
               as={RouterNavLink}
-              to="/cart"
+              to={getCartPageLink()}
               onClick={onClose}
             >
               Xem giỏ hàng

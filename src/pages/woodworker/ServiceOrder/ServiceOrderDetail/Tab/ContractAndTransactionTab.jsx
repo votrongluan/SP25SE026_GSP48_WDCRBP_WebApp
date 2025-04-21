@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   Box,
@@ -28,6 +28,8 @@ export default function ContractAndTransactionTab({
   isActive,
   order,
 }) {
+  const serviceName = order?.service?.service?.serviceName;
+
   const { id } = useParams();
 
   // Fetch contract data
@@ -75,179 +77,181 @@ export default function ContractAndTransactionTab({
     );
   }
 
-  // No contract case
-  if (!contract) {
-    return (
-      <Center h="200px" bg="white" borderRadius="10px" p={5} boxShadow="md">
-        <Text fontSize="lg" color="gray.500">
-          Chưa có thông tin hợp đồng
-        </Text>
-      </Center>
-    );
-  }
-
   return (
     <Box>
       <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={6}>
         {/* Contract Information */}
-        <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
-          <Heading fontWeight="bold" as="h3" fontSize="20px" mb={6}>
-            Thông tin hợp đồng
-          </Heading>
 
-          <Stack spacing={4}>
-            <HStack>
-              <Text fontWeight="bold">Họ tên thợ mộc:</Text>
-              <Text>{contract?.woodworker?.username || "Chưa cập nhật"}</Text>
-            </HStack>
-            <HStack>
-              <Text fontWeight="bold">SĐT thợ mộc:</Text>
-              <Text>{contract?.woodworker?.phone || "Chưa cập nhật"}</Text>
-            </HStack>
-            <HStack>
-              <Text fontWeight="bold">Email thợ mộc:</Text>
-              <Text>{contract?.woodworker?.email || "Chưa cập nhật"}</Text>
-            </HStack>
+        {serviceName != "Sale" && (
+          <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
+            <Heading fontWeight="bold" as="h3" fontSize="20px" mb={6}>
+              Thông tin hợp đồng
+            </Heading>
 
-            <Box height="10px" />
+            {contract ? (
+              <Stack spacing={4}>
+                <HStack>
+                  <Text fontWeight="bold">Họ tên người đại diện:</Text>
+                  <Text>
+                    {contract?.woodworker?.username || "Chưa cập nhật"}
+                  </Text>
+                </HStack>
+                <HStack>
+                  <Text fontWeight="bold">SĐT người đại diện:</Text>
+                  <Text>{contract?.woodworker?.phone || "Chưa cập nhật"}</Text>
+                </HStack>
+                <HStack>
+                  <Text fontWeight="bold">Email người đại diện:</Text>
+                  <Text>{contract?.woodworker?.email || "Chưa cập nhật"}</Text>
+                </HStack>
 
-            <HStack>
-              <Text fontWeight="bold">Họ tên khách hàng:</Text>
-              <Text>{contract?.customer?.username || "Chưa cập nhật"}</Text>
-            </HStack>
-            <HStack>
-              <Text fontWeight="bold">SĐT khách hàng:</Text>
-              <Text>{contract?.customer?.phone || "Chưa cập nhật"}</Text>
-            </HStack>
-            <HStack>
-              <Text fontWeight="bold">Email khách hàng:</Text>
-              <Text>{contract?.customer?.email || "Chưa cập nhật"}</Text>
-            </HStack>
+                <Box height="10px" />
 
-            <Box height="10px" />
+                <HStack>
+                  <Text fontWeight="bold">Họ tên khách hàng:</Text>
+                  <Text>{contract?.customer?.username || "Chưa cập nhật"}</Text>
+                </HStack>
+                <HStack>
+                  <Text fontWeight="bold">SĐT khách hàng:</Text>
+                  <Text>{contract?.customer?.phone || "Chưa cập nhật"}</Text>
+                </HStack>
+                <HStack>
+                  <Text fontWeight="bold">Email khách hàng:</Text>
+                  <Text>{contract?.customer?.email || "Chưa cập nhật"}</Text>
+                </HStack>
 
-            <HStack>
-              <Text fontWeight="bold">Mã hợp đồng:</Text>
-              <Text>{contract.contractId || "Chưa cập nhật"}</Text>
-            </HStack>
+                <Box height="10px" />
 
-            <Box>
-              <Text fontWeight="bold">Điều khoản của thợ mộc:</Text>
-              <Text whiteSpace={"pre-wrap"}>
-                {contract.woodworkerTerms || "Chưa cập nhật"}
-              </Text>
-            </Box>
+                <HStack>
+                  <Text fontWeight="bold">Mã hợp đồng:</Text>
+                  <Text>{contract.contractId || "Chưa cập nhật"}</Text>
+                </HStack>
 
-            <HStack>
-              <Text fontWeight="bold">Ngày ký:</Text>
-              <Text>
-                {contract.signDate
-                  ? formatDateString(new Date(contract.signDate))
-                  : "Chưa cập nhật"}
-              </Text>
-            </HStack>
+                <Box>
+                  <Text fontWeight="bold">Điều khoản của xưởng mộc:</Text>
+                  <Text whiteSpace={"pre-wrap"}>
+                    {contract.woodworkerTerms || "Chưa cập nhật"}
+                  </Text>
+                </Box>
 
-            <HStack>
-              <Text fontWeight="bold">Ngày cam kết hoàn thành sản phẩm:</Text>
-              <Text>
-                {contract.completeDate
-                  ? formatDateString(new Date(contract.completeDate))
-                  : "Chưa cập nhật"}
-              </Text>
-            </HStack>
+                <HStack>
+                  <Text fontWeight="bold">Ngày ký:</Text>
+                  <Text>
+                    {contract.signDate
+                      ? formatDateString(new Date(contract.signDate))
+                      : "Chưa cập nhật"}
+                  </Text>
+                </HStack>
 
-            <HStack>
-              <Text fontWeight="bold">Giá trị hợp đồng:</Text>
-              <Text fontWeight="bold" color={appColorTheme.brown_2}>
-                {contract.contractTotalAmount
-                  ? formatPrice(contract.contractTotalAmount)
-                  : "Chưa cập nhật"}
-              </Text>
-            </HStack>
+                <HStack>
+                  <Text fontWeight="bold">
+                    Ngày cam kết hoàn thành sản phẩm:
+                  </Text>
+                  <Text>
+                    {contract.completeDate
+                      ? formatDateString(new Date(contract.completeDate))
+                      : "Chưa cập nhật"}
+                  </Text>
+                </HStack>
 
-            <HStack>
-              <Text fontWeight="bold">Thời hạn bảo hành:</Text>
-              <Text>
-                {contract.warrantyPeriod
-                  ? formatDateTimeString(new Date(contract.warrantyPeriod))
-                  : "Chưa cập nhật"}
-              </Text>
-            </HStack>
+                <HStack>
+                  <Text fontWeight="bold">Giá trị hợp đồng:</Text>
+                  <Text fontWeight="bold" color={appColorTheme.brown_2}>
+                    {contract.contractTotalAmount
+                      ? formatPrice(contract.contractTotalAmount)
+                      : "Chưa cập nhật"}
+                  </Text>
+                </HStack>
 
-            <Box>
-              <Text fontWeight="bold">Chính sách bảo hành:</Text>
-              <Text whiteSpace={"pre-wrap"}>
-                {contract.warrantyPolicy || "Chưa cập nhật"}
-              </Text>
-            </Box>
+                <HStack>
+                  <Text fontWeight="bold">Thời hạn bảo hành:</Text>
+                  <Text>
+                    {contract.warrantyPeriod
+                      ? formatDateTimeString(new Date(contract.warrantyPeriod))
+                      : "Chưa cập nhật"}
+                  </Text>
+                </HStack>
 
-            <HStack>
-              <Box>
-                <Text fontWeight="bold">Chữ ký thợ mộc</Text>
-                {contract.woodworkerSignature ? (
-                  <Image
-                    mt={4}
-                    height="100px"
-                    src={contract.woodworkerSignature}
-                    fallbackSrc="https://via.placeholder.com/200x100?text=Chữ+ký+thợ+mộc"
-                  />
-                ) : (
-                  <Box
-                    mt={4}
-                    height="100px"
-                    width="200px"
-                    bg="gray.100"
-                    borderRadius="md"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <Text color="gray.500">Chưa có chữ ký</Text>
+                <Box>
+                  <Text fontWeight="bold">Chính sách bảo hành:</Text>
+                  <Text whiteSpace={"pre-wrap"}>
+                    {contract.warrantyPolicy || "Chưa cập nhật"}
+                  </Text>
+                </Box>
+
+                <HStack>
+                  <Box>
+                    <Text fontWeight="bold">Chữ ký người đại diện</Text>
+                    {contract.woodworkerSignature ? (
+                      <Image
+                        mt={4}
+                        height="100px"
+                        src={contract.woodworkerSignature}
+                        fallbackSrc="https://via.placeholder.com/200x100?text=Chữ+ký+thợ+mộc"
+                      />
+                    ) : (
+                      <Box
+                        mt={4}
+                        height="100px"
+                        width="200px"
+                        bg="gray.100"
+                        borderRadius="md"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        <Text color="gray.500">Chưa có chữ ký</Text>
+                      </Box>
+                    )}
                   </Box>
-                )}
-              </Box>
-              <Spacer />
+                  <Spacer />
 
-              <Box>
-                <Text fontWeight="bold">Chữ ký khách hàng</Text>
-                {contract.customerSignature ? (
-                  <Image
-                    mt={4}
-                    height="100px"
-                    src={contract.customerSignature}
-                    fallbackSrc="https://via.placeholder.com/200x100?text=Chữ+ký+khách+hàng"
-                  />
-                ) : (
-                  <Box
-                    mt={4}
-                    height="100px"
-                    width="200px"
-                    bg="gray.100"
-                    borderRadius="md"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <Text color="gray.500">Chưa có chữ ký</Text>
+                  <Box>
+                    <Text fontWeight="bold">Chữ ký khách hàng</Text>
+                    {contract.customerSignature ? (
+                      <Image
+                        mt={4}
+                        height="100px"
+                        src={contract.customerSignature}
+                        fallbackSrc="https://via.placeholder.com/200x100?text=Chữ+ký+khách+hàng"
+                      />
+                    ) : (
+                      <Box
+                        mt={4}
+                        height="100px"
+                        width="200px"
+                        bg="gray.100"
+                        borderRadius="md"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        <Text color="gray.500">Chưa có chữ ký</Text>
+                      </Box>
+                    )}
                   </Box>
-                )}
-              </Box>
-            </HStack>
+                </HStack>
 
-            <HStack>
-              <Spacer />
+                <HStack>
+                  <Spacer />
 
-              <ChakraLink
-                target="_blank"
-                textDecoration="underline"
-                color={appColorTheme.brown_2}
-                href={`/contract/${order.orderId}`}
-              >
-                Xem chi tiết
-              </ChakraLink>
-            </HStack>
-          </Stack>
-        </Box>
+                  <ChakraLink
+                    target="_blank"
+                    textDecoration="underline"
+                    color={appColorTheme.brown_2}
+                    href={`/contract/${order.orderId}`}
+                  >
+                    Xem chi tiết
+                  </ChakraLink>
+                </HStack>
+              </Stack>
+            ) : (
+              <Center py={8}>
+                <Text color="gray.500">Chưa có thông tin hợp đồng</Text>
+              </Center>
+            )}
+          </Box>
+        )}
 
         {/* Deposit/Transaction Information */}
         <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
@@ -275,8 +279,8 @@ export default function ContractAndTransactionTab({
                 <HStack>
                   <Text fontWeight="bold">Thành tiền:</Text>
                   <Text fontWeight="bold" color={appColorTheme.brown_2}>
-                    {contract.contractTotalAmount
-                      ? formatPrice(contract.contractTotalAmount)
+                    {order?.totalAmount
+                      ? formatPrice(order?.totalAmount)
                       : "Chưa cập nhật"}
                   </Text>
                 </HStack>
@@ -308,7 +312,7 @@ export default function ContractAndTransactionTab({
                 >
                   <HStack>
                     <Text fontWeight="bold">
-                      Đặt cọc lần {deposit.depositNumber}:
+                      Đặt cọc lần {deposit.depositNumber}
                     </Text>
                     <Badge colorScheme={deposit.status ? "green" : "gray"}>
                       {deposit.status ? "Đã thanh toán" : "Chưa thanh toán"}
@@ -350,13 +354,6 @@ export default function ContractAndTransactionTab({
                         : "Chưa cập nhật"}
                     </Text>
                   </HStack>
-
-                  {deposit.description && (
-                    <HStack>
-                      <Text fontWeight="bold">Ghi chú:</Text>
-                      <Text>{deposit.description}</Text>
-                    </HStack>
-                  )}
                 </Stack>
               ))}
             </Stack>

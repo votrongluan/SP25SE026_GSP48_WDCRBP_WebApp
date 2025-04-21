@@ -15,7 +15,6 @@ import {
   FiUser,
   FiChevronLeft,
   FiChevronRight,
-  FiGrid,
   FiTool,
   FiPenTool,
   FiBox,
@@ -32,9 +31,9 @@ import useAuth from "../../hooks/useAuth.js";
 export default function WoodworkerSideBar({ isCollapsed, setIsCollapsed }) {
   const navLinkStyle = ({ isActive }) => ({
     display: "block",
-    color: isActive ? appColorTheme.brown_1 : null,
-    fontWeight: isActive ? "bold" : null,
+    fontWeight: "bold",
     cursor: "pointer",
+    width: "100%",
   });
   const { auth } = useAuth();
   const packType =
@@ -44,7 +43,6 @@ export default function WoodworkerSideBar({ isCollapsed, setIsCollapsed }) {
       : null;
 
   const navItems = [
-    { label: "Tổng quan", path: "dashboard", icon: FiGrid, needPack: true },
     {
       label: "Đơn hàng",
       path: "service-order",
@@ -80,7 +78,7 @@ export default function WoodworkerSideBar({ isCollapsed, setIsCollapsed }) {
         right="-35px"
         size="sm"
         variant="ghost"
-        bg="black"
+        bg={appColorTheme.green_3}
         color="white"
         borderRadius="full"
         icon={isCollapsed ? <FiChevronRight /> : <FiChevronLeft />}
@@ -107,28 +105,56 @@ export default function WoodworkerSideBar({ isCollapsed, setIsCollapsed }) {
               height="65px"
               fontSize="1.2rem"
               key={index}
-              transition="margin ease 0.3s"
+              transition="all 0.2s ease"
+              borderRadius="10px"
+              mb={2}
               _hover={{
-                color: "app_brown.1",
-                ml: 2,
+                transform: "translateX(8px)",
               }}
             >
               <NavLink style={navLinkStyle} to={item.path}>
-                {isCollapsed ? (
-                  <Flex p={3} justifyContent="center" align="center" gap={2}>
-                    <Icon as={item.icon} />
-                  </Flex>
-                ) : (
-                  <Flex
-                    bgColor={appColorTheme.grey_0}
-                    p={4}
-                    align="center"
-                    gap={2}
-                    borderRadius="20px"
-                  >
-                    <Icon as={item.icon} />
-                    <Text>{item.label}</Text>
-                  </Flex>
+                {({ isActive }) => (
+                  <>
+                    {isCollapsed ? (
+                      <Flex
+                        p={3}
+                        justifyContent="center"
+                        align="center"
+                        gap={2}
+                        bg={isActive ? appColorTheme.green_2 : "transparent"}
+                        color={isActive ? "white" : appColorTheme.green_3}
+                        borderRadius="md"
+                      >
+                        <Icon as={item.icon} />
+                      </Flex>
+                    ) : (
+                      <Flex
+                        bgColor={
+                          isActive
+                            ? appColorTheme.green_3
+                            : "rgba(154, 230, 180, 0.2)"
+                        }
+                        color={isActive ? "white" : "gray.700"}
+                        p={4}
+                        align="center"
+                        gap={3}
+                        borderRadius="12px"
+                        boxShadow={isActive ? "md" : "none"}
+                        _hover={{
+                          bgColor: isActive
+                            ? appColorTheme.green_3
+                            : appColorTheme.green_1,
+                          color: isActive ? "white" : "gray.800",
+                        }}
+                      >
+                        <Icon
+                          as={item.icon}
+                          color={isActive ? "white" : appColorTheme.green_3}
+                        />
+                        <Text>{item.label}</Text>
+                      </Flex>
+                    )}
+                  </>
                 )}
               </NavLink>
             </ListItem>

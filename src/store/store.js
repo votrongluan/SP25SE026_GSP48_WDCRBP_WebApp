@@ -19,7 +19,6 @@ import { postApi } from "../services/postApi";
 import { userAddressApi } from "../services/userAddressApi";
 import { serviceOrderApi } from "../services/serviceOrderApi";
 import { productApi } from "../services/productApi";
-import { productOrderApi } from "../services/productOrderApi";
 import { techSpecApi } from "../services/techSpecApi";
 import { orderProgressApi } from "../services/orderProgressApi";
 import { orderDepositApi } from "../services/orderDepositApi";
@@ -50,7 +49,6 @@ export const store = configureStore({
     [userAddressApi.reducerPath]: userAddressApi.reducer,
     [serviceOrderApi.reducerPath]: serviceOrderApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
-    [productOrderApi.reducerPath]: productOrderApi.reducer,
     [techSpecApi.reducerPath]: techSpecApi.reducer,
     [orderProgressApi.reducerPath]: orderProgressApi.reducer,
     [orderDepositApi.reducerPath]: orderDepositApi.reducer,
@@ -81,7 +79,6 @@ export const store = configureStore({
       userAddressApi.middleware,
       serviceOrderApi.middleware,
       productApi.middleware,
-      productOrderApi.middleware,
       techSpecApi.middleware,
       orderProgressApi.middleware,
       orderDepositApi.middleware,

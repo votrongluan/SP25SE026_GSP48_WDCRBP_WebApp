@@ -38,6 +38,7 @@ export default function CusServiceOrderDetailPage() {
   } = useGetAllOrderDepositByOrderIdQuery(id);
   const deposits = depositsResponse?.data || [];
   const { auth } = useAuth();
+  const serviceName = order?.service?.service?.serviceName;
 
   // Track active tab index
   const [activeTabIndex, setActiveTabIndex] = useState(0);
@@ -137,7 +138,12 @@ export default function CusServiceOrderDetailPage() {
             {[
               { label: "Chung", icon: FiFileText },
               { label: "Tiến độ", icon: FiActivity },
-              { label: "Hợp đồng & Giao dịch", icon: FiFile },
+              {
+                label: `${
+                  serviceName != "Sale" ? "Hợp đồng & Giao dịch" : "Giao dịch"
+                }`,
+                icon: FiFile,
+              },
             ].map((tab, index) => (
               <Tab
                 key={index}

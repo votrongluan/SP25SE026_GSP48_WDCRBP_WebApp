@@ -59,7 +59,7 @@ function AuthPage() {
           }}
           textAlign={"center"}
         >
-          Đăng ký trở thành thợ mộc
+          Đăng ký trở thành xưởng mộc
         </Box>
       </Link>
     </>

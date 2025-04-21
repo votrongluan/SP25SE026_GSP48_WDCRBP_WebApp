@@ -8,7 +8,6 @@ import RootLayout from "./layouts/RootLayout.jsx";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import NotFoundPage from "./pages/general/StatusPage/NotFoundPage.jsx";
 import ErrorPage from "./pages/general/StatusPage/ErrorPage.jsx";
-import { GlobalProvider } from "./context/GlobalContext.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
 import AuthPage from "./pages/general/Auth/AuthPage.jsx";
 import { AuthProvider } from "./context/AuthProvider.jsx";
@@ -225,16 +224,14 @@ function App() {
 
   return (
     <Provider store={store}>
-      <GlobalProvider>
-        <AuthProvider>
-          <CartProvider>
-            <ChakraProvider theme={theme}>
-              <ScrollToTopAndBottom />
-              <RouterProvider router={router} />
-            </ChakraProvider>
-          </CartProvider>
-        </AuthProvider>
-      </GlobalProvider>
+      <AuthProvider>
+        <CartProvider>
+          <ChakraProvider theme={theme}>
+            <ScrollToTopAndBottom />
+            <RouterProvider router={router} />
+          </ChakraProvider>
+        </CartProvider>
+      </AuthProvider>
     </Provider>
   );
 }

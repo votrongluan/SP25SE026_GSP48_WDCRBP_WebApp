@@ -157,11 +157,10 @@ export default function ReviewDetailModal({ review, refetch }) {
                 </Box>
               </Box>
 
-              {/* Phản hồi của thợ mộc nếu có */}
               {review?.woodworkerResponse && (
                 <Box>
                   <Heading size="md" mb={4}>
-                    Phản hồi của thợ mộc
+                    Phản hồi của xưởng mộc
                   </Heading>
                   <Box bg="white" p={5} borderRadius="lg" boxShadow="md">
                     <Text>{review?.woodworkerResponse}</Text>

@@ -20,6 +20,7 @@ import {
   useDisclosure,
   Textarea,
   Box,
+  Checkbox,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FiPlus, FiSave, FiX } from "react-icons/fi";
@@ -39,6 +40,7 @@ export default function ProductCreateModal({ refetch }) {
   const [mediaUrls, setMediaUrls] = useState("");
   const [price, setPrice] = useState(0);
   const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [isInstall, setIsInstall] = useState(false);
   const { auth } = useAuth();
   const notify = useNotify();
 
@@ -59,16 +61,15 @@ export default function ProductCreateModal({ refetch }) {
       // Build the product data with spread operator for cleaner code
       const productData = {
         ...formEntries,
-        // Convert string values to numbers
         price: Number(formEntries.price),
         stock: Number(formEntries.stock),
         warrantyDuration: Number(formEntries.warrantyDuration),
         length: Number(formEntries.length),
         width: Number(formEntries.width),
         height: Number(formEntries.height),
-        // Add additional properties
         mediaUrls: mediaUrls,
         status: true,
+        isInstall: isInstall,
         woodworkerId: auth?.wwId,
         categoryId: Number(categoryId),
       };
@@ -163,6 +164,19 @@ export default function ProductCreateModal({ refetch }) {
                     rows={5}
                   />
                 </FormControl>
+
+                <Box py={2}>
+                  <Checkbox
+                    isChecked={isInstall}
+                    onChange={(e) => setIsInstall(e.target.checked)}
+                    size="md"
+                    colorScheme="green"
+                  >
+                    <Text fontWeight="medium">
+                      Cần giao hàng + lắp đặt bởi xưởng
+                    </Text>
+                  </Checkbox>
+                </Box>
 
                 <HStack spacing={4}>
                   <FormControl flex="1" isRequired>

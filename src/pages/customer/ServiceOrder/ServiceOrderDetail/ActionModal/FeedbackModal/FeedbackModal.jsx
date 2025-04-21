@@ -62,7 +62,7 @@ export default function FeedbackModal({ serviceOrderId, refetch }) {
 
       notify(
         "Gửi phản hồi thành công",
-        "Thợ mộc sẽ sớm xem xét phản hồi của bạn",
+        "Xưởng mộc sẽ sớm xem xét phản hồi của bạn",
         "success"
       );
 

@@ -35,6 +35,7 @@ import {
 } from "../../../../../../services/shipmentApi";
 import { useCreateShipmentForServiceOrderMutation } from "../../../../../../services/ghnApi";
 import { useNotify } from "../../../../../../components/Utility/Notify.jsx";
+import { createAndUpdateShipment } from "../../../../../../utils/shippingUtils.js";
 
 export default function FinishUpdateModal({
   products = [],
@@ -65,30 +66,7 @@ export default function FinishUpdateModal({
   // Shipment processing state
   const [processingShipment, setProcessingShipment] = useState(false);
 
-  // Helper function to extract dimensions
-  const extractDimensions = (config) => {
-    try {
-      const dimensionStr = config.designVariantValues[0].value;
-
-      const dimensions = dimensionStr
-        .split("x")
-        .map((dim) => parseFloat(dim.trim()));
-
-      if (dimensions.length === 3) {
-        return {
-          length: dimensions[0] || 20,
-          width: dimensions[1] || 20,
-          height: dimensions[2] || 20,
-        };
-      }
-
-      return { length: 20, width: 20, height: 20 };
-    } catch (error) {
-      return { length: 20, width: 20, height: 20 };
-    }
-  };
-
-  // This function now just stores the uploaded media URLs in state
+  // Handle uploaded media URLs
   const handleUploadComplete = (productId, mediaUrls) => {
     // Store the new upload in our state
     setProductUploads((prev) => ({
@@ -111,98 +89,25 @@ export default function FinishUpdateModal({
     });
   };
 
-  // Process shipment creation for the service order
+  // Process shipment creation using the utility function
   const processShipment = async () => {
     try {
       setProcessingShipment(true);
 
       const shipment = shipmentData.data[0];
 
-      const items = products.map((product) => {
-        let dimensions;
-
-        if (product.designIdeaVariantDetail?.designIdeaVariantConfig) {
-          dimensions = extractDimensions({
-            designVariantValues: [
-              {
-                value:
-                  product.designIdeaVariantDetail.designIdeaVariantConfig[0]
-                    ?.designVariantValues[0]?.value,
-              },
-            ],
-          });
-        } else if (product.personalProductDetail) {
-          dimensions = {
-            length: product.personalProductDetail.techSpecList.find(
-              (item) => item.name == "Chiều dài"
-            ).value,
-            width: product.personalProductDetail.techSpecList.find(
-              (item) => item.name == "Chiều rộng"
-            ).value,
-            height: product.personalProductDetail.techSpecList.find(
-              (item) => item.name == "Chiều cao"
-            ).value,
-          };
-        } else {
-          dimensions = { length: 20, width: 20, height: 20 };
-        }
-
-        return {
-          name:
-            product.designIdeaVariantDetail?.name ||
-            product.category?.categoryName ||
-            "Sản phẩm",
-          quantity: product.quantity || 1,
-          length: dimensions.length,
-          width: dimensions.width,
-          height: dimensions.height,
-          weight: 0,
-        };
+      const result = await createAndUpdateShipment({
+        order,
+        products,
+        shipment,
+        serviceOrderId,
+        createShipment,
+        updateShipmentOrderCode,
       });
-
-      // Create GHN shipment request
-      const requestData = {
-        payment_type_id: 1,
-        required_note: "WAIT",
-        from_name: order?.service?.wwDto?.name,
-        from_phone: order?.service?.wwDto?.phone,
-        from_address: shipment.fromAddress,
-        from_ward_name:
-          order?.service?.wwDto?.address?.split(",")[1]?.trim() || "N/A",
-        from_district_name:
-          order?.service?.wwDto?.address?.split(",")[2]?.trim() || "N/A",
-        from_province_name:
-          order?.service?.wwDto?.address?.split(",")[3]?.trim() || "N/A",
-        to_phone: order?.user?.phone,
-        to_name: order?.user?.username,
-        to_address: shipment.toAddress,
-        to_ward_code: shipment.toWardCode,
-        to_district_id: shipment.toDistrictId,
-        weight: 0,
-        length: 0,
-        width: 0,
-        height: 0,
-        service_type_id: shipment.ghnServiceTypeId || 5,
-        items: items,
-      };
-
-      console.log(JSON.stringify(requestData, null, 2));
-
-      const response = await createShipment({
-        serviceOrderId,
-        data: requestData,
-      }).unwrap();
-
-      const orderCode = response.data.data.order_code;
-
-      await updateShipmentOrderCode({
-        serviceOrderId,
-        orderCode,
-      }).unwrap();
 
       notify(
         "Thành công",
-        "Đã tạo vận đơn thành công với mã: " + orderCode,
+        "Đã tạo vận đơn thành công với mã: " + result.orderCode,
         "success"
       );
     } catch (error) {
@@ -211,6 +116,8 @@ export default function FinishUpdateModal({
         error.data?.message || error.message || "Không thể tạo vận đơn",
         "error"
       );
+    } finally {
+      setProcessingShipment(false);
     }
   };
 
@@ -219,17 +126,18 @@ export default function FinishUpdateModal({
     try {
       setIsSubmitting(true);
 
+      // Create shipment if needed (non-installation order)
       if (!order?.install) {
         await processShipment();
       }
 
-      // Format the request payload as an array of objects
+      // Format the request payload for the API
       const formattedPayload = requestPayload.map((item) => ({
         mediaUrls: item.mediaUrls,
         productId: item.productId,
       }));
 
-      // Call the API with the array as body and serviceId as query param
+      // Call the API to add finish product images
       await addFinishProductImage({
         serviceId: serviceOrderId,
         body: formattedPayload,

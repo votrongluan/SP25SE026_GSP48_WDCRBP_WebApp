@@ -21,6 +21,7 @@ import {
   Textarea,
   Tooltip,
   Box,
+  Checkbox,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FiEdit2, FiSave, FiX } from "react-icons/fi";
@@ -39,6 +40,7 @@ export default function ProductUpdateModal({ product, refetch }) {
   const [price, setPrice] = useState(product?.price);
   const [mediaUrls, setMediaUrls] = useState(product?.mediaUrls || "");
   const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [isInstall, setIsInstall] = useState(product?.isInstall || false);
   const notify = useNotify();
 
   // State for category
@@ -68,6 +70,7 @@ export default function ProductUpdateModal({ product, refetch }) {
         // Add additional properties
         mediaUrls: mediaUrls,
         status: true,
+        isInstall: isInstall,
         woodworkerId: product.woodworkerId,
         categoryId: Number(categoryId),
       };
@@ -173,6 +176,19 @@ export default function ProductUpdateModal({ product, refetch }) {
                     defaultValue={product?.description}
                   />
                 </FormControl>
+
+                <Box py={2}>
+                  <Checkbox
+                    isChecked={isInstall}
+                    onChange={(e) => setIsInstall(e.target.checked)}
+                    size="md"
+                    colorScheme="green"
+                  >
+                    <Text fontWeight="medium">
+                      Cần giao hàng + lắp đặt bởi xưởng
+                    </Text>
+                  </Checkbox>
+                </Box>
 
                 <HStack spacing={4}>
                   <FormControl flex="1" isRequired>

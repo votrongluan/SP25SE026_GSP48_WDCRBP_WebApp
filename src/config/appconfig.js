@@ -7,13 +7,19 @@ export const appColorTheme = {
   grey_2: "#EAEAEA",
   black_0: "#00060F",
   white_0: "#ffffff",
-  green_0: "#38a169 ",
+  green_0: "#38a169",
+  green_1: "#9AE6B4", // Light green
+  green_2: "#68D391", // Medium light green
+  green_3: "#48BB78", // Medium green
   blue_0: "#3182ce",
   red_0: "#e53e3e",
   purple_0: "#9f7aea",
   orange_0: "#f6ad55",
   yellow_0: "#f6e05e",
   pink_0: "#f687b3",
+  pink_1: "#FBB6CE", // Light pink
+  pink_2: "#F687B3", // Medium pink
+  pink_3: "#ED64A6", // Darker pink
   teal_0: "#4fd1c5",
   cyan_0: "#0dcaf0",
   lime_0: "#a6f4c5",
@@ -42,7 +48,7 @@ export const servicePackNameConstants = {
 };
 
 export const serviceOrderStatusConstants = {
-  DANG_CHO_THO_DUYET: "Đang chờ thợ mộc xác nhận đơn hàng",
+  DANG_CHO_THO_DUYET: "Đang chờ xưởng mộc xác nhận đơn hàng",
   DANG_CHO_KHACH_DUYET_LICH_HEN: "Đang chờ khách hàng duyệt lịch hẹn",
   DA_DUYET_LICH_HEN: "Đã duyệt lịch hẹn",
   DANG_CHO_KHACH_DUYET_HOP_DONG: "Đang chờ khách hàng duyệt hợp đồng",
@@ -79,7 +85,7 @@ export const getServiceOrderStatusColor = (status) => {
 };
 
 export const guaranteeOrderStatusConstants = {
-  DANG_CHO_THO_MOC_XAC_NHAN: "Đang chờ thợ mộc xác nhận đơn hàng",
+  DANG_CHO_THO_MOC_XAC_NHAN: "Đang chờ xưởng mộc xác nhận đơn hàng",
   DANG_CHO_KHACH_DUYET_LICH_HEN: "Đang chờ khách hàng duyệt lịch hẹn",
   DA_DUYET_LICH_HEN: "Đã duyệt lịch hẹn",
   DANG_CHO_KHACH_DUYET_BAO_GIA: "Đang chờ khách hàng duyệt báo giá",

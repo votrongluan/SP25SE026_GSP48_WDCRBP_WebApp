@@ -97,12 +97,6 @@ export default function TransactionDetailModal({ transaction }) {
                   {detail?.status ? "Đã hoàn thành" : "Chưa hoàn thành"}
                 </Text>
               </Box>
-              {detail?.canceledAt && (
-                <Box>
-                  <Text fontWeight="bold">Ngày hủy:</Text>
-                  <Text>{formatDateTimeString(detail?.canceledAt)}</Text>
-                </Box>
-              )}
             </Grid>
           </Box>
         </Box>

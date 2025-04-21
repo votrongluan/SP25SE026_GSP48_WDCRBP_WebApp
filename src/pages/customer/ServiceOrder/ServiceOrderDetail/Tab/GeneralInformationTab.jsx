@@ -6,12 +6,12 @@ import {
   Stack,
   Text,
   Link as ChakraLink,
-  Badge,
   Spacer,
 } from "@chakra-ui/react";
 import {
   appColorTheme,
   getServiceTypeLabel,
+  service,
 } from "../../../../../config/appconfig.js";
 import {
   formatDateTimeString,
@@ -19,8 +19,8 @@ import {
 } from "../../../../../utils/utils.js";
 import CustomizationProductList from "./CustomizationProductList.jsx";
 import StarRating from "../../../../../components/Utility/StarRating.jsx";
-import { Link } from "react-router-dom";
 import PersonalizationProductList from "./PersonalizationProductList.jsx";
+import SaleProductList from "./SaleProductList.jsx";
 
 export default function GeneralInformationTab({ order }) {
   const serviceName = order?.service?.service?.serviceName;
@@ -36,6 +36,13 @@ export default function GeneralInformationTab({ order }) {
       )}
       {serviceName == "Customization" && (
         <CustomizationProductList
+          shipFee={order?.shipFee}
+          products={order?.requestedProduct}
+          totalAmount={order?.totalAmount}
+        />
+      )}
+      {serviceName == "Sale" && (
+        <SaleProductList
           shipFee={order?.shipFee}
           products={order?.requestedProduct}
           totalAmount={order?.totalAmount}
@@ -98,45 +105,47 @@ export default function GeneralInformationTab({ order }) {
           </Box>
         </Box>
 
-        <Box bgColor="white" boxShadow="md" p={5} borderRadius="10px">
-          <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
-            Thông tin lịch hẹn tư vấn
-          </Heading>
+        {serviceName != "Sale" && (
+          <Box bgColor="white" boxShadow="md" p={5} borderRadius="10px">
+            <Heading fontWeight="bold" as="h3" fontSize="20px" mb={4}>
+              Thông tin lịch hẹn tư vấn bàn hợp đồng
+            </Heading>
 
-          <Stack spacing={4}>
-            {order?.consultantAppointment ? (
-              <>
-                <HStack>
-                  <Text fontWeight="bold">Hình thức:</Text>
-                  <Text>{order.consultantAppointment.form}</Text>
-                </HStack>
+            <Stack spacing={4}>
+              {order?.consultantAppointment ? (
+                <>
+                  <HStack>
+                    <Text fontWeight="bold">Hình thức:</Text>
+                    <Text>{order.consultantAppointment.form}</Text>
+                  </HStack>
 
-                <HStack>
-                  <Text fontWeight="bold">Địa điểm:</Text>
-                  <Text>{order.consultantAppointment.meetAddress}</Text>
-                </HStack>
+                  <HStack>
+                    <Text fontWeight="bold">Địa điểm:</Text>
+                    <Text>{order.consultantAppointment.meetAddress}</Text>
+                  </HStack>
 
-                <HStack>
-                  <Text fontWeight="bold">Ngày giờ hẹn:</Text>
-                  <Text>
-                    {formatDateTimeToVietnamese(
-                      new Date(order.consultantAppointment.dateTime)
-                    )}
-                  </Text>
-                </HStack>
+                  <HStack>
+                    <Text fontWeight="bold">Ngày giờ hẹn:</Text>
+                    <Text>
+                      {formatDateTimeToVietnamese(
+                        new Date(order.consultantAppointment.dateTime)
+                      )}
+                    </Text>
+                  </HStack>
 
-                <HStack>
-                  <Text fontWeight="bold">Mô tả:</Text>
-                  <Text>
-                    {order.consultantAppointment.content || "Không có mô tả"}
-                  </Text>
-                </HStack>
-              </>
-            ) : (
-              <Text color="gray.500">Chưa có lịch hẹn tư vấn</Text>
-            )}
-          </Stack>
-        </Box>
+                  <HStack>
+                    <Text fontWeight="bold">Mô tả:</Text>
+                    <Text>
+                      {order.consultantAppointment.content || "Không có mô tả"}
+                    </Text>
+                  </HStack>
+                </>
+              ) : (
+                <Text color="gray.500">Chưa có lịch hẹn tư vấn</Text>
+              )}
+            </Stack>
+          </Box>
+        )}
       </SimpleGrid>
 
       <Box bgColor="white" boxShadow="md" p={5} borderRadius="10px" mt={6}>
@@ -159,14 +168,17 @@ export default function GeneralInformationTab({ order }) {
 
               <HStack>
                 <Spacer />
-                <Link to={`/woodworker/${order?.service?.wwDto?.woodworkerId}`}>
+                <ChakraLink
+                  target="_blank"
+                  href={`/woodworker/${order?.service?.wwDto?.woodworkerId}`}
+                >
                   <Text
                     color={appColorTheme.brown_2}
                     _hover={{ textDecoration: "underline" }}
                   >
                     Xem xưởng
                   </Text>
-                </Link>
+                </ChakraLink>
               </HStack>
             </Stack>
           </Box>

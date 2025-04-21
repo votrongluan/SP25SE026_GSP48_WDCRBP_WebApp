@@ -11,7 +11,6 @@ import { NavLink } from "react-router-dom";
 import {
   FiAlertTriangle,
   FiCreditCard,
-  FiLogOut,
   FiSettings,
   FiShoppingCart,
   FiUser,

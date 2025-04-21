@@ -62,10 +62,10 @@ export default function WWResponseManagementPage() {
       valueFormatter: (params) => params.value || "Không có thông tin",
     },
     {
-      headerName: "Thợ mộc",
-      field: "woodworkerUser.username",
+      headerName: "Xưởng mộc",
+      field: "woodworker.brandName",
       valueGetter: (params) => {
-        return params.data.woodworkerUser?.username || "Không có thông tin";
+        return params.data.woodworker?.brandName || "Không có thông tin";
       },
     },
     {
