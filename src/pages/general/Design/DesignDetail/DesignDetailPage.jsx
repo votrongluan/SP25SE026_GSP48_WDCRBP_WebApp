@@ -235,7 +235,7 @@ export default function DesignDetailPage() {
                   onVariantSelect={setSelectedVariant}
                 />
               </Box>
-              {auth?.role !== "Woodworker" && (
+              {auth?.role === "Customer" && (
                 <Flex mt={4} gap={5} flexDirection="column">
                   {isDesignAvailable && (
                     <Flex gap={5} alignItems="center">

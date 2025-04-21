@@ -53,10 +53,10 @@ const ReviewList = ({ data }) => {
             {/* Phản hồi của woodworker nếu có */}
             {review.woodworkerResponseStatus && (
               <Box mt={2} pl={4} borderLeft="2px solid #E2E8F0">
-                <Text fontWeight="bold" fontSize="sm">
-                  Phản hồi:
+                <Text fontWeight="bold" fontSize="md">
+                  Phản hồi của xưởng mộc:
                 </Text>
-                <Text fontSize="sm">{review.woodworkerResponse}</Text>
+                <Text fontSize="md">{review.woodworkerResponse}</Text>
                 <Text fontSize="xs" color="gray.600">
                   {new Date(review.responseAt).toLocaleDateString("vi-VN")}{" "}
                   {new Date(review.responseAt).toLocaleTimeString("vi-VN", {

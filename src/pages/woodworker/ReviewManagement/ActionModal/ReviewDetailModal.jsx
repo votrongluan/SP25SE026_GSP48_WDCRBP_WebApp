@@ -16,8 +16,6 @@ import {
   Tooltip,
   useDisclosure,
   VStack,
-  Badge,
-  useToast,
   Link,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
@@ -25,11 +23,12 @@ import { FiEye, FiStar, FiCheck } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import { formatDateTimeString } from "../../../../utils/utils";
 import { useUpdateReviewResponseMutation } from "../../../../services/reviewApi";
+import { useNotify } from "../../../../components/Utility/Notify";
 
 export default function ReviewDetailModal({ review, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
-  const toast = useToast();
+  const notify = useNotify();
   const [response, setResponse] = useState(review?.woodworkerResponse || "");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -37,22 +36,17 @@ export default function ReviewDetailModal({ review, refetch }) {
 
   const handleSubmit = async () => {
     if (!response.trim()) {
-      toast({
-        title: "Nội dung phản hồi không được để trống",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      notify("Nội dung phản hồi không được để trống", "", "error", 3000);
       return;
     }
 
     if (response.length > 500) {
-      toast({
-        title: "Nội dung phản hồi không được vượt quá 500 ký tự",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      notify(
+        "Nội dung phản hồi không được vượt quá 500 ký tự",
+        "",
+        "error",
+        3000
+      );
       return;
     }
 
@@ -63,36 +57,25 @@ export default function ReviewDetailModal({ review, refetch }) {
         woodworkerResponse: response.trim(),
       }).unwrap();
 
-      toast({
-        title: "Phản hồi thành công",
-        description: "Đã gửi phản hồi đánh giá",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      notify(
+        "Phản hồi thành công",
+        "Đã gửi phản hồi đánh giá",
+        "success",
+        3000
+      );
 
+      refetch();
       onClose();
-      if (refetch) refetch();
     } catch (error) {
-      toast({
-        title: "Lỗi khi gửi phản hồi",
-        description: error.data?.message || "Đã có lỗi xảy ra",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      notify(
+        "Lỗi khi gửi phản hồi",
+        error.data?.message || "Đã có lỗi xảy ra",
+        "error",
+        5000
+      );
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const getStatusBadge = () => {
-    if (review?.status === true) {
-      return <Badge colorScheme="green">Đã duyệt</Badge>;
-    } else if (review?.status === false) {
-      return <Badge colorScheme="red">Từ chối</Badge>;
-    }
-    return <Badge colorScheme="orange">Chờ duyệt</Badge>;
   };
 
   return (
@@ -141,7 +124,7 @@ export default function ReviewDetailModal({ review, refetch }) {
                         {review?.serviceOrderId
                           ? "Đơn dịch vụ"
                           : review?.guaranteeOrderId
-                          ? "Đơn bảo hành"
+                          ? "Đơn BH / sửa"
                           : "Không xác định"}
                       </Text>
                     </Box>

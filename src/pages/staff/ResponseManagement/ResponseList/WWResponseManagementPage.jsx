@@ -1,8 +1,17 @@
-import { Box, Flex, Heading, HStack, Stack, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  Stack,
+  Spinner,
+  Text,
+  Center,
+} from "@chakra-ui/react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { appColorTheme } from "../../../../config/appconfig";
 import DetailModal from "../ActionModal/DetailModal";
 import { formatDateTimeString } from "../../../../utils/utils";
@@ -10,41 +19,21 @@ import { FiStar } from "react-icons/fi";
 import { useGetPendingWoodworkerResponsesQuery } from "../../../../services/reviewApi";
 
 export default function WWResponseManagementPage() {
-  const toast = useToast();
-  const [rowData, setRowData] = useState([]);
-
   // Fetch reviews with woodworker responses that need approval
   const {
     data: reviewsResponse,
     isLoading,
-    error,
+    isError,
     refetch,
   } = useGetPendingWoodworkerResponsesQuery();
 
-  useEffect(() => {
-    if (reviewsResponse?.data) {
-      setRowData(
-        reviewsResponse.data.map((el) => ({
-          ...el,
-          createdAt: new Date(el.createdAt),
-          updatedAt: new Date(el.updatedAt),
-          responseAt: el.responseAt ? new Date(el.responseAt) : null,
-        }))
-      );
-    }
-  }, [reviewsResponse]);
-
-  useEffect(() => {
-    if (error) {
-      toast({
-        title: "Lỗi khi tải dữ liệu",
-        description: error.message || "Không thể tải danh sách phản hồi",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
-  }, [error, toast]);
+  // Transform data directly
+  const reviews = reviewsResponse?.data?.map((el) => ({
+    ...el,
+    createdAt: new Date(el.createdAt),
+    updatedAt: new Date(el.updatedAt),
+    responseAt: el.responseAt ? new Date(el.responseAt) : null,
+  }));
 
   const handleRefetch = useCallback(() => {
     refetch();
@@ -63,16 +52,16 @@ export default function WWResponseManagementPage() {
     },
     {
       headerName: "Xưởng mộc",
-      field: "woodworker.brandName",
+      field: "brandName",
       valueGetter: (params) => {
-        return params.data.woodworker?.brandName || "Không có thông tin";
+        return params.data?.brandName || "Không có thông tin";
       },
     },
     {
       headerName: "Loại đơn",
       valueGetter: (params) => {
-        if (params.data.serviceOrderId) return "Đơn thiết kế";
-        if (params.data.guaranteeOrderId) return "Đơn bảo hành";
+        if (params.data.serviceOrderId) return "Đơn dịch vụ";
+        if (params.data.guaranteeOrderId) return "Đơn BH / sửa";
         return "Không xác định";
       },
     },
@@ -94,31 +83,10 @@ export default function WWResponseManagementPage() {
       },
     },
     {
-      headerName: "Ngày đánh giá",
-      field: "createdAt",
-      valueFormatter: (params) => formatDateTimeString(params.value),
-    },
-    {
       headerName: "Ngày phản hồi",
       field: "responseAt",
       valueFormatter: (params) =>
         params.value ? formatDateTimeString(params.value) : "Chưa có",
-    },
-    {
-      headerName: "Trạng thái",
-      valueGetter: (params) => {
-        if (params.data.woodworkerResponseStatus === true) return "Đã duyệt";
-        if (params.data.woodworkerResponseStatus === false) return "Từ chối";
-        return "Chờ duyệt";
-      },
-      cellStyle: (params) => {
-        if (params.value === "Đã duyệt") {
-          return { color: "#38A169" };
-        } else if (params.value === "Từ chối") {
-          return { color: "#E53E3E" };
-        }
-        return { color: "#F6AD55" };
-      },
     },
     {
       headerName: "Thao tác",
@@ -139,6 +107,24 @@ export default function WWResponseManagementPage() {
       flex: 1,
     };
   }, []);
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <Center h="500px">
+        <Spinner size="xl" color={appColorTheme.brown_2} />
+      </Center>
+    );
+  }
+
+  // Show error state
+  if (isError) {
+    return (
+      <Center h="500px">
+        <Text color="red.500">Đã xảy ra lỗi khi tải dữ liệu.</Text>
+      </Center>
+    );
+  }
 
   return (
     <Stack spacing={6}>
@@ -162,11 +148,9 @@ export default function WWResponseManagementPage() {
             paginationPageSize={20}
             paginationPageSizeSelector={[10, 20, 50, 100]}
             defaultColDef={defaultColDef}
-            rowData={rowData}
+            rowData={reviews || []}
             columnDefs={colDefs}
-            loadingOverlayComponent={() => "Đang tải dữ liệu..."}
             overlayNoRowsTemplate="Không có phản hồi nào cần duyệt"
-            overlayLoadingTemplate="Đang tải dữ liệu..."
           />
         </div>
       </Box>

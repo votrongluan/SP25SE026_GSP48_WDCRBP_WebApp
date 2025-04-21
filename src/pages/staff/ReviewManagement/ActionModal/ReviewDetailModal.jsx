@@ -15,21 +15,22 @@ import {
   Tooltip,
   useDisclosure,
   VStack,
-  useToast,
   Badge,
   Flex,
   Spacer,
+  Link,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FiEye, FiStar, FiCheck, FiX } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import { formatDateTimeString } from "../../../../utils/utils";
 import { useUpdateReviewStatusMutation } from "../../../../services/reviewApi";
+import { useNotify } from "../../../../components/Utility/Notify";
 
 export default function ReviewDetailModal({ review, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
-  const toast = useToast();
+  const notify = useNotify();
   const [isProcessing, setIsProcessing] = useState(false);
 
   const [updateReviewStatus] = useUpdateReviewStatusMutation();
@@ -42,23 +43,22 @@ export default function ReviewDetailModal({ review, refetch }) {
         status: status,
       }).unwrap();
 
-      toast({
-        title: `Đã ${status ? "duyệt" : "từ chối"} đánh giá`,
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      notify(
+        `Đã ${status ? "duyệt" : "từ chối"} đánh giá`,
+        "",
+        "success",
+        3000
+      );
 
       onClose();
       if (refetch) refetch();
     } catch (error) {
-      toast({
-        title: `Lỗi khi ${status ? "duyệt" : "từ chối"} đánh giá`,
-        description: error.data?.message || "Đã có lỗi xảy ra",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      notify(
+        `Lỗi khi ${status ? "duyệt" : "từ chối"} đánh giá`,
+        error.data?.message || "Đã có lỗi xảy ra",
+        "error",
+        5000
+      );
     } finally {
       setIsProcessing(false);
     }
@@ -118,6 +118,16 @@ export default function ReviewDetailModal({ review, refetch }) {
                       <Text>{review?.username}</Text>
                     </Box>
                     <Box>
+                      <Text fontWeight="bold">Xưởng mộc:</Text>
+                      <Link
+                        href={`/woodworker/${review?.woodworkerId}`}
+                        color={appColorTheme.brown_2}
+                        isExternal
+                      >
+                        <Text>{review?.brandName}</Text>
+                      </Link>
+                    </Box>
+                    <Box>
                       <Text fontWeight="bold">Ngày tạo:</Text>
                       <Text>{formatDateTimeString(review?.createdAt)}</Text>
                     </Box>
@@ -173,28 +183,23 @@ export default function ReviewDetailModal({ review, refetch }) {
               <Button onClick={onClose} mr={3}>
                 Đóng
               </Button>
-
-              {review?.status === null && (
-                <>
-                  <Button
-                    colorScheme="red"
-                    mr={3}
-                    onClick={() => handleUpdateStatus(false)}
-                    leftIcon={<FiX />}
-                    isLoading={isProcessing}
-                  >
-                    Từ chối
-                  </Button>
-                  <Button
-                    colorScheme="green"
-                    onClick={() => handleUpdateStatus(true)}
-                    leftIcon={<FiCheck />}
-                    isLoading={isProcessing}
-                  >
-                    Duyệt
-                  </Button>
-                </>
-              )}
+              <Button
+                colorScheme="red"
+                mr={3}
+                onClick={() => handleUpdateStatus(false)}
+                leftIcon={<FiX />}
+                isLoading={isProcessing}
+              >
+                Từ chối
+              </Button>
+              <Button
+                colorScheme="green"
+                onClick={() => handleUpdateStatus(true)}
+                leftIcon={<FiCheck />}
+                isLoading={isProcessing}
+              >
+                Duyệt
+              </Button>
             </Flex>
           </ModalBody>
         </ModalContent>

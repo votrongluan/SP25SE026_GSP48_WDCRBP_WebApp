@@ -67,14 +67,18 @@ function Header() {
               mr={5}
             >
               {links.map((link, index) => {
+                if (link.path == "/pricing" && auth?.role) {
+                  return null;
+                }
+
                 if (
-                  link.path == "/pricing" &&
-                  (auth?.role == "Woodworker" || auth?.role == "Customer")
+                  link.path == "/" &&
+                  ["Moderator", "Admin", "Staff"].includes(auth?.role)
                 ) {
                   return null;
                 }
 
-                if (link.path == "/guarantee" && auth?.role == "Woodworker") {
+                if (link.path == "/guarantee" && auth?.role != "Customer") {
                   return null;
                 }
 

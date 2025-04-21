@@ -4,33 +4,13 @@ import {
   Box,
   Heading,
   Flex,
-  Text,
   Button,
   SimpleGrid,
   VStack,
-  Divider,
-  FormControl,
-  FormLabel,
-  Textarea,
-  Checkbox,
   Alert,
   AlertIcon,
   Spinner,
   Center,
-  Badge,
-  Card,
-  CardBody,
-  Stack,
-  Image,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Select,
 } from "@chakra-ui/react";
 import { FiSend } from "react-icons/fi";
 import { addMonths, format } from "date-fns";
@@ -40,8 +20,6 @@ import { useNotify } from "../../../components/Utility/Notify.jsx";
 import useAuth from "../../../hooks/useAuth.js";
 import WoodworkerBox from "../PersonalizationRequest/WoodworkerBox.jsx";
 import AddressSelection from "../Cart/components/AddressSelection.jsx";
-import ImageUpdateUploader from "../../../components/Utility/ImageUpdateUploader.jsx";
-import ImageListSelector from "../../../components/Utility/ImageListSelector.jsx";
 import {
   useGetServiceOrdersQuery,
   useGetServiceOrderByIdQuery,
@@ -57,7 +35,14 @@ import {
   calculateCheapestShipping,
   extractDimensionsFromProduct,
 } from "../../../utils/shippingUtils.js";
-import { formatDateString } from "../../../utils/utils.js";
+
+// Import our custom components
+import OrderSelection from "./components/OrderSelection.jsx";
+import ProductCard from "./components/ProductCard.jsx";
+import ProductStatusForm from "./components/ProductStatusForm.jsx";
+import ShippingOptions from "./components/ShippingOptions.jsx";
+import ProductSelectionModal from "./components/ProductSelectionModal.jsx";
+import { useDisclosure } from "@chakra-ui/react";
 
 export default function GuaranteeRequestPage() {
   const { id: woodworkerId } = useParams();
@@ -192,9 +177,9 @@ export default function GuaranteeRequestPage() {
             calculateShippingFee,
           });
 
-        // Update state with results and handle multiplier for non-install
+        // Update state with results
         setSelectedService(cheapestService);
-        setShippingFee(isInstall ? calculatedFee : calculatedFee * 2); // Apply x2 here for guarantee repair
+        setShippingFee(isInstall ? calculatedFee : calculatedFee * 2);
       } catch (error) {
         console.error("Error in shipping calculation process:", error);
         setSelectedService(null);
@@ -362,175 +347,37 @@ export default function GuaranteeRequestPage() {
 
       <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={5}>
         <VStack spacing={5} align="stretch">
-          <Box bg="white" p={5} borderRadius="10px" boxShadow="sm">
-            <Heading size="md" mb={4}>
-              Chọn đơn hàng đã hoàn thành
-            </Heading>
+          {/* Order Selection Component */}
+          <OrderSelection
+            completedOrders={completedOrders}
+            selectedOrderId={selectedOrderId}
+            handleOrderSelect={handleOrderSelect}
+          />
 
-            {completedOrders.length === 0 ? (
-              <Alert status="info" borderRadius="md">
-                <AlertIcon />
-                Không tìm thấy đơn hàng đã hoàn thành nào.
-              </Alert>
-            ) : (
-              <FormControl isRequired>
-                <Select
-                  placeholder="Chọn đơn hàng"
-                  value={selectedOrderId}
-                  onChange={handleOrderSelect}
-                  size="lg"
-                >
-                  {completedOrders.map((order) => (
-                    <option key={order.orderId} value={order.orderId}>
-                      Đơn #{order.orderId} -{" "}
-                      {format(new Date(order.createdAt), "dd/MM/yyyy")} -
-                      {new Intl.NumberFormat("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      }).format(order.totalAmount)}
-                    </option>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
-          </Box>
-
+          {/* Product Selection Component */}
           {selectedOrder && (
-            <Box bg="white" p={5} borderRadius="10px" boxShadow="sm">
-              <Heading size="md" mb={4}>
-                Sản phẩm cần sửa chữa / bảo hành
-              </Heading>
-
-              {selectedProduct ? (
-                <Card variant="outline">
-                  <CardBody>
-                    <Flex direction="column">
-                      <Flex mb={4}>
-                        {(selectedProduct.designIdeaVariantDetail?.img_urls ||
-                          selectedProduct.finishImgUrls) && (
-                          <Image
-                            boxSize="100px"
-                            objectFit="cover"
-                            src={
-                              (
-                                selectedProduct.designIdeaVariantDetail
-                                  ?.img_urls || selectedProduct.finishImgUrls
-                              )?.split(",")[0]
-                            }
-                            alt={selectedProduct.category?.categoryName}
-                            borderRadius="md"
-                            mr={4}
-                          />
-                        )}
-                        <Stack>
-                          <Text fontWeight="bold">
-                            {selectedProduct.designIdeaVariantDetail?.name ||
-                              selectedProduct.category?.categoryName ||
-                              "Sản phẩm"}
-                          </Text>
-                          <Text fontSize="sm">
-                            Danh mục: {selectedProduct.category?.categoryName}
-                          </Text>
-                          <Text fontSize="sm">
-                            Số lượng: {selectedProduct.quantity}
-                          </Text>
-                        </Stack>
-                      </Flex>
-
-                      <Divider my={2} />
-
-                      <Flex justifyContent="space-between" mt={2}>
-                        <Text fontSize="sm">Ngày nhận sản phẩm:</Text>
-                        <Text fontSize="sm" fontWeight="medium">
-                          {formatDateString(orderDetail.updatedAt)}
-                        </Text>
-                      </Flex>
-
-                      <Flex justifyContent="space-between" mt={1}>
-                        <Text fontSize="sm">Thời hạn bảo hành:</Text>
-                        <Text fontSize="sm" fontWeight="medium">
-                          {selectedProduct.warrantyDuration || 0} tháng
-                        </Text>
-                      </Flex>
-
-                      <Flex justifyContent="space-between" mt={1}>
-                        <Text fontSize="sm">Hết hạn bảo hành:</Text>
-                        <Text
-                          fontSize="sm"
-                          fontWeight="medium"
-                          color={
-                            getWarrantyEndDate(selectedProduct) &&
-                            new Date() > getWarrantyEndDate(selectedProduct)
-                              ? "red.500"
-                              : "green.500"
-                          }
-                        >
-                          {formatDate(getWarrantyEndDate(selectedProduct))}
-                          {getWarrantyEndDate(selectedProduct) &&
-                            new Date() > getWarrantyEndDate(selectedProduct) &&
-                            " (Đã hết hạn)"}
-                        </Text>
-                      </Flex>
-
-                      <Button
-                        size="sm"
-                        mt={4}
-                        colorScheme="blue"
-                        variant="outline"
-                        onClick={onOpen}
-                      >
-                        Đổi sản phẩm
-                      </Button>
-                    </Flex>
-                  </CardBody>
-                </Card>
-              ) : (
-                <Button onClick={onOpen} colorScheme="blue" isFullWidth>
-                  Chọn sản phẩm cần sửa chữa / bảo hành
-                </Button>
-              )}
-            </Box>
+            <ProductCard
+              selectedProduct={selectedProduct}
+              orderDetail={orderDetail}
+              getWarrantyEndDate={getWarrantyEndDate}
+              formatDate={formatDate}
+              onOpen={onOpen}
+            />
           )}
 
+          {/* Product Status Component */}
           {selectedProduct && (
-            <Box bg="white" p={5} borderRadius="10px" boxShadow="sm">
-              <Heading size="md" mb={4}>
-                Tình trạng sản phẩm hiện tại
-              </Heading>
-
-              <FormControl isRequired mb={4}>
-                <FormLabel>Mô tả tình trạng hiện tại:</FormLabel>
-                <Textarea
-                  value={currentProductStatus}
-                  onChange={(e) => setCurrentProductStatus(e.target.value)}
-                  placeholder="Mô tả chi tiết tình trạng sản phẩm và nêu rõ vấn đề bạn gặp phải..."
-                />
-              </FormControl>
-
-              <FormControl isRequired>
-                <FormLabel>Hình ảnh tình trạng hiện tại:</FormLabel>
-                <ImageUpdateUploader
-                  imgUrls=""
-                  maxFiles={3}
-                  onUploadComplete={handleUploadComplete}
-                />
-                {currentProductImages.length > 0 && (
-                  <Box mt={4}>
-                    <Text fontWeight="medium" mb={2}>
-                      Hình ảnh đã tải lên:
-                    </Text>
-                    <ImageListSelector
-                      imgUrls={currentProductImages}
-                      imgH={100}
-                    />
-                  </Box>
-                )}
-              </FormControl>
-            </Box>
+            <ProductStatusForm
+              currentProductStatus={currentProductStatus}
+              setCurrentProductStatus={setCurrentProductStatus}
+              currentProductImages={currentProductImages}
+              handleUploadComplete={handleUploadComplete}
+            />
           )}
         </VStack>
 
         <VStack spacing={5} align="stretch">
+          {/* Address Selection Component */}
           <Box bg="white" p={5} borderRadius="10px" boxShadow="sm">
             <AddressSelection
               addresses={addresses}
@@ -540,70 +387,24 @@ export default function GuaranteeRequestPage() {
             />
           </Box>
 
+          {/* Shipping Options Component */}
           {selectedProduct && selectedAddress && (
-            <Box bg="white" p={5} borderRadius="10px" boxShadow="sm">
-              <VStack spacing={4} align="stretch">
-                <FormControl isRequired>
-                  <Checkbox
-                    isChecked={isInstall}
-                    onChange={(e) => setIsInstall(e.target.checked)}
-                    size="md"
-                  >
-                    <Text fontWeight="medium">
-                      Yêu cầu giao hàng + lắp đặt bởi xưởng
-                    </Text>
-                  </Checkbox>
-
-                  <Text fontSize="sm" color="gray.600" mt={1}>
-                    {isInstall
-                      ? "Xưởng sẽ giao và lắp đặt sản phẩm sau khi sửa chữa / bảo hành xong."
-                      : "Sản phẩm sẽ được gửi về qua đơn vị vận chuyển sau khi sửa chữa / bảo hành (phí vận chuyển x2 cho chiều đi và về)."}
-                  </Text>
-                </FormControl>
-
-                <Divider />
-
-                <Box>
-                  <Text fontWeight="medium" mb={2}>
-                    Chi phí vận chuyển:
-                  </Text>
-
-                  {isCalculatingShipping ? (
-                    <Flex align="center">
-                      <Spinner size="sm" mr={2} />
-                      <Text>Đang tính phí vận chuyển...</Text>
-                    </Flex>
-                  ) : shippingFee > 0 ? (
-                    <Text fontWeight="bold" color={appColorTheme.brown_2}>
-                      {new Intl.NumberFormat("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      }).format(shippingFee)}
-                      {!isInstall && " (x2 chiều đi và về)"}
-                    </Text>
-                  ) : (
-                    <Text color="red.500">Không thể tính phí vận chuyển</Text>
-                  )}
-                </Box>
-
-                <Divider />
-
-                <FormControl>
-                  <FormLabel>Ghi chú bổ sung:</FormLabel>
-                  <Textarea
-                    value={note}
-                    onChange={(e) => setNote(e.target.value)}
-                    placeholder="Thông tin bổ sung về yêu cầu sửa chữa / bảo hành..."
-                  />
-                </FormControl>
-              </VStack>
-            </Box>
+            <ShippingOptions
+              isInstall={isInstall}
+              setIsInstall={setIsInstall}
+              isCalculatingShipping={isCalculatingShipping}
+              shippingFee={shippingFee}
+              note={note}
+              setNote={setNote}
+            />
           )}
 
+          {/* Woodworker Box Component */}
           {woodworkerInfo && (
             <WoodworkerBox woodworkerProfile={woodworkerInfo} />
           )}
 
+          {/* Submit Button */}
           <Flex justifyContent="center" mt={4}>
             <Button
               leftIcon={<FiSend />}
@@ -629,91 +430,16 @@ export default function GuaranteeRequestPage() {
         </VStack>
       </SimpleGrid>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Chọn sản phẩm cần sửa chữa / bảo hành</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {isLoadingOrderDetail ? (
-              <Center p={10}>
-                <Spinner />
-              </Center>
-            ) : orderDetail?.requestedProduct?.length > 0 ? (
-              <VStack spacing={4} align="stretch">
-                {orderDetail.requestedProduct.map((product) => {
-                  const warrantyEndDate = getWarrantyEndDate(product);
-                  const isExpired =
-                    warrantyEndDate && new Date() > warrantyEndDate;
-
-                  return (
-                    <Box
-                      key={product.requestedProductId}
-                      p={4}
-                      borderWidth="1px"
-                      borderRadius="md"
-                      cursor="pointer"
-                      _hover={{ bg: "gray.50" }}
-                      onClick={() => handleSelectProduct(product)}
-                    >
-                      <Flex>
-                        {(product.designIdeaVariantDetail?.img_urls ||
-                          product.finishImgUrls) && (
-                          <Image
-                            boxSize="80px"
-                            objectFit="cover"
-                            src={
-                              (
-                                product.designIdeaVariantDetail?.img_urls ||
-                                product.finishImgUrls
-                              )?.split(",")[0]
-                            }
-                            alt={product.category?.categoryName}
-                            borderRadius="md"
-                            mr={4}
-                          />
-                        )}
-                        <Stack flex="1">
-                          <Text fontWeight="bold">
-                            {product.designIdeaVariantDetail?.name ||
-                              product.category?.categoryName ||
-                              "Sản phẩm"}
-                          </Text>
-                          <Text fontSize="sm">
-                            Danh mục: {product.category?.categoryName}
-                          </Text>
-                          <Flex justifyContent="space-between">
-                            <Text fontSize="sm">
-                              Thời hạn bảo hành: {product.warrantyDuration || 0}{" "}
-                              tháng
-                            </Text>
-                            {isExpired ? (
-                              <Badge colorScheme="red">Đã hết hạn</Badge>
-                            ) : (
-                              <Badge colorScheme="green">Còn hạn</Badge>
-                            )}
-                          </Flex>
-                          <Text fontSize="sm">
-                            Hết hạn ngày: {formatDate(warrantyEndDate)}
-                          </Text>
-                        </Stack>
-                      </Flex>
-                    </Box>
-                  );
-                })}
-              </VStack>
-            ) : (
-              <Alert status="info">
-                <AlertIcon />
-                Không tìm thấy thông tin sản phẩm trong đơn hàng này.
-              </Alert>
-            )}
-          </ModalBody>
-          <ModalFooter>
-            <Button onClick={onClose}>Đóng</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      {/* Product Selection Modal */}
+      <ProductSelectionModal
+        isOpen={isOpen}
+        onClose={onClose}
+        orderDetail={orderDetail}
+        isLoadingOrderDetail={isLoadingOrderDetail}
+        getWarrantyEndDate={getWarrantyEndDate}
+        formatDate={formatDate}
+        handleSelectProduct={handleSelectProduct}
+      />
     </>
   );
 }

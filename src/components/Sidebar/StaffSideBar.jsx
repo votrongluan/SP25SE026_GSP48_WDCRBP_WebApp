@@ -11,8 +11,8 @@ import { NavLink } from "react-router-dom";
 import {
   FiChevronLeft,
   FiChevronRight,
-  FiLogOut,
-  FiUserCheck,
+  FiStar,
+  FiMessageCircle,
 } from "react-icons/fi";
 import { appColorTheme } from "../../config/appconfig.js";
 
@@ -28,14 +28,13 @@ export default function StaffSideBar({ isCollapsed, setIsCollapsed }) {
     {
       label: "Đánh giá của khách hàng",
       path: "review",
-      icon: FiUserCheck,
+      icon: FiStar,
     },
     {
       label: "Phản hồi của xưởng mộc",
       path: "response",
-      icon: FiUserCheck,
+      icon: FiMessageCircle,
     },
-    { label: "Đăng xuất", path: "/logout", icon: FiLogOut },
   ];
 
   return (

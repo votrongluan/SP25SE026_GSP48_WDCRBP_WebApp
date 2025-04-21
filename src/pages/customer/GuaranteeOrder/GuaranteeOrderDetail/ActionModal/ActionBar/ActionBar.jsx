@@ -100,7 +100,7 @@ export default function ActionBar({
         case guaranteeOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT:
           if (unpaidDeposit && (depositNumber == 3 || depositNumber == 2)) {
             showPaymentButton = true;
-            paymentButtonText = "Thanh toán lần cuối và xác nhận đơn hàng";
+            paymentButtonText = "Thanh toán và xác nhận đơn hàng";
           }
 
           break;

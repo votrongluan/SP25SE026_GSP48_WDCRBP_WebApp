@@ -19,8 +19,13 @@ export default function ActionBar({ status, feedback, order, refetch }) {
     if (order && order.role === "Woodworker") {
       switch (status) {
         case serviceOrderStatusConstants.DANG_CHO_THO_DUYET:
-          showAppointmentModal = true;
-          showCancelModal = true;
+          if (serviceName == "Sale") {
+            showCancelModal = true;
+            showCompleteModal = true;
+          } else {
+            showAppointmentModal = true;
+            showCancelModal = true;
+          }
 
           break;
 

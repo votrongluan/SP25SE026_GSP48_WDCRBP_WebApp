@@ -115,7 +115,7 @@ export default function ProductDetailPage() {
       woodworkerId: product.woodworkerId,
       woodworkerName: product.woodworkerName,
       fromDistrictId: product.districtId,
-      wardCode: product.wardCode,
+      fromWardCode: product.wardCode,
       quantity: 1,
       woodType: product.woodType,
       color: product.color,
@@ -271,7 +271,7 @@ export default function ProductDetailPage() {
                 </Text>
               </Box>
 
-              {auth?.role !== "Woodworker" && isProductAvailable && (
+              {auth?.role === "Customer" && isProductAvailable && (
                 <Flex gap={5} alignItems="center">
                   <Button
                     bg={appColorTheme.brown_2}

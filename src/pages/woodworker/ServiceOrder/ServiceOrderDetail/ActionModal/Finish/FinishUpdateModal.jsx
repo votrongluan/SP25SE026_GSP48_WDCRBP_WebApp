@@ -259,7 +259,7 @@ export default function FinishUpdateModal({
                 </Text>
 
                 <Accordion allowMultiple defaultIndex={[0]}>
-                  {products.map((product, idx) => {
+                  {products.map((product) => {
                     const finishImgUrls =
                       product.personalProductDetail?.finishImgUrls || "";
                     const alreadyHasImages =
@@ -274,7 +274,7 @@ export default function FinishUpdateModal({
                           <AccordionButton>
                             <Box flex="1" textAlign="left">
                               <Text fontWeight="bold">
-                                Sản phẩm #{idx + 1} -{" "}
+                                Sản phẩm #{product.requestedProductId} -{" "}
                                 {product.category?.categoryName ||
                                   product?.designIdeaVariantDetail?.name}
                               </Text>

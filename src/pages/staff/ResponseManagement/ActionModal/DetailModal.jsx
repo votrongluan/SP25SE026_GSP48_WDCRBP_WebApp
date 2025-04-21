@@ -15,21 +15,22 @@ import {
   Tooltip,
   useDisclosure,
   VStack,
-  useToast,
   Badge,
   Flex,
   Divider,
+  Link,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FiEye, FiStar, FiCheck, FiX } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import { formatDateTimeString } from "../../../../utils/utils";
 import { useUpdateReviewResponseStatusMutation } from "../../../../services/reviewApi";
+import { useNotify } from "../../../../components/Utility/Notify";
 
 export default function DetailModal({ review, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
-  const toast = useToast();
+  const notify = useNotify();
   const [isProcessing, setIsProcessing] = useState(false);
 
   const [updateResponseStatus] = useUpdateReviewResponseStatusMutation();
@@ -39,47 +40,28 @@ export default function DetailModal({ review, refetch }) {
       setIsProcessing(true);
       await updateResponseStatus({
         reviewId: review.reviewId,
-        status: status,
+        woodworkerResponseStatus: status,
       }).unwrap();
 
-      toast({
-        title: `Đã ${status ? "duyệt" : "từ chối"} phản hồi`,
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      notify(
+        `Đã ${status ? "duyệt" : "từ chối"} phản hồi`,
+        "",
+        "success",
+        3000
+      );
 
       onClose();
       if (refetch) refetch();
     } catch (error) {
-      toast({
-        title: `Lỗi khi ${status ? "duyệt" : "từ chối"} phản hồi`,
-        description: error.data?.message || "Đã có lỗi xảy ra",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      notify(
+        `Lỗi khi ${status ? "duyệt" : "từ chối"} phản hồi`,
+        error.data?.message || "Đã có lỗi xảy ra",
+        "error",
+        5000
+      );
     } finally {
       setIsProcessing(false);
     }
-  };
-
-  const getResponseStatusBadge = () => {
-    if (review?.woodworkerResponseStatus === true) {
-      return <Badge colorScheme="green">Đã duyệt</Badge>;
-    } else if (review?.woodworkerResponseStatus === false) {
-      return <Badge colorScheme="red">Từ chối</Badge>;
-    }
-    return <Badge colorScheme="orange">Chờ duyệt</Badge>;
-  };
-
-  const getReviewStatusBadge = () => {
-    if (review?.status === true) {
-      return <Badge colorScheme="green">Đã duyệt</Badge>;
-    } else if (review?.status === false) {
-      return <Badge colorScheme="red">Từ chối</Badge>;
-    }
-    return <Badge colorScheme="orange">Chờ duyệt</Badge>;
   };
 
   return (
@@ -128,31 +110,27 @@ export default function DetailModal({ review, refetch }) {
                     </Box>
                     <Box>
                       <Text fontWeight="bold">Xưởng mộc:</Text>
-                      <Text>
-                        {review?.woodworker?.brandName || "Không có thông tin"}
-                      </Text>
+                      <Link
+                        href={`/woodworker/${review?.woodworkerId}`}
+                        color={appColorTheme.brown_2}
+                        isExternal
+                      >
+                        <Text>{review?.brandName}</Text>
+                      </Link>
                     </Box>
                     <Box>
                       <Text fontWeight="bold">Loại đơn:</Text>
                       <Text>
                         {review?.serviceOrderId
-                          ? "Đơn thiết kế"
+                          ? "Đơn dịch vụ"
                           : review?.guaranteeOrderId
-                          ? "Đơn bảo hành"
+                          ? "Đơn BH / sửa"
                           : "Không xác định"}
                       </Text>
                     </Box>
                     <Box>
                       <Text fontWeight="bold">Ngày đánh giá:</Text>
                       <Text>{formatDateTimeString(review?.createdAt)}</Text>
-                    </Box>
-                    <Box>
-                      <Text fontWeight="bold">Trạng thái đánh giá:</Text>
-                      {getReviewStatusBadge()}
-                    </Box>
-                    <Box>
-                      <Text fontWeight="bold">Trạng thái phản hồi:</Text>
-                      {getResponseStatusBadge()}
                     </Box>
                     <Box>
                       <Text fontWeight="bold">Ngày phản hồi:</Text>
@@ -215,28 +193,24 @@ export default function DetailModal({ review, refetch }) {
                 Đóng
               </Button>
 
-              {review?.woodworkerResponse &&
-                review?.woodworkerResponseStatus === null && (
-                  <>
-                    <Button
-                      colorScheme="red"
-                      mr={3}
-                      onClick={() => handleUpdateStatus(false)}
-                      leftIcon={<FiX />}
-                      isLoading={isProcessing}
-                    >
-                      Từ chối phản hồi
-                    </Button>
-                    <Button
-                      colorScheme="green"
-                      onClick={() => handleUpdateStatus(true)}
-                      leftIcon={<FiCheck />}
-                      isLoading={isProcessing}
-                    >
-                      Duyệt phản hồi
-                    </Button>
-                  </>
-                )}
+              <Button
+                colorScheme="red"
+                mr={3}
+                onClick={() => handleUpdateStatus(false)}
+                leftIcon={<FiX />}
+                isLoading={isProcessing}
+              >
+                Từ chối phản hồi
+              </Button>
+
+              <Button
+                colorScheme="green"
+                onClick={() => handleUpdateStatus(true)}
+                leftIcon={<FiCheck />}
+                isLoading={isProcessing}
+              >
+                Duyệt phản hồi
+              </Button>
             </Flex>
           </ModalBody>
         </ModalContent>

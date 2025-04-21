@@ -1,8 +1,17 @@
-import { Box, Flex, Heading, HStack, Stack, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  Stack,
+  Spinner,
+  Text,
+  Center,
+} from "@chakra-ui/react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { appColorTheme } from "../../../../config/appconfig";
 import ReviewDetailModal from "../ActionModal/ReviewDetailModal";
 import { formatDateTimeString } from "../../../../utils/utils";
@@ -10,34 +19,16 @@ import { FiStar } from "react-icons/fi";
 import { useGetPendingReviewsQuery } from "../../../../services/reviewApi";
 
 export default function CusReviewManagementPage() {
-  const toast = useToast();
-  const [rowData, setRowData] = useState([]);
-
   // Fetch pending reviews
   const {
     data: reviewsResponse,
     isLoading,
-    error,
+    isError,
     refetch,
   } = useGetPendingReviewsQuery();
 
-  useEffect(() => {
-    if (reviewsResponse?.data) {
-      setRowData(reviewsResponse.data);
-    }
-  }, [reviewsResponse]);
-
-  useEffect(() => {
-    if (error) {
-      toast({
-        title: "Lỗi khi tải dữ liệu",
-        description: error.message || "Không thể tải danh sách đánh giá",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
-  }, [error, toast]);
+  // Transform data directly
+  const reviews = reviewsResponse?.data;
 
   const handleRefetch = useCallback(() => {
     refetch();
@@ -116,6 +107,24 @@ export default function CusReviewManagementPage() {
     };
   }, []);
 
+  // Show loading state
+  if (isLoading) {
+    return (
+      <Center h="500px">
+        <Spinner size="xl" color={appColorTheme.brown_2} />
+      </Center>
+    );
+  }
+
+  // Show error state
+  if (isError) {
+    return (
+      <Center h="500px">
+        <Text color="red.500">Đã xảy ra lỗi khi tải dữ liệu.</Text>
+      </Center>
+    );
+  }
+
   return (
     <Stack spacing={6}>
       <Flex justify="space-between" align="center">
@@ -138,11 +147,9 @@ export default function CusReviewManagementPage() {
             paginationPageSize={20}
             paginationPageSizeSelector={[10, 20, 50, 100]}
             defaultColDef={defaultColDef}
-            rowData={rowData}
+            rowData={reviews || []}
             columnDefs={colDefs}
-            loadingOverlayComponent={() => "Đang tải dữ liệu..."}
             overlayNoRowsTemplate="Không có đánh giá nào cần duyệt"
-            overlayLoadingTemplate="Đang tải dữ liệu..."
           />
         </div>
       </Box>

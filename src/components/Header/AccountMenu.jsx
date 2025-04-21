@@ -66,9 +66,22 @@ export default function AccountMenu() {
                   bg="white"
                   color="black"
                   as={RouterLink}
-                  to={
-                    auth?.role == "Woodworker" ? "/ww/profile" : "/cus/profile"
-                  }
+                  to={(function getNavLinkBaseOnRole() {
+                    switch (auth?.role) {
+                      case "Woodworker":
+                        return "/ww/profile";
+                      case "Customer":
+                        return "/cus/profile";
+                      case "Staff":
+                        return "/staff";
+                      case "Admin":
+                        return "/ad";
+                      case "Moderator":
+                        return "/mod";
+                      default:
+                        return "/auth";
+                    }
+                  })()}
                 >
                   <HStack>
                     <FiUsers />

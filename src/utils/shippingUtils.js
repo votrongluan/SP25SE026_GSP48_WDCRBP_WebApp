@@ -53,9 +53,9 @@ export const extractDimensionsFromProduct = (product) => {
     } else {
       // Standard product with direct dimensions
       return {
-        length: product.length || 20,
-        width: product.width || 20,
-        height: product.height || 20,
+        length: product.product.length || 20,
+        width: product.product.width || 20,
+        height: product.product.height || 20,
       };
     }
   } catch (error) {
@@ -99,9 +99,9 @@ export const calculateCheapestShipping = async ({
     for (const service of services) {
       try {
         const shippingData = {
-          from_district_id: fromDistrictId,
+          from_district_id: +fromDistrictId,
           from_ward_code: fromWardCode,
-          to_district_id: toDistrictId,
+          to_district_id: +toDistrictId,
           to_ward_code: toWardCode,
           service_id: service.service_id,
           service_type_id: service.service_type_id,
@@ -172,9 +172,7 @@ export const createAndUpdateShipment = async ({
         width: product.product.width,
         height: product.product.height,
       };
-    }
-    {
-      // Use default dimensions as fallback
+    } else {
       dimensions = { length: 20, width: 20, height: 20 };
     }
 

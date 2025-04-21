@@ -23,7 +23,7 @@ import {
   FiTool,
   FiUser,
 } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { appColorTheme } from "../../../config/appconfig";
 import useAuth from "../../../hooks/useAuth";
 
@@ -69,6 +69,18 @@ const QuickActionCard = ({ icon, title, description, onClick, color }) => {
 export default function HomePage() {
   const navigate = useNavigate();
   const { auth } = useAuth();
+
+  if (auth?.role == "Staff") {
+    return <Navigate to="/staff" />;
+  }
+
+  if (auth?.role == "Moderator") {
+    return <Navigate to="/mod" />;
+  }
+
+  if (auth?.role == "Admin") {
+    return <Navigate to="/ad" />;
+  }
 
   const quickActions = [
     {

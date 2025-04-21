@@ -65,6 +65,7 @@ import StaffWelcomePage from "./pages/staff/Welcome/StaffWelcomePage.jsx";
 import StaffLayout from "./layouts/StaffLayout.jsx";
 import CusReviewManagementPage from "./pages/staff/ReviewManagement/ReviewList/CusReviewManagementPage.jsx";
 import ServicePackUpgradeGuide from "./pages/general/Pricing/ServicePackUpgradeGuide.jsx";
+import WWResponseManagementPage from "./pages/staff/ResponseManagement/ResponseList/WWResponseManagementPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -120,6 +121,7 @@ function App() {
         <Route path="staff" element={<StaffLayout />}>
           <Route index element={<StaffWelcomePage />} />
           <Route path="review" element={<CusReviewManagementPage />} />
+          <Route path="response" element={<WWResponseManagementPage />} />
         </Route>
 
         {/* Woodworker page route */}

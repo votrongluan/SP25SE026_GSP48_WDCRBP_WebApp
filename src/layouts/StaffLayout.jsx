@@ -5,6 +5,7 @@ import { appColorTheme } from "../config/appconfig.js";
 import { FiMenu } from "react-icons/fi";
 import RequireAuth from "../components/Utility/RequireAuth.jsx";
 import StaffSideBar from "../components/Sidebar/StaffSideBar.jsx";
+import Header from "../components/Header/Header.jsx";
 
 export default function StaffLayout() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -13,6 +14,7 @@ export default function StaffLayout() {
     <RequireAuth allowedRoles={["Staff"]}>
       <Box fontFamily="Nunito Sans" position="relative" pb="50px">
         <Box>
+          <Header />
           <Box
             as="aside"
             position="fixed"

@@ -5,6 +5,7 @@ import { appColorTheme } from "../config/appconfig.js";
 import { FiMenu } from "react-icons/fi";
 import AdminSidebar from "../components/Sidebar/AdminSideBar.jsx";
 import RequireAuth from "../components/Utility/RequireAuth.jsx";
+import Header from "../components/Header/Header.jsx";
 
 export default function AdminLayout() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -12,6 +13,7 @@ export default function AdminLayout() {
   return (
     <RequireAuth allowedRoles={["Admin"]}>
       <Box fontFamily="Nunito Sans" position="relative" pb="50px">
+        <Header />
         <Box>
           <Box
             as="aside"
@@ -20,7 +22,7 @@ export default function AdminLayout() {
             color="black"
             minHeight="100vh"
             px={5}
-            width={isCollapsed ? "80px" : "300px"}
+            width={isCollapsed ? "80px" : "350px"}
             transition="width 0.3s"
           >
             <Text
@@ -47,7 +49,7 @@ export default function AdminLayout() {
             color="black"
             minH="100svh"
             p={10}
-            ml={isCollapsed ? "80px" : "300px"}
+            ml={isCollapsed ? "80px" : "350px"}
             transition="margin-left 0.3s"
           >
             <Outlet />

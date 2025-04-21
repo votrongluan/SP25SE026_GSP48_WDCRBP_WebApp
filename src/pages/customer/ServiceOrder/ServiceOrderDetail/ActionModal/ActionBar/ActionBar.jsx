@@ -125,9 +125,12 @@ export default function ActionBar({
           break;
 
         case serviceOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT:
-          if (unpaidDeposit && (depositNumber == 3 || depositNumber == 2)) {
+          if (
+            unpaidDeposit &&
+            (depositNumber == 3 || depositNumber == 2 || depositNumber == 1)
+          ) {
             showPaymentButton = true;
-            paymentButtonText = "Thanh toán lần cuối và xác nhận đơn hàng";
+            paymentButtonText = "Thanh toán và xác nhận đơn hàng";
           }
 
           break;
