@@ -40,7 +40,7 @@ import {
 import OrderSelection from "./components/OrderSelection.jsx";
 import ProductCard from "./components/ProductCard.jsx";
 import ProductStatusForm from "./components/ProductStatusForm.jsx";
-import ShippingOptions from "./components/ShippingOptions.jsx";
+import ShippingAndPriceSection from "./components/ShippingAndPriceSection.jsx";
 import ProductSelectionModal from "./components/ProductSelectionModal.jsx";
 import { useDisclosure } from "@chakra-ui/react";
 
@@ -62,6 +62,11 @@ export default function GuaranteeRequestPage() {
   const [selectedService, setSelectedService] = useState(null);
   const [isCalculatingShipping, setIsCalculatingShipping] = useState(false);
   const [currentWoodworkerId, setCurrentWoodworkerId] = useState(null);
+
+  // New states for warranty/repair handling
+  const [isGuarantee, setIsGuarantee] = useState(true);
+  const [guaranteeError, setGuaranteeError] = useState("");
+  const [isWarrantyValid, setIsWarrantyValid] = useState(false);
 
   // Modal for product selection
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -200,6 +205,19 @@ export default function GuaranteeRequestPage() {
     getAvailableServices,
   ]);
 
+  // Update warranty validity check when product changes
+  useEffect(() => {
+    if (selectedProduct) {
+      const warrantyEndDate = getWarrantyEndDate(selectedProduct);
+      const valid = warrantyEndDate && new Date() <= warrantyEndDate;
+      setIsWarrantyValid(valid);
+      setIsGuarantee(valid); // Set initial state based on warranty validity
+    } else {
+      setIsWarrantyValid(false);
+      setIsGuarantee(false);
+    }
+  }, [selectedProduct]);
+
   // Handle order selection
   const handleOrderSelect = (e) => {
     const orderId = e.target.value;
@@ -246,17 +264,20 @@ export default function GuaranteeRequestPage() {
     return format(new Date(date), "dd/MM/yyyy", { locale: vi });
   };
 
-  // Handle form submission
+  // Handle form submission - updated to include new fields
   const handleSubmit = async () => {
     if (
       !selectedProduct ||
       !selectedAddress ||
       !currentProductImages.length ||
-      !currentProductStatus
+      !currentProductStatus ||
+      (isWarrantyValid && isGuarantee && !guaranteeError) // Add validation for guarantee error
     ) {
       notify(
         "Thông tin không đầy đủ",
-        "Vui lòng điền đầy đủ thông tin và cung cấp hình ảnh sản phẩm hiện tại.",
+        isWarrantyValid && isGuarantee && !guaranteeError
+          ? "Vui lòng chọn loại lỗi bảo hành."
+          : "Vui lòng điền đầy đủ thông tin và cung cấp hình ảnh sản phẩm hiện tại.",
         "error"
       );
       return;
@@ -286,6 +307,9 @@ export default function GuaranteeRequestPage() {
         priceShipping: shippingFee,
         productCurrentStatus: currentProductStatus,
         currentProductImgUrls: currentProductImages,
+        // New fields
+        isGuarantee: isGuarantee,
+        guaranteeError: isGuarantee ? guaranteeError : "",
       };
 
       const response = await createGuaranteeOrder(requestData).unwrap();
@@ -365,18 +389,28 @@ export default function GuaranteeRequestPage() {
             />
           )}
 
-          {/* Product Status Component */}
+          {/* Woodworker Box Component */}
+          {woodworkerInfo && (
+            <WoodworkerBox mt={0} woodworkerProfile={woodworkerInfo} />
+          )}
+        </VStack>
+
+        <VStack spacing={5} align="stretch">
+          {/* Product Status Component - updated with new props */}
           {selectedProduct && (
             <ProductStatusForm
               currentProductStatus={currentProductStatus}
               setCurrentProductStatus={setCurrentProductStatus}
               currentProductImages={currentProductImages}
               handleUploadComplete={handleUploadComplete}
+              isWarrantyValid={isWarrantyValid}
+              guaranteeError={guaranteeError}
+              setGuaranteeError={setGuaranteeError}
+              isGuarantee={isGuarantee}
+              setIsGuarantee={setIsGuarantee}
             />
           )}
-        </VStack>
 
-        <VStack spacing={5} align="stretch">
           {/* Address Selection Component */}
           <Box bg="white" p={5} borderRadius="10px" boxShadow="sm">
             <AddressSelection
@@ -387,24 +421,20 @@ export default function GuaranteeRequestPage() {
             />
           </Box>
 
-          {/* Shipping Options Component */}
+          {/* Shipping Options Component - updated with new props */}
           {selectedProduct && selectedAddress && (
-            <ShippingOptions
+            <ShippingAndPriceSection
               isInstall={isInstall}
               setIsInstall={setIsInstall}
               isCalculatingShipping={isCalculatingShipping}
               shippingFee={shippingFee}
               note={note}
               setNote={setNote}
+              isGuarantee={isGuarantee}
             />
           )}
 
-          {/* Woodworker Box Component */}
-          {woodworkerInfo && (
-            <WoodworkerBox woodworkerProfile={woodworkerInfo} />
-          )}
-
-          {/* Submit Button */}
+          {/* Submit Button - updated validation */}
           <Flex justifyContent="center" mt={4}>
             <Button
               leftIcon={<FiSend />}
@@ -421,10 +451,11 @@ export default function GuaranteeRequestPage() {
                 !selectedAddress ||
                 !currentProductImages.length ||
                 !currentProductStatus ||
+                (isWarrantyValid && isGuarantee && !guaranteeError) ||
                 isCalculatingShipping
               }
             >
-              Gửi yêu cầu sửa chữa / bảo hành
+              Gửi yêu cầu {isGuarantee ? "bảo hành" : "sửa chữa"}
             </Button>
           </Flex>
         </VStack>

@@ -14,13 +14,13 @@ import PackageFrame from "../../../components/Utility/PackageFrame";
 import StarReview from "../../../components/Utility/StarReview";
 import { appColorTheme, getPackTypeLabel } from "../../../config/appconfig";
 
-export default function WoodworkerBox({ woodworkerProfile }) {
+export default function WoodworkerBox({ woodworkerProfile, mt = 6 }) {
   if (!woodworkerProfile) {
     return null;
   }
 
   return (
-    <Box mt={6}>
+    <Box mt={mt}>
       <PackageFrame packageType={woodworkerProfile?.servicePack?.name}>
         <Flex
           flexDirection={{

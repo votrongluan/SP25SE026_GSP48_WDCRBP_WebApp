@@ -76,12 +76,10 @@ export default function ProductSelectionModal({
                       )}
                       <Stack flex="1">
                         <Text fontWeight="bold">
+                          {`#${product.requestedProductId}. `}
                           {product.designIdeaVariantDetail?.name ||
                             product.category?.categoryName ||
                             "Sản phẩm"}
-                        </Text>
-                        <Text fontSize="sm">
-                          Danh mục: {product.category?.categoryName}
                         </Text>
                         <Flex justifyContent="space-between">
                           <Text fontSize="sm">

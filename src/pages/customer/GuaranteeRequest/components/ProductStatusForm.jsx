@@ -5,21 +5,99 @@ import {
   FormLabel,
   Textarea,
   Text,
+  Select,
+  Flex,
+  Badge,
+  FormHelperText,
+  Button,
 } from "@chakra-ui/react";
 import ImageUpdateUploader from "../../../../components/Utility/ImageUpdateUploader.jsx";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector.jsx";
+import { appColorTheme } from "../../../../config/appconfig.js";
 
 export default function ProductStatusForm({
   currentProductStatus,
   setCurrentProductStatus,
   currentProductImages,
   handleUploadComplete,
+  isWarrantyValid,
+  guaranteeError,
+  setGuaranteeError,
+  isGuarantee,
+  setIsGuarantee,
 }) {
+  // Common guarantee errors for dropdown (removed the "change to repair" option)
+  const guaranteeErrorOptions = [
+    { value: "Nứt, vỡ, gãy", label: "Nứt, vỡ, gãy" },
+    { value: "Lỗi gỗ, mối mọt", label: "Lỗi gỗ, mối mọt" },
+    { value: "Sơn bị bong tróc", label: "Sơn bị bong tróc" },
+    { value: "Kệ, bản lề bị hỏng", label: "Kệ, bản lề bị hỏng" },
+    {
+      value: "other",
+      label: "Khác (vui lòng mô tả chi tiết trong phần mô tả)",
+    },
+  ];
+
+  // Toggle between guarantee and repair
+  const toggleGuaranteeMode = () => {
+    setIsGuarantee(!isGuarantee);
+  };
+
   return (
     <Box bg="white" p={5} borderRadius="10px" boxShadow="sm">
       <Heading size="md" mb={4}>
         Tình trạng sản phẩm hiện tại
       </Heading>
+
+      {isWarrantyValid && (
+        <Flex mb={4} direction="column" gap={3}>
+          <Flex alignItems="center">
+            <Text fontWeight="medium" mr={2}>
+              Hình thức yêu cầu:
+            </Text>
+            <Badge
+              colorScheme={isGuarantee ? "green" : "blue"}
+              fontSize="0.9em"
+              px={2}
+              py={1}
+            >
+              {isGuarantee ? "Bảo hành" : "Sửa chữa"}
+            </Badge>
+          </Flex>
+
+          <Button
+            size="sm"
+            colorScheme={isGuarantee ? "blue" : "green"}
+            variant="outline"
+            onClick={toggleGuaranteeMode}
+            alignSelf="flex-start"
+          >
+            {isGuarantee
+              ? "Không tìm thấy lỗi của bạn, chuyển sang sửa chữa"
+              : "Chuyển về bảo hành"}
+          </Button>
+        </Flex>
+      )}
+
+      {isWarrantyValid && isGuarantee && (
+        <FormControl isRequired mb={4}>
+          <FormLabel>Loại lỗi bảo hành:</FormLabel>
+          <Select
+            value={guaranteeError}
+            onChange={(e) => setGuaranteeError(e.target.value)}
+            placeholder="Chọn loại lỗi"
+          >
+            {guaranteeErrorOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Select>
+          <FormHelperText>
+            Sản phẩm của bạn còn trong thời hạn bảo hành
+          </FormHelperText>
+        </FormControl>
+      )}
 
       <FormControl isRequired mb={4}>
         <FormLabel>Mô tả tình trạng hiện tại:</FormLabel>

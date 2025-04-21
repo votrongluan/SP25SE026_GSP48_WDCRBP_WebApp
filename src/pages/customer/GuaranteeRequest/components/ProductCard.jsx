@@ -5,10 +5,8 @@ import {
   Card,
   CardBody,
   Flex,
-  Stack,
   Text,
   Image,
-  Divider,
 } from "@chakra-ui/react";
 import { formatDateString } from "../../../../utils/utils.js";
 
@@ -46,54 +44,49 @@ export default function ProductCard({
                     mr={4}
                   />
                 )}
-                <Stack>
+
+                <Box>
                   <Text fontWeight="bold">
+                    {`#${selectedProduct.requestedProductId}. `}
                     {selectedProduct.designIdeaVariantDetail?.name ||
                       selectedProduct.category?.categoryName ||
                       "Sản phẩm"}
                   </Text>
-                  <Text fontSize="sm">
-                    Danh mục: {selectedProduct.category?.categoryName}
-                  </Text>
-                  <Text fontSize="sm">
-                    Số lượng: {selectedProduct.quantity}
-                  </Text>
-                </Stack>
-              </Flex>
 
-              <Divider my={2} />
+                  <Flex justifyContent="space-between" mt={2}>
+                    <Text fontSize="sm">Ngày nhận sản phẩm:</Text>
+                    <Text ml={4} fontSize="sm" fontWeight="medium">
+                      {formatDateString(orderDetail.updatedAt)}
+                    </Text>
+                  </Flex>
 
-              <Flex justifyContent="space-between" mt={2}>
-                <Text fontSize="sm">Ngày nhận sản phẩm:</Text>
-                <Text fontSize="sm" fontWeight="medium">
-                  {formatDateString(orderDetail.updatedAt)}
-                </Text>
-              </Flex>
+                  <Flex justifyContent="space-between" mt={1}>
+                    <Text fontSize="sm">Thời hạn bảo hành:</Text>
+                    <Text ml={4} fontSize="sm" fontWeight="medium">
+                      {selectedProduct.warrantyDuration || 0} tháng
+                    </Text>
+                  </Flex>
 
-              <Flex justifyContent="space-between" mt={1}>
-                <Text fontSize="sm">Thời hạn bảo hành:</Text>
-                <Text fontSize="sm" fontWeight="medium">
-                  {selectedProduct.warrantyDuration || 0} tháng
-                </Text>
-              </Flex>
-
-              <Flex justifyContent="space-between" mt={1}>
-                <Text fontSize="sm">Hết hạn bảo hành:</Text>
-                <Text
-                  fontSize="sm"
-                  fontWeight="medium"
-                  color={
-                    getWarrantyEndDate(selectedProduct) &&
-                    new Date() > getWarrantyEndDate(selectedProduct)
-                      ? "red.500"
-                      : "green.500"
-                  }
-                >
-                  {formatDate(getWarrantyEndDate(selectedProduct))}
-                  {getWarrantyEndDate(selectedProduct) &&
-                    new Date() > getWarrantyEndDate(selectedProduct) &&
-                    " (Đã hết hạn)"}
-                </Text>
+                  <Flex justifyContent="space-between" mt={1}>
+                    <Text fontSize="sm">Hết hạn bảo hành:</Text>
+                    <Text
+                      ml={4}
+                      fontSize="sm"
+                      fontWeight="medium"
+                      color={
+                        getWarrantyEndDate(selectedProduct) &&
+                        new Date() > getWarrantyEndDate(selectedProduct)
+                          ? "red.500"
+                          : "green.500"
+                      }
+                    >
+                      {formatDate(getWarrantyEndDate(selectedProduct))}
+                      {getWarrantyEndDate(selectedProduct) &&
+                        new Date() > getWarrantyEndDate(selectedProduct) &&
+                        " (Đã hết hạn)"}
+                    </Text>
+                  </Flex>
+                </Box>
               </Flex>
 
               <Button

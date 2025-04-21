@@ -10,8 +10,8 @@ import {
   RadioGroup,
   Radio,
   Flex,
+  Link,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { FiPlusCircle } from "react-icons/fi";
 
@@ -70,9 +70,13 @@ export default function AddressSelection({
 
   return (
     <Box>
-      <Heading size="sm" mb={3}>
-        Địa chỉ giao hàng
-      </Heading>
+      <Flex justifyContent="space-between" alignItems="center" mb={3}>
+        <Heading size="sm">Địa chỉ giao hàng</Heading>
+
+        <Link href="/cus/profile" color="blue.500" fontSize="sm">
+          <Text>Quản lý địa chỉ</Text>
+        </Link>
+      </Flex>
 
       <RadioGroup onChange={setSelectedAddress} value={selectedAddress}>
         <Stack>
