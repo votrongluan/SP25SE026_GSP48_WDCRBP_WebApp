@@ -38,6 +38,8 @@ import {
   useUpdateGuaranteeOrderShipmentOrderCodeMutation,
 } from "../../../../../../services/shipmentApi";
 import { useCreateShipmentForServiceOrderMutation } from "../../../../../../services/ghnApi";
+// Import the utility function
+import { createAndUpdateShipmentForGuaranteeGetProductFromCustomer } from "../../../../../../utils/shippingUtils";
 
 export default function PaymentModal({ deposit, order, refetch, buttonText }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -77,50 +79,6 @@ export default function PaymentModal({ deposit, order, refetch, buttonText }) {
     },
   ];
 
-  // Helper function to extract dimensions from product configuration
-  const extractDimensions = (product) => {
-    try {
-      if (product.designIdeaVariantDetail?.designIdeaVariantConfig) {
-        const config = product.designIdeaVariantDetail.designIdeaVariantConfig;
-        const dimensionStr = config[0]?.designVariantValues[0]?.value;
-
-        if (dimensionStr) {
-          const dimensions = dimensionStr
-            .split("x")
-            .map((dim) => parseFloat(dim.trim()));
-
-          if (dimensions.length === 3) {
-            return {
-              length: dimensions[0] || 20,
-              width: dimensions[1] || 20,
-              height: dimensions[2] || 20,
-            };
-          }
-        }
-      } else if (product.personalProductDetail) {
-        const techSpecs = product.personalProductDetail.techSpecList;
-        return {
-          length:
-            parseFloat(
-              techSpecs.find((item) => item.name === "Chiều dài")?.value
-            ) || 20,
-          width:
-            parseFloat(
-              techSpecs.find((item) => item.name === "Chiều rộng")?.value
-            ) || 20,
-          height:
-            parseFloat(
-              techSpecs.find((item) => item.name === "Chiều cao")?.value
-            ) || 20,
-        };
-      }
-      return { length: 20, width: 20, height: 20 };
-    } catch (error) {
-      console.error("Error extracting dimensions:", error);
-      return { length: 20, width: 20, height: 20 };
-    }
-  };
-
   // Process GHN shipment creation
   const processShipment = async () => {
     if (
@@ -133,79 +91,24 @@ export default function PaymentModal({ deposit, order, refetch, buttonText }) {
     try {
       setProcessingShipment(true);
 
-      const shipment = shipmentData.data[0];
-      const products = [
-        order?.serviceOrderDetail?.requestedProduct.find(
-          (item) =>
-            item.requestedProductId ==
-            order?.requestedProduct?.requestedProductId
-        ),
-      ];
-
-      // Prepare items for GHN API
-      const items = products.map((product) => {
-        const dimensions = extractDimensions(product);
-        return {
-          name:
-            product.designIdeaVariantDetail?.name ||
-            product.category?.categoryName ||
-            "Sản phẩm sửa chữa",
-          quantity: 1,
-          length: dimensions.length,
-          width: dimensions.width,
-          height: dimensions.height,
-          weight: 0,
-        };
-      });
-
-      // Create GHN shipment request
-      const requestData = {
-        payment_type_id: 1,
-        required_note: "WAIT",
-        from_name: order?.user?.name,
-        from_phone: order?.user?.phone,
-        from_address: shipment.fromAddress,
-        from_ward_name: shipment.fromAddress?.split(",")[1]?.trim() || "N/A",
-        from_district_name:
-          shipment.fromAddress?.split(",")[2]?.trim() || "N/A",
-        from_province_name:
-          shipment.fromAddress?.split(",")[3]?.trim() || "N/A",
-        to_phone: order?.woodworkerUser?.phone,
-        to_name: order?.woodworkerUser?.username,
-        to_address: shipment.toAddress,
-        to_ward_code: shipment.toWardCode,
-        to_district_id: shipment.toDistrictId,
-        weight: 0,
-        length: 0,
-        width: 0,
-        height: 0,
-        service_type_id: shipment.ghnServiceTypeId || 5,
-        items: items,
-      };
-
-      // Call GHN API to create shipment
-      const response = await createShipment({
-        serviceOrderId: order.guaranteeOrderId, // Using guaranteeOrderId here
-        data: requestData,
-      }).unwrap();
-
-      // Get order code from response
-      const orderCode = response.data.data.order_code;
-
-      // Update shipment with order code
-      await updateShipmentOrderCode({
-        guaranteeOrderId: order.guaranteeOrderId,
-        orderCode: orderCode,
-        type: "Lấy", // Fixed value as specified
-      }).unwrap();
-
-      notify(
-        "Thành công",
-        "Đã tạo vận đơn thành công với mã: " + orderCode,
-        "info"
+      const product = order?.serviceOrderDetail?.requestedProduct.find(
+        (item) =>
+          item.requestedProductId == order?.requestedProduct?.requestedProductId
       );
 
-      return true;
+      // Use the utility function
+      const result =
+        await createAndUpdateShipmentForGuaranteeGetProductFromCustomer({
+          order,
+          product,
+          shipmentData,
+          guaranteeOrderId: order.guaranteeOrderId,
+          createShipment,
+          updateShipmentOrderCode,
+          notify,
+        });
+
+      return result.success;
     } catch (error) {
       notify(
         "Lỗi vận chuyển",

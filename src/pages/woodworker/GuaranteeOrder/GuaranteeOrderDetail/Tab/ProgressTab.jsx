@@ -92,17 +92,28 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
     order?.status == guaranteeOrderStatusConstants.DA_HUY;
 
   // Define progress steps based on service type
-  const progressSteps = [
-    guaranteeOrderStatusConstants.DANG_CHO_THO_MOC_XAC_NHAN,
-    guaranteeOrderStatusConstants.DANG_CHO_KHACH_DUYET_LICH_HEN,
-    guaranteeOrderStatusConstants.DA_DUYET_LICH_HEN,
-    guaranteeOrderStatusConstants.DANG_CHO_KHACH_DUYET_BAO_GIA,
-    guaranteeOrderStatusConstants.DA_DUYET_BAO_GIA,
-    guaranteeOrderStatusConstants.DANG_CHO_NHAN_HANG,
-    guaranteeOrderStatusConstants.DANG_SUA_CHUA,
-    guaranteeOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT,
-    guaranteeOrderStatusConstants.DA_HOAN_TAT,
-  ];
+  let progressSteps = [];
+  if (order?.isGuarantee) {
+    progressSteps = [
+      guaranteeOrderStatusConstants.DANG_CHO_THO_MOC_XAC_NHAN,
+      guaranteeOrderStatusConstants.DANG_CHO_NHAN_HANG,
+      guaranteeOrderStatusConstants.DANG_SUA_CHUA,
+      guaranteeOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT,
+      guaranteeOrderStatusConstants.DA_HOAN_TAT,
+    ];
+  } else {
+    progressSteps = [
+      guaranteeOrderStatusConstants.DANG_CHO_THO_MOC_XAC_NHAN,
+      guaranteeOrderStatusConstants.DANG_CHO_KHACH_DUYET_LICH_HEN,
+      guaranteeOrderStatusConstants.DA_DUYET_LICH_HEN,
+      guaranteeOrderStatusConstants.DANG_CHO_KHACH_DUYET_BAO_GIA,
+      guaranteeOrderStatusConstants.DA_DUYET_BAO_GIA,
+      guaranteeOrderStatusConstants.DANG_CHO_NHAN_HANG,
+      guaranteeOrderStatusConstants.DANG_SUA_CHUA,
+      guaranteeOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT,
+      guaranteeOrderStatusConstants.DA_HOAN_TAT,
+    ];
+  }
 
   // Display loading state
   if (isLoadingProgress || isLoadingShipment) {

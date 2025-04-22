@@ -39,6 +39,8 @@ export default function GeneralInformationTab({ order }) {
               item.requestedProductId ==
               order?.requestedProduct?.requestedProductId
           )}
+          isGuarantee={order?.isGuarantee}
+          guaranteeError={order?.guaranteeError}
         />
       )}
       {serviceName == "Customization" && (
@@ -52,6 +54,8 @@ export default function GeneralInformationTab({ order }) {
               item.requestedProductId ==
               order?.requestedProduct?.requestedProductId
           )}
+          isGuarantee={order?.isGuarantee}
+          guaranteeError={order?.guaranteeError}
         />
       )}
       {serviceName == "Sale" && (
@@ -65,6 +69,8 @@ export default function GeneralInformationTab({ order }) {
               item.requestedProductId ==
               order?.requestedProduct?.requestedProductId
           )}
+          isGuarantee={order?.isGuarantee}
+          guaranteeError={order?.guaranteeError}
         />
       )}
 
@@ -161,7 +167,7 @@ export default function GeneralInformationTab({ order }) {
                 </HStack>
               </>
             ) : (
-              <Text color="gray.500">Chưa có lịch hẹn tư vấn</Text>
+              <Text color="gray.500">Không có lịch hẹn tư vấn</Text>
             )}
           </Stack>
         </Box>

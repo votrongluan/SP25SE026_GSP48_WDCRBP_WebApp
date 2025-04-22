@@ -141,7 +141,7 @@ export default function GeneralInformationTab({ order }) {
                   </HStack>
                 </>
               ) : (
-                <Text color="gray.500">Chưa có lịch hẹn tư vấn</Text>
+                <Text color="gray.500">Không có lịch hẹn tư vấn</Text>
               )}
             </Stack>
           </Box>

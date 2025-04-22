@@ -5,15 +5,13 @@ import {
   FormLabel,
   Textarea,
   Text,
-  Select,
   Flex,
   Badge,
-  FormHelperText,
   Button,
 } from "@chakra-ui/react";
 import ImageUpdateUploader from "../../../../components/Utility/ImageUpdateUploader.jsx";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector.jsx";
-import { appColorTheme } from "../../../../config/appconfig.js";
+import GuaranteeErrorSelection from "./GuaranteeErrorSelection.jsx";
 
 export default function ProductStatusForm({
   currentProductStatus,
@@ -26,18 +24,6 @@ export default function ProductStatusForm({
   isGuarantee,
   setIsGuarantee,
 }) {
-  // Common guarantee errors for dropdown (removed the "change to repair" option)
-  const guaranteeErrorOptions = [
-    { value: "Nứt, vỡ, gãy", label: "Nứt, vỡ, gãy" },
-    { value: "Lỗi gỗ, mối mọt", label: "Lỗi gỗ, mối mọt" },
-    { value: "Sơn bị bong tróc", label: "Sơn bị bong tróc" },
-    { value: "Kệ, bản lề bị hỏng", label: "Kệ, bản lề bị hỏng" },
-    {
-      value: "other",
-      label: "Khác (vui lòng mô tả chi tiết trong phần mô tả)",
-    },
-  ];
-
   // Toggle between guarantee and repair
   const toggleGuaranteeMode = () => {
     setIsGuarantee(!isGuarantee);
@@ -80,23 +66,10 @@ export default function ProductStatusForm({
       )}
 
       {isWarrantyValid && isGuarantee && (
-        <FormControl isRequired mb={4}>
-          <FormLabel>Loại lỗi bảo hành:</FormLabel>
-          <Select
-            value={guaranteeError}
-            onChange={(e) => setGuaranteeError(e.target.value)}
-            placeholder="Chọn loại lỗi"
-          >
-            {guaranteeErrorOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </Select>
-          <FormHelperText>
-            Sản phẩm của bạn còn trong thời hạn bảo hành
-          </FormHelperText>
-        </FormControl>
+        <GuaranteeErrorSelection
+          guaranteeError={guaranteeError}
+          setGuaranteeError={setGuaranteeError}
+        />
       )}
 
       <FormControl isRequired mb={4}>

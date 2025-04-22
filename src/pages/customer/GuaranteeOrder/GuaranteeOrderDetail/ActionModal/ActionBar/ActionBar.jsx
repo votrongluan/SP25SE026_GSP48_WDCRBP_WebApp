@@ -87,18 +87,14 @@ export default function ActionBar({
           break;
 
         case guaranteeOrderStatusConstants.DA_DUYET_BAO_GIA:
-          if (
-            (!feedback || feedback.trim() === "") &&
-            unpaidDeposit &&
-            depositNumber == 1
-          ) {
+          if ((!feedback || feedback.trim() === "") && unpaidDeposit) {
             showPaymentButton = true;
           }
 
           break;
 
         case guaranteeOrderStatusConstants.DANG_GIAO_HANG_LAP_DAT:
-          if (unpaidDeposit && (depositNumber == 3 || depositNumber == 2)) {
+          if (unpaidDeposit) {
             showPaymentButton = true;
             paymentButtonText = "Thanh toán và xác nhận đơn hàng";
           }

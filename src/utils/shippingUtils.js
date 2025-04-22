@@ -156,25 +156,8 @@ export const createAndUpdateShipment = async ({
 }) => {
   // Prepare items data with dimensions for shipment
   const items = products.map((product) => {
-    let dimensions;
-
-    if (product.designIdeaVariantDetail?.designIdeaVariantConfig) {
-      // Extract dimensions from design variant config
-      const variantConfig =
-        product.designIdeaVariantDetail.designIdeaVariantConfig[0];
-      dimensions = extractDimensionsFromConfig(variantConfig);
-    } else if (product.personalProductDetail) {
-      // Extract dimensions from personal product detail
-      dimensions = extractDimensionsFromProduct(product);
-    } else if (product.product) {
-      dimensions = {
-        length: product.product.length,
-        width: product.product.width,
-        height: product.product.height,
-      };
-    } else {
-      dimensions = { length: 20, width: 20, height: 20 };
-    }
+    // Use the existing utility function to extract dimensions consistently
+    const dimensions = extractDimensionsFromProduct(product);
 
     return {
       name:
@@ -240,3 +223,115 @@ export const createAndUpdateShipment = async ({
     orderCode,
   };
 };
+
+/**
+ * Create a GHN shipment for a guarantee order to get product from customer
+ * @param {Object} params - Parameters needed for shipment creation
+ * @returns {Promise<Object>} Result containing order code and success status
+ */
+export const createAndUpdateShipmentForGuaranteeGetProductFromCustomer =
+  async ({
+    order,
+    product,
+    shipmentData,
+    guaranteeOrderId,
+    createShipment,
+    updateShipmentOrderCode,
+    notify,
+  }) => {
+    try {
+      if (!shipmentData?.data || shipmentData.data.length === 0) {
+        notify && notify("Lỗi", "Không tìm thấy thông tin vận chuyển", "error");
+        return { success: false };
+      }
+
+      // Get the first shipment
+      const shipment = shipmentData.data[0];
+      if (!shipment) {
+        notify && notify("Lỗi", "Không tìm thấy thông tin vận chuyển", "error");
+        return { success: false };
+      }
+
+      // Extract dimensions from the product
+      const dimensions = extractDimensionsFromProduct(product);
+
+      // Prepare items for GHN API
+      const items = [
+        {
+          name:
+            product.designIdeaVariantDetail?.name ||
+            product.category?.categoryName ||
+            "Sản phẩm bảo hành",
+          quantity: 1,
+          length: dimensions.length,
+          width: dimensions.width,
+          height: dimensions.height,
+          weight: 0,
+        },
+      ];
+
+      // Create GHN shipment request
+      const requestData = {
+        payment_type_id: 1,
+        required_note: "WAIT",
+        // Sender information (customer)
+        from_name: order?.user?.username,
+        from_phone: order?.user?.phone,
+        from_address: shipment.fromAddress,
+        from_ward_name: shipment.fromAddress?.split(",")[1]?.trim() || "N/A",
+        from_district_name:
+          shipment.fromAddress?.split(",")[2]?.trim() || "N/A",
+        from_province_name:
+          shipment.fromAddress?.split(",")[3]?.trim() || "N/A",
+        // Receiver information (woodworker)
+        to_phone: order?.woodworkerUser?.phone,
+        to_name: order?.woodworkerUser?.username,
+        to_address: shipment.toAddress,
+        to_ward_code: shipment.toWardCode,
+        to_district_id: shipment.toDistrictId,
+        // Package information
+        weight: 0,
+        length: 0,
+        width: 0,
+        height: 0,
+        service_type_id: shipment.ghnServiceTypeId || 5,
+        items: items,
+      };
+
+      // Create the shipment
+      const response = await createShipment({
+        serviceOrderId: guaranteeOrderId,
+        data: requestData,
+      }).unwrap();
+
+      // Get order code from response
+      const orderCode = response.data.data.order_code;
+
+      // Update shipment with order code
+      await updateShipmentOrderCode({
+        guaranteeOrderId: guaranteeOrderId,
+        orderCode: orderCode,
+        type: "Lấy",
+      }).unwrap();
+
+      notify &&
+        notify(
+          "Thành công",
+          `Đã tạo vận đơn lấy hàng thành công với mã: ${orderCode}`,
+          "success"
+        );
+
+      return {
+        success: true,
+        orderCode,
+      };
+    } catch (error) {
+      notify &&
+        notify(
+          "Lỗi vận chuyển",
+          error.data?.message || error.message || "Không thể tạo vận đơn",
+          "error"
+        );
+      return { success: false };
+    }
+  };

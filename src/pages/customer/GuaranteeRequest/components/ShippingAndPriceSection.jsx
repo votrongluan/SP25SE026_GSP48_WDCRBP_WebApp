@@ -22,9 +22,6 @@ export default function ShippingAndPriceSection({
   setNote,
   isGuarantee,
 }) {
-  // Calculate one-way shipping fee
-  const oneWayShippingFee = isInstall ? shippingFee : shippingFee / 2;
-
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -55,7 +52,7 @@ export default function ShippingAndPriceSection({
 
         <Divider />
 
-        {/* Updated price section with HStack layout */}
+        {/* Updated price section to always show two-way shipping */}
         <Box>
           <Text fontWeight="medium" mb={3}>
             Chi phí vận chuyển:
@@ -68,33 +65,27 @@ export default function ShippingAndPriceSection({
             </Flex>
           ) : shippingFee > 0 ? (
             <VStack align="stretch" spacing={2}>
-              {/* Always show first shipment */}
+              {/* Always show both directions */}
               <HStack justify="space-between">
                 <Text>Chiều đi (Khách hàng → Xưởng):</Text>
                 <Text fontWeight="medium" color={appColorTheme.brown_2}>
-                  {formatCurrency(oneWayShippingFee)}
+                  {formatCurrency(shippingFee)}
                 </Text>
               </HStack>
 
-              {/* Only show return shipment if not install */}
-              {!isInstall && (
-                <HStack justify="space-between">
-                  <Text>Chiều về (Xưởng → Khách hàng):</Text>
-                  <Text fontWeight="medium" color={appColorTheme.brown_2}>
-                    {formatCurrency(oneWayShippingFee)}
-                  </Text>
-                </HStack>
-              )}
+              <HStack justify="space-between">
+                <Text>Chiều về (Xưởng → Khách hàng):</Text>
+                <Text fontWeight="medium" color={appColorTheme.brown_2}>
+                  {formatCurrency(shippingFee)}
+                </Text>
+              </HStack>
 
-              {/* Only show total if there are multiple costs */}
-              {!isInstall && (
-                <HStack justify="space-between">
-                  <Text fontWeight="bold">Tổng phí vận chuyển:</Text>
-                  <Text fontWeight="bold" color={appColorTheme.brown_2}>
-                    {formatCurrency(shippingFee)}
-                  </Text>
-                </HStack>
-              )}
+              <HStack justify="space-between">
+                <Text fontWeight="bold">Tổng phí vận chuyển:</Text>
+                <Text fontWeight="bold" color={appColorTheme.brown_2}>
+                  {formatCurrency(shippingFee)}
+                </Text>
+              </HStack>
             </VStack>
           ) : (
             <Text color="red.500">Không thể tính phí vận chuyển</Text>
@@ -113,7 +104,7 @@ export default function ShippingAndPriceSection({
               fontWeight="bold"
               color={isGuarantee ? "green.500" : "blue.500"}
             >
-              {isGuarantee ? "Miễn phí" : "Báo giá chi tiết sau"}
+              {isGuarantee ? "Miễn phí" : "Xưởng sẽ báo giá chi tiết sau"}
             </Text>
           </HStack>
         </Box>

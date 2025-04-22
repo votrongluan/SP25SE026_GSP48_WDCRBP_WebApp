@@ -100,7 +100,7 @@ export default function AppointmentUpdateModal({ order, refetch }) {
         leftIcon={<FiCalendar />}
         onClick={onOpen}
       >
-        Cập nhật lịch hẹn
+        Cập nhật lịch hẹn tư vấn về hợp đồng
       </Button>
 
       <Modal

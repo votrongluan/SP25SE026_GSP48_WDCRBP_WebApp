@@ -7,8 +7,6 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  Flex,
-  Heading,
   HStack,
   Stack,
   Text,
@@ -57,6 +55,8 @@ export default function PersonalizationProduct({
   currentProductImgUrls = "",
   completionDate = null,
   warrantyDuration = 0,
+  isGuarantee,
+  guaranteeError,
 }) {
   const [quotationData, setQuotationData] = useState([]);
   const [isLoadingQuotations, setIsLoadingQuotations] = useState(false);
@@ -267,6 +267,19 @@ export default function PersonalizationProduct({
         </Text>
 
         <Stack spacing={4}>
+          {/* Form */}
+          <HStack>
+            <Text fontWeight="bold">Hình thức yêu cầu:</Text>
+            <Text>{isGuarantee ? "Bảo hành" : "Sửa chữa"}</Text>
+          </HStack>
+
+          {guaranteeError && isGuarantee && (
+            <HStack color="red.500">
+              <Text fontWeight="bold">Lỗi bảo hành:</Text>
+              <Text>{guaranteeError}</Text>
+            </HStack>
+          )}
+
           {/* Current Status */}
           <HStack>
             <Text fontWeight="bold">Trạng thái hiện tại:</Text>

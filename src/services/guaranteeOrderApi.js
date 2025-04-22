@@ -62,6 +62,13 @@ export const guaranteeOrderApi = createApi({
     getGuaranteeOrderById: builder.query({
       query: (id) => `/api/v1/guarantee-orders/${id}`,
     }),
+    acceptFreeGuaranteeOrder: builder.mutation({
+      query: (guaranteeOrderId) => ({
+        url: `/api/v1/guarantee-orders/accept-free`,
+        method: "POST",
+        params: { guaranteeOrderId },
+      }),
+    }),
   }),
 });
 
@@ -73,4 +80,5 @@ export const {
   useGetGuaranteeOrderByIdQuery,
   useConfirmReceiveProductMutation,
   useFinishConfirmationMutation,
+  useAcceptFreeGuaranteeOrderMutation,
 } = guaranteeOrderApi;

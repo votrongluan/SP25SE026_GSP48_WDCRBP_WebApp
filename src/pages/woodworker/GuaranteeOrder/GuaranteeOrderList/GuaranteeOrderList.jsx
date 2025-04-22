@@ -19,7 +19,6 @@ import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { useGetGuaranteeOrdersQuery } from "../../../../services/guaranteeOrderApi";
 import useAuth from "../../../../hooks/useAuth";
-import { formatPrice } from "../../../../utils/utils";
 
 const ActionButton = (params) => {
   const navigate = useNavigate();
@@ -106,6 +105,12 @@ export default function GuaranteeOrderList() {
       {
         headerName: "Cần lắp đặt",
         field: "install",
+      },
+      {
+        headerName: "Hình thức",
+        valueGetter: (params) => {
+          return params.data.isGuarantee ? "Bảo hành" : "Sửa chữa";
+        },
       },
       {
         headerName: "Cần phản hồi?",

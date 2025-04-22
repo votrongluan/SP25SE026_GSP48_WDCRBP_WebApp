@@ -29,6 +29,8 @@ export default function CustomizationProduct({
   currentProductImgUrls = "",
   completionDate = null,
   warrantyDuration = 0,
+  isGuarantee,
+  guaranteeError,
 }) {
   const designDetail = product.designIdeaVariantDetail;
 
@@ -153,6 +155,19 @@ export default function CustomizationProduct({
         </Text>
 
         <Stack spacing={4}>
+          {/* Form */}
+          <HStack>
+            <Text fontWeight="bold">Hình thức yêu cầu:</Text>
+            <Text>{isGuarantee ? "Bảo hành" : "Sửa chữa"}</Text>
+          </HStack>
+
+          {guaranteeError && isGuarantee && (
+            <HStack color="red.500">
+              <Text fontWeight="bold">Lỗi bảo hành:</Text>
+              <Text>{guaranteeError}</Text>
+            </HStack>
+          )}
+
           {/* Current Status */}
           <HStack>
             <Text fontWeight="bold">Trạng thái hiện tại:</Text>

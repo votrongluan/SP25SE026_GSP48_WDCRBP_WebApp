@@ -100,7 +100,9 @@ export default function AppointmentUpdateModal({ order, refetch }) {
         leftIcon={<FiCalendar />}
         onClick={onOpen}
       >
-        Cập nhật lịch hẹn
+        {order?.isGuarantee
+          ? "Cập nhật lịch hẹn tư vấn để xem xét lại chuyển sang sửa chữa"
+          : "Cập nhật lịch hẹn tư vấn về báo giá sửa chữa"}
       </Button>
 
       <Modal

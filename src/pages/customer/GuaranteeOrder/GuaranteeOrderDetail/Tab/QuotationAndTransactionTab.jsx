@@ -143,7 +143,7 @@ export default function QuotationAndTransactionTab({
                     ))}
                     <Tr>
                       <Td colSpan={3} textAlign="right" fontWeight="bold">
-                        Phí vận chuyển bên thứ 3 (GHN):
+                        Phí vận chuyển:
                       </Td>
                       <Td>{formatPrice(order?.shipFee)}</Td>
                     </Tr>

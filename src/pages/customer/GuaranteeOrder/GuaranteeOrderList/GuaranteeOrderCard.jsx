@@ -103,6 +103,13 @@ const GuaranteeOrderCard = ({ order, onViewDetails }) => {
               </Text>
               <Text>{formatDateTimeToVietnamese(order.createdAt)}</Text>
             </Flex>
+
+            <Flex mt={1}>
+              <Text fontWeight="medium" minWidth="110px">
+                Hình thức:
+              </Text>
+              <Text>{order?.isGuarantee ? "Bảo hành" : "Sửa chữa"}</Text>
+            </Flex>
           </GridItem>
         </Grid>
       </CardBody>
@@ -120,7 +127,7 @@ const GuaranteeOrderCard = ({ order, onViewDetails }) => {
             {formatPrice(order.totalAmount)}
           </Text>
         ) : (
-          <Text>Chưa có báo giá</Text>
+          <Text>Chưa cập nhật</Text>
         )}
 
         <Button

@@ -4,6 +4,7 @@ import CancelModal from "./CancelModal.jsx";
 import FinishUpdateModal from "../Finish/FinishUpdateModal.jsx";
 import QuotationUpdateModal from "../Quotation/QuotationUpdateModal.jsx";
 import ReceiveConfirmationModal from "./ReceiveConfirmationModal.jsx";
+import GuaranteeAcceptModal from "../Quotation/GuaranteeAcceptModal.jsx";
 
 export default function ActionBar({ status, feedback, order, refetch }) {
   const renderActionButtons = () => {
@@ -12,12 +13,16 @@ export default function ActionBar({ status, feedback, order, refetch }) {
     let showQuotationModal = false;
     let showConfirmReceiveModal = false;
     let showCompleteModal = false;
+    let showAcceptFreeGuaranteeModal = false;
 
     if (order && order.role === "Woodworker") {
       switch (status) {
         case guaranteeOrderStatusConstants.DANG_CHO_THO_MOC_XAC_NHAN:
           showAppointmentModal = true;
           showCancelModal = true;
+          if (order?.isGuarantee) {
+            showAcceptFreeGuaranteeModal = true;
+          }
 
           break;
 
@@ -30,6 +35,9 @@ export default function ActionBar({ status, feedback, order, refetch }) {
 
         case guaranteeOrderStatusConstants.DA_DUYET_LICH_HEN:
           showQuotationModal = true;
+          if (order?.guaranteeError) {
+            showAcceptFreeGuaranteeModal = true;
+          }
 
           break;
 
@@ -59,6 +67,14 @@ export default function ActionBar({ status, feedback, order, refetch }) {
 
     return (
       <>
+        {showAcceptFreeGuaranteeModal && (
+          <GuaranteeAcceptModal
+            refetch={refetch}
+            order={order}
+            guaranteeOrderId={order?.guaranteeOrderId}
+          />
+        )}
+
         {showAppointmentModal && (
           <AppointmentUpdateModal refetch={refetch} order={order} />
         )}

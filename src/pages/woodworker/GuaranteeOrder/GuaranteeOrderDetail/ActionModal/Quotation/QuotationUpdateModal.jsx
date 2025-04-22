@@ -215,7 +215,7 @@ export default function QuotationUpdateModal({ guaranteeOrderId, refetch }) {
         leftIcon={<FiFileText />}
         onClick={onOpen}
       >
-        Cập nhật báo giá
+        Cập nhật báo giá chi tiết sửa chữa
       </Button>
 
       <Modal

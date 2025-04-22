@@ -184,9 +184,8 @@ export default function GuaranteeRequestPage() {
 
         // Update state with results
         setSelectedService(cheapestService);
-        setShippingFee(isInstall ? calculatedFee : calculatedFee * 2);
+        setShippingFee(calculatedFee);
       } catch (error) {
-        console.error("Error in shipping calculation process:", error);
         setSelectedService(null);
         setShippingFee(0);
       } finally {
@@ -198,7 +197,6 @@ export default function GuaranteeRequestPage() {
   }, [
     selectedAddress,
     selectedProduct,
-    isInstall,
     addresses,
     woodworkerInfo,
     calculateShippingFee,
@@ -304,10 +302,9 @@ export default function GuaranteeRequestPage() {
         address: selectedAddressObj.address,
         requestedProductId: selectedProduct.requestedProductId,
         isInstall: isInstall,
-        priceShipping: shippingFee,
+        priceShipping: shippingFee * 2,
         productCurrentStatus: currentProductStatus,
         currentProductImgUrls: currentProductImages,
-        // New fields
         isGuarantee: isGuarantee,
         guaranteeError: isGuarantee ? guaranteeError : "",
       };
@@ -408,6 +405,7 @@ export default function GuaranteeRequestPage() {
               setGuaranteeError={setGuaranteeError}
               isGuarantee={isGuarantee}
               setIsGuarantee={setIsGuarantee}
+              woodworkerId={currentWoodworkerId}
             />
           )}
 
