@@ -13,6 +13,7 @@ import {
   FiChevronRight,
   FiStar,
   FiMessageCircle,
+  FiAlertTriangle,
 } from "react-icons/fi";
 import { appColorTheme } from "../../config/appconfig.js";
 
@@ -35,6 +36,7 @@ export default function StaffSideBar({ isCollapsed, setIsCollapsed }) {
       path: "response",
       icon: FiMessageCircle,
     },
+    { label: "Khiếu nại", path: "complaint", icon: FiAlertTriangle },
   ];
 
   return (

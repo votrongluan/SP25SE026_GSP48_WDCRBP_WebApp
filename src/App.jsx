@@ -41,9 +41,9 @@ import PostManagementListPage from "./pages/woodworker/PostManagement/PostList/P
 import ServiceConfiguration from "./pages/woodworker/ServiceConfiguration/ServiceConfiguration.jsx";
 import SuccessPage from "./pages/general/StatusPage/SuccessPage.jsx";
 import WWRegistrationManagementListPage from "./pages/admin/WWRegistrationManagement/RegistrationList/WWRegistrationManagementListPage.jsx";
-import ComplaintManagementListPage from "./pages/woodworker/ComplaintManagement/ComplaintList/ComplaintManagementListPage.jsx";
+import WWComplaintManagementPage from "./pages/woodworker/ComplaintManagement/ComplaintList/WWComplaintManagementPage.jsx";
 import ReviewManagementListPage from "./pages/woodworker/ReviewManagement/ReviewList/ReviewManagementListPage.jsx";
-import WalletManagementListPage from "./pages/woodworker/WalletManagement/WalletList/WalletManagementListPage.jsx";
+import WWWalletPage from "./pages/woodworker/WalletManagement/WalletList/WWWalletPage.jsx";
 import Logout from "./pages/general/Auth/Logout.jsx";
 import WoodworkerProfileManagementPage from "./pages/woodworker/ProfileManagement/ProfilePage/ManagePage/WoodworkerProfileManagementPage.jsx";
 import CustomerComplaintPage from "./pages/customer/ComplaintManagement/ComplaintList/CustomerComplaintPage.jsx";
@@ -66,6 +66,7 @@ import StaffLayout from "./layouts/StaffLayout.jsx";
 import CusReviewManagementPage from "./pages/staff/ReviewManagement/ReviewList/CusReviewManagementPage.jsx";
 import ServicePackUpgradeGuide from "./pages/general/Pricing/ServicePackUpgradeGuide.jsx";
 import WWResponseManagementPage from "./pages/staff/ResponseManagement/ResponseList/WWResponseManagementPage.jsx";
+import StaffComplaintManagementPage from "./pages/staff/ComplaintManagement/ComplaintList/StaffComplaintManagementPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -122,20 +123,20 @@ function App() {
           <Route index element={<StaffWelcomePage />} />
           <Route path="review" element={<CusReviewManagementPage />} />
           <Route path="response" element={<WWResponseManagementPage />} />
+          <Route path="complaint" element={<StaffComplaintManagementPage />} />
         </Route>
 
         {/* Woodworker page route */}
         <Route path="ww" element={<WoodworkerLayout />}>
           <Route index element={<WoodworkerWelcomePage />} />
-          <Route path="dashboard" element={<NotFoundPage />} />
 
           <Route path="design" element={<DesignManagementListPage />} />
           <Route path="product" element={<ProductManagementListPage />} />
           <Route path="post" element={<PostManagementListPage />} />
           <Route path="service" element={<ServiceConfiguration />} />
-          <Route path="complaint" element={<ComplaintManagementListPage />} />
+          <Route path="complaint" element={<WWComplaintManagementPage />} />
           <Route path="review" element={<ReviewManagementListPage />} />
-          <Route path="wallet" element={<WalletManagementListPage />} />
+          <Route path="wallet" element={<WWWalletPage />} />
           <Route path="profile" element={<WoodworkerProfileManagementPage />} />
 
           <Route path="service-order">

@@ -15,9 +15,7 @@ import {
   Tooltip,
   useDisclosure,
   VStack,
-  Badge,
   Flex,
-  Spacer,
   Link,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
@@ -62,15 +60,6 @@ export default function ReviewDetailModal({ review, refetch }) {
     } finally {
       setIsProcessing(false);
     }
-  };
-
-  const getStatusBadge = () => {
-    if (review?.status === true) {
-      return <Badge colorScheme="green">Đã duyệt</Badge>;
-    } else if (review?.status === false) {
-      return <Badge colorScheme="red">Từ chối</Badge>;
-    }
-    return <Badge colorScheme="orange">Chờ duyệt</Badge>;
   };
 
   return (
@@ -130,10 +119,6 @@ export default function ReviewDetailModal({ review, refetch }) {
                     <Box>
                       <Text fontWeight="bold">Ngày tạo:</Text>
                       <Text>{formatDateTimeString(review?.createdAt)}</Text>
-                    </Box>
-                    <Box>
-                      <Text fontWeight="bold">Trạng thái:</Text>
-                      {getStatusBadge()}
                     </Box>
                   </Grid>
                 </Box>

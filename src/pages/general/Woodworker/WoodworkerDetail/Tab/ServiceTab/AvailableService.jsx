@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Text,
@@ -7,14 +6,21 @@ import {
   Icon,
   Spinner,
   Center,
+  Heading,
+  UnorderedList,
+  ListItem,
 } from "@chakra-ui/react";
-import { FiArrowRight } from "react-icons/fi";
+import { FiArrowRight, FiShield } from "react-icons/fi";
 import { appColorTheme, service } from "../../../../../../config/appconfig.js";
 import { useGetAvailableServiceByWwIdQuery } from "../../../../../../services/availableServiceApi";
 import { useParams } from "react-router-dom";
 import useAuth from "../../../../../../hooks/useAuth.js";
 
-export default function AvailableService({ woodworkerId, onServiceAction }) {
+export default function AvailableService({
+  woodworkerId,
+  onServiceAction,
+  woodworker,
+}) {
   const { id } = useParams();
   const wwId = woodworkerId || id;
   const { auth } = useAuth();
@@ -26,6 +32,14 @@ export default function AvailableService({ woodworkerId, onServiceAction }) {
   } = useGetAvailableServiceByWwIdQuery(wwId);
 
   const services = response?.data || [];
+
+  // Split warranty policy by semicolon if available
+  const warrantyPolicies = woodworker?.warrantyPolicy
+    ? woodworker.warrantyPolicy
+        .split(";")
+        .map((item) => item.trim())
+        .filter(Boolean)
+    : [];
 
   const handleServiceClick = (serviceType) => {
     const serviceConfig = service[serviceType] || {};
@@ -106,6 +120,27 @@ export default function AvailableService({ woodworkerId, onServiceAction }) {
           );
         })}
       </Stack>
+
+      {warrantyPolicies.length > 0 && (
+        <Box mt={8} pt={6} borderTop="1px solid" borderColor="gray.200">
+          <Heading
+            as="h4"
+            size="md"
+            mb={4}
+            display="flex"
+            alignItems="center"
+            color={appColorTheme.brown_2}
+          >
+            <Icon as={FiShield} mr={2} />
+            Chính sách bảo hành (Lỗi chấp nhận bảo hành)
+          </Heading>
+          <UnorderedList spacing={2} pl={4}>
+            {warrantyPolicies.map((policy, index) => (
+              <ListItem key={index}>{policy}</ListItem>
+            ))}
+          </UnorderedList>
+        </Box>
+      )}
     </Box>
   );
 }

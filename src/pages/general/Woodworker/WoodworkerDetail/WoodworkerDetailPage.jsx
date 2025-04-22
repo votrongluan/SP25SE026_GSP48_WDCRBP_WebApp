@@ -225,6 +225,7 @@ export default function WoodworkerDetailPage() {
             </TabPanel>
             <TabPanel p={0}>
               <AvailableService
+                woodworker={woodworker}
                 woodworkerId={woodworker.woodworkerId}
                 onServiceAction={handleServiceAction}
               />

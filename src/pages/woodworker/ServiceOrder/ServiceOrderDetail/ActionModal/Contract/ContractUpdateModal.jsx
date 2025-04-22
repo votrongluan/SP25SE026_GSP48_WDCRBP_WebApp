@@ -157,7 +157,6 @@ export default function ContractUpdateModal({ order, refetch }) {
       // Prepare API data with the new format that includes per-product warranty durations
       const postData = {
         woodworkerSignature: signatureUrl,
-        warrantyPolicy: contractData.warrantyPolicy,
         woodworkerTerms: contractData.woodworkerTerms,
         completeDate: completeDate.toISOString(),
         serviceOrderId: parseInt(order.orderId),

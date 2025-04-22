@@ -16,6 +16,28 @@ import { useNavigate } from "react-router-dom";
 import { useGetGuaranteeOrdersQuery } from "../../../../services/guaranteeOrderApi";
 import useAuth from "../../../../hooks/useAuth";
 import GuaranteeOrderCard from "./GuaranteeOrderCard";
+import Pagination from "../../../../components/Utility/Pagination";
+
+// Component to render guarantee order items (will be passed to Pagination)
+const GuaranteeOrderListItems = ({ data, onViewDetails }) => {
+  return (
+    <Stack spacing={4}>
+      {data.length > 0 ? (
+        data.map((order) => (
+          <GuaranteeOrderCard
+            key={order.guaranteeOrderId}
+            order={order}
+            onViewDetails={onViewDetails}
+          />
+        ))
+      ) : (
+        <Box textAlign="center" py={4}>
+          <Text fontSize="lg">Không có đơn hàng nào phù hợp với bộ lọc.</Text>
+        </Box>
+      )}
+    </Stack>
+  );
+};
 
 export default function GuaranteeOrderList() {
   const { auth } = useAuth();
@@ -151,15 +173,16 @@ export default function GuaranteeOrderList() {
           <Text fontSize="lg">Không có đơn hàng nào phù hợp với bộ lọc.</Text>
         </Box>
       ) : (
-        <Stack spacing={4}>
-          {filteredData.map((order) => (
-            <GuaranteeOrderCard
-              key={order.guaranteeOrderId}
-              order={order}
+        <Pagination
+          dataList={filteredData}
+          DisplayComponent={(props) => (
+            <GuaranteeOrderListItems
+              {...props}
               onViewDetails={handleViewDetails}
             />
-          ))}
-        </Stack>
+          )}
+          itemsPerPage={10}
+        />
       )}
     </Box>
   );

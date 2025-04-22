@@ -121,7 +121,7 @@ export default function GuaranteeAcceptModal({
 
   const confirmationItems = [
     {
-      description: "Tôi xác nhận chấp nhận bảo hành miễn phí cho sản phẩm này",
+      description: "Tôi đã kiểm tra thông tin và xác nhận thao tác",
       isOptional: false,
     },
   ];

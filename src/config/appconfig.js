@@ -39,6 +39,16 @@ export const transactionTypeConstants = {
   THANH_TOAN_BANG_VI: "Thanh toán bằng ví",
   THANH_TOAN_QUA_CONG: "Thanh toán bằng VNPay",
   NHAN_TIEN: "Nhận tiền",
+  HOAN_TIEN: "Nhận hoàn tiền",
+  TRU_HOAN_TIEN: "Hoàn tiền cho khách hàng",
+};
+
+export const paymentForConstants = {
+  ORDER_PAYMENT: "Thanh toán đơn hàng",
+  SERVICE_PACK_PAYMENT: "Thanh toán gói dịch vụ",
+  WALLET_PAYMENT: "Thanh toán nạp ví",
+  REFUND_PAYMENT: "Thanh toán hoàn tiền",
+  OTHER: "Khác",
 };
 
 export const servicePackNameConstants = {
@@ -125,6 +135,28 @@ export const transactionTypeColorMap = {
   [transactionTypeConstants.THANH_TOAN_BANG_VI]: "#9f7aea",
   [transactionTypeConstants.THANH_TOAN_QUA_CONG]: "#9f7aea",
   [transactionTypeConstants.NHAN_TIEN]: "#38a169",
+  [transactionTypeConstants.HOAN_TIEN]: "#38a169",
+  [transactionTypeConstants.TRU_HOAN_TIEN]: "#9f7aea",
+};
+
+export const complaintStatusConstants = {
+  PENDING: "Đang chờ tường trình từ xưởng mộc",
+  IN_PROGRESS: "Đang chờ xử lý",
+  COMPLETED: "Đã hoàn thành",
+};
+
+// Add function to get color for complaint status
+export const getComplaintStatusColor = (status) => {
+  switch (status) {
+    case complaintStatusConstants.PENDING:
+      return "red.500";
+    case complaintStatusConstants.COMPLETED:
+      return "green.500";
+    case complaintStatusConstants.IN_PROGRESS:
+      return "orange.500";
+    default:
+      return "gray.500";
+  }
 };
 
 export const service = {

@@ -54,14 +54,19 @@ export default function CustomerWalletPage() {
         if (
           (params.data?.transactionType == transactionTypeConstants.NAP_VI ||
             params.data?.transactionType ==
-              transactionTypeConstants.NHAN_TIEN) &&
+              transactionTypeConstants.NHAN_TIEN ||
+            params.data?.transactionType ==
+              transactionTypeConstants.HOAN_TIEN) &&
           params.data?.status == true
         ) {
           return `+ ${formatPrice(params.value)}`;
         } else if (
-          params.data?.transactionType == transactionTypeConstants.RUT_VI ||
-          params.data?.transactionType ==
-            transactionTypeConstants.THANH_TOAN_BANG_VI
+          (params.data?.transactionType == transactionTypeConstants.RUT_VI ||
+            params.data?.transactionType ==
+              transactionTypeConstants.THANH_TOAN_BANG_VI ||
+            params.data?.transactionType ==
+              transactionTypeConstants.TRU_HOAN_TIEN) &&
+          params.data?.status == true
         ) {
           return `- ${formatPrice(params.value)}`;
         }
@@ -76,7 +81,9 @@ export default function CustomerWalletPage() {
         if (
           params.data?.status == true &&
           (params.data?.transactionType == transactionTypeConstants.NAP_VI ||
-            params.data?.transactionType == transactionTypeConstants.NHAN_TIEN)
+            params.data?.transactionType ==
+              transactionTypeConstants.NHAN_TIEN ||
+            params.data?.transactionType == transactionTypeConstants.HOAN_TIEN)
         ) {
           return { color: appColorTheme.brown_2, fontWeight: "bold" };
         } else if (params.data?.status == true) {

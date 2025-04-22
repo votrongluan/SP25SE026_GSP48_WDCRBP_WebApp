@@ -1,70 +1,125 @@
-import { Box, Flex, Heading, HStack, Stack } from "@chakra-ui/react";
-import { AgGridReact } from "ag-grid-react";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-quartz.css";
-import { useState, useMemo } from "react";
-import { appColorTheme } from "../../../../config/appconfig";
-import ComplaintDetailModal from "../ActionModal/ComplaintDetailModal";
-import { formatDateTimeString } from "../../../../utils/utils";
+import {
+  Box,
+  Center,
+  Flex,
+  Heading,
+  Spinner,
+  Stack,
+  Text,
+  Select,
+  HStack,
+} from "@chakra-ui/react";
+import { useState, useMemo, useEffect } from "react";
+import {
+  appColorTheme,
+  complaintStatusConstants,
+} from "../../../../config/appconfig";
+import ComplaintCreateModal from "../ActionModal/ComplaintCreateModal";
+import { useGetUserComplaintsQuery } from "../../../../services/complaintApi";
+import useAuth from "../../../../hooks/useAuth";
+import { useGetServiceOrdersQuery } from "../../../../services/serviceOrderApi";
+import Pagination from "../../../../components/Utility/Pagination";
+import ComplaintCard from "./ComplaintCard";
+
+// Component to render complaint items (will be passed to Pagination)
+const ComplaintListItems = ({ data, refetch }) => {
+  return (
+    <Stack spacing={4}>
+      {data.length > 0 ? (
+        data.map((complaint) => (
+          <ComplaintCard
+            key={complaint.complaintId}
+            complaint={complaint}
+            refetch={refetch}
+          />
+        ))
+      ) : (
+        <Box textAlign="center" py={10}>
+          <Text fontSize="lg">Không có khiếu nại nào phù hợp với bộ lọc.</Text>
+        </Box>
+      )}
+    </Stack>
+  );
+};
 
 export default function CustomerComplaintPage() {
-  const [rowData, setRowData] = useState([
-    {
-      complaintId: "KN001",
-      orderId: "DH001",
-      userId: "KH001",
-      description: "Sản phẩm không đúng với thiết kế đã thống nhất",
-      status: "Chờ phản hồi",
-      createdAt: "2024-03-27T10:00:00",
-      explanation: "",
-    },
-  ]);
+  const { auth } = useAuth();
+  const { data, isLoading, isError, refetch } = useGetUserComplaintsQuery(
+    auth?.userId
+  );
 
-  const [colDefs] = useState([
-    { headerName: "Mã khiếu nại", field: "complaintId", sort: "desc" },
-    { headerName: "Mã đơn hàng", field: "orderId" },
-    { headerName: "Mã khách hàng", field: "userId" },
-    {
-      headerName: "Nội dung",
-      field: "description",
-      flex: 2,
-    },
-    {
-      headerName: "Ngày tạo",
-      field: "createdAt",
-      valueFormatter: (params) => formatDateTimeString(params.value),
-    },
-    {
-      headerName: "Trạng thái",
-      field: "status",
-      cellStyle: (params) => {
-        if (params.value === "Chờ phản hồi") {
-          return { color: "#E53E3E" };
-        } else if (params.value === "Đã phản hồi") {
-          return { color: "#38A169" };
-        }
-        return { color: "#718096" };
+  // Get service orders for the user
+  const { data: ordersData, isLoading: isLoadingOrders } =
+    useGetServiceOrdersQuery(
+      {
+        id: auth?.userId,
+        role: "Customer",
       },
-    },
-    {
-      headerName: "Thao tác",
-      cellRenderer: ({ data }) => {
-        return (
-          <HStack spacing={1}>
-            <ComplaintDetailModal complaint={data} refetch={null} />
-          </HStack>
-        );
-      },
-    },
-  ]);
+      { skip: !auth?.userId }
+    );
 
-  const defaultColDef = useMemo(() => {
-    return {
-      filter: true,
-      floatingFilter: true,
-      flex: 1,
-    };
+  const complaints = data?.data || [];
+  const serviceOrders = ordersData?.data || [];
+
+  // Filtering states
+  const [statusFilter, setStatusFilter] = useState("");
+  const [sortOption, setSortOption] = useState("complaintIdDesc");
+  const [filteredComplaints, setFilteredComplaints] = useState([]);
+
+  // Get status values from constants for the dropdown
+  const statusValues = useMemo(() => {
+    return Object.values(complaintStatusConstants);
   }, []);
+
+  // Apply filters and sorting when necessary
+  useEffect(() => {
+    if (!complaints) return;
+
+    let filtered = [...complaints];
+
+    // Apply status filter if selected
+    if (statusFilter) {
+      filtered = filtered.filter((item) => item.status === statusFilter);
+    }
+
+    // Apply sorting
+    const sorted = [...filtered].sort((a, b) => {
+      switch (sortOption) {
+        case "complaintIdAsc":
+          return a.complaintId - b.complaintId;
+        case "complaintIdDesc":
+        default:
+          return b.complaintId - a.complaintId;
+      }
+    });
+
+    setFilteredComplaints(sorted);
+  }, [complaints, statusFilter, sortOption]);
+
+  // Handle filter changes
+  const handleStatusFilterChange = (e) => {
+    setStatusFilter(e.target.value);
+  };
+
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+  };
+
+  if (isLoading || isLoadingOrders) {
+    return (
+      <Center h="500px">
+        <Spinner size="xl" />
+      </Center>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Center h="500px">
+        <Text>Đã xảy ra lỗi khi tải dữ liệu.</Text>
+      </Center>
+    );
+  }
 
   return (
     <Stack spacing={6}>
@@ -76,23 +131,54 @@ export default function CustomerComplaintPage() {
         >
           Quản lý Khiếu nại
         </Heading>
+        <ComplaintCreateModal refetch={refetch} serviceOrders={serviceOrders} />
       </Flex>
 
-      <Box>
-        <div
-          className="ag-theme-quartz"
-          style={{ height: 700, fontSize: "16px" }}
-        >
-          <AgGridReact
-            pagination
-            paginationPageSize={20}
-            paginationPageSizeSelector={[10, 20, 50, 100]}
-            defaultColDef={defaultColDef}
-            rowData={rowData}
-            columnDefs={colDefs}
-          />
-        </div>
-      </Box>
+      <Flex mb={4} gap={4} flexWrap="wrap">
+        <HStack>
+          <Text fontWeight="medium">Lọc theo trạng thái:</Text>
+          <Select
+            width="200px"
+            bgColor="white"
+            value={statusFilter}
+            onChange={handleStatusFilterChange}
+          >
+            <option value="">Tất cả trạng thái</option>
+            {statusValues.map((status) => (
+              <option key={status} value={status}>
+                {status}
+              </option>
+            ))}
+          </Select>
+        </HStack>
+
+        <HStack>
+          <Text fontWeight="medium">Sắp xếp theo:</Text>
+          <Select
+            width="250px"
+            bgColor="white"
+            value={sortOption}
+            onChange={handleSortChange}
+          >
+            <option value="complaintIdDesc">Mã khiếu nại giảm dần</option>
+            <option value="complaintIdAsc">Mã khiếu nại tăng dần</option>
+          </Select>
+        </HStack>
+      </Flex>
+
+      {filteredComplaints.length === 0 ? (
+        <Box textAlign="center" py={10}>
+          <Text fontSize="lg">Không có khiếu nại nào phù hợp với bộ lọc.</Text>
+        </Box>
+      ) : (
+        <Pagination
+          dataList={filteredComplaints}
+          DisplayComponent={(props) => (
+            <ComplaintListItems {...props} refetch={refetch} />
+          )}
+          itemsPerPage={5}
+        />
+      )}
     </Stack>
   );
 }

@@ -37,7 +37,6 @@ export default function ContractEditSection({
   isExistingContract,
 }) {
   const [contract, setContract] = useState({
-    warrantyPolicy: "",
     woodworkerTerms: "",
     contractTotalAmount: 0,
     completeDate: formatDateForInput(
@@ -60,7 +59,6 @@ export default function ContractEditSection({
       // Handle data from existing contract
       setContract((prev) => ({
         ...prev,
-        warrantyPolicy: initialContract.warrantyPolicy || "",
         woodworkerTerms: initialContract.woodworkerTerms || "",
         contractTotalAmount: initialContract.contractTotalAmount || 0,
         completeDate: formatDateForInput(initialContract.completeDate) || "",
@@ -147,17 +145,6 @@ export default function ContractEditSection({
                 }
                 placeholder="Nhập điều khoản của xưởng mộc"
                 whiteSpace="pre-wrap"
-              />
-            </FormControl>
-
-            {/* Warranty policy */}
-            <FormControl isRequired>
-              <FormLabel>Chính sách bảo hành:</FormLabel>
-              <Textarea
-                rows={4}
-                value={contract.warrantyPolicy}
-                onChange={(e) => handleChange("warrantyPolicy", e.target.value)}
-                placeholder="Chính sách bảo hành"
               />
             </FormControl>
 

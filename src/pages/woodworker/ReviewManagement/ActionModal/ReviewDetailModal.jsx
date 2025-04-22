@@ -211,9 +211,6 @@ export default function ReviewDetailModal({ review, refetch }) {
                         review?.woodworkerResponseStatus || isSubmitting
                       }
                     />
-                    <Text fontSize="sm" color="gray.500">
-                      {response.length}/500 ký tự
-                    </Text>
                   </VStack>
                 </Box>
               </Box>

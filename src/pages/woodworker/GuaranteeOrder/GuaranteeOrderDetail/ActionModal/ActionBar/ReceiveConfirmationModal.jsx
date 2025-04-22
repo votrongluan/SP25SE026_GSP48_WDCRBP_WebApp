@@ -33,7 +33,7 @@ export default function ReceiveConfirmationModal({
 
   const checkboxItems = [
     {
-      description: "Tôi xác nhận đã nhận sản phẩm và đã kiểm tra tình trạng",
+      description: "Tôi đã kiểm tra thông tin và xác nhận thao tác",
       isOptional: false,
     },
   ];

@@ -207,13 +207,6 @@ export default function ContractConfirmModal({
                     </GridItem>
 
                     <GridItem>
-                      <Text fontWeight="semibold">Chính sách bảo hành:</Text>
-                    </GridItem>
-                    <GridItem>
-                      <Text>{contract.warrantyPolicy || "Không có"}</Text>
-                    </GridItem>
-
-                    <GridItem>
                       <Text fontWeight="semibold">Tổng tiền thanh toán:</Text>
                     </GridItem>
                     <GridItem>

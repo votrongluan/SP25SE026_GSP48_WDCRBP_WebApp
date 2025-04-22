@@ -171,13 +171,6 @@ export default function ContractAndTransactionTab({
                   </Text>
                 </HStack>
 
-                <Box>
-                  <Text fontWeight="bold">Chính sách bảo hành:</Text>
-                  <Text whiteSpace={"pre-wrap"}>
-                    {contract.warrantyPolicy || "Chưa cập nhật"}
-                  </Text>
-                </Box>
-
                 <HStack>
                   <Box>
                     <Text fontWeight="bold">Chữ ký người đại diện</Text>

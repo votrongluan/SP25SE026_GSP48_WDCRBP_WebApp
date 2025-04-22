@@ -72,22 +72,6 @@ export default function CusReviewManagementPage() {
       valueFormatter: (params) => formatDateTimeString(params.value),
     },
     {
-      headerName: "Trạng thái",
-      valueGetter: (params) => {
-        if (params.data.status === true) return "Đã duyệt";
-        if (params.data.status === false) return "Từ chối";
-        return "Chờ duyệt";
-      },
-      cellStyle: (params) => {
-        if (params.value === "Đã duyệt") {
-          return { color: "#38A169" };
-        } else if (params.value === "Từ chối") {
-          return { color: "#E53E3E" };
-        }
-        return { color: "#F6AD55" }; // Orange for pending
-      },
-    },
-    {
       headerName: "Thao tác",
       cellRenderer: ({ data }) => {
         return (

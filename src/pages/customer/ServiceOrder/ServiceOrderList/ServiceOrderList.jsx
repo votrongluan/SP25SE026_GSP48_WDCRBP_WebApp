@@ -16,12 +16,34 @@ import { useNavigate } from "react-router-dom";
 import { useGetServiceOrdersQuery } from "../../../../services/serviceOrderApi";
 import useAuth from "../../../../hooks/useAuth";
 import ServiceOrderCard from "./ServiceOrderCard";
+import Pagination from "../../../../components/Utility/Pagination";
 
 // Map between display values and API values for service types
 const serviceTypeMap = {
   "Tùy chỉnh": "Customization",
   "Cá nhân hóa": "Personalization",
   "Mua hàng": "Sale",
+};
+
+// Component to render order items (will be passed to Pagination)
+const ServiceOrderListItems = ({ data, onViewDetails }) => {
+  return (
+    <Stack spacing={4}>
+      {data.length > 0 ? (
+        data.map((order) => (
+          <ServiceOrderCard
+            key={order.orderId}
+            order={order}
+            onViewDetails={onViewDetails}
+          />
+        ))
+      ) : (
+        <Box textAlign="center" py={10}>
+          <Text fontSize="lg">Không có đơn hàng nào phù hợp với bộ lọc.</Text>
+        </Box>
+      )}
+    </Stack>
+  );
 };
 
 export default function ServiceOrderList() {
@@ -186,15 +208,16 @@ export default function ServiceOrderList() {
           <Text fontSize="lg">Không có đơn hàng nào phù hợp với bộ lọc.</Text>
         </Box>
       ) : (
-        <Stack spacing={4}>
-          {filteredData.map((order) => (
-            <ServiceOrderCard
-              key={order.orderId}
-              order={order}
+        <Pagination
+          dataList={filteredData}
+          DisplayComponent={(props) => (
+            <ServiceOrderListItems
+              {...props}
               onViewDetails={handleViewDetails}
             />
-          ))}
-        </Stack>
+          )}
+          itemsPerPage={10}
+        />
       )}
     </Box>
   );
