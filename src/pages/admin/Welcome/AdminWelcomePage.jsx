@@ -34,25 +34,12 @@ function AdminWelcomePage() {
             fontSize="3xl"
             fontWeight="bold"
           >
-            Chào mừng đến với Trang Quản Trị
+            Chào mừng đến với Trang Quản Trị nền tảng WDCRBP
           </Heading>
 
           <Text color="gray.600" fontSize="lg" maxW="md" mx="auto">
-            Đây là khu vực dành cho quản trị viên
+            Đây là khu vực dành cho quản trị viên của nền tảng WDCRBP
           </Text>
-
-          <Link to="/admin/dashboard">
-            <Button
-              leftIcon={<FiLayout />}
-              size="lg"
-              px={8}
-              mt={4}
-              colorScheme="brown"
-              bg={appColorTheme.brown_2}
-            >
-              Đi đến Bảng điều khiển
-            </Button>
-          </Link>
         </VStack>
       </Container>
     </Box>
