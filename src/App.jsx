@@ -67,6 +67,8 @@ import CusReviewManagementPage from "./pages/staff/ReviewManagement/ReviewList/C
 import ServicePackUpgradeGuide from "./pages/general/Pricing/ServicePackUpgradeGuide.jsx";
 import WWResponseManagementPage from "./pages/staff/ResponseManagement/ResponseList/WWResponseManagementPage.jsx";
 import StaffComplaintManagementPage from "./pages/staff/ComplaintManagement/ComplaintList/StaffComplaintManagementPage.jsx";
+import ConfigurationManagementPage from "./pages/admin/ConfigurationManagement/ConfigurationManagementPage.jsx";
+import PaymentManagementPage from "./pages/admin/PaymentManagement/PaymentManagementPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -116,6 +118,8 @@ function App() {
             path="ww-registration"
             element={<WWRegistrationManagementListPage />}
           />
+          <Route path="config" element={<ConfigurationManagementPage />} />
+          <Route path="payment" element={<PaymentManagementPage />} />
         </Route>
 
         {/* Staff page route */}

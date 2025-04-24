@@ -8,7 +8,13 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
-import { FiChevronLeft, FiChevronRight, FiUserCheck } from "react-icons/fi";
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiTool,
+  FiUserCheck,
+  FiDollarSign, // Add this import
+} from "react-icons/fi";
 import { appColorTheme } from "../../config/appconfig.js";
 
 export default function AdminSidebar({ isCollapsed, setIsCollapsed }) {
@@ -22,6 +28,8 @@ export default function AdminSidebar({ isCollapsed, setIsCollapsed }) {
   const navItems = [
     // { label: "Tổng quan", path: "dashboard", icon: FiGrid },
     { label: "Đơn đăng ký xưởng", path: "ww-registration", icon: FiUserCheck },
+    { label: "Cấu hình nền tảng", path: "config", icon: FiTool },
+    { label: "Giao dịch", path: "payment", icon: FiDollarSign }, // Changed to FiDollarSign
   ];
 
   return (

@@ -46,7 +46,7 @@ export const transactionTypeConstants = {
 export const paymentForConstants = {
   ORDER_PAYMENT: "Thanh toán đơn hàng",
   SERVICE_PACK_PAYMENT: "Thanh toán gói dịch vụ",
-  WALLET_PAYMENT: "Thanh toán nạp ví",
+  WALLET_PAYMENT: "Thanh toán ví",
   REFUND_PAYMENT: "Thanh toán hoàn tiền",
   OTHER: "Khác",
 };

@@ -2,8 +2,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_URL } from "../config";
 import Cookies from "js-cookie";
 
-export const configurationApi = createApi({
-  reducerPath: "configurationApi",
+export const serviceDepositApi = createApi({
+  reducerPath: "serviceDepositApi",
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
     prepareHeaders: (headers) => {
@@ -17,25 +17,23 @@ export const configurationApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    updateConfiguration: builder.mutation({
-      query: (data) => ({
-        url: `/api/v1/configuration/update`,
-        method: "PUT",
-        body: data,
+    getAllServiceDeposits: builder.query({
+      query: () => ({
+        url: `/api/v1/service-deposits/all`,
+        method: "GET",
       }),
     }),
-
-    getAllConfigurations: builder.query({
-      query: () => ({
-        url: `/api/v1/configuration/getAll`,
-        method: "GET",
+    updateServiceDeposit: builder.mutation({
+      query: (data) => ({
+        url: `/api/v1/service-deposits/update-percent`,
+        method: "PUT",
+        body: data,
       }),
     }),
   }),
 });
 
 export const {
-  useUpdateConfigurationMutation,
-  useGetConfigurationByDescriptionMutation,
-  useGetAllConfigurationsQuery,
-} = configurationApi;
+  useGetAllServiceDepositsQuery,
+  useUpdateServiceDepositMutation,
+} = serviceDepositApi;
