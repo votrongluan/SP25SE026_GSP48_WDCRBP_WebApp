@@ -137,6 +137,19 @@ export default function PersonalizationRequestPage() {
       return;
     }
 
+    // Check for falsy properties in productData
+    const hasFalsyProperty = Object.values(productData).some((value) => !value);
+    if (hasFalsyProperty) {
+      notify(
+        "Lỗi!",
+        "Không được để trống bất kỳ thông số kỹ thuật nào.",
+        "error"
+      );
+      return;
+    }
+
+    console.log(productData);
+
     if (editIndex === -1) {
       setProductList([...productList, productData]);
       notify("Thành công!", "Sản phẩm đã được thêm vào danh sách.", "success");

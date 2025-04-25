@@ -85,12 +85,17 @@ export default function AddPersonalizationProduct({
 
     // Also reset ImageUpdateUploader keys
     techSpecs.forEach((spec) => {
-      if (spec.optionType === "file") {
+      if (spec.optionType === "file" || spec.optionType === "select") {
         newResetKeys[spec.techSpecId] = Date.now();
       }
     });
 
     setResetKeys(newResetKeys);
+
+    // Reset toàn bộ dữ liệu sản phẩm
+    if (!isEditing) {
+      setProductData({});
+    }
   };
 
   // Handle file upload completion

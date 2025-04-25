@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Input, List, ListItem, useOutsideClick } from "@chakra-ui/react";
 
 export default function AutoCompleteInput({
@@ -11,6 +11,10 @@ export default function AutoCompleteInput({
   const [inputValue, setInputValue] = useState(value);
   const [filteredOptions, setFilteredOptions] = useState(options);
   const ref = React.useRef();
+
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
 
   // Close dropdown when clicking outside
   useOutsideClick({
