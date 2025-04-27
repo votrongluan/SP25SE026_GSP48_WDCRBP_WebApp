@@ -25,10 +25,9 @@ import {
   Center,
   Alert,
   AlertIcon,
-  Badge,
 } from "@chakra-ui/react";
 import { useRef } from "react";
-import { FiEye, FiPackage } from "react-icons/fi";
+import { FiEye } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
 import ImageListSelector from "../../../../components/Utility/ImageListSelector";
 import { formatPrice } from "../../../../utils/utils";
@@ -44,18 +43,27 @@ export default function DesignDetailModal({ data }) {
 
   const designId = data?.designIdeaId;
 
-  // Fetch design data and variant data when modal is open
   const {
     data: designData,
     isLoading: isDesignLoading,
     error: designError,
-  } = useGetDesignByIdQuery(designId, { skip: !isOpen });
+  } = useGetDesignByIdQuery(designId, {
+    skip: !isOpen,
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+  });
 
   const {
     data: variantData,
     isLoading: isVariantLoading,
     error: variantError,
-  } = useGetDesignIdeaVariantQuery(designId, { skip: !isOpen });
+  } = useGetDesignIdeaVariantQuery(designId, {
+    skip: !isOpen,
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+  });
 
   const design = designData?.data;
   const variants = variantData?.data || [];

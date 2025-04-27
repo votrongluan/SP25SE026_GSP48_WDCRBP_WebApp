@@ -44,6 +44,7 @@ export default function DesignManagementListPage() {
       headerName: "Danh mục",
       valueGetter: (params) => params.data?.category?.categoryName || "N/A",
     },
+    { headerName: "Cần lắp đặt", field: "isInstall" },
     {
       headerName: "Thao tác",
       cellRenderer: ({ data }) => {

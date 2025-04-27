@@ -11,22 +11,39 @@ import {
   Tooltip,
   useDisclosure,
   VStack,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { FiTrash } from "react-icons/fi";
 import { appColorTheme } from "../../../../config/appconfig";
+import { useDeleteDesignIdeaMutation } from "../../../../services/designIdeaApi";
+import { useNotify } from "../../../../components/Utility/Notify";
 
 export default function DesignDeleteModal({ design, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
+  const [deleteDesignIdea, { isLoading }] = useDeleteDesignIdeaMutation();
+  const [error, setError] = useState(null);
+  const notify = useNotify();
 
   const handleDelete = async () => {
     try {
-      // TODO: Gọi API xóa thiết kế
+      setError(null);
+      await deleteDesignIdea(design?.designIdeaId).unwrap();
+      notify("Xóa thiết kế thành công");
       onClose();
       refetch?.();
     } catch (error) {
       console.error("Lỗi khi xóa thiết kế:", error);
+      setError(
+        error.data?.message || "Không thể xóa thiết kế. Vui lòng thử lại sau."
+      );
+      notify(
+        "Xóa thiết kế thất bại",
+        error.data?.message || "Vui lòng thử lại sau",
+        "error"
+      );
     }
   };
 
@@ -52,12 +69,12 @@ export default function DesignDeleteModal({ design, refetch }) {
         closeOnOverlayClick={false}
         closeOnEsc={false}
         isCentered
-        onClose={onClose}
+        onClose={isLoading ? null : onClose}
       >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Xác nhận xóa</ModalHeader>
-          <ModalCloseButton />
+          {!isLoading && <ModalCloseButton />}
           <ModalBody bgColor="app_grey.1" pb={6}>
             <VStack spacing={4} align="stretch">
               <Text>
@@ -65,9 +82,23 @@ export default function DesignDeleteModal({ design, refetch }) {
                 không? Hành động này không thể hoàn tác.
               </Text>
 
+              {error && (
+                <Alert status="error">
+                  <AlertIcon />
+                  {error}
+                </Alert>
+              )}
+
               <Box display="flex" justifyContent="flex-end" gap={3}>
-                <Button onClick={onClose}>Hủy</Button>
-                <Button colorScheme="red" onClick={handleDelete}>
+                <Button onClick={onClose} isDisabled={isLoading}>
+                  Hủy
+                </Button>
+                <Button
+                  colorScheme="red"
+                  onClick={handleDelete}
+                  isLoading={isLoading}
+                  loadingText="Đang xóa..."
+                >
                   Xóa
                 </Button>
               </Box>

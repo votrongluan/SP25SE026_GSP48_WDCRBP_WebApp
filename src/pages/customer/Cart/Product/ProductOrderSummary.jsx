@@ -90,13 +90,12 @@ export default function ProductOrderSummary({
 
         // Prepare items data with dimensions
         const items = cartProducts.map((item) => {
-          const dimensions = extractDimensionsFromProduct(item);
           return {
             name: item.productName,
             quantity: item.quantity,
-            height: dimensions.height,
-            width: dimensions.width,
-            length: dimensions.length,
+            height: item.height,
+            width: item.width,
+            length: item.length,
             weight: 0,
           };
         });
