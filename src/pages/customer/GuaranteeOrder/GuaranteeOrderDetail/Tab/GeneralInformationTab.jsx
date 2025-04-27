@@ -183,17 +183,19 @@ export default function GeneralInformationTab({ order }) {
 
               <Text>
                 <b>Tên xưởng mộc:</b>{" "}
-                {order?.service?.wwDto?.brandName || "Chưa cập nhật"}
+                {order?.woodworker?.brandName || "Chưa cập nhật"}
               </Text>
 
               <Text>
-                <b>Địa chỉ:</b>{" "}
-                {order?.service?.wwDto?.address || "Chưa cập nhật"}
+                <b>Địa chỉ:</b> {order?.woodworker?.address || "Chưa cập nhật"}
               </Text>
 
               <HStack>
                 <Spacer />
-                <Link to={`/woodworker/${order?.service?.wwDto?.woodworkerId}`}>
+                <Link
+                  target="_blank"
+                  href={`/woodworker/${order?.woodworker?.woodworkerId}`}
+                >
                   <Text
                     color={appColorTheme.brown_2}
                     _hover={{ textDecoration: "underline" }}
