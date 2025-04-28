@@ -37,11 +37,14 @@ export const servicePackApi = createApi({
       }),
     }),
     updateServicePack: builder.mutation({
-      query: (data) => ({
-        url: "/api/v1/service-pack/update",
-        method: "PUT",
-        body: data,
-      }),
+      query: (data) => {
+        const { servicePackId, ...updateData } = data;
+        return {
+          url: `/api/v1/service-pack/update?servicePackId=${servicePackId}`,
+          method: "PUT",
+          body: updateData,
+        };
+      },
     }),
     deleteServicePack: builder.mutation({
       query: (id) => ({

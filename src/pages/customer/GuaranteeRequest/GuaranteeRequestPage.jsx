@@ -291,6 +291,8 @@ export default function GuaranteeRequestPage() {
         return;
       }
 
+      console.log(JSON.stringify(selectedOrder, null, 2));
+
       const requestData = {
         availableServiceId: selectedOrder?.service?.service?.serviceId || 0,
         toDistrictId: selectedAddressObj.districtId,

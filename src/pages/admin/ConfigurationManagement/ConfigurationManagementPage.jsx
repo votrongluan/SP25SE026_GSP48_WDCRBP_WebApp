@@ -19,7 +19,6 @@ import {
   useUpdateConfigurationMutation,
 } from "../../../services/configurationApi";
 import { formatDateTimeToVietnamese } from "../../../utils/utils";
-import ServiceDepositManagement from "./ServiceDepositManagement";
 
 export default function ConfigurationManagementPage() {
   const notify = useNotify();
@@ -214,8 +213,6 @@ export default function ConfigurationManagementPage() {
           ))}
         </VStack>
       </Box>
-
-      <ServiceDepositManagement />
     </>
   );
 }

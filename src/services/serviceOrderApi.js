@@ -17,6 +17,12 @@ export const serviceOrderApi = createApi({
     },
   }),
   endpoints: (builder) => ({
+    getAllServiceOrders: builder.query({
+      query: () => ({
+        url: "/api/v1/service-orders",
+      }),
+    }),
+
     sendServiceOrderFeedback: builder.mutation({
       query: (data) => ({
         url: `/api/v1/service-orders/feedback`,
@@ -91,6 +97,7 @@ export const serviceOrderApi = createApi({
 });
 
 export const {
+  useGetAllServiceOrdersQuery,
   useSendServiceOrderFeedbackMutation,
   useCreatePersonalOrderMutation,
   useCreateCustomizeOrderMutation,

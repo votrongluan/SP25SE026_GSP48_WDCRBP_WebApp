@@ -4,9 +4,11 @@ import {
   Heading,
   Stack,
   Spinner,
-  Text,
   Center,
   HStack,
+  Button,
+  ButtonGroup,
+  useToast,
 } from "@chakra-ui/react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
@@ -15,15 +17,33 @@ import { useState, useMemo } from "react";
 import { appColorTheme } from "../../../../config/appconfig";
 import WWRegistrationDetailModal from "../ActionModal/WWRegistrationDetailModal";
 import { useGetInactiveWoodworkersQuery } from "../../../../services/woodworkerApi";
+import { FiUserPlus, FiUsers } from "react-icons/fi";
+import WoodworkerListPage from "./WoodworkerListPage";
 
 export default function WWRegistrationManagementListPage() {
+  const [viewMode, setViewMode] = useState("inactive"); // "inactive" or "all"
+  const toast = useToast();
+
   const {
-    data: response,
-    isLoading,
-    isError,
-    error,
-    refetch,
+    data: inactiveResponse,
+    isLoading: isLoadingInactive,
+    isError: isErrorInactive,
+    refetch: refetchInactive,
   } = useGetInactiveWoodworkersQuery();
+
+  // Only load inactive woodworkers initially to improve performance
+  const isLoading = isLoadingInactive;
+  const isError = isErrorInactive;
+
+  const refetch = () => {
+    if (viewMode === "inactive") {
+      refetchInactive();
+    }
+  };
+
+  const woodworkersData = useMemo(() => {
+    return inactiveResponse?.data || [];
+  }, [inactiveResponse]);
 
   const [colDefs] = useState([
     { headerName: "Mã đăng ký", field: "woodworkerId", sort: "desc" },
@@ -34,9 +54,10 @@ export default function WWRegistrationManagementListPage() {
     { headerName: "Loại hình", field: "businessType" },
     {
       headerName: "Trạng thái",
-      field: "status",
-      valueFormatter: (params) =>
-        params.value === "false" ? "Chờ duyệt" : "Đã duyệt",
+      field: "publicStatus",
+      valueFormatter: (params) => {
+        return params.data.status === false ? "Chờ duyệt" : "Đã duyệt";
+      },
     },
     {
       headerName: "Thao tác",
@@ -58,12 +79,22 @@ export default function WWRegistrationManagementListPage() {
     };
   }, []);
 
-  if (isLoading) {
+  if (isLoading && viewMode === "inactive") {
     return (
       <Center h="500px">
         <Spinner size="xl" color={appColorTheme.brown_2} />
       </Center>
     );
+  }
+
+  if (isError && viewMode === "inactive") {
+    toast({
+      title: "Lỗi",
+      description: "Đã xảy ra lỗi khi tải dữ liệu xưởng mộc",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
   }
 
   return (
@@ -74,25 +105,48 @@ export default function WWRegistrationManagementListPage() {
           fontSize="2xl"
           fontFamily="Montserrat"
         >
-          Quản lý đăng ký xưởng mộc
+          {viewMode === "inactive"
+            ? "Quản lý đăng ký xưởng mộc"
+            : "Danh sách xưởng mộc"}
         </Heading>
+
+        <ButtonGroup isAttached variant="outline">
+          <Button
+            leftIcon={<FiUserPlus />}
+            colorScheme={viewMode === "inactive" ? "brown" : "gray"}
+            onClick={() => setViewMode("inactive")}
+          >
+            Đăng ký mới
+          </Button>
+          <Button
+            leftIcon={<FiUsers />}
+            colorScheme={viewMode === "all" ? "brown" : "gray"}
+            onClick={() => setViewMode("all")}
+          >
+            Tất cả xưởng mộc
+          </Button>
+        </ButtonGroup>
       </Flex>
 
-      <Box>
-        <div
-          className="ag-theme-quartz"
-          style={{ height: 700, fontSize: "16px" }}
-        >
-          <AgGridReact
-            pagination
-            paginationPageSize={20}
-            paginationPageSizeSelector={[10, 20, 50, 100]}
-            defaultColDef={defaultColDef}
-            rowData={response?.data || []}
-            columnDefs={colDefs}
-          />
-        </div>
-      </Box>
+      {viewMode === "inactive" ? (
+        <Box>
+          <div
+            className="ag-theme-quartz"
+            style={{ height: 700, fontSize: "16px" }}
+          >
+            <AgGridReact
+              pagination
+              paginationPageSize={20}
+              paginationPageSizeSelector={[10, 20, 50, 100]}
+              defaultColDef={defaultColDef}
+              rowData={woodworkersData}
+              columnDefs={colDefs}
+            />
+          </div>
+        </Box>
+      ) : (
+        <WoodworkerListPage />
+      )}
     </Stack>
   );
 }

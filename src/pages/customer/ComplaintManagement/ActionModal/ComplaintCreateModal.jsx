@@ -167,7 +167,12 @@ export default function ComplaintCreateModal({ refetch, serviceOrders = [] }) {
                     <option value="Chất lượng sản phẩm">
                       Chất lượng sản phẩm
                     </option>
-                    <option value="Tiến độ gia công">Tiến độ gia công</option>
+                    <option value="Tiến độ xử lý dịch vụ">
+                      Tiến độ xử lý dịch vụ
+                    </option>
+                    <option value="Chất lượng dịch vụ của xưởng">
+                      Chất lượng dịch vụ của xưởng
+                    </option>
                     <option value="Khác">Khác</option>
                   </Select>
                 </FormControl>

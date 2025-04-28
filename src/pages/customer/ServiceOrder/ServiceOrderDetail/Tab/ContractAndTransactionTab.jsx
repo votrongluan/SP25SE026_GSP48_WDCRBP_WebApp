@@ -296,7 +296,7 @@ export default function ContractAndTransactionTab({
 
               {deposits.map((deposit) => (
                 <Stack
-                  key={deposit.serviceDepositId}
+                  key={deposit.orderDepositId}
                   spacing={4}
                   p={3}
                   bg={deposit.status ? "green.50" : "gray.50"}

@@ -77,6 +77,8 @@ export default function AvailableService({
     );
   }
 
+  console.log("Available services:", services);
+
   return (
     <Box p={5} bgColor="white" boxShadow="md" borderRadius="10px">
       <Stack spacing={6}>

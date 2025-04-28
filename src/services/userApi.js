@@ -17,6 +17,12 @@ export const userApi = createApi({
     },
   }),
   endpoints: (builder) => ({
+    getAllUsers: builder.query({
+      query: () => ({
+        url: `/api/v1/user/all`,
+        method: "GET",
+      }),
+    }),
     getUserInformation: builder.query({
       query: (id) => ({
         url: `/api/v1/user/getUserInformationById/${id}`,
@@ -26,6 +32,20 @@ export const userApi = createApi({
     updateUserInformation: builder.mutation({
       query: (data) => ({
         url: `/api/v1/user/update-profile`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    updateUserRole: builder.mutation({
+      query: (data) => ({
+        url: `/api/v1/user/update-role`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    banUser: builder.mutation({
+      query: (data) => ({
+        url: `/api/v1/user/ban-user`,
         method: "POST",
         body: data,
       }),
@@ -41,7 +61,10 @@ export const userApi = createApi({
 });
 
 export const {
+  useGetAllUsersQuery,
   useGetUserInformationQuery,
   useUpdateUserInformationMutation,
+  useUpdateUserRoleMutation,
+  useBanUserMutation,
   useChangePasswordMutation,
 } = userApi;

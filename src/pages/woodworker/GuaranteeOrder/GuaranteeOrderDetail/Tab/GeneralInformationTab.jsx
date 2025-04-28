@@ -42,6 +42,8 @@ export default function GeneralInformationTab({
   const serviceName = order?.serviceOrderDetail?.service?.service?.serviceName;
   const serviceOrder = order?.serviceOrderDetail;
 
+  console.log(JSON.stringify(order, null, 2));
+
   return (
     <Box>
       {serviceName == "Personalization" && (

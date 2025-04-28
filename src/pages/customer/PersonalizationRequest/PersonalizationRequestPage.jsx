@@ -64,6 +64,8 @@ export default function PersonalizationRequestPage() {
     error: woodworkerError,
   } = useGetWoodworkerByIdQuery(woodworkerId);
 
+  console.log(JSON.stringify(woodworkerData, null, 2));
+
   // Fetch available services
   const {
     data: serviceData,

@@ -75,6 +75,11 @@ import ModeratorLayout from "./layouts/ModeratorLayout.jsx";
 import ModeratorWelcomePage from "./pages/moderator/Welcome/ModeratorWelcomePage.jsx";
 import ModeratorProfilePage from "./pages/moderator/Profile/ManagePage/ModeratorProfilePage.jsx";
 import WoodworkerPerformancePage from "./pages/moderator/WoodworkerPerformance/ManagePage/WoodworkerPerformancePage.jsx";
+import ServiceDepositManagement from "./pages/admin/ServiceDepositManagement/ServiceDepositManagement.jsx";
+import DashboardPage from "./pages/admin/Dashboard/DashboardPage.jsx";
+import ServicePackManagementPage from "./pages/admin/ServicePackManagement/ServicePackManagmentPage.jsx";
+import AdminComplaintManagementPage from "./pages/admin/ComplaintManagement/ComplaintList/AdminComplaintManagementPage.jsx";
+import UserManagementPage from "./pages/admin/UserManagement/MainPage/UserManagementPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -119,7 +124,7 @@ function App() {
         {/* Admin page route */}
         <Route path="ad" element={<AdminLayout />}>
           <Route index element={<AdminWelcomePage />} />
-          <Route path="dashboard" element={<NotFoundPage />} />
+          <Route path="dashboard" element={<DashboardPage />} />
           <Route
             path="ww-registration"
             element={<WWRegistrationManagementListPage />}
@@ -127,6 +132,10 @@ function App() {
           <Route path="config" element={<ConfigurationManagementPage />} />
           <Route path="payment" element={<PaymentManagementPage />} />
           <Route path="profile" element={<AdminProfilePage />} />
+          <Route path="deposit" element={<ServiceDepositManagement />} />
+          <Route path="pack" element={<ServicePackManagementPage />} />
+          <Route path="complaint" element={<AdminComplaintManagementPage />} />
+          <Route path="user" element={<UserManagementPage />} />
         </Route>
 
         {/* Staff page route */}
@@ -138,7 +147,7 @@ function App() {
           <Route path="profile" element={<StaffProfilePage />} />
         </Route>
 
-        {/* Admin page route */}
+        {/* Moderator page route */}
         <Route path="mod" element={<ModeratorLayout />}>
           <Route index element={<ModeratorWelcomePage />} />
           <Route path="performance" element={<WoodworkerPerformancePage />} />

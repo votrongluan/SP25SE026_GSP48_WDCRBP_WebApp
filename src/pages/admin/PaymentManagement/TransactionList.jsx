@@ -8,9 +8,9 @@ import {
   FormLabel,
   VStack,
 } from "@chakra-ui/react";
-import { formatPrice, formatDateTimeString } from "../../../../utils/utils";
+import { formatPrice, formatDateTimeString } from "../../../utils/utils";
 import { useState, useMemo, useCallback } from "react";
-import { appColorTheme } from "../../../../config/appconfig";
+import { appColorTheme } from "../../../config/appconfig";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
@@ -190,7 +190,6 @@ export default function TransactionList({ transactions }) {
               pagination={true}
               paginationPageSize={20}
               paginationPageSizeSelector={[10, 20, 50, 100]}
-              domLayout="autoHeight"
             />
           </div>
         </Box>

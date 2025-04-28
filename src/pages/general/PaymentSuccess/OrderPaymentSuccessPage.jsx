@@ -78,7 +78,7 @@ export default function OrderPaymentSuccessPage() {
       setIsProcessing(false);
 
       navigate(
-        `/success?title=Thanh toán thành công&desc=Thanh toán đặt cọc đã được xử lý thành công&path=/cus/service-order&buttonText=Xem danh sách đơn hàng`,
+        `/success?title=Thanh toán thành công&desc=Thanh toán đặt cọc đã được xử lý thành công`,
         { replace: true }
       );
     } catch (error) {
