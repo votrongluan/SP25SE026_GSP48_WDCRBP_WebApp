@@ -14,22 +14,12 @@ import {
 } from "@chakra-ui/react";
 import {
   appColorTheme,
-  getComplaintStatusColor,
+  complaintStatusConstants,
 } from "../../../../config/appconfig";
 import { formatDateTimeToVietnamese } from "../../../../utils/utils";
 import ComplaintDetailModal from "../ActionModal/ComplaintDetailModal";
 
 const ComplaintCard = ({ complaint, refetch }) => {
-  // Map status to proper color for badge
-  const getStatusColor = (status) => {
-    const color = getComplaintStatusColor(status);
-    if (color === "red.500") return "red";
-    if (color === "green.500") return "green";
-    if (color === "blue.500") return "blue";
-    if (color === "orange.500") return "orange";
-    return "gray";
-  };
-
   return (
     <Card
       overflow="hidden"
@@ -46,7 +36,19 @@ const ComplaintCard = ({ complaint, refetch }) => {
             Mã khiếu nại: #{complaint.complaintId}
           </Heading>
 
-          <Badge colorScheme={getStatusColor(complaint.status)} px={2} py={1}>
+          <Badge
+            colorScheme={
+              complaint.status === complaintStatusConstants.COMPLETED
+                ? "green"
+                : complaint.status === complaintStatusConstants.IN_PROGRESS
+                ? "yellow"
+                : complaint.status === complaintStatusConstants.PENDING
+                ? "purple"
+                : "red"
+            }
+            px={2}
+            py={1}
+          >
             {complaint.status}
           </Badge>
         </Flex>
@@ -107,7 +109,7 @@ const ComplaintCard = ({ complaint, refetch }) => {
         justifyContent={"flex-end"}
         alignItems={"center"}
       >
-        <ComplaintDetailModal complaint={complaint} refetch={refetch} />
+        <ComplaintDetailModal complaint={complaint} />
       </CardFooter>
     </Card>
   );
