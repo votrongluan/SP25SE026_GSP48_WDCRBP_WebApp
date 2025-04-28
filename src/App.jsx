@@ -69,6 +69,12 @@ import WWResponseManagementPage from "./pages/staff/ResponseManagement/ResponseL
 import StaffComplaintManagementPage from "./pages/staff/ComplaintManagement/ComplaintList/StaffComplaintManagementPage.jsx";
 import ConfigurationManagementPage from "./pages/admin/ConfigurationManagement/ConfigurationManagementPage.jsx";
 import PaymentManagementPage from "./pages/admin/PaymentManagement/PaymentManagementPage.jsx";
+import AdminProfilePage from "./pages/admin/Profile/ManagePage/AdminProfilePage.jsx";
+import StaffProfilePage from "./pages/staff/Profile/ManagePage/StaffProfilePage.jsx";
+import ModeratorLayout from "./layouts/ModeratorLayout.jsx";
+import ModeratorWelcomePage from "./pages/moderator/Welcome/ModeratorWelcomePage.jsx";
+import ModeratorProfilePage from "./pages/moderator/Profile/ManagePage/ModeratorProfilePage.jsx";
+import WoodworkerPerformancePage from "./pages/moderator/WoodworkerPerformance/ManagePage/WoodworkerPerformancePage.jsx";
 
 function App() {
   useEffect(() => {
@@ -120,6 +126,7 @@ function App() {
           />
           <Route path="config" element={<ConfigurationManagementPage />} />
           <Route path="payment" element={<PaymentManagementPage />} />
+          <Route path="profile" element={<AdminProfilePage />} />
         </Route>
 
         {/* Staff page route */}
@@ -128,6 +135,14 @@ function App() {
           <Route path="review" element={<CusReviewManagementPage />} />
           <Route path="response" element={<WWResponseManagementPage />} />
           <Route path="complaint" element={<StaffComplaintManagementPage />} />
+          <Route path="profile" element={<StaffProfilePage />} />
+        </Route>
+
+        {/* Admin page route */}
+        <Route path="mod" element={<ModeratorLayout />}>
+          <Route index element={<ModeratorWelcomePage />} />
+          <Route path="performance" element={<WoodworkerPerformancePage />} />
+          <Route path="profile" element={<ModeratorProfilePage />} />
         </Route>
 
         {/* Woodworker page route */}

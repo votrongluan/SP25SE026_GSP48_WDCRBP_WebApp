@@ -11,9 +11,15 @@ import { NavLink } from "react-router-dom";
 import {
   FiChevronLeft,
   FiChevronRight,
-  FiTool,
+  FiSettings,
   FiUserCheck,
-  FiDollarSign, // Add this import
+  FiDollarSign,
+  FiGrid,
+  FiPackage,
+  FiAlertTriangle,
+  FiUsers,
+  FiPercent,
+  FiUser,
 } from "react-icons/fi";
 import { appColorTheme } from "../../config/appconfig.js";
 
@@ -26,10 +32,15 @@ export default function AdminSidebar({ isCollapsed, setIsCollapsed }) {
   });
 
   const navItems = [
-    // { label: "Tổng quan", path: "dashboard", icon: FiGrid },
+    { label: "Tổng quan", path: "dashboard", icon: FiGrid },
     { label: "Đơn đăng ký xưởng", path: "ww-registration", icon: FiUserCheck },
-    { label: "Cấu hình nền tảng", path: "config", icon: FiTool },
-    { label: "Giao dịch", path: "payment", icon: FiDollarSign }, // Changed to FiDollarSign
+    { label: "Giao dịch", path: "payment", icon: FiDollarSign },
+    { label: "Cấu hình tỉ lệ cọc dịch vụ", path: "deposit", icon: FiPercent },
+    { label: "Gói dịch vụ", path: "pack", icon: FiPackage },
+    { label: "Khiếu nại", path: "complaint", icon: FiAlertTriangle },
+    { label: "Người dùng", path: "user", icon: FiUsers },
+    { label: "Cấu hình hệ thống", path: "config", icon: FiSettings },
+    { label: "Hồ sơ", path: "profile", icon: FiUser },
   ];
 
   return (

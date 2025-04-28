@@ -11,14 +11,12 @@ import { NavLink } from "react-router-dom";
 import {
   FiChevronLeft,
   FiChevronRight,
-  FiStar,
-  FiMessageCircle,
-  FiAlertTriangle,
+  FiBarChart2,
   FiUser,
 } from "react-icons/fi";
 import { appColorTheme } from "../../config/appconfig.js";
 
-export default function StaffSideBar({ isCollapsed, setIsCollapsed }) {
+export default function ModeratorSidebar({ isCollapsed, setIsCollapsed }) {
   const navLinkStyle = ({ isActive }) => ({
     display: "block",
     fontWeight: "bold",
@@ -28,16 +26,10 @@ export default function StaffSideBar({ isCollapsed, setIsCollapsed }) {
 
   const navItems = [
     {
-      label: "Đánh giá của khách hàng",
-      path: "review",
-      icon: FiStar,
+      label: "Hiệu suất của xưởng mộc",
+      path: "performance",
+      icon: FiBarChart2,
     },
-    {
-      label: "Phản hồi của xưởng mộc",
-      path: "response",
-      icon: FiMessageCircle,
-    },
-    { label: "Khiếu nại", path: "complaint", icon: FiAlertTriangle },
     { label: "Hồ sơ", path: "profile", icon: FiUser },
   ];
 
