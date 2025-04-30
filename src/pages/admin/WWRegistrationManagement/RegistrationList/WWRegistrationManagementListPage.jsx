@@ -53,13 +53,6 @@ export default function WWRegistrationManagementListPage() {
     { headerName: "Tên xưởng mộc", field: "brandName" },
     { headerName: "Loại hình", field: "businessType" },
     {
-      headerName: "Trạng thái",
-      field: "publicStatus",
-      valueFormatter: (params) => {
-        return params.data.status === false ? "Chờ duyệt" : "Đã duyệt";
-      },
-    },
-    {
       headerName: "Thao tác",
       cellRenderer: ({ data }) => {
         return (

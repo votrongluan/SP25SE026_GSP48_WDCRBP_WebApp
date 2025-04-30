@@ -58,6 +58,32 @@ export default function DesignCreateModal({ refetch }) {
 
   const [addDesignIdea, { isLoading }] = useAddDesignIdeaMutation();
 
+  const resetForm = () => {
+    setConfigurations([
+      {
+        id: 1,
+        name: "Kích thước (dài x rộng x cao cm)",
+        values: [],
+      },
+    ]);
+    setPrices([]);
+    setImgUrls([]);
+    setCategoryId(null);
+    setIsInstall(false);
+    setButtonDisabled(true);
+  };
+
+  const handleModalOpen = () => {
+    resetForm();
+    onOpen();
+  };
+
+  const handleModalClose = () => {
+    if (!isLoading) {
+      onClose();
+    }
+  };
+
   const handleAddConfig = () => {
     const newConfigId = configurations.length + 1;
     setConfigurations([
@@ -210,11 +236,6 @@ export default function DesignCreateModal({ refetch }) {
       await addDesignIdea(data).unwrap();
       notify("Thêm thiết kế thành công");
 
-      // Reset form
-      setConfigurations([]);
-      setPrices([]);
-      setImgUrls([]);
-
       refetch?.();
       onClose();
     } catch (error) {
@@ -235,7 +256,7 @@ export default function DesignCreateModal({ refetch }) {
         border={`1px solid ${appColorTheme.green_0}`}
         _hover={{ bg: appColorTheme.green_0, color: "white" }}
         leftIcon={<FiPlus />}
-        onClick={onOpen}
+        onClick={handleModalOpen}
       >
         Thêm thiết kế mới
       </Button>
@@ -246,7 +267,7 @@ export default function DesignCreateModal({ refetch }) {
         isOpen={isOpen}
         closeOnOverlayClick={false}
         closeOnEsc={false}
-        onClose={isLoading ? null : onClose}
+        onClose={handleModalClose}
       >
         <ModalOverlay />
         <ModalContent>
