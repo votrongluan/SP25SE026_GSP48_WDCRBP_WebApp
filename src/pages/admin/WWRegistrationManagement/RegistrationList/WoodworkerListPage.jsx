@@ -1,7 +1,5 @@
 import {
   Box,
-  Flex,
-  Heading,
   Stack,
   Spinner,
   Text,
