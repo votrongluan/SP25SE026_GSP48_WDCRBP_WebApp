@@ -3,6 +3,7 @@ import { useGetAllTransactionsQuery } from "../../../services/transactionApi";
 import { appColorTheme } from "../../../config/appconfig";
 
 import TransactionList from "./TransactionList";
+import RevenueDashboard from "./sections/RevenueDashboard";
 
 export default function PaymentManagementPage() {
   const {
@@ -43,6 +44,8 @@ export default function PaymentManagementPage() {
       <Box bg="white" p={5} borderRadius="lg" boxShadow="md">
         <TransactionList transactions={transactions} />
       </Box>
+
+      <RevenueDashboard />
     </VStack>
   );
 }

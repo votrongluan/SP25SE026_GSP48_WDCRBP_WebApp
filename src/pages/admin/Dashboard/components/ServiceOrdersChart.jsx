@@ -9,6 +9,7 @@ import {
   RadioGroup,
   Radio,
   Stack,
+  Button,
 } from "@chakra-ui/react";
 import { Line, Bar } from "react-chartjs-2";
 import { useMemo, useState } from "react";
@@ -38,22 +39,41 @@ ChartJS.register(
   Legend
 );
 
-export default function ServiceOrdersChart({
-  serviceOrders,
-  dateRange,
-  setDateRange,
-}) {
+export default function ServiceOrdersChart({ serviceOrders }) {
   const [chartType, setChartType] = useState("value"); // "value" or "count"
   const [chartStyle, setChartStyle] = useState("line"); // "line" or "bar"
+  const [dateRange, setDateRange] = useState({
+    startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // Last 30 days
+    endDate: new Date(),
+  });
+  const [tempDateRange, setTempDateRange] = useState({
+    startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+    endDate: new Date(),
+  });
 
   const handleDateChange = (field, value) => {
-    const newDate = new Date(value);
-    if (isValid(newDate)) {
-      setDateRange((prev) => ({
+    if (!value) {
+      // Handle empty value
+      setTempDateRange((prev) => ({
         ...prev,
-        [field]: newDate,
+        [field]:
+          field === "startDate"
+            ? new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+            : new Date(),
       }));
+    } else {
+      const newDate = new Date(value);
+      if (isValid(newDate)) {
+        setTempDateRange((prev) => ({
+          ...prev,
+          [field]: newDate,
+        }));
+      }
     }
+  };
+
+  const handleApplyDateFilter = () => {
+    setDateRange(tempDateRange);
   };
 
   const chartData = useMemo(() => {
@@ -171,14 +191,10 @@ export default function ServiceOrdersChart({
     },
   };
 
-  // Ensure dates are valid before conversion to ISO string
-  const startDateStr = isValid(dateRange.startDate)
-    ? dateRange.startDate.toISOString().split("T")[0]
-    : new Date().toISOString().split("T")[0];
-
-  const endDateStr = isValid(dateRange.endDate)
-    ? dateRange.endDate.toISOString().split("T")[0]
-    : new Date().toISOString().split("T")[0];
+  // Safely get ISO string for input value
+  const getDateInputValue = (date) => {
+    return isValid(date) ? date.toISOString().split("T")[0] : "";
+  };
 
   return (
     <VStack spacing={4} align="stretch">
@@ -190,7 +206,7 @@ export default function ServiceOrdersChart({
             <FormLabel>Từ ngày</FormLabel>
             <Input
               type="date"
-              value={startDateStr}
+              value={getDateInputValue(tempDateRange.startDate)}
               onChange={(e) => handleDateChange("startDate", e.target.value)}
             />
           </FormControl>
@@ -199,10 +215,14 @@ export default function ServiceOrdersChart({
             <FormLabel>Đến ngày</FormLabel>
             <Input
               type="date"
-              value={endDateStr}
+              value={getDateInputValue(tempDateRange.endDate)}
               onChange={(e) => handleDateChange("endDate", e.target.value)}
             />
           </FormControl>
+
+          <Button colorScheme="blue" mt="auto" onClick={handleApplyDateFilter}>
+            Xem
+          </Button>
         </HStack>
 
         <HStack spacing={4}>

@@ -12,24 +12,47 @@ import {
   VStack,
   Heading,
   Badge,
-  Progress,
+  Button,
 } from "@chakra-ui/react";
 import { formatPrice } from "../../../../utils/utils";
 import { FiDollarSign, FiPackage, FiCalendar } from "react-icons/fi";
-import { useMemo } from "react";
-import { format, parseISO } from "date-fns";
+import { useMemo, useState } from "react";
+import { format, isValid } from "date-fns";
 import { vi } from "date-fns/locale";
 
-export default function ServiceOrdersOverview({
-  serviceOrders,
-  dateRange,
-  setDateRange,
-}) {
+export default function ServiceOrdersOverview({ serviceOrders }) {
+  const [dateRange, setDateRange] = useState({
+    startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // Last 30 days
+    endDate: new Date(),
+  });
+  const [tempDateRange, setTempDateRange] = useState({
+    startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+    endDate: new Date(),
+  });
+
   const handleDateChange = (field, value) => {
-    setDateRange((prev) => ({
-      ...prev,
-      [field]: new Date(value),
-    }));
+    if (!value) {
+      // Handle empty value
+      setTempDateRange((prev) => ({
+        ...prev,
+        [field]:
+          field === "startDate"
+            ? new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+            : new Date(),
+      }));
+    } else {
+      const newDate = new Date(value);
+      if (isValid(newDate)) {
+        setTempDateRange((prev) => ({
+          ...prev,
+          [field]: newDate,
+        }));
+      }
+    }
+  };
+
+  const handleApplyDateFilter = () => {
+    setDateRange(tempDateRange);
   };
 
   const metrics = useMemo(() => {
@@ -79,6 +102,18 @@ export default function ServiceOrdersOverview({
     };
   }, [serviceOrders, dateRange]);
 
+  // Safe formatting function that checks if date is valid before formatting
+  const safeFormat = (date, formatString) => {
+    return isValid(date)
+      ? format(date, formatString, { locale: vi })
+      : "Invalid date";
+  };
+
+  // Safely get ISO string for input value
+  const getDateInputValue = (date) => {
+    return isValid(date) ? date.toISOString().split("T")[0] : "";
+  };
+
   return (
     <VStack spacing={4} align="stretch">
       <Box>
@@ -111,8 +146,8 @@ export default function ServiceOrdersOverview({
         <Box bg="white" p={5} borderRadius="lg" boxShadow="md" mb={4}>
           <Heading size="md" mb={4}>
             Tổng quan đơn đặt dịch vụ (từ ngày{" "}
-            {format(dateRange.startDate, "dd/MM/yyyy", { locale: vi })} - đến
-            ngày {format(dateRange.endDate, "dd/MM/yyyy", { locale: vi })})
+            {safeFormat(dateRange.startDate, "dd/MM/yyyy")} - đến ngày{" "}
+            {safeFormat(dateRange.endDate, "dd/MM/yyyy")})
           </Heading>
 
           <HStack spacing={4} mb={4}>
@@ -120,7 +155,7 @@ export default function ServiceOrdersOverview({
               <FormLabel>Từ ngày</FormLabel>
               <Input
                 type="date"
-                value={dateRange.startDate.toISOString().split("T")[0]}
+                value={getDateInputValue(tempDateRange.startDate)}
                 onChange={(e) => handleDateChange("startDate", e.target.value)}
               />
             </FormControl>
@@ -129,10 +164,18 @@ export default function ServiceOrdersOverview({
               <FormLabel>Đến ngày</FormLabel>
               <Input
                 type="date"
-                value={dateRange.endDate.toISOString().split("T")[0]}
+                value={getDateInputValue(tempDateRange.endDate)}
                 onChange={(e) => handleDateChange("endDate", e.target.value)}
               />
             </FormControl>
+
+            <Button
+              colorScheme="blue"
+              mt="auto"
+              onClick={handleApplyDateFilter}
+            >
+              Xem
+            </Button>
           </HStack>
 
           <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5} mb={4}>
