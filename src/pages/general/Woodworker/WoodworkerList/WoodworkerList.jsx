@@ -20,7 +20,7 @@ export default function WoodworkerList({ woodworkers = [] }) {
   if (!woodworkers.length) {
     return (
       <Center py={10}>
-        <Text>Không tìm thấy xưởng mộc nào</Text>
+        <Text>Đang tải danh sách xưởng mộc</Text>
       </Center>
     );
   }

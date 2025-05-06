@@ -4,6 +4,7 @@ import {
   Image,
   Stack,
   Text,
+  Center,
   Badge,
   Flex,
   Icon,
@@ -17,6 +18,14 @@ import { MdCollections, MdStorefront, MdLocationOn } from "react-icons/md";
 import StarReview from "../../../../components/Utility/StarReview.jsx";
 
 export default function DesignList({ designs = [] }) {
+  if (!designs.length) {
+    return (
+      <Center py={10}>
+        <Text>Đang tải danh sách thiết kế</Text>
+      </Center>
+    );
+  }
+
   return (
     <Box>
       <Pagination
