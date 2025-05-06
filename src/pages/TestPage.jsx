@@ -1,18 +1,8 @@
-import { useEffect } from "react";
-import { useGetDistrictByProvinceIdQuery } from "../services/ghnApi";
-import CategorySearchCombobox from "../components/Utility/CategorySearchCombobox";
-
-const TestPage = () => {
-  const data = useGetDistrictByProvinceIdQuery();
-
-  useEffect(() => {
-  }, [data]);
-
+export default function TestPage() {
   return (
-    <>
-      <CategorySearchCombobox />
-    </>
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+      <h1 className="text-4xl font-bold mb-4">Test Page</h1>
+      <p className="text-lg text-gray-700">This is a test page.</p>
+    </div>
   );
-};
-
-export default TestPage;
+}

@@ -253,18 +253,21 @@ export default function ContractPage() {
           </table>
         </div>
 
-        <p style={{ marginTop: "20px" }}>
-          Bên A sẽ chịu trách nhiệm bảo hành dịch vụ theo chính sách:
-        </p>
-        <p style={{ marginTop: "10px", whiteSpace: "pre-wrap" }}>
-          <b>{contract.warrantyPolicy || "Không có"}</b>
-        </p>
-
         {/* Display woodworker terms */}
         {contract.woodworkerTerms && (
           <div style={{ marginTop: "20px", whiteSpace: "pre-wrap" }}>
             <p style={{ fontWeight: "bold" }}>Điều khoản của bên A:</p>
             <p>{contract.woodworkerTerms}</p>
+          </div>
+        )}
+
+        {/* Display agreement */}
+        {contract.agreement && (
+          <div style={{ marginTop: "20px", whiteSpace: "pre-wrap" }}>
+            <p style={{ fontWeight: "bold" }}>
+              Nội dung thống nhất giữa 2 bên:
+            </p>
+            <p>{contract.agreement}</p>
           </div>
         )}
 

@@ -8,24 +8,29 @@ import {
   Text,
   VStack,
   useColorModeValue,
+  List,
+  ListItem,
+  ListIcon,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
 } from "@chakra-ui/react";
 import {
-  FiHome,
-  FiShoppingCart,
   FiPenTool,
   FiPackage,
-  FiTrello,
-  FiMessageCircle,
-  FiInfo,
-  FiUsers,
   FiLogIn,
-  FiList,
   FiTool,
   FiUser,
+  FiCheck,
+  FiDollarSign,
+  FiShield,
 } from "react-icons/fi";
 import { Navigate, useNavigate } from "react-router-dom";
 import { appColorTheme } from "../../../config/appconfig";
 import useAuth from "../../../hooks/useAuth";
+import PublicWWGuide from "./PublicWWGuide";
 
 const QuickActionCard = ({ icon, title, description, onClick, color }) => {
   const bgColor = useColorModeValue("white", "gray.800");
@@ -151,22 +156,28 @@ export default function HomePage() {
         )}
       </Flex>
 
-      <Heading color={appColorTheme.brown_2} size="md" mb={6}>
-        Khám phá ngay
-      </Heading>
+      {auth?.role == "Woodworker" && <PublicWWGuide />}
 
-      <Grid
-        templateColumns={{
-          base: "repeat(1, 1fr)",
-          md: "repeat(2, 1fr)",
-          lg: "repeat(3, 1fr)",
-        }}
-        gap={5}
-      >
-        {quickActions.map((action, index) => (
-          <QuickActionCard key={index} {...action} />
-        ))}
-      </Grid>
+      {auth?.role != "Woodworker" && (
+        <>
+          <Heading color={appColorTheme.brown_2} size="md" mb={6}>
+            Khám phá ngay
+          </Heading>
+
+          <Grid
+            templateColumns={{
+              base: "repeat(1, 1fr)",
+              md: "repeat(2, 1fr)",
+              lg: "repeat(3, 1fr)",
+            }}
+            gap={5}
+          >
+            {quickActions.map((action, index) => (
+              <QuickActionCard key={index} {...action} />
+            ))}
+          </Grid>
+        </>
+      )}
     </Box>
   );
 }

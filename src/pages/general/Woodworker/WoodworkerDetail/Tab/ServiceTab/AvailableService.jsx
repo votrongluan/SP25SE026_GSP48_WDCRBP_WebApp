@@ -101,9 +101,12 @@ export default function AvailableService({
               >
                 {serviceInfo.serviceName}
               </Text>
-              <Text mb={2}>
-                <b>Mô tả dịch vụ của xưởng:</b> {availableService.description}
-              </Text>
+              {availableService?.description && (
+                <Text mb={2}>
+                  <b>Mô tả dịch vụ của xưởng:</b> {availableService.description}
+                </Text>
+              )}
+
               {auth?.role != "Woodworker" && (
                 <Button
                   bg={appColorTheme.brown_2}

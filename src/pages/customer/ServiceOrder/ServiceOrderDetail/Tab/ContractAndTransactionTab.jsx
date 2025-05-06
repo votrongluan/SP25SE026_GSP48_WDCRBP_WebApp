@@ -179,7 +179,7 @@ export default function ContractAndTransactionTab({
                         mt={4}
                         height="100px"
                         src={contract.woodworkerSignature}
-                        fallbackSrc="https://via.placeholder.com/200x100?text=Chữ+ký+thợ+mộc"
+                        fallbackSrc="https://via.placeholder.com/200x100"
                       />
                     ) : (
                       <Box

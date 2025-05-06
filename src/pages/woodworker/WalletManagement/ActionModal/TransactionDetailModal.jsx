@@ -72,6 +72,10 @@ export default function TransactionDetailModal({ transaction }) {
                 <Text>{detail?.transactionId}</Text>
               </Box>
               <Box>
+                <Text fontWeight="bold">Mục đích giao dịch:</Text>
+                <Text>{detail?.paymentFor}</Text>
+              </Box>
+              <Box>
                 <Text fontWeight="bold">Loại giao dịch:</Text>
                 <Text color={transactionTypeColorMap[detail?.transactionType]}>
                   {detail?.transactionType}

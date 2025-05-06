@@ -13,10 +13,11 @@ import {
   IconButton,
   useDisclosure,
   Badge,
+  Flex,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { appColorTheme, getPackTypeLabel } from "../../../config/appconfig";
-import { useGetAllServicePacksQuery } from "../../../services/servicePackApi";
+import { useGetAllServicePacksAdminQuery } from "../../../services/servicePackApi";
 import { formatPrice } from "../../../utils/utils";
 import { FiEdit2 } from "react-icons/fi";
 import EditServicePackPriceModal from "./EditServicePackPriceModal";
@@ -27,9 +28,10 @@ export default function ServicePackManagementPage() {
     isLoading,
     isError,
     refetch,
-  } = useGetAllServicePacksQuery();
+  } = useGetAllServicePacksAdminQuery();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedServicePack, setSelectedServicePack] = useState(null);
+  const [selectedServicePackGroup, setSelectedServicePackGroup] =
+    useState(null);
 
   // Group service packs by name for better display
   const [groupedServicePacks, setGroupedServicePacks] = useState({});
@@ -54,8 +56,11 @@ export default function ServicePackManagementPage() {
     }
   }, [servicePacksResponse]);
 
-  const handleEditClick = (servicePack) => {
-    setSelectedServicePack(servicePack);
+  const handleEditClick = (packName, servicePacks) => {
+    setSelectedServicePackGroup({
+      name: packName,
+      packs: servicePacks,
+    });
     onOpen();
   };
 
@@ -102,32 +107,42 @@ export default function ServicePackManagementPage() {
       <Box bg="white" p={5} borderRadius="lg" boxShadow="md">
         {Object.keys(groupedServicePacks).map((packName) => (
           <Box key={packName} mb={6}>
-            <Text
-              fontSize="xl"
-              fontWeight="bold"
-              mb={3}
-              display="flex"
-              alignItems="center"
-            >
+            <Flex alignItems="center" mb={3}>
+              <Text fontSize="xl" fontWeight="bold">
+                Gói dịch vụ
+              </Text>
               <Badge
                 colorScheme={getPackColorScheme(packName)}
                 fontSize="md"
                 px={2}
                 py={1}
                 borderRadius="md"
-                mr={2}
+                ml={2}
               >
                 {getPackTypeLabel(packName)}
               </Badge>
-              Gói dịch vụ
-            </Text>
+
+              <IconButton
+                aria-label="Edit service pack"
+                icon={<FiEdit2 />}
+                size="sm"
+                colorScheme="blue"
+                ml={3}
+                onClick={() =>
+                  handleEditClick(packName, groupedServicePacks[packName])
+                }
+              />
+            </Flex>
 
             <Table variant="simple" size="md" mb={4}>
               <Thead bg="gray.50">
                 <Tr>
                   <Th>Thời hạn</Th>
                   <Th>Giá</Th>
-                  <Th>Thao tác</Th>
+                  <Th>Bài đăng/tháng</Th>
+                  <Th>Chức năng bán sản phẩm</Th>
+                  <Th>Chức năng nhận đơn hàng cá nhân hóa</Th>
+                  <Th>Trạng thái</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -137,15 +152,10 @@ export default function ServicePackManagementPage() {
                     <Td fontWeight="bold" color="red.500">
                       {formatPrice(pack.price)}
                     </Td>
-                    <Td>
-                      <IconButton
-                        aria-label="Edit service pack price"
-                        icon={<FiEdit2 />}
-                        size="sm"
-                        colorScheme="blue"
-                        onClick={() => handleEditClick(pack)}
-                      />
-                    </Td>
+                    <Td>{pack.postLimitPerMonth}</Td>
+                    <Td>{pack.productManagement ? "Có" : "Không"}</Td>
+                    <Td>{pack.personalization ? "Có" : "Không"}</Td>
+                    <Td>{pack?.status ? "Đang hoạt động" : "Đã ẩn"}</Td>
                   </Tr>
                 ))}
               </Tbody>
@@ -154,11 +164,11 @@ export default function ServicePackManagementPage() {
         ))}
       </Box>
 
-      {selectedServicePack && (
+      {selectedServicePackGroup && (
         <EditServicePackPriceModal
           isOpen={isOpen}
           onClose={onClose}
-          servicePack={selectedServicePack}
+          servicePackGroup={selectedServicePackGroup}
           refetch={refetch}
         />
       )}

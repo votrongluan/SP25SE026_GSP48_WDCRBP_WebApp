@@ -41,6 +41,10 @@ export default function WalletManagementListPage() {
   const [colDefs] = useState([
     { headerName: "Mã giao dịch", field: "transactionId" },
     {
+      headerName: "Mục đích giao dịch",
+      field: "paymentFor",
+    },
+    {
       headerName: "Loại giao dịch",
       field: "transactionType",
       cellStyle: (params) => {

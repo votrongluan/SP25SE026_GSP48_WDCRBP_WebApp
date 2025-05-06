@@ -23,6 +23,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import { appColorTheme } from "../../../config/appconfig";
+import PublicWWGuide from "../../general/Home/PublicWWGuide";
 
 const QuickActionCard = ({ icon, title, description, onClick, color }) => {
   const bgColor = useColorModeValue("white", "gray.800");
@@ -198,6 +199,10 @@ export default function WoodworkerWelcomePage() {
           />
         </>
       )}
+
+      <Box mt={10}>
+        <PublicWWGuide />
+      </Box>
     </Box>
   );
 }

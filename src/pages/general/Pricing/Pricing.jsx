@@ -61,19 +61,13 @@ export default function Pricing({
             pack.productManagement
               ? "Quản lý sản phẩm & bán sản phẩm có sẵn"
               : "Quản lý sản phẩm & bán sản phẩm có sẵn",
-            pack.searchResultPriority === 100
-              ? "Ưu tiên cao nhất trong kết quả tìm kiếm"
-              : pack.searchResultPriority > 1
-              ? "Ưu tiên hiển thị trong kết quả tìm kiếm"
-              : "Ưu tiên hiển thị trong kết quả tìm kiếm",
             pack.personalization
               ? "Chức năng cung cấp dịch vụ cá nhân hóa"
               : "Chức năng cung cấp dịch vụ cá nhân hóa",
           ].filter(Boolean),
           unavailableFeatures: [
             !pack.productManagement && 5,
-            pack.searchResultPriority === 1 && 6,
-            !pack.personalization && 7,
+            !pack.personalization && 6,
           ].filter(Boolean),
         };
       }
@@ -145,113 +139,118 @@ export default function Pricing({
 
       {/* Plans */}
       <SimpleGrid columns={{ base: 1, lg: 2, xl: 3 }} spacing={8}>
-        {plans.map((plan, index) => (
-          <Box
-            key={index}
-            bg="white"
-            p={5}
-            borderRadius="xl"
-            boxShadow="md"
-            position="relative"
-          >
-            <Stack spacing={6}>
-              <HStack>
-                <Heading as="h3" fontSize="2xl">
-                  {plan.name}{" "}
-                </Heading>
-                <Text fontSize="md" color="gray.500">
-                  {servicePackId == plan.prices[selectedPeriod]?.servicePackId
-                    ? "(Đã mua trước đó)"
-                    : ""}
-                </Text>
-              </HStack>
-              <Flex align="baseline">
-                <Text
-                  fontSize="4xl"
-                  fontWeight="bold"
-                  color={appColorTheme.brown_2}
-                >
-                  {plan.prices[selectedPeriod]?.price?.toLocaleString()}
-                </Text>
-                <Text fontSize="xl" color={appColorTheme.brown_1} ml={2}>
-                  đồng/
-                  {selectedPeriod === 12
-                    ? "năm"
-                    : selectedPeriod === 3
-                    ? "quý"
-                    : "tháng"}
-                </Text>
-              </Flex>
-
-              <Button
-                bg={appColorTheme.brown_0}
-                color="black"
-                size="lg"
-                isDisabled={(() => {
-                  // Logic to determine if button should be disabled
-                  if (!packName) return false; // No current package, enable all buttons
-
-                  const currentPackRank = {
-                    Bronze: 1,
-                    Silver: 2,
-                    Gold: 3,
-                  };
-
-                  const currentRank = currentPackRank[packName] || 0;
-                  const optionRank =
-                    currentPackRank[plan.prices[selectedPeriod]?.name] || 0;
-
-                  // Disable if this would be a downgrade
-                  return optionRank < currentRank;
-                })()}
-                onClick={(e) => {
-                  e.preventDefault();
-
-                  handleButtonClick
-                    ? handleButtonClick(plan.prices[selectedPeriod])
-                    : navigate("/ww-register");
-                }}
-                w="full"
-                _hover={{ bg: appColorTheme.brown_1, color: "white" }}
+        {plans.map(
+          (plan, index) =>
+            plan?.prices[selectedPeriod] && (
+              <Box
+                key={index}
+                bg="white"
+                p={5}
+                borderRadius="xl"
+                boxShadow="md"
+                position="relative"
               >
-                {packName == plan.prices[selectedPeriod]?.name
-                  ? "Gia hạn thêm"
-                  : label}
-              </Button>
-
-              <Stack spacing={3}>
-                {plan.features.map((feature, featureIndex) => (
-                  <Flex key={featureIndex} align="center">
-                    <Icon
-                      as={
-                        plan.unavailableFeatures?.includes(featureIndex)
-                          ? CloseIcon
-                          : CheckIcon
-                      }
-                      color={
-                        plan.unavailableFeatures?.includes(featureIndex)
-                          ? "red.500"
-                          : appColorTheme.brown_1
-                      }
-                      w={5}
-                      h={5}
-                      mr={2}
-                    />
+                <Stack spacing={6}>
+                  <HStack>
+                    <Heading as="h3" fontSize="2xl">
+                      {plan.name}{" "}
+                    </Heading>
+                    <Text fontSize="md" color="gray.500">
+                      {servicePackId ==
+                      plan?.prices[selectedPeriod]?.servicePackId
+                        ? "(Đã mua trước đó)"
+                        : ""}
+                    </Text>
+                  </HStack>
+                  <Flex align="baseline">
                     <Text
-                      color={
-                        plan.unavailableFeatures?.includes(featureIndex)
-                          ? "red.500"
-                          : appColorTheme.black_0
-                      }
+                      fontSize="4xl"
+                      fontWeight="bold"
+                      color={appColorTheme.brown_2}
                     >
-                      {feature}
+                      {plan?.prices[selectedPeriod]?.price?.toLocaleString()}
+                    </Text>
+                    <Text fontSize="xl" color={appColorTheme.brown_1} ml={2}>
+                      đồng/
+                      {selectedPeriod === 12
+                        ? "năm"
+                        : selectedPeriod === 3
+                        ? "quý"
+                        : "tháng"}
                     </Text>
                   </Flex>
-                ))}
-              </Stack>
-            </Stack>
-          </Box>
-        ))}
+
+                  <Button
+                    bg={appColorTheme.brown_0}
+                    color="black"
+                    size="lg"
+                    isDisabled={(() => {
+                      // Logic to determine if button should be disabled
+                      if (!packName) return false; // No current package, enable all buttons
+
+                      const currentPackRank = {
+                        Bronze: 1,
+                        Silver: 2,
+                        Gold: 3,
+                      };
+
+                      const currentRank = currentPackRank[packName] || 0;
+                      const optionRank =
+                        currentPackRank[plan?.prices[selectedPeriod]?.name] ||
+                        0;
+
+                      // Disable if this would be a downgrade
+                      return optionRank < currentRank;
+                    })()}
+                    onClick={(e) => {
+                      e.preventDefault();
+
+                      handleButtonClick
+                        ? handleButtonClick(plan?.prices[selectedPeriod])
+                        : navigate("/ww-register");
+                    }}
+                    w="full"
+                    _hover={{ bg: appColorTheme.brown_1, color: "white" }}
+                  >
+                    {packName == plan?.prices[selectedPeriod]?.name
+                      ? "Gia hạn thêm"
+                      : label}
+                  </Button>
+
+                  <Stack spacing={3}>
+                    {plan.features.map((feature, featureIndex) => (
+                      <Flex key={featureIndex} align="center">
+                        <Icon
+                          as={
+                            plan.unavailableFeatures?.includes(featureIndex)
+                              ? CloseIcon
+                              : CheckIcon
+                          }
+                          color={
+                            plan.unavailableFeatures?.includes(featureIndex)
+                              ? "red.500"
+                              : appColorTheme.brown_1
+                          }
+                          w={5}
+                          h={5}
+                          mr={2}
+                        />
+                        <Text
+                          color={
+                            plan.unavailableFeatures?.includes(featureIndex)
+                              ? "red.500"
+                              : appColorTheme.black_0
+                          }
+                        >
+                          {feature}
+                        </Text>
+                      </Flex>
+                    ))}
+                  </Stack>
+                </Stack>
+              </Box>
+            )
+        )}
       </SimpleGrid>
     </Box>
   );

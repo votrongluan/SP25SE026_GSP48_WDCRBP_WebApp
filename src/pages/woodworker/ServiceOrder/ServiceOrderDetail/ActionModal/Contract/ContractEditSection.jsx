@@ -35,6 +35,7 @@ export default function ContractEditSection({
   savedSignature,
   order,
   isExistingContract,
+  isPersonalizationService,
 }) {
   const [contract, setContract] = useState({
     woodworkerTerms: "",
@@ -65,6 +66,7 @@ export default function ContractEditSection({
         requestedProductIds: productIds,
         warrantyDurations: durations,
         woodworkerSignature: initialContract.woodworkerSignature || "",
+        agreement: initialContract.agreement || "",
       }));
     } else if (order) {
       setContract((prev) => ({
@@ -148,6 +150,19 @@ export default function ContractEditSection({
               />
             </FormControl>
 
+            {isPersonalizationService && (
+              <FormControl isRequired>
+                <FormLabel>Nội dung đã thống nhất:</FormLabel>
+                <Textarea
+                  rows={6}
+                  value={contract.agreement}
+                  onChange={(e) => handleChange("agreement", e.target.value)}
+                  placeholder="Nhập nội dung đã thống nhất"
+                  whiteSpace="pre-wrap"
+                />
+              </FormControl>
+            )}
+
             {/* Product warranty durations table */}
             <FormControl isRequired>
               <FormLabel>Thời hạn bảo hành theo sản phẩm (tháng):</FormLabel>
@@ -194,7 +209,7 @@ export default function ContractEditSection({
 
             {/* Completion date */}
             <FormControl isRequired>
-              <FormLabel>Ngày hoàn thành:</FormLabel>
+              <FormLabel>Ngày cam kết hoàn thành sản phẩm:</FormLabel>
               <Input
                 type="date"
                 value={contract.completeDate}

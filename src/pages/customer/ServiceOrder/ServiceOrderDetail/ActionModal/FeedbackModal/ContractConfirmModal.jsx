@@ -200,7 +200,9 @@ export default function ContractConfirmModal({
                     <GridItem></GridItem>
 
                     <GridItem>
-                      <Text fontWeight="semibold">Ngày hoàn thành:</Text>
+                      <Text fontWeight="semibold">
+                        Ngày cam kết hoàn thành sản phẩm:
+                      </Text>
                     </GridItem>
                     <GridItem>
                       <Text>{formatDate(contract.completeDate)}</Text>

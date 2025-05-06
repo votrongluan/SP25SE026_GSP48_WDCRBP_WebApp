@@ -77,7 +77,7 @@ import ModeratorProfilePage from "./pages/moderator/Profile/ManagePage/Moderator
 import WoodworkerPerformancePage from "./pages/moderator/WoodworkerPerformance/ManagePage/WoodworkerPerformancePage.jsx";
 import ServiceDepositManagement from "./pages/admin/ServiceDepositManagement/ServiceDepositManagement.jsx";
 import DashboardPage from "./pages/admin/Dashboard/DashboardPage.jsx";
-import ServicePackManagementPage from "./pages/admin/ServicePackManagement/ServicePackManagmentPage.jsx";
+import ServicePackManagementPage from "./pages/admin/ServicePackManagement/ServicePackManagementPage.jsx";
 import AdminComplaintManagementPage from "./pages/admin/ComplaintManagement/ComplaintList/AdminComplaintManagementPage.jsx";
 import UserManagementPage from "./pages/admin/UserManagement/MainPage/UserManagementPage.jsx";
 

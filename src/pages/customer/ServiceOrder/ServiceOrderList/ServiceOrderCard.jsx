@@ -12,6 +12,7 @@ import {
   GridItem,
   Heading,
   Link,
+  Box,
 } from "@chakra-ui/react";
 import { FiEye } from "react-icons/fi";
 import {
@@ -117,10 +118,12 @@ const ServiceOrderCard = ({ order, onViewDetails }) => {
         justifyContent={"space-between"}
         alignItems={"center"}
       >
-        {order.totalAmount && (
+        {order.totalAmount ? (
           <Text fontSize="lg" fontWeight="bold" color={appColorTheme.brown_2}>
             {formatPrice(order.totalAmount)}
           </Text>
+        ) : (
+          <Text>Chưa cập nhật giá</Text>
         )}
 
         <Button

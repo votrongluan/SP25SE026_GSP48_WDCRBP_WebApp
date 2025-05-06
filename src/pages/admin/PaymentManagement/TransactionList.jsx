@@ -1,5 +1,4 @@
 import {
-  Heading,
   Box,
   HStack,
   Text,
@@ -18,7 +17,6 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 export default function TransactionList({ transactions }) {
   const [filterType, setFilterType] = useState("all");
   const [filterPaymentFor, setFilterPaymentFor] = useState("all");
-  const [sortOrder, setSortOrder] = useState("desc");
 
   // Filter only successful transactions (status = true)
   const successfulTransactions = transactions.filter((tx) => tx.status);
@@ -57,6 +55,7 @@ export default function TransactionList({ transactions }) {
       field: "transactionId",
       width: 80,
       filter: "agNumberColumnFilter",
+      sort: "desc",
     },
     {
       headerName: "Loại giao dịch",
@@ -86,7 +85,6 @@ export default function TransactionList({ transactions }) {
       field: "createdAt",
       filter: "agDateColumnFilter",
       valueFormatter: (params) => formatDateTimeString(params.value),
-      sort: sortOrder,
     },
     {
       headerName: "Tên người dùng",
@@ -132,8 +130,6 @@ export default function TransactionList({ transactions }) {
   return (
     <Box>
       <VStack spacing={4} align="stretch">
-        <Heading size="md">Lịch sử giao dịch</Heading>
-
         <HStack spacing={4} mb={4} wrap="wrap">
           <FormControl w={{ base: "100%", md: "200px" }}>
             <FormLabel>Loại giao dịch</FormLabel>
@@ -151,7 +147,7 @@ export default function TransactionList({ transactions }) {
           </FormControl>
 
           <FormControl w={{ base: "100%", md: "200px" }}>
-            <FormLabel>Mục đích thanh toán</FormLabel>
+            <FormLabel>Mục đích giao dịch</FormLabel>
             <Select
               value={filterPaymentFor}
               onChange={(e) => setFilterPaymentFor(e.target.value)}
@@ -162,17 +158,6 @@ export default function TransactionList({ transactions }) {
                   {purpose}
                 </option>
               ))}
-            </Select>
-          </FormControl>
-
-          <FormControl w={{ base: "100%", md: "200px" }}>
-            <FormLabel>Sắp xếp</FormLabel>
-            <Select
-              value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value)}
-            >
-              <option value="desc">Mới nhất</option>
-              <option value="asc">Cũ nhất</option>
             </Select>
           </FormControl>
         </HStack>

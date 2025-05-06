@@ -15,8 +15,17 @@ import {
   Text,
   Badge,
   useToast,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+  Switch,
   FormHelperText,
   Divider,
+  Box,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { formatPrice } from "../../../utils/utils";
@@ -26,39 +35,88 @@ import { useUpdateServicePackMutation } from "../../../services/servicePackApi";
 export default function EditServicePackPriceModal({
   isOpen,
   onClose,
-  servicePack,
+  servicePackGroup,
   refetch,
 }) {
-  const [price, setPrice] = useState(servicePack?.price || 0);
-  const [priceError, setPriceError] = useState("");
+  const [postLimitPerMonth, setPostLimitPerMonth] = useState(0);
+  const [productManagement, setProductManagement] = useState(false);
+  const [personalization, setPersonalization] = useState(false);
+  const [status, setStatus] = useState(false);
+
+  // Track prices for each duration separately
+  const [prices, setPrices] = useState({});
+  const [priceErrors, setPriceErrors] = useState({});
+
+  const [postLimitError, setPostLimitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const toast = useToast();
 
   const [updateServicePack] = useUpdateServicePackMutation();
 
-  // Reset form when modal opens with a new service pack
+  // Reset form when modal opens with a new service pack group
   useEffect(() => {
-    if (servicePack) {
-      setPrice(servicePack.price);
-      setPriceError("");
-    }
-  }, [servicePack]);
+    if (servicePackGroup) {
+      // Get common settings from first pack (they should all be the same)
+      const firstPack = servicePackGroup.packs[0];
+      setPostLimitPerMonth(firstPack.postLimitPerMonth);
+      setProductManagement(firstPack.productManagement);
+      setPersonalization(firstPack.personalization);
+      setStatus(firstPack.status);
 
-  const handlePriceChange = (e) => {
+      // Initialize prices for each pack
+      const newPrices = {};
+      const newPriceErrors = {};
+
+      servicePackGroup.packs.forEach((pack) => {
+        newPrices[pack.servicePackId] = pack.price;
+        newPriceErrors[pack.servicePackId] = "";
+      });
+
+      setPrices(newPrices);
+      setPriceErrors(newPriceErrors);
+      setPostLimitError("");
+    }
+  }, [servicePackGroup]);
+
+  const handlePriceChange = (servicePackId, e) => {
     const value = e.target.value;
     // Allow only numbers
     if (/^\d*$/.test(value)) {
-      setPrice(value);
-      setPriceError("");
+      setPrices((prevPrices) => ({
+        ...prevPrices,
+        [servicePackId]: value,
+      }));
+
+      setPriceErrors((prevErrors) => ({
+        ...prevErrors,
+        [servicePackId]: "",
+      }));
     }
+  };
+
+  const handlePostLimitChange = (valueAsString, valueAsNumber) => {
+    setPostLimitPerMonth(valueAsNumber);
+    setPostLimitError("");
   };
 
   const validateForm = () => {
     let isValid = true;
+    const newPriceErrors = {};
 
-    // Price validation
-    if (!price || price <= 0) {
-      setPriceError("Giá phải lớn hơn 0");
+    // Price validation for each pack
+    Object.keys(prices).forEach((servicePackId) => {
+      const price = prices[servicePackId];
+      if (!price || price <= 0) {
+        newPriceErrors[servicePackId] = "Giá phải lớn hơn 0";
+        isValid = false;
+      }
+    });
+
+    setPriceErrors(newPriceErrors);
+
+    // Post limit validation
+    if (postLimitPerMonth <= 0) {
+      setPostLimitError("Số bài đăng phải lớn hơn 0");
       isValid = false;
     }
 
@@ -71,17 +129,24 @@ export default function EditServicePackPriceModal({
     try {
       setIsSubmitting(true);
 
-      // Convert price to number
-      const priceValue = parseInt(price);
+      // Create promises for all service packs
+      const updatePromises = servicePackGroup.packs.map((pack) => {
+        return updateServicePack({
+          servicePackId: pack.servicePackId,
+          price: parseInt(prices[pack.servicePackId]),
+          postLimitPerMonth: postLimitPerMonth,
+          productManagement: productManagement,
+          personalization: personalization,
+          status: status,
+        }).unwrap();
+      });
 
-      const result = await updateServicePack({
-        servicePackId: servicePack.servicePackId,
-        price: priceValue,
-      }).unwrap();
+      // Execute all updates
+      await Promise.all(updatePromises);
 
       toast({
         title: "Thành công",
-        description: "Cập nhật giá gói dịch vụ thành công",
+        description: "Cập nhật gói dịch vụ thành công",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -94,7 +159,7 @@ export default function EditServicePackPriceModal({
       toast({
         title: "Lỗi",
         description:
-          error.data?.message || "Đã xảy ra lỗi khi cập nhật giá gói dịch vụ",
+          error.data?.message || "Đã xảy ra lỗi khi cập nhật gói dịch vụ",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -117,11 +182,13 @@ export default function EditServicePackPriceModal({
     }
   };
 
+  if (!servicePackGroup) return null;
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">
+    <Modal isOpen={isOpen} onClose={onClose} isCentered size="lg">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Cập nhật giá gói dịch vụ</ModalHeader>
+        <ModalHeader>Cập nhật gói dịch vụ</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
@@ -134,33 +201,108 @@ export default function EditServicePackPriceModal({
               gap={2}
             >
               <Badge
-                colorScheme={getPackColorScheme(servicePack?.name)}
+                colorScheme={getPackColorScheme(servicePackGroup.name)}
                 fontSize="md"
                 px={2}
                 borderRadius="md"
               >
-                {getPackTypeLabel(servicePack?.name)}
+                {getPackTypeLabel(servicePackGroup.name)}
               </Badge>
-              {servicePack?.duration} tháng
+              Gói dịch vụ
             </Text>
 
             <Divider />
 
-            <FormControl isInvalid={!!priceError}>
-              <FormLabel>Giá gói</FormLabel>
-              <Input
-                type="text"
-                value={price}
-                onChange={handlePriceChange}
-                placeholder="Nhập giá gói"
-              />
-              {!priceError && (
+            <Text fontWeight="bold">Cài đặt giá cho từng gói</Text>
+            <Grid templateColumns="repeat(2, 1fr)" gap={4} w="100%">
+              {servicePackGroup.packs.map((pack) => (
+                <GridItem key={pack.servicePackId}>
+                  <FormControl isInvalid={!!priceErrors[pack.servicePackId]}>
+                    <FormLabel>Giá gói {pack.duration} tháng</FormLabel>
+                    <Input
+                      type="text"
+                      value={prices[pack.servicePackId]}
+                      onChange={(e) => handlePriceChange(pack.servicePackId, e)}
+                      placeholder="Nhập giá gói"
+                    />
+                    {!priceErrors[pack.servicePackId] &&
+                      prices[pack.servicePackId] > 0 && (
+                        <FormHelperText>
+                          {formatPrice(prices[pack.servicePackId])}
+                        </FormHelperText>
+                      )}
+                    <FormErrorMessage>
+                      {priceErrors[pack.servicePackId]}
+                    </FormErrorMessage>
+                  </FormControl>
+                </GridItem>
+              ))}
+            </Grid>
+
+            <Divider />
+
+            <Box w="100%">
+              <Text fontWeight="bold" mb={2}>
+                Cài đặt chung cho gói dịch vụ
+              </Text>
+              <FormControl isInvalid={!!postLimitError} mb={3}>
+                <FormLabel>Số bài đăng mỗi tháng</FormLabel>
+                <NumberInput
+                  value={postLimitPerMonth}
+                  onChange={handlePostLimitChange}
+                  min={1}
+                  max={100}
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+                <FormErrorMessage>{postLimitError}</FormErrorMessage>
+              </FormControl>
+
+              <FormControl mb={3}>
+                <FormLabel>Quản lý sản phẩm</FormLabel>
+                <Switch
+                  isChecked={productManagement}
+                  onChange={(e) => setProductManagement(e.target.checked)}
+                  colorScheme="green"
+                  size="lg"
+                />
                 <FormHelperText>
-                  {price > 0 && `Giá hiển thị: ${formatPrice(price)}`}
+                  Cho phép xưởng mộc quản lý danh sách sản phẩm và cung cấp dịch
+                  vụ bán hàng tồn kho
                 </FormHelperText>
-              )}
-              <FormErrorMessage>{priceError}</FormErrorMessage>
-            </FormControl>
+              </FormControl>
+
+              <FormControl mb={3}>
+                <FormLabel>Cá nhân hóa</FormLabel>
+                <Switch
+                  isChecked={personalization}
+                  onChange={(e) => setPersonalization(e.target.checked)}
+                  colorScheme="green"
+                  size="lg"
+                />
+                <FormHelperText>
+                  Cho phép xưởng mộc nhận các đơn hàng cá nhân hóa theo yêu cầu
+                  của khách hàng
+                </FormHelperText>
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>Công khai gói dịch vụ</FormLabel>
+                <Switch
+                  isChecked={status}
+                  onChange={(e) => setStatus(e.target.checked)}
+                  colorScheme="green"
+                  size="lg"
+                />
+                <FormHelperText>
+                  Cho phép hiển thị gói dịch vụ này trên nền tảng
+                </FormHelperText>
+              </FormControl>
+            </Box>
           </VStack>
         </ModalBody>
 

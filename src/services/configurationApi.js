@@ -24,7 +24,13 @@ export const configurationApi = createApi({
         body: data,
       }),
     }),
-
+    getConfigurationByDescription: builder.mutation({
+      query: (data) => ({
+        url: `/api/v1/configuration/getByDescription`,
+        method: "POST",
+        body: data,
+      }),
+    }),
     getAllConfigurations: builder.query({
       query: () => ({
         url: `/api/v1/configuration/getAll`,

@@ -171,18 +171,6 @@ export default function WWRegistrationDetailModal({ registration, refetch }) {
                   </Grid>
                 </Box>
               </Box>
-
-              {/* Phần ghi chú */}
-              <Box>
-                <FormControl>
-                  <FormLabel>Ghi chú</FormLabel>
-                  <Textarea
-                    placeholder="Nhập ghi chú về việc duyệt/từ chối đăng ký"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
-                </FormControl>
-              </Box>
             </Stack>
 
             <HStack mt={6}>
