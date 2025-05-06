@@ -28,13 +28,15 @@ import QuotationAndTransactionTab from "../Tab/QuotationAndTransactionTab.jsx";
 
 export default function CusGuaranteeOrderDetailPage() {
   const { id } = useParams();
-  const { data, isLoading, error, refetch } = useGetGuaranteeOrderByIdQuery(id);
+  const { data, isLoading, error, refetch, isFetching } =
+    useGetGuaranteeOrderByIdQuery(id);
 
   const {
     data: depositsResponse,
     isLoading: isDepositsLoading,
     error: depositsError,
     refetch: refetchDeposit,
+    isFetching: isDepositsFetching,
   } = useGetAllOrderDepositByGuaranteeOrderIdQuery(id);
 
   const order = data?.data;
@@ -43,6 +45,9 @@ export default function CusGuaranteeOrderDetailPage() {
 
   // Track active tab index
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+
+  // Track refetching state
+  const isRefetching = isFetching || isDepositsFetching;
 
   // Handle tab change
   const handleTabChange = (index) => {
@@ -112,14 +117,20 @@ export default function CusGuaranteeOrderDetailPage() {
 
         <Box>
           <HStack spacing={4}>
-            <ActionBar
-              deposits={deposits}
-              order={order}
-              refetchDeposit={refetchDeposit}
-              refetch={refetch}
-              status={order?.status}
-              feedback={order?.feedback}
-            />
+            {isRefetching ? (
+              <Center minW="100px">
+                <Spinner color={appColorTheme.brown_2} />
+              </Center>
+            ) : (
+              <ActionBar
+                deposits={deposits}
+                order={order}
+                refetchDeposit={refetchDeposit}
+                refetch={refetch}
+                status={order?.status}
+                feedback={order?.feedback}
+              />
+            )}
           </HStack>
         </Box>
       </HStack>

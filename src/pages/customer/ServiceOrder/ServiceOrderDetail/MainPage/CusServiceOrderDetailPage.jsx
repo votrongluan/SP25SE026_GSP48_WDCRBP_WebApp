@@ -28,13 +28,15 @@ import { useState } from "react";
 
 export default function CusServiceOrderDetailPage() {
   const { id } = useParams();
-  const { data, isLoading, error, refetch } = useGetServiceOrderByIdQuery(id);
+  const { data, isLoading, error, refetch, isFetching } =
+    useGetServiceOrderByIdQuery(id);
   const order = data?.data;
   const {
     data: depositsResponse,
     isLoading: isDepositsLoading,
     error: depositsError,
     refetch: refetchDeposit,
+    isFetching: isDepositsFetching,
   } = useGetAllOrderDepositByOrderIdQuery(id);
   const deposits = depositsResponse?.data || [];
   const { auth } = useAuth();
@@ -42,6 +44,9 @@ export default function CusServiceOrderDetailPage() {
 
   // Track active tab index
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+
+  // Track refetching state
+  const isRefetching = isFetching || isDepositsFetching;
 
   // Handle tab change
   const handleTabChange = (index) => {
@@ -111,14 +116,20 @@ export default function CusServiceOrderDetailPage() {
 
         <Box>
           <HStack spacing={4}>
-            <ActionBar
-              deposits={deposits}
-              order={order}
-              refetch={refetch}
-              status={order?.status}
-              feedback={order?.feedback}
-              refetchDeposit={refetchDeposit}
-            />
+            {isRefetching ? (
+              <Center minW="100px">
+                <Spinner color={appColorTheme.brown_2} />
+              </Center>
+            ) : (
+              <ActionBar
+                deposits={deposits}
+                order={order}
+                refetch={refetch}
+                status={order?.status}
+                feedback={order?.feedback}
+                refetchDeposit={refetchDeposit}
+              />
+            )}
           </HStack>
         </Box>
       </HStack>

@@ -28,12 +28,14 @@ import QuotationAndTransactionTab from "../Tab/QuotationAndTransactionTab.jsx";
 
 export default function WWGuaranteeOrderDetailPage() {
   const { id } = useParams();
-  const { data, isLoading, error, refetch } = useGetGuaranteeOrderByIdQuery(id);
+  const { data, isLoading, error, refetch, isFetching } =
+    useGetGuaranteeOrderByIdQuery(id);
 
   const {
     data: depositsResponse,
     isLoading: isDepositsLoading,
     error: depositsError,
+    isFetching: isDepositsFetching,
   } = useGetAllOrderDepositByGuaranteeOrderIdQuery(id);
 
   const order = data?.data;
@@ -42,6 +44,9 @@ export default function WWGuaranteeOrderDetailPage() {
 
   // Track active tab index
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+
+  // Track refetching state
+  const isRefetching = isFetching || isDepositsFetching;
 
   // Handle tab change
   const handleTabChange = (index) => {
@@ -111,13 +116,18 @@ export default function WWGuaranteeOrderDetailPage() {
 
         <Box>
           <HStack spacing={4}>
-            <ActionBar
-              order={order}
-              deposits={deposits}
-              refetch={refetch}
-              status={order?.status}
-              feedback={order?.feedback}
-            />
+            {isRefetching ? (
+              <Center minW="100px">
+                <Spinner color={appColorTheme.brown_2} />
+              </Center>
+            ) : (
+              <ActionBar
+                order={order}
+                refetch={refetch}
+                status={order?.status}
+                feedback={order?.feedback}
+              />
+            )}
           </HStack>
         </Box>
       </HStack>

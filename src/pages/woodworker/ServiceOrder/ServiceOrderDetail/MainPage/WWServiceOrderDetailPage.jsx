@@ -27,7 +27,8 @@ import { useState } from "react";
 
 export default function WWServiceOrderDetailPage() {
   const { id } = useParams();
-  const { data, isLoading, error, refetch } = useGetServiceOrderByIdQuery(id);
+  const { data, isLoading, error, refetch, isFetching } =
+    useGetServiceOrderByIdQuery(id);
   const order = data?.data;
   const { auth } = useAuth();
   const serviceName = order?.service?.service?.serviceName;
@@ -105,12 +106,18 @@ export default function WWServiceOrderDetailPage() {
 
         <Box>
           <HStack spacing={4}>
-            <ActionBar
-              order={order}
-              refetch={refetch}
-              status={order?.status}
-              feedback={order?.feedback}
-            />
+            {isFetching ? (
+              <Center minW="100px">
+                <Spinner color={appColorTheme.brown_2} />
+              </Center>
+            ) : (
+              <ActionBar
+                order={order}
+                refetch={refetch}
+                status={order?.status}
+                feedback={order?.feedback}
+              />
+            )}
           </HStack>
         </Box>
       </HStack>
