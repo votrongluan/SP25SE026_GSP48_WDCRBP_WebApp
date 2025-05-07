@@ -16,7 +16,7 @@ import {
   appColorTheme,
   complaintStatusConstants,
 } from "../../../../config/appconfig";
-import { formatDateTimeToVietnamese } from "../../../../utils/utils";
+import { formatDateTimeString } from "../../../../utils/utils";
 import ComplaintDetailModal from "../ActionModal/ComplaintDetailModal";
 
 const ComplaintCard = ({ complaint, refetch }) => {
@@ -95,7 +95,7 @@ const ComplaintCard = ({ complaint, refetch }) => {
               <Text fontWeight="medium" minWidth="150px">
                 Ngày tạo:
               </Text>
-              <Text>{formatDateTimeToVietnamese(complaint.createdAt)}</Text>
+              <Text>{formatDateTimeString(complaint.createdAt)}</Text>
             </Flex>
           </GridItem>
         </Grid>

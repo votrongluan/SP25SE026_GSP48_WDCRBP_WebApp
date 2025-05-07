@@ -12,17 +12,13 @@ import {
   GridItem,
   Heading,
   Link,
-  Box,
 } from "@chakra-ui/react";
 import { FiEye } from "react-icons/fi";
 import {
   appColorTheme,
   getServiceOrderStatusColor,
 } from "../../../../config/appconfig";
-import {
-  formatPrice,
-  formatDateTimeToVietnamese,
-} from "../../../../utils/utils";
+import { formatPrice, formatDateTimeString } from "../../../../utils/utils";
 
 // Reverse lookup for display names
 const getServiceTypeDisplayName = (apiValue) => {
@@ -104,7 +100,7 @@ const ServiceOrderCard = ({ order, onViewDetails }) => {
               <Text fontWeight="medium" minWidth="110px">
                 Ngày tạo:
               </Text>
-              <Text>{formatDateTimeToVietnamese(order.createdAt)}</Text>
+              <Text>{formatDateTimeString(order.createdAt)}</Text>
             </Flex>
           </GridItem>
         </Grid>

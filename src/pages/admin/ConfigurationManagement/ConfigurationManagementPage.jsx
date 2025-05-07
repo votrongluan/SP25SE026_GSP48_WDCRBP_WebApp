@@ -18,7 +18,7 @@ import {
   useGetAllConfigurationsQuery,
   useUpdateConfigurationMutation,
 } from "../../../services/configurationApi";
-import { formatDateTimeToVietnamese } from "../../../utils/utils";
+import { formatDateTimeString } from "../../../utils/utils";
 
 export default function ConfigurationManagementPage() {
   const notify = useNotify();
@@ -203,9 +203,7 @@ export default function ConfigurationManagementPage() {
                   </HStack>
                   <HStack justify="space-between">
                     <Text fontWeight="semibold">Cập nhật lần cuối:</Text>
-                    <Text>
-                      {formatDateTimeToVietnamese(configItem.updatedAt)}
-                    </Text>
+                    <Text>{formatDateTimeString(configItem.updatedAt)}</Text>
                   </HStack>
                 </VStack>
               )}

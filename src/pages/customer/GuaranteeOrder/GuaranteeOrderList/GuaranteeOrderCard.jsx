@@ -18,10 +18,7 @@ import {
   appColorTheme,
   getGuaranteeOrderStatusColor,
 } from "../../../../config/appconfig";
-import {
-  formatPrice,
-  formatDateTimeToVietnamese,
-} from "../../../../utils/utils";
+import { formatPrice, formatDateTimeString } from "../../../../utils/utils";
 
 const GuaranteeOrderCard = ({ order, onViewDetails }) => {
   return (
@@ -101,7 +98,7 @@ const GuaranteeOrderCard = ({ order, onViewDetails }) => {
               <Text fontWeight="medium" minWidth="110px">
                 Ngày tạo:
               </Text>
-              <Text>{formatDateTimeToVietnamese(order.createdAt)}</Text>
+              <Text>{formatDateTimeString(order.createdAt)}</Text>
             </Flex>
 
             <Flex mt={1}>
