@@ -80,7 +80,7 @@ export default function GeneralInformationTab({ order }) {
                 <Text fontWeight="bold">Ngày đặt:</Text>
                 <Text>
                   {order?.createdAt
-                    ? formatDateTimeString(new Date(order.createdAt))
+                    ? formatDateTimeString(order.createdAt)
                     : "Chưa cập nhật"}
                 </Text>
               </HStack>

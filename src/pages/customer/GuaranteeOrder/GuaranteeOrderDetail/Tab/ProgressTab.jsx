@@ -185,7 +185,7 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
                 </Box>
 
                 <Text whiteSpace="nowrap">
-                  {formatDateTimeString(new Date(progress.createdTime))}
+                  {formatDateTimeString(progress.createdTime)}
                 </Text>
               </HStack>
             ))}
@@ -233,9 +233,7 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
                   </Box>
 
                   <Text whiteSpace="nowrap">
-                    {progress
-                      ? formatDateTimeString(new Date(progress.createdTime))
-                      : ""}
+                    {progress ? formatDateTimeString(progress.createdTime) : ""}
                   </Text>
                 </HStack>
               );

@@ -19,7 +19,7 @@ const getRelativeTime = (dateString) => {
 
 const RelativeTime = ({ dateString }) => {
   return (
-    <Tooltip label={formatDateTimeString(new Date(dateString))} hasArrow>
+    <Tooltip label={formatDateTimeString(dateString)} hasArrow>
       <Text color="gray.500">Đăng vào: {getRelativeTime(dateString)}</Text>
     </Tooltip>
   );

@@ -86,8 +86,7 @@ export default function StaffComplaintManagementPage() {
       {
         headerName: "Ngày tạo",
         field: "createdAt",
-        valueFormatter: (params) =>
-          formatDateTimeString(new Date(params.value)),
+        valueFormatter: (params) => formatDateTimeString(params.value),
       },
       {
         headerName: "Trạng thái",

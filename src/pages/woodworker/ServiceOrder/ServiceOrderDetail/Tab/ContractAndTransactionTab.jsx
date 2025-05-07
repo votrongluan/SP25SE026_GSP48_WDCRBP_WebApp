@@ -167,7 +167,7 @@ export default function ContractAndTransactionTab({
                   <Text fontWeight="bold">Thời hạn bảo hành:</Text>
                   <Text>
                     {contract.warrantyPeriod
-                      ? formatDateTimeString(new Date(contract.warrantyPeriod))
+                      ? formatDateTimeString(contract.warrantyPeriod)
                       : "Chưa cập nhật"}
                   </Text>
                 </HStack>
@@ -316,7 +316,7 @@ export default function ContractAndTransactionTab({
                     <Text fontWeight="bold">Ngày tạo:</Text>
                     <Text>
                       {deposit.createdAt
-                        ? formatDateTimeString(new Date(deposit.createdAt))
+                        ? formatDateTimeString(deposit.createdAt)
                         : "Chưa cập nhật"}
                     </Text>
                   </HStack>
@@ -325,7 +325,7 @@ export default function ContractAndTransactionTab({
                     <Text fontWeight="bold">Ngày thanh toán:</Text>
                     <Text>
                       {deposit.updatedAt
-                        ? formatDateTimeString(new Date(deposit.updatedAt))
+                        ? formatDateTimeString(deposit.updatedAt)
                         : "Chưa cập nhật"}
                     </Text>
                   </HStack>
