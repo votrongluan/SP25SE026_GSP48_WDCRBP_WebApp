@@ -5,7 +5,6 @@ import unorm from "unorm";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-// redeploy
 
 export const formatDateString = (timestamp) => {
   return dayjs.utc(timestamp).tz("Asia/Ho_Chi_Minh").format("DD/MM/YYYY");
