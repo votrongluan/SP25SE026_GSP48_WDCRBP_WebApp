@@ -8,15 +8,17 @@ dayjs.extend(timezone);
 
 export const formatDateString = (timestamp) => {
   return dayjs
-    .utc(timestamp) // parse as UTC
-    .tz("Asia/Ho_Chi_Minh") // convert to HCMC time
+    .utc(timestamp)
+    .add(7, "hour")
+    .tz("Asia/Ho_Chi_Minh")
     .format("DD/MM/YYYY");
 };
 
 export const formatDateTimeString = (timestamp) => {
   return dayjs
-    .utc(timestamp) // parse as UTC
-    .tz("Asia/Ho_Chi_Minh") // convert to HCMC time
+    .utc(timestamp)
+    .add(7, "hour")
+    .tz("Asia/Ho_Chi_Minh")
     .format("DD/MM/YYYY HH:mm");
 };
 
@@ -40,19 +42,6 @@ export const formatDateTimeToVietnamese = (dateString) => {
     minute: "2-digit",
   };
   return new Date(dateString).toLocaleDateString("vi-VN", options);
-};
-
-export const getDateNow = () => {
-  const currentDate = new Date();
-  const vietnamTime = new Date(
-    currentDate.getTime() + 7 * 60 * 60 * 1000
-  ).toISOString();
-  return vietnamTime;
-};
-
-export const generateBarcode = (type) => {
-  const randomNum = Math.floor(100000 + Math.random() * 900000);
-  return type.typeName.toUpperCase() + randomNum;
 };
 
 export const formatPrice = (price) => {

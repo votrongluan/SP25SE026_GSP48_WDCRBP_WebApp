@@ -116,7 +116,7 @@ export default function WWRegistrationManagementListPage() {
             colorScheme={viewMode === "all" ? "brown" : "gray"}
             onClick={() => setViewMode("all")}
           >
-            Tất cả xưởng mộc
+            Tất cả xưởng mộc đã đăng ký gói
           </Button>
         </ButtonGroup>
       </Flex>
