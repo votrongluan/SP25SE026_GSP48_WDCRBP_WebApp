@@ -40,11 +40,13 @@ export default function StaffResponseSection({
   handleSubmit,
   isAccept,
   setIsAccept,
+  isCancel,
+  setIsCancel,
   refundPercent,
   setRefundPercent,
 }) {
   const [showTooltip, setShowTooltip] = useState(false);
-  const totalOrderAmount = orderDetail?.amountPaid || 0;
+  const totalOrderAmount = orderDetail?.totalAmount || 0;
   const [maxAllowedPercent, setMaxAllowedPercent] = useState(100);
 
   // Calculate max allowed percentage based on maxRefundableAmount
@@ -103,6 +105,42 @@ export default function StaffResponseSection({
       <Heading size="md" mb={4}>
         Phản hồi của nhân viên
       </Heading>
+
+      {/* Cancel order */}
+      {orderDetail?.status != "Đã hủy" && (
+        <>
+          <Box
+            mb={4}
+            p={4}
+            borderRadius="md"
+            bg={!isCancel ? "green.50" : "red.50"}
+            borderWidth="1px"
+            borderColor={!isCancel ? "green.200" : "red.200"}
+          >
+            <Flex justify="space-between" align="center">
+              <HStack>
+                <Icon
+                  as={!isCancel ? FiCheck : FiX}
+                  color={!isCancel ? "green.500" : "red.500"}
+                  boxSize={5}
+                />
+                <Text fontWeight="bold">
+                  {isCancel
+                    ? "Hủy đơn hàng (dừng việc tiếp tục xử lý đơn hàng)"
+                    : "Không hủy đơn hàng (tiếp tục để xưởng mộc hoàn thành đơn hàng)"}
+                </Text>
+              </HStack>
+              <Switch
+                colorScheme="green"
+                size="lg"
+                isChecked={isCancel}
+                onChange={(e) => setIsCancel(e.target.checked)}
+                isDisabled={isLoading}
+              />
+            </Flex>
+          </Box>
+        </>
+      )}
 
       {/* Accept/Reject Complaint Switch */}
       <Box

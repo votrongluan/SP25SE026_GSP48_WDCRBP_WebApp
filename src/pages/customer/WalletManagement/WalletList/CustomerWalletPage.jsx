@@ -34,7 +34,6 @@ export default function CustomerWalletPage() {
   const transactions = response?.data?.map((transaction) => {
     return {
       ...transaction,
-      createdAt: new Date(transaction.createdAt),
     };
   });
 

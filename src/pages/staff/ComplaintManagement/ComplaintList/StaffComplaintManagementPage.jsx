@@ -39,7 +39,6 @@ export default function StaffComplaintManagementPage() {
       setFilteredData(
         data.data.map((item) => ({
           ...item,
-          createdAt: new Date(item.createdAt),
         }))
       );
     }
@@ -51,7 +50,6 @@ export default function StaffComplaintManagementPage() {
 
     let filtered = data.data.map((item) => ({
       ...item,
-      createdAt: new Date(item.createdAt),
     }));
 
     // Apply status filter if selected

@@ -44,7 +44,6 @@ export default function TransactionList({ transactions }) {
   const rowData = useMemo(() => {
     return filteredTransactions.map((tx) => ({
       ...tx,
-      createdAt: new Date(tx.createdAt),
     }));
   }, [filteredTransactions]);
 

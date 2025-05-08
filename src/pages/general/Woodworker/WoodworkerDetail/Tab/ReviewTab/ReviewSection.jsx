@@ -7,6 +7,7 @@ import { FiBook, FiClock } from "react-icons/fi";
 import { useGetWoodworkerReviewsQuery } from "../../../../../../services/reviewApi.js";
 import { useParams } from "react-router-dom";
 import { getServiceTypeLabel } from "../../../../../../config/appconfig.js";
+import { formatDateTimeString } from "../../../../../../utils/utils.js";
 
 // Component to render review items (will be passed to Pagination)
 const ReviewList = ({ data }) => {
@@ -27,11 +28,7 @@ const ReviewList = ({ data }) => {
               <HStack mr={5} spacing={1}>
                 <FiClock size={12} color="gray.600" />
                 <Text fontSize="sm" color="gray.600">
-                  {new Date(review.createdAt).toLocaleDateString("vi-VN")}{" "}
-                  {new Date(review.createdAt).toLocaleTimeString("vi-VN", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
+                  {formatDateTimeString(review.createdAt)}
                 </Text>
               </HStack>
               <HStack spacing={1}>
@@ -58,11 +55,7 @@ const ReviewList = ({ data }) => {
                 </Text>
                 <Text fontSize="md">{review.woodworkerResponse}</Text>
                 <Text fontSize="xs" color="gray.600">
-                  {new Date(review.responseAt).toLocaleDateString("vi-VN")}{" "}
-                  {new Date(review.responseAt).toLocaleTimeString("vi-VN", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
+                  {formatDateTimeString(review.responseAt)}
                 </Text>
               </Box>
             )}

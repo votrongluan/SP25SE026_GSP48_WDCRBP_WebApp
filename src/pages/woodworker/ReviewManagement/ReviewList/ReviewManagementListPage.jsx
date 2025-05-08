@@ -37,7 +37,6 @@ export default function ReviewManagementListPage() {
   // Transform data directly without useState and useEffect
   const reviews = reviewsResponse?.data?.map((el) => ({
     ...el,
-    createdAt: new Date(el.createdAt),
   }));
 
   const [colDefs] = useState([

@@ -131,13 +131,11 @@ export default function FinishUpdateModal({
         await processShipment();
       }
 
-      // Format the request payload for the API
       const formattedPayload = requestPayload.map((item) => ({
         mediaUrls: item.mediaUrls,
         productId: item.productId,
       }));
 
-      // Call the API to add finish product images
       await addFinishProductImage({
         serviceId: serviceOrderId,
         body: formattedPayload,

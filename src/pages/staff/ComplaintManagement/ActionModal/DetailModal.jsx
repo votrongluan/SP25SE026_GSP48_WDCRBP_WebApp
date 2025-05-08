@@ -41,6 +41,7 @@ export default function DetailModal({ complaint, refetch }) {
   );
   // New state variables for the updated API
   const [isAccept, setIsAccept] = useState(true);
+  const [isCancel, setIsCancel] = useState(false);
   const [refundPercent, setRefundPercent] = useState(50); // Default to 50%
 
   const [updateComplaintStaff, { isLoading }] =
@@ -119,6 +120,7 @@ export default function DetailModal({ complaint, refetch }) {
         isAccept,
         staffResponse: response,
         staffUserId: auth?.userId,
+        isCancel: isCancel,
       };
 
       await updateComplaintStaff(requestBody).unwrap();
@@ -216,6 +218,8 @@ export default function DetailModal({ complaint, refetch }) {
               setIsAccept={setIsAccept}
               refundPercent={refundPercent}
               setRefundPercent={setRefundPercent}
+              isCancel={isCancel}
+              setIsCancel={setIsCancel}
             />
 
             <HStack justify="flex-end" mt={6}>

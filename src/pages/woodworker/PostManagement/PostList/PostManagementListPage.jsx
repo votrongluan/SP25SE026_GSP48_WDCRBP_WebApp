@@ -32,7 +32,6 @@ export default function PostManagementListPage() {
   const posts = data?.data?.map((post) => {
     return {
       ...post,
-      createdAt: new Date(post.createdAt),
     };
   });
 

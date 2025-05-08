@@ -34,7 +34,6 @@ export default function WalletManagementListPage() {
   const transactions = response?.data?.map((transaction) => {
     return {
       ...transaction,
-      createdAt: new Date(transaction.createdAt),
     };
   });
 

@@ -30,9 +30,6 @@ export default function WWResponseManagementPage() {
   // Transform data directly
   const reviews = reviewsResponse?.data?.map((el) => ({
     ...el,
-    createdAt: new Date(el.createdAt),
-    updatedAt: new Date(el.updatedAt),
-    responseAt: el.responseAt ? new Date(el.responseAt) : null,
   }));
 
   const handleRefetch = useCallback(() => {
