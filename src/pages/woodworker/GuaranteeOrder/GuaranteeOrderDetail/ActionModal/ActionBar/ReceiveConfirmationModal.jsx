@@ -7,12 +7,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
-  Text,
-  Divider,
   useDisclosure,
-  Box,
-  Alert,
-  AlertIcon,
   ModalCloseButton,
 } from "@chakra-ui/react";
 import { useState } from "react";

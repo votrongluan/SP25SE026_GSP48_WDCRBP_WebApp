@@ -8,6 +8,9 @@ import PaymentModal from "../FeedbackModal/PaymentModal.jsx";
 import DesignConfirmModal from "../FeedbackModal/DesignConfirmModal.jsx";
 import useAuth from "../../../../../../hooks/useAuth.js";
 import ReviewModal from "../FeedbackModal/ReviewModal.jsx";
+import { useTrackOrderByCodeMutation } from "../../../../../../services/ghnApi.js";
+import { useGetShipmentsByServiceOrderIdQuery } from "../../../../../../services/shipmentApi.js";
+import { useEffect, useState } from "react";
 
 export default function ActionBar({
   status,
@@ -18,6 +21,43 @@ export default function ActionBar({
   deposits,
 }) {
   const { auth } = useAuth();
+  const [trackingData, setTrackingData] = useState({});
+
+  const { data: shipmentResponse } = useGetShipmentsByServiceOrderIdQuery(
+    order?.orderId
+  );
+
+  const shipmentOrderCode = shipmentResponse?.data?.[0]?.orderCode;
+
+  const [trackOrderByCode] = useTrackOrderByCodeMutation();
+
+  // Fetch tracking information when shipment data is available
+  useEffect(() => {
+    const fetchTrackingData = async () => {
+      if (shipmentResponse?.data && !order?.isInstall) {
+        for (const shipment of shipmentResponse.data) {
+          if (shipment.orderCode && shipment.orderCode !== "string") {
+            try {
+              const response = await trackOrderByCode({
+                order_code: shipment.orderCode,
+              }).unwrap();
+
+              setTrackingData((prev) => ({
+                ...prev,
+                [shipment.orderCode]: response.data.data,
+              }));
+            } catch (error) {
+              console.error("Error fetching tracking data:", error);
+            }
+          }
+        }
+      }
+    };
+
+    if (shipmentResponse?.data) {
+      fetchTrackingData();
+    }
+  }, [shipmentResponse, trackOrderByCode]);
 
   const renderActionButtons = () => {
     // Default: no actions
@@ -129,8 +169,18 @@ export default function ActionBar({
             unpaidDeposit &&
             (depositNumber == 3 || depositNumber == 2 || depositNumber == 1)
           ) {
-            showPaymentButton = true;
-            paymentButtonText = "Thanh toán và xác nhận đơn hàng";
+            if (
+              !order?.isInstall &&
+              shipmentOrderCode &&
+              trackingData[shipmentOrderCode] &&
+              trackingData[shipmentOrderCode]?.status == "delivered"
+            ) {
+              showPaymentButton = true;
+              paymentButtonText = "Thanh toán và xác nhận đơn hàng";
+            } else if (order?.isInstall) {
+              showPaymentButton = true;
+              paymentButtonText = "Thanh toán và xác nhận đơn hàng";
+            }
           }
 
           break;
