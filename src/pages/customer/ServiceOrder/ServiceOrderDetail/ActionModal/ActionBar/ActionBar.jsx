@@ -34,7 +34,7 @@ export default function ActionBar({
   // Fetch tracking information when shipment data is available
   useEffect(() => {
     const fetchTrackingData = async () => {
-      if (shipmentResponse?.data && !order?.isInstall) {
+      if (shipmentResponse?.data && !order?.install) {
         for (const shipment of shipmentResponse.data) {
           if (shipment.orderCode && shipment.orderCode !== "string") {
             try {
@@ -169,15 +169,17 @@ export default function ActionBar({
             unpaidDeposit &&
             (depositNumber == 3 || depositNumber == 2 || depositNumber == 1)
           ) {
+            console.log(order);
+
             if (
-              !order?.isInstall &&
+              !order?.install &&
               shipmentOrderCode &&
               trackingData[shipmentOrderCode] &&
               trackingData[shipmentOrderCode]?.status == "delivered"
             ) {
               showPaymentButton = true;
               paymentButtonText = "Thanh toán và xác nhận đơn hàng";
-            } else if (order?.isInstall) {
+            } else if (order?.install) {
               showPaymentButton = true;
               paymentButtonText = "Thanh toán và xác nhận đơn hàng";
             }
