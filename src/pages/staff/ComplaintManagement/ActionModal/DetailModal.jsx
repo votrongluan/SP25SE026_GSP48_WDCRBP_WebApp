@@ -40,7 +40,7 @@ export default function DetailModal({ complaint, refetch }) {
     complaint?.refundAmount || 0
   );
   // New state variables for the updated API
-  const [isAccept, setIsAccept] = useState(true);
+  const [isAccept, setIsAccept] = useState(false);
   const [isCancel, setIsCancel] = useState(false);
   const [refundPercent, setRefundPercent] = useState(50); // Default to 50%
 
@@ -128,7 +128,7 @@ export default function DetailModal({ complaint, refetch }) {
       notify(
         "Thành công",
         isAccept
-          ? "Đã xử lý và chấp nhận khiếu nại thành công"
+          ? "Đã xử lý và Chấp nhận hoàn tiền thành công"
           : "Đã từ chối xử lý khiếu nại",
         "success"
       );

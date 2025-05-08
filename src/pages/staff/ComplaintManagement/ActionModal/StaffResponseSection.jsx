@@ -142,69 +142,73 @@ export default function StaffResponseSection({
         </>
       )}
 
-      {/* Accept/Reject Complaint Switch */}
-      <Box
-        mb={4}
-        p={4}
-        borderRadius="md"
-        bg={isAccept ? "green.50" : "red.50"}
-        borderWidth="1px"
-        borderColor={isAccept ? "green.200" : "red.200"}
-      >
-        <Flex justify="space-between" align="center">
-          <HStack>
-            <Icon
-              as={isAccept ? FiCheck : FiX}
-              color={isAccept ? "green.500" : "red.500"}
-              boxSize={5}
-            />
-            <Text fontWeight="bold">
-              {isAccept ? "Chấp nhận khiếu nại" : "Từ chối khiếu nại"}
-            </Text>
-          </HStack>
-          <Switch
-            colorScheme="green"
-            size="lg"
-            isChecked={isAccept}
-            onChange={(e) => setIsAccept(e.target.checked)}
-            isDisabled={isLoading}
-          />
-        </Flex>
-      </Box>
+      {maxRefundableAmount > 0 && (
+        <>
+          {/* Accept/Reject Complaint Switch */}
+          <Box
+            mb={4}
+            p={4}
+            borderRadius="md"
+            bg={isAccept ? "green.50" : "red.50"}
+            borderWidth="1px"
+            borderColor={isAccept ? "green.200" : "red.200"}
+          >
+            <Flex justify="space-between" align="center">
+              <HStack>
+                <Icon
+                  as={isAccept ? FiCheck : FiX}
+                  color={isAccept ? "green.500" : "red.500"}
+                  boxSize={5}
+                />
+                <Text fontWeight="bold">
+                  {isAccept ? "Chấp nhận hoàn tiền" : "Từ chối hoàn tiền"}
+                </Text>
+              </HStack>
+              <Switch
+                colorScheme="green"
+                size="lg"
+                isChecked={isAccept}
+                onChange={(e) => setIsAccept(e.target.checked)}
+                isDisabled={isLoading}
+              />
+            </Flex>
+          </Box>
 
-      {/* Display refund information */}
-      <Box mb={4} p={3} bg="gray.50" borderRadius="md">
-        <Heading size="sm" mb={3}>
-          Thông tin hoàn tiền cho đơn hàng #{orderDetail?.orderId}
-        </Heading>
-        <Grid templateColumns="1fr 1fr" gap={4}>
-          <GridItem>
-            <Text fontWeight="bold">Tổng tiền đã thanh toán:</Text>
-            <Text fontSize="xl" color={appColorTheme.brown_2}>
-              {formatPrice(totalOrderAmount)}
-            </Text>
-          </GridItem>
+          {/* Display refund information */}
+          <Box mb={4} p={3} bg="gray.50" borderRadius="md">
+            <Heading size="sm" mb={3}>
+              Thông tin hoàn tiền cho đơn hàng #{orderDetail?.orderId}
+            </Heading>
+            <Grid templateColumns="1fr 1fr" gap={4}>
+              <GridItem>
+                <Text fontWeight="bold">Tổng tiền đã thanh toán:</Text>
+                <Text fontSize="xl" color={appColorTheme.brown_2}>
+                  {formatPrice(totalOrderAmount)}
+                </Text>
+              </GridItem>
 
-          <GridItem>
-            <Text fontWeight="bold">Đã hoàn trả (các khiếu nại khác):</Text>
-            <Text fontSize="xl" color="orange.500">
-              {isLoadingComplaints
-                ? "Đang tải..."
-                : formatPrice(totalRefundedAmount)}
-            </Text>
-          </GridItem>
+              <GridItem>
+                <Text fontWeight="bold">Đã hoàn trả (các khiếu nại khác):</Text>
+                <Text fontSize="xl" color="orange.500">
+                  {isLoadingComplaints
+                    ? "Đang tải..."
+                    : formatPrice(totalRefundedAmount)}
+                </Text>
+              </GridItem>
 
-          <GridItem colSpan={2}>
-            <Divider my={2} />
-            <Text fontWeight="bold">Số tiền có thể hoàn trả tối đa:</Text>
-            <Text fontSize="xl" fontWeight="bold" color="green.500">
-              {isLoadingComplaints
-                ? "Đang tính toán..."
-                : formatPrice(maxRefundableAmount)}
-            </Text>
-          </GridItem>
-        </Grid>
-      </Box>
+              <GridItem colSpan={2}>
+                <Divider my={2} />
+                <Text fontWeight="bold">Số tiền có thể hoàn trả tối đa:</Text>
+                <Text fontSize="xl" fontWeight="bold" color="green.500">
+                  {isLoadingComplaints
+                    ? "Đang tính toán..."
+                    : formatPrice(maxRefundableAmount)}
+                </Text>
+              </GridItem>
+            </Grid>
+          </Box>
+        </>
+      )}
 
       <VStack spacing={4} align="stretch">
         <Textarea
@@ -333,7 +337,7 @@ export default function StaffResponseSection({
               !response.trim() || response.length > 1000 || isLoadingComplaints
             }
           >
-            {isAccept ? "Xác nhận và Chấp nhận khiếu nại" : "Từ chối khiếu nại"}
+            {isAccept ? "Xác nhận và Chấp nhận hoàn tiền" : "Từ chối hoàn tiền"}
           </Button>
         </HStack>
       </VStack>

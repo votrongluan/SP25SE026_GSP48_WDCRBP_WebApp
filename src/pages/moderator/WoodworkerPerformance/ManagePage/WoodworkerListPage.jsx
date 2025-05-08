@@ -1,7 +1,5 @@
 import {
   Box,
-  Flex,
-  Heading,
   Stack,
   Spinner,
   Text,
@@ -146,11 +144,6 @@ export default function WoodworkerListPage() {
       flex: 1.5,
     },
     {
-      headerName: "Địa chỉ",
-      field: "address",
-      flex: 3,
-    },
-    {
       headerName: "Gói dịch vụ",
       field: "servicePack",
       cellRenderer: ServicePackRenderer,
@@ -160,12 +153,6 @@ export default function WoodworkerListPage() {
       headerName: "Ngày hết hạn",
       field: "servicePackEndDate",
       valueFormatter: dateFormatter,
-      flex: 1,
-    },
-    {
-      headerName: "Trạng thái",
-      field: "publicStatus",
-      cellRenderer: StatusRenderer,
       flex: 1,
     },
   ]);

@@ -1,7 +1,5 @@
 import {
   Button,
-  FormControl,
-  FormLabel,
   Modal,
   ModalBody,
   ModalContent,
@@ -9,8 +7,6 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
-  Textarea,
-  Divider,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -18,13 +14,14 @@ import { useRef, useState } from "react";
 import { useNotify } from "../../../../../../components/Utility/Notify";
 import { FiAlertCircle, FiXCircle, FiXOctagon } from "react-icons/fi";
 import CheckboxList from "../../../../../../components/Utility/CheckboxList";
+import { useCancelOrderMutation } from "../../../../../../services/serviceOrderApi";
 
 export default function CancelModal({ serviceOrderId, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const notify = useNotify();
   const initialRef = useRef(null);
-  const [reason, setReason] = useState("");
   const [isCheckboxDisabled, setIsCheckboxDisabled] = useState(true);
+  const [cancelOrder, { isLoading }] = useCancelOrderMutation();
 
   const checkboxItems = [
     {
@@ -33,20 +30,13 @@ export default function CancelModal({ serviceOrderId, refetch }) {
     },
   ];
 
-  const handleReasonChange = (e) => {
-    setReason(e.target.value);
-  };
-
   const handleSubmit = async () => {
     try {
-      notify(
-        "Đã gửi yêu cầu hủy",
-        "Yêu cầu hủy đơn hàng đã được gửi tới xưởng mộc",
-        "success"
-      );
+      await cancelOrder({ serviceOrderId: Number(serviceOrderId) });
+
+      notify("Hủy thành công", "", "success");
 
       onClose();
-      setReason(""); // Reset form
       refetch(); // Refresh data
     } catch (err) {
       notify(
@@ -65,51 +55,32 @@ export default function CancelModal({ serviceOrderId, refetch }) {
         variant="outline"
         onClick={onOpen}
       >
-        Yêu cầu hủy đơn
+        Không nhận đơn
       </Button>
 
       <Modal
         isOpen={isOpen}
-        //onClose={isLoading ? null : onClose}
+        onClose={isLoading ? undefined : onClose}
         closeOnOverlayClick={false}
         closeOnEsc={false}
         initialFocusRef={initialRef}
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Yêu cầu hủy đơn</ModalHeader>
-          {/* {!isLoading && <ModalCloseButton />} */}
+          <ModalHeader>Xác nhận hủy đơn hàng</ModalHeader>
           <ModalBody pb={6}>
             <Stack spacing={4}>
-              <Text color="red.500">
-                Bạn đang yêu cầu hủy đơn hàng này. Vui lòng cung cấp lý do rõ
-                ràng.
-              </Text>
-              <FormControl>
-                <FormLabel>Lý do hủy đơn</FormLabel>
-                <Textarea
-                  ref={initialRef}
-                  value={reason}
-                  onChange={handleReasonChange}
-                  placeholder="Nhập lý do hủy đơn của bạn"
-                  rows={4}
-                />
-              </FormControl>
+              <Text color="red.500">Bạn đang yêu cầu hủy đơn hàng này.</Text>
 
-              {reason && reason.trim() !== "" && (
-                <>
-                  <Divider my={2} />
-                  <CheckboxList
-                    items={checkboxItems}
-                    setButtonDisabled={setIsCheckboxDisabled}
-                  />
-                </>
-              )}
+              <CheckboxList
+                items={checkboxItems}
+                setButtonDisabled={setIsCheckboxDisabled}
+              />
             </Stack>
           </ModalBody>
           <ModalFooter>
             <Button
-              // isLoading={isLoading}
+              isLoading={isLoading}
               variant="ghost"
               mr={3}
               onClick={onClose}
@@ -120,8 +91,8 @@ export default function CancelModal({ serviceOrderId, refetch }) {
             <Button
               colorScheme="red"
               onClick={handleSubmit}
-              // isLoading={isLoading}
-              isDisabled={!reason || reason.trim() === "" || isCheckboxDisabled}
+              isLoading={isLoading}
+              isDisabled={isCheckboxDisabled}
               leftIcon={<FiAlertCircle />}
             >
               Không nhận đơn hàng

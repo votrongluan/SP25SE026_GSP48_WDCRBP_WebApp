@@ -1,7 +1,6 @@
 import AppointmentUpdateModal from "../Appointment/AppointmentUpdateModal.jsx";
 import ContractUpdateModal from "../Contract/ContractUpdateModal.jsx";
 import { serviceOrderStatusConstants } from "../../../../../../config/appconfig.js";
-import { Text } from "@chakra-ui/react";
 import CancelModal from "./CancelModal.jsx";
 import DesignUpdateModal from "../Design/DesignUpdateModal.jsx";
 import FinishUpdateModal from "../Finish/FinishUpdateModal.jsx";
@@ -72,19 +71,18 @@ export default function ActionBar({ status, feedback, order, refetch }) {
       }
     }
 
-    showCancelModal = false;
-
     return (
       <>
+        {showCancelModal && (
+          <CancelModal serviceOrderId={order?.orderId} refetch={refetch} />
+        )}
         {showAppointmentModal && (
           <AppointmentUpdateModal refetch={refetch} order={order} />
         )}
         {showContractModal && (
           <ContractUpdateModal refetch={refetch} order={order} />
         )}
-        {showCancelModal && (
-          <CancelModal serviceOrderId={order?.orderId} refetch={refetch} />
-        )}
+
         {showDesignModal && (
           <DesignUpdateModal
             serviceOrderId={order?.orderId}
