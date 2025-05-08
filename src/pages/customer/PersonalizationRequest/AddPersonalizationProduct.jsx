@@ -91,11 +91,6 @@ export default function AddPersonalizationProduct({
     });
 
     setResetKeys(newResetKeys);
-
-    // Reset toàn bộ dữ liệu sản phẩm
-    if (!isEditing) {
-      setProductData({});
-    }
   };
 
   // Handle file upload completion

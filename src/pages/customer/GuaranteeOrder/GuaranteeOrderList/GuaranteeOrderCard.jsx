@@ -124,7 +124,7 @@ const GuaranteeOrderCard = ({ order, onViewDetails }) => {
             {formatPrice(order.totalAmount)}
           </Text>
         ) : (
-          <Text>Chưa cập nhật</Text>
+          <Text>Chưa cập nhật thành tiền</Text>
         )}
 
         <Button

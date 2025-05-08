@@ -3,9 +3,11 @@ import { appColorTheme } from "../../../config/appconfig";
 import { FiDownload } from "react-icons/fi";
 import { useExportToDoc } from "html-to-doc-react";
 import { useGetContractByServiceOrderIdQuery } from "../../../services/contractApi";
+import { useGetByServiceOrderMutation } from "../../../services/quotationApi";
 import useAuth from "../../../hooks/useAuth";
 import { Navigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
+import React from "react";
 
 export default function ContractPage() {
   const { id } = useParams();
@@ -18,6 +20,18 @@ export default function ContractPage() {
     error,
   } = useGetContractByServiceOrderIdQuery(id);
 
+  // Fetch quotation details
+  const [
+    getQuotationDetails,
+    { data: quotationData, isLoading: quotationLoading },
+  ] = useGetByServiceOrderMutation();
+
+  React.useEffect(() => {
+    if (id) {
+      getQuotationDetails({ serviceOrderId: parseInt(id) });
+    }
+  }, [id, getQuotationDetails]);
+
   const exportToDoc = useExportToDoc(
     null,
     "contract-template",
@@ -25,7 +39,7 @@ export default function ContractPage() {
   );
 
   // Handle loading state
-  if (isLoading) {
+  if (isLoading || quotationLoading) {
     return (
       <Center h="300px">
         <Spinner size="xl" color={appColorTheme.brown_2} />
@@ -182,7 +196,7 @@ export default function ContractPage() {
                     textAlign: "left",
                   }}
                 >
-                  Sản phẩm
+                  Loại sản phẩm
                 </th>
                 <th
                   style={{
@@ -252,6 +266,120 @@ export default function ContractPage() {
             </tbody>
           </table>
         </div>
+
+        {/* Quotation details section */}
+        {quotationData?.data?.[0]?.quotationDetails.length > 0 && (
+          <>
+            <div style={{ marginTop: "20px" }}>
+              <p style={{ fontWeight: "bold" }}>
+                Báo giá chi tiết từng sản phẩm:
+              </p>
+              {quotationData?.data?.map((item, index) => (
+                <div key={index} style={{ marginTop: "15px" }}>
+                  <p style={{ fontWeight: "500", marginBottom: "8px" }}>
+                    {item.requestedProduct.category} - Số lượng:{" "}
+                    {item.requestedProduct.quantity}
+                  </p>
+                  <table
+                    style={{
+                      width: "100%",
+                      borderCollapse: "collapse",
+                    }}
+                  >
+                    <thead>
+                      <tr style={{ backgroundColor: "#f2f2f2" }}>
+                        <th
+                          style={{
+                            border: "1px solid #ddd",
+                            padding: "8px",
+                            textAlign: "left",
+                          }}
+                        >
+                          Loại chi phí
+                        </th>
+                        <th
+                          style={{
+                            border: "1px solid #ddd",
+                            padding: "8px",
+                            textAlign: "center",
+                          }}
+                        >
+                          Số lượng cần dùng
+                        </th>
+                        <th
+                          style={{
+                            border: "1px solid #ddd",
+                            padding: "8px",
+                            textAlign: "right",
+                          }}
+                        >
+                          Thành tiền
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {item.quotationDetails.map((detail) => (
+                        <tr key={detail.quotId}>
+                          <td
+                            style={{ border: "1px solid #ddd", padding: "8px" }}
+                          >
+                            {detail.costType}
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #ddd",
+                              padding: "8px",
+                              textAlign: "center",
+                            }}
+                          >
+                            {detail.quantityRequired}
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #ddd",
+                              padding: "8px",
+                              textAlign: "right",
+                            }}
+                          >
+                            {formatCurrency(detail.costAmount)}
+                          </td>
+                        </tr>
+                      ))}
+                      <tr>
+                        <td
+                          colSpan="2"
+                          style={{
+                            border: "1px solid #ddd",
+                            padding: "8px",
+                            textAlign: "right",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Tổng cộng:
+                        </td>
+                        <td
+                          style={{
+                            border: "1px solid #ddd",
+                            padding: "8px",
+                            textAlign: "right",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {formatCurrency(item.requestedProduct.totalAmount)}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              ))}
+              {(!quotationData?.data || quotationData.data.length === 0) && (
+                <p style={{ fontStyle: "italic" }}>
+                  Không có dữ liệu báo giá chi tiết.
+                </p>
+              )}
+            </div>
+          </>
+        )}
 
         {/* Display woodworker terms */}
         {contract.woodworkerTerms && (

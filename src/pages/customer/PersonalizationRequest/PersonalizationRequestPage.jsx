@@ -64,8 +64,6 @@ export default function PersonalizationRequestPage() {
     error: woodworkerError,
   } = useGetWoodworkerByIdQuery(woodworkerId);
 
-  console.log(JSON.stringify(woodworkerData, null, 2));
-
   // Fetch available services
   const {
     data: serviceData,
@@ -150,8 +148,6 @@ export default function PersonalizationRequestPage() {
       return;
     }
 
-    console.log(productData);
-
     if (editIndex === -1) {
       setProductList([...productList, productData]);
       notify("Thành công!", "Sản phẩm đã được thêm vào danh sách.", "success");
@@ -161,7 +157,6 @@ export default function PersonalizationRequestPage() {
       setProductList(updatedList);
       notify("Thành công!", "Sản phẩm đã được cập nhật.", "success");
 
-      // Scroll up to the form area for better UX after editing
       window.scrollTo({
         top: 0,
         behavior: "smooth",

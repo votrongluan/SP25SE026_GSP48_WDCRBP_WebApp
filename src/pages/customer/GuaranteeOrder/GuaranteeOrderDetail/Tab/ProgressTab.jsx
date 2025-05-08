@@ -27,6 +27,7 @@ import {
   formatDateString,
 } from "../../../../../utils/utils.js";
 import ghnLogo from "../../../../../assets/images/ghnLogo.webp";
+import GHNProgress from "./GHNProgress.jsx";
 
 export default function ProgressTab({ order, activeTabIndex, isActive }) {
   const { id } = useParams();
@@ -306,48 +307,10 @@ export default function ProgressTab({ order, activeTabIndex, isActive }) {
                   )}
 
                   {shipment.orderCode && shipment.orderCode !== "string" && (
-                    <Stack mt={5}>
-                      <HStack>
-                        <Text fontWeight="bold" minW="120px">
-                          Mã vận đơn:
-                        </Text>
-                        <Text>{shipment.orderCode}</Text>
-                      </HStack>
-                      <Link
-                        target="_blank"
-                        href={`https://donhang.ghn.vn/?order_code=${shipment.orderCode}`}
-                        color={appColorTheme.brown_2}
-                        mb={2}
-                      >
-                        Tra cứu
-                      </Link>
-                      <HStack>
-                        <Text fontWeight="bold" minW="120px">
-                          Ngày giao dự kiến:
-                        </Text>
-                        <Text>
-                          {trackingData[shipment.orderCode]?.leadtime
-                            ? formatDateString(
-                                new Date(
-                                  trackingData[shipment.orderCode].leadtime
-                                )
-                              )
-                            : "Không có thông tin"}
-                        </Text>
-                      </HStack>
-                      <HStack>
-                        <Text fontWeight="bold" minW="120px">
-                          Trạng thái vận chuyển:
-                        </Text>
-                        <Text>
-                          {trackingData[shipment.orderCode]?.status
-                            ? translateShippingStatus(
-                                trackingData[shipment.orderCode].status
-                              )
-                            : "Không có thông tin"}
-                        </Text>
-                      </HStack>
-                    </Stack>
+                    <GHNProgress
+                      shipment={shipment}
+                      trackingData={trackingData}
+                    />
                   )}
                 </Stack>
               </Box>

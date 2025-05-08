@@ -119,7 +119,7 @@ const ServiceOrderCard = ({ order, onViewDetails }) => {
             {formatPrice(order.totalAmount)}
           </Text>
         ) : (
-          <Text>Chưa cập nhật giá</Text>
+          <Text>Chưa cập nhật thành tiền</Text>
         )}
 
         <Button
