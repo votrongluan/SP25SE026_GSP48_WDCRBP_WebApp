@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import {
   Box,
   Heading,
-  Text,
   Spinner,
   Center,
   VStack,

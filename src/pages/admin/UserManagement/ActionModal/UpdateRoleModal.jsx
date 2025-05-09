@@ -43,10 +43,6 @@ export default function UpdateRoleModal({ isOpen, onClose, user, refetch }) {
         return "purple";
       case "Staff":
         return "blue";
-      case "Woodworker":
-        return "green";
-      case "Customer":
-        return "yellow";
       default:
         return "gray";
     }
