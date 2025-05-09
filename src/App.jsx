@@ -80,6 +80,7 @@ import DashboardPage from "./pages/admin/Dashboard/DashboardPage.jsx";
 import ServicePackManagementPage from "./pages/admin/ServicePackManagement/ServicePackManagementPage.jsx";
 import AdminComplaintManagementPage from "./pages/admin/ComplaintManagement/ComplaintList/AdminComplaintManagementPage.jsx";
 import UserManagementPage from "./pages/admin/UserManagement/MainPage/UserManagementPage.jsx";
+import WWPerformanceDetailPage from "./pages/moderator/WoodworkerPerformance/DetailPage/WWPerformanceDetailPage.jsx";
 
 function App() {
   useEffect(() => {
@@ -150,7 +151,12 @@ function App() {
         {/* Moderator page route */}
         <Route path="mod" element={<ModeratorLayout />}>
           <Route index element={<ModeratorWelcomePage />} />
-          <Route path="performance" element={<WoodworkerPerformancePage />} />
+
+          <Route path="performance">
+            <Route index element={<WoodworkerPerformancePage />} />
+            <Route path=":id" element={<WWPerformanceDetailPage />} />
+          </Route>
+
           <Route path="profile" element={<ModeratorProfilePage />} />
         </Route>
 

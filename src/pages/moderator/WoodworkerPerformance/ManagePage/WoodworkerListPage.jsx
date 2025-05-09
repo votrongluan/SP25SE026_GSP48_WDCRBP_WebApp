@@ -10,6 +10,7 @@ import {
   Tooltip,
   useToast,
   Link,
+  Button,
 } from "@chakra-ui/react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
@@ -17,13 +18,15 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useState, useMemo, useRef } from "react";
 import { useListWoodworkersQuery } from "../../../../services/woodworkerApi";
 import { appColorTheme, getPackTypeLabel } from "../../../../config/appconfig";
-import { FiStar } from "react-icons/fi";
+import { FiStar, FiBarChart2 } from "react-icons/fi";
 import { format, parseISO, isValid } from "date-fns";
 import { vi } from "date-fns/locale";
+import { useNavigate } from "react-router-dom";
 
 export default function WoodworkerListPage() {
   const toast = useToast();
   const gridRef = useRef();
+  const navigate = useNavigate();
 
   const {
     data: woodworkersResponse,
@@ -112,6 +115,20 @@ export default function WoodworkerListPage() {
     );
   };
 
+  // Action cell renderer
+  const ActionCellRenderer = (params) => {
+    return (
+      <Button
+        leftIcon={<FiBarChart2 />}
+        colorScheme="blue"
+        size="sm"
+        onClick={() => navigate(`/mod/performance/${params.data.woodworkerId}`)}
+      >
+        Chi tiết
+      </Button>
+    );
+  };
+
   // Date formatter
   const dateFormatter = (params) => {
     try {
@@ -154,6 +171,14 @@ export default function WoodworkerListPage() {
       field: "servicePackEndDate",
       valueFormatter: dateFormatter,
       flex: 1,
+    },
+    {
+      headerName: "Hành động",
+      field: "woodworkerId",
+      cellRenderer: ActionCellRenderer,
+      flex: 1,
+      filter: false,
+      sortable: false,
     },
   ]);
 
