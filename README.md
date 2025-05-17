@@ -68,19 +68,6 @@
 - Payments and order progress are tracked in the platform.
 - The customer leaves a review at the end.
 
-## Demo video
-
-<div style="text-align: center;">
-    <video width="70%" controls>
-        <source src="video/DemoWebApp.mkv" type="video/x-matroska">
-        Your browser does not support the video tag.
-    </video>
-    <p><em>Demo Video</em></p>
-</div>
-
-<hr/>
-<br/>
-
 ## Authors and Acknowledgments
 
 Thanks to all the contributors who have helped develop this project.
