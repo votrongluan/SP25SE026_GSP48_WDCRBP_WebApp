@@ -67,12 +67,7 @@
 
 ## Demo video
 
-<div align="center">
-    <img src="public/logo.png" width="70%" />
-    <p><em>Logo</em></p>
-</div>
-
-[![Watch the demo video](https://img.youtube.com/vi/TS3sKPcIq1A/0.jpg)](https://youtu.be/TS3sKPcIq1A)
+[![Watch the demo video](public/logo.png)](https://youtu.be/TS3sKPcIq1A)
 
 ## Authors and Acknowledgments
 
