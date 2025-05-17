@@ -65,6 +65,15 @@
 - Payments and order progress are tracked in the platform.
 - The customer leaves a review at the end.
 
+## Demo video
+
+<div align="center">
+    <img src="public/logo.png" width="70%" />
+    <p><em>Logo</em></p>
+</div>
+
+[![Watch the demo video](https://img.youtube.com/vi/TS3sKPcIq1A/0.jpg)](https://youtu.be/TS3sKPcIq1A)
+
 ## Authors and Acknowledgments
 
 Thanks to all the contributors who have helped develop this project.
