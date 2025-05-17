@@ -14,7 +14,6 @@
 - **Review & Rating**: Users can rate and review woodworkers and services.
 - **Moderator Dashboard**: Tools for platform moderators to oversee performance, complaints, and guarantee orders.
 - **Delivery Integration**: Shipment tracking through integrated APIs.
-- **Notification System**: Real-time updates via notifications for order status, payments, and messages.
 - **Comprehensive API**: RESTful API endpoints for all core services.
 
 ## Getting Started
@@ -23,8 +22,6 @@
 
 - [Node.js](https://nodejs.org/) (v14 or higher)
 - [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
-- [MongoDB](https://www.mongodb.com/) (if running backend locally)
-- [Chakra UI](https://chakra-ui.com/) for frontend components
 
 ### Installation
 
