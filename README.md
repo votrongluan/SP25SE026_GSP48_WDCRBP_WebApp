@@ -2,7 +2,17 @@
 
 ## Project Overview
 
-**WDCRBP Web Application** is a full-stack web platform designed to connect customers with woodworkers for custom furniture and woodworking services. The platform facilitates the entire service process, from idea submission and quotation to contract management, payment, and delivery tracking. This repository contains the source code for the WDCRBP Web Application, which offers features for customers, woodworkers, and platform moderators.
+**WDCRBP** is an online platform designed to connect customers with woodworkers for custom furniture and woodworking services. The platform facilitates the entire service process, from idea submission and quotation to contract management, payment, and delivery tracking. This repository contains the source code for the WDCRBP Web Application, which offers features for customers, woodworkers, and platform moderators.
+
+Related links:
+
+- [API repository](https://github.com/Phuc-TV/SP25SE026_GSP48_WDCRBP_API)
+
+- [Web client repository](https://github.com/votrongluan/SP25SE026_GSP48_WDCRBP_WebApp)
+
+- [Mobile client repository](https://github.com/leanguyen2619/SP25SE026_GSP48_WDCRBP_Mobile)
+
+- [Document](https://github.com/leanguyen2619/SP25SE026_GSP48_WDCRBP_Mobile/doc/WDCRBP_Final_Report.pdf)
 
 ## Features
 
