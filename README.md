@@ -12,7 +12,7 @@ Related links:
 
 - [Mobile client repository](https://github.com/leanguyen2619/SP25SE026_GSP48_WDCRBP_Mobile)
 
-- [Document](https://github.com/leanguyen2619/SP25SE026_GSP48_WDCRBP_Mobile/doc/WDCRBP_Final_Report.pdf)
+- [Document](https://github.com/votrongluan/SP25SE026_GSP48_WDCRBP_WebApp/blob/main/doc/WDCRBP_Final_Report.pdf)
 
 ## Features
 
